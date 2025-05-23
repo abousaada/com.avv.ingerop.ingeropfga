@@ -1,0 +1,73 @@
+<mvc:View xmlns:core="sap.ui.core" 
+	xmlns:mvc="sap.ui.core.mvc" 
+	xmlns="sap.m"
+	xmlns:table="sap.ui.table"
+	xmlns:layout="sap.ui.layout"
+	xmlns:html="http://www.w3.org/1999/xhtml" controllerName="com.avv.ingerop.ingeropfga.ext.controller.extendOP">
+	
+    <Panel class="sapUiSmallMargin" expanded="true" expandable="true" headerText="{i18n>synt.tab.recap.title}">
+        <HBox >
+            <VBox class="sapUiSmallMargin" >
+                <Label text="Commentaires"></Label>
+                <TextArea height="20rem" width="25rem"></TextArea>
+            </VBox>
+            <VBox class="sapUiSmallMargin">
+                <Label text=""></Label>
+            <table:Table rows="{recap>/results}" class="syntheseTab" visibleRowCount="8" selectionMode="None">
+                <table:columns>
+                    <table:Column>
+                        <Label text="{i18n>recap.ID}"/>
+                        <table:template>
+                            <Text text="{recap>Description}" />
+                        </table:template>
+                    </table:Column>
+                    <table:Column>
+                        <Label text="{i18n>recap.P0}"/>
+                        <table:template>
+                            <ObjectStatus class="custObjStatus" state="{= parseFloat(${recap>P0}) &lt; 0 ? 'Error': 'None'}" text="{ 'parts':[{ path: 'recap>P0' }, {path: 'recap>Type'}], formatter: '.formatRecap' }" />
+                        </table:template>
+                    </table:Column>
+                    <table:Column>
+                        <Label text="{i18n>recap.CumulN-1}"/>
+                        <table:template>
+                            <ObjectStatus class="custObjStatus" state="{= parseFloat(${recap>CumulN1}) &lt; 0 ? 'Error': 'None'}" text="{ 'parts':[{ path: 'recap>CumulN1' }, {path: 'recap>Type'}], formatter: '.formatRecap' }" />
+                        </table:template>
+                    </table:Column>
+                    <table:Column>
+                        <Label text="{i18n>recap.CumulN}"/>
+                        <table:template>
+                            <ObjectStatus class="custObjStatus" state="{= parseFloat(${recap>CumulN}) &lt; 0 ? 'Error': 'None'}" text="{ 'parts':[{ path: 'recap>CumulN' }, {path: 'recap>Type'}], formatter: '.formatRecap' }" />
+                        </table:template>
+                    </table:Column>
+                    <table:Column>
+                        <Label text="{i18n>recap.YearN}"/>
+                        <table:template>
+                            <ObjectStatus class="custObjStatus" state="{= parseFloat(${recap>YearN}) &lt; 0 ? 'Error': 'None'}" text="{ 'parts':[{ path: 'recap>YearN' }, {path: 'recap>Type'}], formatter: '.formatRecap' }" />
+                        </table:template>
+                    </table:Column>
+                    <table:Column>
+                        <Label text="{i18n>recap.MonthM}"/>
+                        <table:template>
+                            <ObjectStatus class="custObjStatus" state="{= parseFloat(${recap>MonthM}) &lt; 0 ? 'Error': 'None'}" text="{ 'parts':[{ path: 'recap>MonthM' }, {path: 'recap>Type'}], formatter: '.formatRecap' }" />
+                        </table:template>
+                    </table:Column>
+                    <table:Column>
+                        <Label text="{i18n>recap.YetToCome}"/>
+                        <table:template>
+                            <ObjectStatus class="custObjStatus" state="{= parseFloat(${recap>YetToCome}) &lt; 0 ? 'Error': 'None'}" text="{ 'parts':[{ path: 'recap>YetToCome' }, {path: 'recap>Type'}], formatter: '.formatRecap' }" />
+                        </table:template>
+                    </table:Column>
+                    <table:Column>
+                        <Label text="{i18n>recap.Forecast}"/>
+                        <table:template>
+                            <ObjectStatus class="custObjStatus" state="{= parseFloat(${recap>Forecast}) &lt; 0 ? 'Error': 'None'}" text="{ 'parts':[{ path: 'recap>Forecast' }, {path: 'recap>Type'}], formatter: '.formatRecap' }" />
+                        </table:template>
+                    </table:Column>
+                </table:columns>
+            </table:Table>
+            </VBox>
+        </HBox>
+    </Panel>
+
+	
+</mvc:View>

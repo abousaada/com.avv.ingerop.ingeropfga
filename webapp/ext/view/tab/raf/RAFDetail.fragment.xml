@@ -1,0 +1,100 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:table="sap.ui.table" xmlns:f="sap.ui.layout.form">
+    <Page showHeader="false">
+    <ScrollContainer height="100%">
+    <Panel visible="{settings>/displatRafDetail}" expand="true" expandable="true" headerText="Information">
+        <f:Form editable="true" >
+            <f:title>
+                <!-- <core:Title text="Supplier" /> -->
+            </f:title>
+            <f:layout>
+                <f:ColumnLayout columnsM="2" columnsL="2" columnsXL="2" />
+            </f:layout>
+            <f:formContainers>
+                <f:FormContainer>
+                    <f:formElements>
+                        <f:FormElement label="Mission">
+                            <f:fields>
+                                <Text text="{rafDetail>/Mission}" />
+                            </f:fields>
+                        </f:FormElement>
+                        <f:FormElement label="Statut">
+                            <f:fields>
+                                <Select items="{status>/results}" selectedKey="{rafDetail>/Status}">
+                                    <core:Item key="{status>Status}" text="{status>Status}" />
+                                </Select>
+                            </f:fields>
+                        </f:FormElement>
+                        <f:FormElement label="Date dÃ©but">
+                            <f:fields>
+                                <Text text="{rafDetail>/StartDate}" />
+                            </f:fields>
+                        </f:FormElement>
+                        <f:FormElement label="Date fin">
+                            <f:fields>
+                                <Text text="{rafDetail>/EndDate}" />
+                            </f:fields>
+                        </f:FormElement>
+                        <f:FormElement label="Avanvement Physique">
+                            <f:fields>
+                                <Text text="{rafDetail>/AvancementPhys}" />
+                            </f:fields>
+                        </f:FormElement>
+                    </f:formElements>
+                </f:FormContainer>
+            </f:formContainers>
+        </f:Form>
+    </Panel>
+    <table:TreeTable visible="{settings>/displatRafDetail}" class="syntheseTab sapUiSmallMargin" 
+    rows="{path: 'rafDetail>/results',
+            parameters: {
+            numberOfExpandedLevels: 2
+            }}" 
+    selectionMode="None" visibleRowCount="15" >
+        <table:columns>
+            <table:Column>
+                <Label text="Nom" />
+                <table:template>
+                    <Text text="{rafDetail>BudgetName}" />
+                </table:template>
+            </table:Column>
+            <table:Column>
+                <Label text="Budget initial" />
+                <table:template>
+                    <Text text="{rafDetail>BudgetInitial}" />
+                </table:template>
+            </table:Column>
+            <table:Column>
+                <Label text="Budget validÃ©" />
+                <table:template>
+                    <Text text="{rafDetail>BudgetValid}" />
+                </table:template>
+            </table:Column>
+            <table:Column>
+                <Label text="Budget M-1" />
+                <table:template>
+                    <Text text="{rafDetail>BudgetM-1}" />
+                </table:template>
+            </table:Column>
+            <table:Column>
+                <Label text="RÃ©el M" />
+                <table:template>
+                    <Text text="{rafDetail>ActualM}" />
+                </table:template>
+            </table:Column>
+            <table:Column>
+                <Label text="RÃ©el CumulÃ©" />
+                <table:template>
+                    <Text text="{rafDetail>ActualCumul}" />
+                </table:template>
+            </table:Column>
+            <table:Column>
+                <Label text="Fin d'affaire" />
+                <table:template>
+                    <Text text="{rafDetail>Forecast}" />
+                </table:template>
+            </table:Column>
+        </table:columns>
+    </table:TreeTable>
+    </ScrollContainer>
+    </Page>
+</core:FragmentDefinition>

@@ -1,0 +1,34 @@
+{
+    "Items": [
+        {   
+            "QuoteItmText": "0",
+            "DownPaymentChainItemIdHl": "10",
+            "DownPaymentChainItemId": "10",
+            "CompanyId": "2000",
+            "CurrencyId": "Euro",
+            "MarketTypeId": "MARCHÃ‰ INITIAL",
+            "DownPaymentChainItemDescr": "Poste 1",
+            "WorkQuantity": "10",
+            "WorkUnity": "UO",
+            "UnitPrice": "Euro",
+            "HtCumulated": "10",
+            "TtcCumulated": "10",
+            "AdvAmCumulated": "10"
+        },
+        {   
+            "QuoteItmText": "0",
+            "DownPaymentChainItemIdHl": "10",
+            "DownPaymentChainItemId": "20",
+            "CompanyId": "2000",
+            "CurrencyId": "Euro",
+            "MarketTypeId": "MARCHÃ‰ INITIAL",
+            "DownPaymentChainItemDescr": "Poste 2",
+            "WorkQuantity": "10",
+            "WorkUnity": "UO",
+            "UnitPrice": "Euro",
+            "HtCumulated": "10",
+            "TtcCumulated": "10",
+            "AdvAmCumulated": "10"
+        }
+    ]
+}

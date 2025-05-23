@@ -1,0 +1,634 @@
+{
+    "results": [
+        {
+            "Period": "202003",
+            "Date": "2020-03-01",
+            "Month": "1",
+            "CumulModel": "335.285304672608",
+            "Individual": "335.285304672608",
+            "MonthActual": "0",
+            "CumulActual": "0"
+        },
+        {
+            "Period": "202004",
+            "Date": "2020-04-01",
+            "Month": "2",
+            "CumulModel": "1340.46599870753",
+            "Individual": "1005.18069403492",
+            "MonthActual": "0",
+            "CumulActual": "0"
+        },
+        {
+            "Period": "202005",
+            "Date": "2020-05-01",
+            "Month": "3",
+            "CumulModel": "3013.51778195903",
+            "Individual": "1673.0517832515",
+            "MonthActual": "876.56",
+            "CumulActual": "876.56"
+        },
+        {
+            "Period": "202006",
+            "Date": "2020-06-01",
+            "Month": "4",
+            "CumulModel": "5351.07135078981",
+            "Individual": "2337.55356883078",
+            "MonthActual": "13370.8",
+            "CumulActual": "14247.36"
+        },
+        {
+            "Period": "202007",
+            "Date": "2020-07-01",
+            "Month": "5",
+            "CumulModel": "8348.41918339998",
+            "Individual": "2997.34783261017",
+            "MonthActual": "11828.36",
+            "CumulActual": "26075.72"
+        },
+        {
+            "Period": "202008",
+            "Date": "2020-08-01",
+            "Month": "6",
+            "CumulModel": "11999.5250201496",
+            "Individual": "3651.10583674965",
+            "MonthActual": "10665.84",
+            "CumulActual": "36741.56"
+        },
+        {
+            "Period": "202009",
+            "Date": "2020-09-01",
+            "Month": "7",
+            "CumulModel": "16297.0360197823",
+            "Individual": "4297.51099963264",
+            "MonthActual": "-25112.42",
+            "CumulActual": "11629.14"
+        },
+        {
+            "Period": "202010",
+            "Date": "2020-10-01",
+            "Month": "8",
+            "CumulModel": "21232.2975670687",
+            "Individual": "4935.26154728644",
+            "MonthActual": "7158.62",
+            "CumulActual": "18787.76"
+        },
+        {
+            "Period": "202011",
+            "Date": "2020-11-01",
+            "Month": "9",
+            "CumulModel": "26795.3707020503",
+            "Individual": "5563.0731349816",
+            "MonthActual": "3506.24",
+            "CumulActual": "22294"
+        },
+        {
+            "Period": "202012",
+            "Date": "2020-12-01",
+            "Month": "10",
+            "CumulModel": "32975.0521357816",
+            "Individual": "6179.68143373133",
+            "MonthActual": "1753.12",
+            "CumulActual": "24047.12"
+        },
+        {
+            "Period": "202101",
+            "Date": "2021-01-01",
+            "Month": "11",
+            "CumulModel": "39758.8968122634",
+            "Individual": "6783.84467648175",
+            "MonthActual": "2595.3",
+            "CumulActual": "26642.42"
+        },
+        {
+            "Period": "202102",
+            "Date": "2021-02-01",
+            "Month": "12",
+            "CumulModel": "47133.242971129",
+            "Individual": "7374.34615886564",
+            "MonthActual": "1286.71",
+            "CumulActual": "27929.13"
+        },
+        {
+            "Period": "202103",
+            "Date": "2021-03-01",
+            "Month": "13",
+            "CumulModel": "55083.239660612",
+            "Individual": "7949.99668948293",
+            "MonthActual": "2595.3",
+            "CumulActual": "30524.43"
+        },
+        {
+            "Period": "202104",
+            "Date": "2021-04-01",
+            "Month": "14",
+            "CumulModel": "63592.876645386",
+            "Individual": "8509.63698477406",
+            "MonthActual": "2877.5",
+            "CumulActual": "33401.93"
+        },
+        {
+            "Period": "202105",
+            "Date": "2021-05-01",
+            "Month": "15",
+            "CumulModel": "72645.0166490488",
+            "Individual": "9052.14000366275",
+            "MonthActual": "865.1",
+            "CumulActual": "34267.03"
+        },
+        {
+            "Period": "202106",
+            "Date": "2021-06-01",
+            "Month": "16",
+            "CumulModel": "82221.4298663154",
+            "Individual": "9576.41321726666",
+            "MonthActual": "3027.85",
+            "CumulActual": "37294.88"
+        },
+        {
+            "Period": "202107",
+            "Date": "2021-07-01",
+            "Month": "17",
+            "CumulModel": "92302.8306754206",
+            "Individual": "10081.4008091052",
+            "MonthActual": "4325.5",
+            "CumulActual": "41620.38"
+        },
+        {
+            "Period": "202108",
+            "Date": "2021-08-01",
+            "Month": "18",
+            "CumulModel": "102868.916476794",
+            "Individual": "10566.0858013736",
+            "MonthActual": "1730.2",
+            "CumulActual": "43350.58"
+        },
+        {
+            "Period": "202109",
+            "Date": "2021-09-01",
+            "Month": "19",
+            "CumulModel": "113898.408579795",
+            "Individual": "11029.4921030004",
+            "MonthActual": "6120.6",
+            "CumulActual": "49471.18"
+        },
+        {
+            "Period": "202110",
+            "Date": "2021-10-01",
+            "Month": "20",
+            "CumulModel": "125369.09505516",
+            "Individual": "11470.6864753656",
+            "MonthActual": "8406.11",
+            "CumulActual": "57877.29"
+        },
+        {
+            "Period": "202111",
+            "Date": "2021-11-01",
+            "Month": "21",
+            "CumulModel": "137257.875466879",
+            "Individual": "11888.7804117186",
+            "MonthActual": "9340.58",
+            "CumulActual": "67217.87"
+        },
+        {
+            "Period": "202112",
+            "Date": "2021-12-01",
+            "Month": "22",
+            "CumulModel": "149540.807393391",
+            "Individual": "12282.9319265125",
+            "MonthActual": "4470.72",
+            "CumulActual": "71688.59"
+        },
+        {
+            "Period": "202201",
+            "Date": "2022-01-01",
+            "Month": "23",
+            "CumulModel": "162193.154644443",
+            "Individual": "12652.3472510513",
+            "MonthActual": "9095.15",
+            "CumulActual": "80783.74"
+        },
+        {
+            "Period": "202202",
+            "Date": "2022-02-01",
+            "Month": "24",
+            "CumulModel": "175189.437076477",
+            "Individual": "12996.2824320341",
+            "MonthActual": "9553.16",
+            "CumulActual": "90336.9"
+        },
+        {
+            "Period": "202203",
+            "Date": "2022-03-01",
+            "Month": "25",
+            "CumulModel": "188503.481906255",
+            "Individual": "13314.0448297783",
+            "MonthActual": "12562.14",
+            "CumulActual": "102899.04"
+        },
+        {
+            "Period": "202204",
+            "Date": "2022-04-01",
+            "Month": "26",
+            "CumulModel": "202108.476419358",
+            "Individual": "13604.9945131033",
+            "MonthActual": "11559.03",
+            "CumulActual": "114458.07"
+        },
+        {
+            "Period": "202205",
+            "Date": "2022-05-01",
+            "Month": "27",
+            "CumulModel": "215977.021967426",
+            "Individual": "13868.5455480674",
+            "MonthActual": "11584.79",
+            "CumulActual": "126042.86"
+        },
+        {
+            "Period": "202206",
+            "Date": "2022-06-01",
+            "Month": "28",
+            "CumulModel": "230081.189145386",
+            "Individual": "14104.1671779603",
+            "MonthActual": "13122.48",
+            "CumulActual": "139165.34"
+        },
+        {
+            "Period": "202207",
+            "Date": "2022-07-01",
+            "Month": "29",
+            "CumulModel": "244392.574037562",
+            "Individual": "14311.3848921763",
+            "MonthActual": "9268.34",
+            "CumulActual": "148433.68"
+        },
+        {
+            "Period": "202208",
+            "Date": "2022-08-01",
+            "Month": "30",
+            "CumulModel": "258882.355419379",
+            "Individual": "14489.7813818162",
+            "MonthActual": "5788.22",
+            "CumulActual": "154221.9"
+        },
+        {
+            "Period": "202209",
+            "Date": "2022-09-01",
+            "Month": "31",
+            "CumulModel": "273521.35279947",
+            "Individual": "14638.9973800914",
+            "MonthActual": "11361.26",
+            "CumulActual": "165583.16"
+        },
+        {
+            "Period": "202210",
+            "Date": "2022-10-01",
+            "Month": "32",
+            "CumulModel": "288280.085185309",
+            "Individual": "14758.7323858394",
+            "MonthActual": "8707.08",
+            "CumulActual": "174290.24"
+        },
+        {
+            "Period": "202211",
+            "Date": "2022-11-01",
+            "Month": "33",
+            "CumulModel": "303128.830454002",
+            "Individual": "14848.745268693",
+            "MonthActual": "7096.43",
+            "CumulActual": "181386.67"
+        },
+        {
+            "Period": "202212",
+            "Date": "2022-12-01",
+            "Month": "34",
+            "CumulModel": "318037.685208688",
+            "Individual": "14908.8547546857",
+            "MonthActual": "6301.31",
+            "CumulActual": "187687.98"
+        },
+        {
+            "Period": "202301",
+            "Date": "2023-01-01",
+            "Month": "35",
+            "CumulModel": "332976.625",
+            "Individual": "14938.939791312",
+            "MonthActual": "3349.94",
+            "CumulActual": "191037.92"
+        },
+        {
+            "Period": "202302",
+            "Date": "2023-02-01",
+            "Month": "36",
+            "CumulModel": "347915.564791312",
+            "Individual": "14938.939791312",
+            "MonthActual": "6519.24",
+            "CumulActual": "197557.16"
+        },
+        {
+            "Period": "202303",
+            "Date": "2023-03-01",
+            "Month": "37",
+            "CumulModel": "362824.419545998",
+            "Individual": "14908.8547546858",
+            "MonthActual": "6559.72",
+            "CumulActual": "204116.88"
+        },
+        {
+            "Period": "202304",
+            "Date": "2023-04-01",
+            "Month": "38",
+            "CumulModel": "377673.164814691",
+            "Individual": "14848.745268693",
+            "MonthActual": "6163.29",
+            "CumulActual": "210280.17"
+        },
+        {
+            "Period": "202305",
+            "Date": "2023-05-01",
+            "Month": "39",
+            "CumulModel": "392431.89720053",
+            "Individual": "14758.7323858394",
+            "MonthActual": "10290.08",
+            "CumulActual": "220570.25"
+        },
+        {
+            "Period": "202306",
+            "Date": "2023-06-01",
+            "Month": "40",
+            "CumulModel": "407070.894580621",
+            "Individual": "14638.9973800913",
+            "MonthActual": "8394.61",
+            "CumulActual": "228964.86"
+        },
+        {
+            "Period": "202307",
+            "Date": "2023-07-01",
+            "Month": "41",
+            "CumulModel": "421560.675962438",
+            "Individual": "14489.7813818163",
+            "MonthActual": "0",
+            "CumulActual": "NULL"
+        },
+        {
+            "Period": "202308",
+            "Date": "2023-08-01",
+            "Month": "42",
+            "CumulModel": "435872.060854614",
+            "Individual": "14311.3848921763",
+            "MonthActual": "0",
+            "CumulActual": "NULL"
+        },
+        {
+            "Period": "202309",
+            "Date": "2023-09-01",
+            "Month": "43",
+            "CumulModel": "449976.228032574",
+            "Individual": "14104.1671779602",
+            "MonthActual": "0",
+            "CumulActual": "NULL"
+        },
+        {
+            "Period": "202310",
+            "Date": "2023-10-01",
+            "Month": "44",
+            "CumulModel": "463844.773580642",
+            "Individual": "13868.5455480675",
+            "MonthActual": "0",
+            "CumulActual": "NULL"
+        },
+        {
+            "Period": "202311",
+            "Date": "2023-11-01",
+            "Month": "45",
+            "CumulModel": "477449.768093745",
+            "Individual": "13604.9945131033",
+            "MonthActual": "0",
+            "CumulActual": "NULL"
+        },
+        {
+            "Period": "202312",
+            "Date": "2023-12-01",
+            "Month": "46",
+            "CumulModel": "490763.812923523",
+            "Individual": "13314.0448297783",
+            "MonthActual": "0",
+            "CumulActual": "NULL"
+        },
+        {
+            "Period": "202401",
+            "Date": "2024-01-01",
+            "Month": "47",
+            "CumulModel": "503760.095355557",
+            "Individual": "12996.2824320341",
+            "MonthActual": "0",
+            "CumulActual": "NULL"
+        },
+        {
+            "Period": "202402",
+            "Date": "2024-02-01",
+            "Month": "48",
+            "CumulModel": "516412.442606609",
+            "Individual": "12652.3472510513",
+            "MonthActual": "0",
+            "CumulActual": "NULL"
+        },
+        {
+            "Period": "202403",
+            "Date": "2024-03-01",
+            "Month": "49",
+            "CumulModel": "528695.374533121",
+            "Individual": "12282.9319265125",
+            "MonthActual": "0",
+            "CumulActual": "NULL"
+        },
+        {
+            "Period": "202404",
+            "Date": "2024-04-01",
+            "Month": "50",
+            "CumulModel": "540584.15494484",
+            "Individual": "11888.7804117188",
+            "MonthActual": "0",
+            "CumulActual": "NULL"
+        },
+        {
+            "Period": "202405",
+            "Date": "2024-05-01",
+            "Month": "51",
+            "CumulModel": "552054.841420205",
+            "Individual": "11470.6864753655",
+            "MonthActual": "0",
+            "CumulActual": "NULL"
+        },
+        {
+            "Period": "202406",
+            "Date": "2024-06-01",
+            "Month": "52",
+            "CumulModel": "563084.333523206",
+            "Individual": "11029.4921030005",
+            "MonthActual": "0",
+            "CumulActual": "NULL"
+        },
+        {
+            "Period": "202407",
+            "Date": "2024-07-01",
+            "Month": "53",
+            "CumulModel": "573650.419324579",
+            "Individual": "10566.0858013734",
+            "MonthActual": "0",
+            "CumulActual": "NULL"
+        },
+        {
+            "Period": "202408",
+            "Date": "2024-08-01",
+            "Month": "54",
+            "CumulModel": "583731.820133685",
+            "Individual": "10081.4008091053",
+            "MonthActual": "0",
+            "CumulActual": "NULL"
+        },
+        {
+            "Period": "202409",
+            "Date": "2024-09-01",
+            "Month": "55",
+            "CumulModel": "593308.233350951",
+            "Individual": "9576.41321726667",
+            "MonthActual": "0",
+            "CumulActual": "NULL"
+        },
+        {
+            "Period": "202410",
+            "Date": "2024-10-01",
+            "Month": "56",
+            "CumulModel": "602360.373354614",
+            "Individual": "9052.14000366279",
+            "MonthActual": "0",
+            "CumulActual": "NULL"
+        },
+        {
+            "Period": "202411",
+            "Date": "2024-11-01",
+            "Month": "57",
+            "CumulModel": "610870.010339388",
+            "Individual": "8509.63698477414",
+            "MonthActual": "0",
+            "CumulActual": "NULL"
+        },
+        {
+            "Period": "202412",
+            "Date": "2024-12-01",
+            "Month": "58",
+            "CumulModel": "618820.007028871",
+            "Individual": "7949.99668948282",
+            "MonthActual": "0",
+            "CumulActual": "NULL"
+        },
+        {
+            "Period": "202501",
+            "Date": "2025-01-01",
+            "Month": "59",
+            "CumulModel": "626194.353187737",
+            "Individual": "7374.34615886561",
+            "MonthActual": "0",
+            "CumulActual": "NULL"
+        },
+        {
+            "Period": "202502",
+            "Date": "2025-02-01",
+            "Month": "60",
+            "CumulModel": "632978.197864218",
+            "Individual": "6783.84467648168",
+            "MonthActual": "0",
+            "CumulActual": "NULL"
+        },
+        {
+            "Period": "202503",
+            "Date": "2025-03-01",
+            "Month": "61",
+            "CumulModel": "639157.87929795",
+            "Individual": "6179.68143373134",
+            "MonthActual": "0",
+            "CumulActual": "NULL"
+        },
+        {
+            "Period": "202504",
+            "Date": "2025-04-01",
+            "Month": "62",
+            "CumulModel": "644720.952432931",
+            "Individual": "5563.07313498168",
+            "MonthActual": "0",
+            "CumulActual": "NULL"
+        },
+        {
+            "Period": "202505",
+            "Date": "2025-05-01",
+            "Month": "63",
+            "CumulModel": "649656.213980218",
+            "Individual": "4935.26154728653",
+            "MonthActual": "0",
+            "CumulActual": "NULL"
+        },
+        {
+            "Period": "202506",
+            "Date": "2025-06-01",
+            "Month": "64",
+            "CumulModel": "653953.72497985",
+            "Individual": "4297.51099963253",
+            "MonthActual": "0",
+            "CumulActual": "NULL"
+        },
+        {
+            "Period": "202507",
+            "Date": "2025-07-01",
+            "Month": "65",
+            "CumulModel": "657604.8308166",
+            "Individual": "3651.10583674966",
+            "MonthActual": "0",
+            "CumulActual": "NULL"
+        },
+        {
+            "Period": "202508",
+            "Date": "2025-08-01",
+            "Month": "66",
+            "CumulModel": "660602.17864921",
+            "Individual": "2997.34783261013",
+            "MonthActual": "0",
+            "CumulActual": "NULL"
+        },
+        {
+            "Period": "202509",
+            "Date": "2025-09-01",
+            "Month": "67",
+            "CumulModel": "662939.732218041",
+            "Individual": "2337.55356883071",
+            "MonthActual": "0",
+            "CumulActual": "NULL"
+        },
+        {
+            "Period": "202510",
+            "Date": "2025-10-01",
+            "Month": "68",
+            "CumulModel": "664612.784001293",
+            "Individual": "1673.05178325169",
+            "MonthActual": "0",
+            "CumulActual": "NULL"
+        },
+        {
+            "Period": "202511",
+            "Date": "2025-11-01",
+            "Month": "69",
+            "CumulModel": "665617.964695327",
+            "Individual": "1005.18069403491",
+            "MonthActual": "0",
+            "CumulActual": "NULL"
+        },
+        {
+            "Period": "202512",
+            "Date": "2025-12-01",
+            "Month": "70",
+            "CumulModel": "665953.25",
+            "Individual": "335.28530467255",
+            "MonthActual": "0",
+            "CumulActual": "0"
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+{
+    "results": [
+        {
+            "ID": "1",
+            "Text": "Basishonorarsatz",
+            "Ratio": 0
+        },
+        {
+            "ID": "2",
+            "Text": "Viertelsatz",
+            "Ratio": 25
+        },
+        {
+            "ID": "3",
+            "Text": "Mittelsatz",
+            "Ratio": 50
+        },
+        {
+            "ID": "4",
+            "Text": "Dreiviertelsatz",
+            "Ratio": 75
+        },
+        {
+            "ID": "5",
+            "Text": "Oberer Honorarsatz",
+            "Ratio": 100
+        }
+    ]
+}

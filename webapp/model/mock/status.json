@@ -1,0 +1,10 @@
+{
+    "results": [{
+        "Status": "Acquis"
+    },{
+        "Status": "Non acquis"
+    },{
+        "Status": "RÃ©clamÃ©"
+    }
+]
+}

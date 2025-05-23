@@ -1,0 +1,17 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout"
+    xmlns:table="sap.ui.table"
+    xmlns:smarttable="sap.ui.comp.smarttable" 
+    xmlns:f="sap.ui.layout.form">
+    <smarttable:SmartTable id="importVentilTab" entitySet="ZC_FGA_VENTIL" tableType="AnalyticalTable" enableAutoColumnWidth="true"
+        beforeRebindTable="onBeforeRebindTableVentil" >
+        <table:AnalyticalTable rowActionCount="1" selectionMode="None" class="syntheseTab sapUiSmallMargin">
+            <table:rowActionTemplate>
+                <table:RowAction >
+                    <table:RowActionItem icon="sap-icon://detail-view" press="onNavToJournalEntry" />
+                </table:RowAction>
+            </table:rowActionTemplate>
+        </table:AnalyticalTable>
+    </smarttable:SmartTable>
+</core:FragmentDefinition>

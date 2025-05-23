@@ -1,0 +1,15 @@
+<core:FragmentDefinition 
+    xmlns="sap.m" 
+    xmlns:f="sap.ui.layout.form" 
+    xmlns:l="sap.ui.layout" 
+    xmlns:core="sap.ui.core">
+    <Dialog id="successDialog" title="Erfolg">
+        <content>
+            <Text id="successMsg" text="{i18n>msg.so.create.ok} {salesOrder>/Vbeln}" class="sapUiSmallMargin"/>
+        </content>
+        <buttons>
+            <Button id="btnDispSO" text="{i18n>btn.displaySO}" type="Success" press="onDisplaySO" />
+            <Button id="btnOK" text="{i18n>btn.OK}" press="onCloseDialog" />
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>

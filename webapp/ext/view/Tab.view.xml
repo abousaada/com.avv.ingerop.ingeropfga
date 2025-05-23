@@ -1,0 +1,25 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
+	xmlns:html="http://www.w3.org/1999/xhtml" controllerName="com.avv.ingerop.ingeropfga.ext.controller.extendOP"
+    id="tab">
+	
+    <IconTabBar id="iconTabBar" class="custItb" select=".onTabSelect">
+        <items>
+            <IconTabFilter text="{i18n>synt.tab.synthese}">
+                <core:Fragment id="SyntheseTab" fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.SyntheseTab" type="XML" />
+            </IconTabFilter>
+            <IconTabFilter id="detailsTabFilter" text="{i18n>synt.tab.details}">
+                <core:Fragment id="detailsTab" fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.DetailsTab" type="XML" />
+            </IconTabFilter>
+            <IconTabFilter text="{i18n>synt.tab.budget}">
+                <core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.BudgetTab" type="XML" />
+            </IconTabFilter>
+            <IconTabFilter text="{i18n>synt.tab.prevision}">
+                <core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.PrevisionTab" type="XML" />
+            </IconTabFilter>
+            <IconTabFilter text="{i18n>synt.tab.RAF}">
+                <core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.RAFTab" type="XML" />
+            </IconTabFilter>
+        </items>
+    </IconTabBar>
+	
+</mvc:View>

@@ -1,0 +1,265 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core"  
+	xmlns:l="sap.ui.layout"
+    xmlns:table="sap.ui.table"
+	xmlns:f="sap.ui.layout.form">
+    <!--table:Table id="MOIncomeTab" visibleRowCount="26" visibleRowCountMode="Fixed" class="syntheseTab" rows="{budget>/results}" selectionMode="None" rowsUpdated="onRowsUpdatedBudgetTab" -->        
+    <table:TreeTable id="MOIncomeTab" visibleRowCount="26" visibleRowCountMode="Fixed" class="syntheseTab" 
+                     rows="{path: 'budget>/results', parameters: {arrayNames: ['children']}}" 
+                     selectionMode="None" rowsUpdated="onRowsUpdatedBudgetTab" 
+                     enableGrouping="true" collapseRecursive="false">        
+                     <table:extension>
+            <Toolbar class="sapMTBHeader-CTX">
+                <ToolbarSpacer />
+                <Button text="{i18n>btn.openMOProfile}" press="onBtnOpenMOProfilePress" type="Emphasized" />
+            </Toolbar>
+        </table:extension>
+        <table:rowSettingsTemplate>
+            <table:RowSettings highlight="{= ${budget>Status} === 'Non acquis' ? 'Error' : 'None'}" />
+        </table:rowSettingsTemplate>
+        <table:columns>
+            <table:Column width="10rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.mission}" />
+				</table:multiLabels>
+                <table:template>
+                    <Text text="{budget>Mission}" />
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.missionName}" />
+				</table:multiLabels>
+                <table:template>
+                    <Text text="{budget>MissionName}" />
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.startDate}" />
+				</table:multiLabels>
+                <table:template>
+                    <Text text="{budget>StartDate}" />
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.endDate}" />
+				</table:multiLabels>
+                <table:template>
+                    <Text text="{budget>EndDate}" />
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.nbOfMonth}" />
+				</table:multiLabels>
+                <table:template>
+                    <Text text="{path: 'budget>NbOfMonth', formatter: '.formatNumber'}" />
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="{i18n>budget.profile}" />
+                    <Label text="{i18n>budget.dailyRate}" />
+                    <Label text="{i18n>budget.cumulN}" />
+				</table:multiLabels>
+                <table:template>
+                    <VBox>
+                        <Input change="onChangeBudget" textAlign="End" value="{path: 'budget>CumulN', formatter: '.formatNumber'}" 
+                        visible="{= ${budget>children}.length === 0 }" />
+                        <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>CumulN}) &lt; 0 ? 'Error': 'None'}" text="{path: 'budget>CumulN', formatter: '.formatNumber'}" visible="{= !!${budget>Type}}" />
+                    </VBox>
+                </table:template>
+            </table:Column>
+            <table:Column headerSpan="10">
+                <table:multiLabels>
+                    <Label text="{i18n>budget.yetToComeDay}" />
+                    <Label text="{moProfile>/Profile1ID}" />
+                    <Label text="{moProfile>/Profile1Rate}" />
+                    <Label text="{moProfile>/Profile1Name}" />
+				</table:multiLabels>
+                <table:template>
+                    <VBox>
+                        <Input change="onChangeBudget" textAlign="End" value="{path: 'budget>Profile1', formatter: '.formatNumber'}" visible="{= ${budget>children}.length === 0 }" />
+                        <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Profile1}) &lt; 0 ? 'Error': 'None'}" text="{path: 'budget>Profile1', formatter: '.formatNumber'}" visible="{= !!${budget>Type}}" />
+                    </VBox>
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="{i18n>budget.yetToComeDay}" />
+                    <Label text="{moProfile>/Profile2ID}" />
+                    <Label text="{moProfile>/Profile2Rate}" />
+                    <Label text="{moProfile>/Profile2Name}" />
+				</table:multiLabels>
+                <table:template>
+                    <VBox>
+                        <Input change="onChangeBudget" textAlign="End" value="{path: 'budget>Profile2', formatter: '.formatNumber'}" visible="{= ${budget>children}.length === 0 }" />
+                        <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Profile2}) &lt; 0 ? 'Error': 'None'}" text="{path: 'budget>Profile2', formatter: '.formatNumber'}" visible="{= !!${budget>Type}}" />
+                    </VBox>
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="{i18n>budget.yetToComeDay}" />
+                    <Label text="{moProfile>/Profile3ID}" />
+                    <Label text="{moProfile>/Profile3Rate}" />
+                    <Label text="{moProfile>/Profile3Name}" />
+				</table:multiLabels>
+                <table:template>
+                    <VBox>
+                        <Input change="onChangeBudget" textAlign="End" value="{path: 'budget>Profile3', formatter: '.formatNumber'}" visible="{= ${budget>children}.length === 0 }" />
+                        <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Profile3}) &lt; 0 ? 'Error': 'None'}" text="{path: 'budget>Profile3', formatter: '.formatNumber'}" visible="{= !!${budget>Type}}" />
+                    </VBox>
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="{i18n>budget.yetToComeDay}" />
+                    <Label text="{moProfile>/Profile4ID}" />
+                    <Label text="{moProfile>/Profile4Rate}" />
+                    <Label text="{moProfile>/Profile4Name}" />
+				</table:multiLabels>
+                <table:template>
+                    <VBox>
+                        <Input change="onChangeBudget" textAlign="End" value="{path: 'budget>Profile4', formatter: '.formatNumber'}" visible="{= ${budget>children}.length === 0 }" />
+                        <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Profile4}) &lt; 0 ? 'Error': 'None'}" text="{path: 'budget>Profile4', formatter: '.formatNumber'}" visible="{= !!${budget>Type}}" />
+                    </VBox>
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="{i18n>budget.yetToComeDay}" />
+                    <Label text="{moProfile>/Profile5ID}" />
+                    <Label text="{moProfile>/Profile5Rate}" />
+                    <Label text="{moProfile>/Profile5Name}" />
+				</table:multiLabels>
+                <table:template>
+                    <VBox>
+                        <Input change="onChangeBudget" textAlign="End" value="{path: 'budget>Profile5', formatter: '.formatNumber'}" visible="{= ${budget>children}.length === 0 }" />
+                        <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Profile5}) &lt; 0 ? 'Error': 'None'}" text="{path: 'budget>Profile5', formatter: '.formatNumber'}" visible="{= !!${budget>Type}}" />
+                    </VBox>
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="{i18n>budget.yetToComeDay}" />
+                    <Label text="{moProfile>/Profile6ID}" />
+                    <Label text="{moProfile>/Profile6Rate}" />
+                    <Label text="{moProfile>/Profile6Name}" />
+				</table:multiLabels>
+                <table:template>
+                    <VBox>
+                        <Input change="onChangeBudget" textAlign="End" value="{path: 'budget>Profile6', formatter: '.formatNumber'}" visible="{= ${budget>children}.length === 0 }" />
+                        <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Profile6}) &lt; 0 ? 'Error': 'None'}" text="{path: 'budget>Profile6', formatter: '.formatNumber'}" visible="{= !!${budget>Type}}" />
+                    </VBox>
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="{i18n>budget.yetToComeDay}" />
+                    <Label text="{moProfile>/Profile7ID}" />
+                    <Label text="{moProfile>/Profile7Rate}" />
+                    <Label text="{moProfile>/Profile7Name}" />
+				</table:multiLabels>
+                <table:template>
+                    <VBox>
+                        <Input change="onChangeBudget" textAlign="End" value="{path: 'budget>Profile7', formatter: '.formatNumber'}" visible="{= ${budget>children}.length === 0 }" />
+                        <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Profile7}) &lt; 0 ? 'Error': 'None'}" text="{path: 'budget>Profile7', formatter: '.formatNumber'}" visible="{= !!${budget>Type}}" />
+                    </VBox>
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="{i18n>budget.yetToComeDay}" />
+                    <Label text="{moProfile>/Profile8ID}" />
+                    <Label text="{moProfile>/Profile8Rate}" />
+                    <Label text="{moProfile>/Profile8Name}" />
+				</table:multiLabels>
+                <table:template>
+                    <VBox>
+                        <Input  change="onChangeBudget" textAlign="End" value="{path: 'budget>Profile8', formatter: '.formatNumber'}" visible="{= ${budget>children}.length === 0 }" />
+                        <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Profile8}) &lt; 0 ? 'Error': 'None'}" text="{path: 'budget>Profile8', formatter: '.formatNumber'}" visible="{= !!${budget>Type}}" />
+                    </VBox>
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="{i18n>budget.yetToComeDay}" />
+                    <Label text="{moProfile>/Profile9ID}" />
+                    <Label text="{moProfile>/Profile9Rate}" />
+                    <Label text="{moProfile>/Profile9Name}" />
+				</table:multiLabels>
+                <table:template>
+                    <VBox>
+                        <Input change="onChangeBudget" textAlign="End" value="{path: 'budget>Profile9', formatter: '.formatNumber'}" visible="{= ${budget>children}.length === 0 }" />
+                        <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Profile9}) &lt; 0 ? 'Error': 'None'}" text="{path: 'budget>Profile9', formatter: '.formatNumber'}" visible="{= !!${budget>Type}}" />
+                    </VBox>
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="{i18n>budget.yetToComeDay}" />
+                    <Label text="{moProfile>/Profile10ID}" />
+                    <Label text="{moProfile>/Profile10Rate}" />
+                    <Label text="{moProfile>/Profile10Name}" />
+				</table:multiLabels>
+                <table:template>
+                    <VBox>
+                        <Input change="onChangeBudget" textAlign="End" value="{path: 'budget>Profile10', formatter: '.formatNumber'}" visible="{= ${budget>children}.length === 0 }" />
+                        <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Profile10}) &lt; 0 ? 'Error': 'None'}" text="{path: 'budget>Profile10', formatter: '.formatNumber'}" visible="{= !!${budget>Type}}" />
+                    </VBox>
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                <Label text="{i18n>budget.moYetToCome}" />
+				</table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>MOYetToCome}) &lt; 0 ? 'Error': 'None'}" text="{path: 'budget>MOYetToCome', formatter: '.formatNumber'}" />
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.moForecast}" />
+				</table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>MOForecast}) &lt; 0 ? 'Error': 'None'}" text="{path: 'budget>MOForecast', formatter: '.formatNumber'}" />
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                <Label text="{i18n>budget.invComment}" />
+				</table:multiLabels>
+                <table:template>
+                    <Text text="{budget>MOComment}" />
+                </table:template>
+            </table:Column>
+        </table:columns>
+    </table:TreeTable>
+</core:FragmentDefinition>

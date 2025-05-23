@@ -1,0 +1,66 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:l="sap.ui.layout"
+    xmlns:core="sap.ui.core">
+
+    <VBox class="sapUiSmallMargin">
+        <f:Form id="ResultForm2" class="customForm" editable="false">
+            <f:title>
+                <core:Title text="{i18n>result.tab2.title}" />
+            </f:title>
+            <f:layout>
+                <f:ResponsiveGridLayout labelSpanXL="8" labelSpanL="8" labelSpanM="6" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false" />
+            </f:layout>
+            <f:formContainers>
+                <f:FormContainer>
+                    <f:formElements>
+                        <f:FormElement label="{i18n>result.tab2.un}">
+                            <f:fields>
+                                <Text id="HighestValue" text="{path: 'FormData>/HOAI_2021/Interpolation/TarifBase', formatter: '.formatter.formatCurrency'}&#x20AC;"/>
+                                <Text text="(a)"/>
+                            </f:fields>
+                        </f:FormElement>
+                        <f:FormElement label="{i18n>result.tab2.b}">
+                            <f:fields>
+                                <Text id="BaseRate" text="{path: 'FormData>/HOAI_2021/Interpolation/TarifBaseMin', formatter: '.formatter.formatCurrency'}&#x20AC;"/>
+                                <Text text="(b)"/>
+                            </f:fields>
+                        </f:FormElement>
+                        <f:FormElement label="{i18n>result.tab2.c}">
+                            <f:fields>
+                                <Text id="HigherRate" text="{path: 'FormData>/HOAI_2021/Interpolation/TarifBaseMax', formatter: '.formatter.formatCurrency'}&#x20AC;"/>
+                                <Text text="(c)"/>
+                            </f:fields>
+                        </f:FormElement>
+                        <f:FormElement label="{i18n>result.tab2.aaa}">
+                            <f:fields>
+                                <Text id="aaa" text="{path: 'FormData>/HOAI_2021/Interpolation/TarifSup', formatter: '.formatter.formatCurrency'}â‚¬" />
+                                <Text text="(aa)"/>
+                            </f:fields>
+                        </f:FormElement>
+                        <f:FormElement label="{i18n>result.tab2.bb}">
+                            <f:fields>
+                                <Text id="bb" text="{path: 'FormData>/HOAI_2021/Interpolation/TarifSupMin', formatter: '.formatter.formatCurrency'}&#x20AC;"/>
+                                <Text text="(bb)"/>
+                            </f:fields>
+                        </f:FormElement>
+                        <f:FormElement label="{i18n>result.tab2.cc}">
+                            <f:fields>
+                                <Text id="cc" text="{path: 'FormData>/HOAI_2021/Interpolation/TarifSupMax', formatter: '.formatter.formatCurrency'}&#x20AC;"/>
+                                <Text text="(cc)"/>
+                            </f:fields>
+                        </f:FormElement>
+                    </f:formElements>
+                </f:FormContainer>
+            </f:formContainers>
+        </f:Form>
+    </VBox>
+
+    <VBox alignItems="Center">
+        <Text text="{i18n>result.formula1.title}" class="sapUiSmallMarginBottom" />
+        <Text text="{i18n>result.formula1.text}" class="sapUiSmallMarginBottom" />
+
+        <Text text="{i18n>result.formula2.title}" class="sapUiSmallMarginBottom" />
+        <Text text="{i18n>result.formula2.text}" class="sapUiSmallMarginBottom" />
+    </VBox>
+</core:FragmentDefinition>

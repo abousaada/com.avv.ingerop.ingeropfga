@@ -1,0 +1,108 @@
+{
+    "results": [
+    {
+    "ID": "CA",
+    "Description": "Turnover",
+    "Kind": "",
+    "P0": "1000",
+    "CumulN1": "210905.91",
+    "CumulN": "269300.769",
+    "YearN": "58394,85898",
+    "MonthM": "6168,832755",
+    "YetToCome": "1049415,931",
+    "Forecast": "1318716.7",
+    "CumulM1": "263131.9362"
+    },
+    {
+    "ID": "FAC",
+    "Description": "Billing",
+    "Kind": "",
+    "P0": "1000",
+    "CumulN1": "717199.83",
+    "CumulN": "768516.01",
+    "YearN": "51316.18",
+    "MonthM": "17880.72",
+    "YetToCome": "550200.69",
+    "Forecast": "1318716.7",
+    "CumulM1": "750635.29"
+    },
+    {
+    "ID": "AJU",
+    "Description": "Adjustment",
+    "Kind": "",
+    "P0": "",
+    "CumulN1": "-506293.92",
+    "CumulN": "-499215,241",
+    "YearN": "7078,678976",
+    "MonthM":"-11711.88724",
+    "YetToCome": "",
+    "Forecast": "0",
+    "CumulM1": "-487503.3538"
+    },
+    {
+    "ID": "CHR",
+    "Description": "Expenses",
+    "Kind": "",
+    "P0": "1000",
+    "CumulN1": "196132.95",
+    "CumulN": "253070.17",
+    "YearN": "56937.22",
+    "MonthM": "8394.61",
+    "YetToCome": "986168.25",
+    "Forecast": "1239238.42",
+    "CumulM1": "244675.56"
+    },
+    {
+    "ID": "PAR",
+    "Description": "PAT",
+    "Kind": "",
+    "P0": "",
+    "CumulN1": "0",
+    "CumulN": "0",
+    "YearN": "0",
+    "MonthM": "0",
+    "YetToCome": "0",
+    "Forecast": "",
+    "CumulM1": "0"
+    },
+    {
+    "ID": "RBA",
+    "Description": "RBA",
+    "Kind": "",
+    "P0": "0",
+    "CumulN1": "14772.96",
+    "CumulN": "16230.59898",
+    "YearN": "1457.638976",
+    "MonthM":"-2225.777245",
+    "YetToCome": "63247,68102",
+    "Forecast": "79478.28",
+    "CumulM1": "18456,37622"
+    },
+    {
+    "ID": "RBAP",
+    "Description": "RBA (%)",
+    "Type": "P",
+    "P0": "0",
+    "CumulN1": "0.070045263",
+    "CumulN": "0.060269412",
+    "YearN": "0.024961769",
+    "MonthM": "-0.360810113",
+    "YetToCome": "0.060269412",
+    "Forecast": "0.060269412",
+    "CumulM1": "0.070141149"
+    },
+    {
+    "ID": "AP",
+    "Description": "Progress (%)",
+    "Type": "P",
+    "P0": "",
+    "CumulN1": "0.15825262",
+    "CumulN": "0.204214271",
+    "YearN": "0.04596165",
+    "MonthM": "0.006774007",
+    "YetToCome": "",
+    "Forecast": "1",
+    "CumulM1": "0.197440263"
+    }
+    ]
+   }

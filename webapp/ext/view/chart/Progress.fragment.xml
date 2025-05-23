@@ -1,0 +1,48 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:viz="sap.viz.ui5.controls" xmlns:layout="sap.ui.layout" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+    xmlns:viz.data="sap.viz.ui5.data" height="100%">
+<layout:FixFlex minFlexSize="400">
+        <!--Below is the setting panel -->
+        <layout:fixContent>
+        </layout:fixContent>
+        <layout:flexContent>
+            <viz:VizFrame uiConfig="{applicationSet:'fiori'}" vizProperties="{
+                    plotArea: {
+                        dataLabel: {
+                            visible: true
+                        },
+                        colorPalette:['#333399','#CCCCFF']
+                        
+                    },
+                    title: {
+                        visible: true,
+                        text: 'Advancement'
+                    }
+                }"
+                height='100%' width="100%" vizType='100_stacked_bar'>
+                <viz:dataset>
+                    <viz.data:FlattenedDataset data="{progress>/results}">
+                        <viz.data:dimensions>
+                            <viz.data:DimensionDefinition name="Categorie"
+                                value="{progress>Desc}" />
+                            <viz.data:DimensionDefinition name="Type"
+                                value="{progress>TypeDesc}" />
+                        </viz.data:dimensions>
+                        <viz.data:measures>
+                            <viz.data:MeasureDefinition name="Valeur"
+                                value="{progress>Value}" />
+                        </viz.data:measures>
+                    </viz.data:FlattenedDataset>
+                </viz:dataset>
+
+                <viz:feeds>
+                    <viz.feeds:FeedItem uid="valueAxis" type="Measure"
+                        values="Valeur" />
+                    <viz.feeds:FeedItem uid="categoryAxis" type="Dimension"
+                        values="Categorie" />
+                    <viz.feeds:FeedItem uid="color" type="Dimension"
+                        values="Type" />
+                </viz:feeds>
+            </viz:VizFrame>
+        </layout:flexContent>
+    </layout:FixFlex>
+</core:FragmentDefinition>

@@ -1,0 +1,56 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:table="sap.ui.table">
+    <Dialog showHeader="false">
+        <table:Table rows="{profileList>/results}">
+            <table:extension>
+                <Toolbar class="sapMTBHeader-CTX">
+                    <Title text="{i18n>btn.openSCProfile}"></Title>
+                    <ToolbarSpacer/>
+                    <Button icon="sap-icon://add" press="onBtnAddProfilePress" type="Emphasized" />
+                </Toolbar>
+            </table:extension>
+            <table:columns>
+                <table:Column width="10rem">
+                    <Label text="ID"></Label>
+                    <table:template>
+                        <Input value="{profileList>ProfileID}" />
+                    </table:template>
+                </table:Column>
+                <table:Column >
+                    <Label text="Nom"></Label>
+                    <table:template>
+                        <Input value="{profileList>ProfileName}" />
+                    </table:template>
+                </table:Column>
+                <table:Column width="10rem" visible="{= ${profileList>/type} !== 'MO' }">
+                    <Label text="Type"></Label>
+                    <table:template>
+                        <VBox>
+                            <Select visible="{= ${profileList>/type} === 'SC' }" selectedKey="{profileList>ProfileType}">
+                                <items>
+                                    <core:Item key="Externe" text="Externe"/>
+                                    <core:Item key="Interne" text="Interne"/>
+                                </items>
+                            </Select>
+                            <Select visible="{= ${profileList>/type} === 'ST' }" selectedKey="{profileList>ProfileType}">
+                                <items>
+                                    <core:Item key="Inter UFO" text="Inter UFO"/>
+                                    <core:Item key="Intra UFO" text="Intra UFO"/>
+                                </items>
+                            </Select>
+                        </VBox>
+                    </table:template>
+                </table:Column>
+                <table:Column width="10rem">
+                    <Label text="Rate"></Label>
+                    <table:template>
+                        <Input value="{profileList>ProfileRate}" />
+                    </table:template>
+                </table:Column>
+            </table:columns>
+        </table:Table>
+        <buttons>
+            <Button text="{i18n>btn.confirm}" press="onBtnProfileConfirmPressed" type="Emphasized" />
+            <Button text="{i18n>btn.cancel}" press="onBtnCancelPressed" />
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>

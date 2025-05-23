@@ -1,0 +1,19 @@
+<core:FragmentDefinition 
+    xmlns="sap.m" 
+    xmlns:f="sap.ui.layout.form" 
+    xmlns:l="sap.ui.layout" 
+    xmlns:core="sap.ui.core">
+    <Panel expandable="true" expanded="{settings>/showForm}" headerText="HOAI 2021" class="customHeaderTitle">
+      <core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.hoai.form.FormHeader" type="XML" />
+      <core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.hoai.form.FormOptions" type="XML" />
+      <core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.hoai.form.FormCostTab" type="XML" />
+      <core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.hoai.form.FormRealizePhaseTab" type="XML" /> 
+      <FlexBox
+          alignItems="Center"
+          justifyContent="Center">
+        <items>
+          <Button type="Emphasized" press=".onCalculate" text="{i18n>form.btn.calc}" width="100%" />
+        </items>
+      </FlexBox>
+    </Panel>
+</core:FragmentDefinition>

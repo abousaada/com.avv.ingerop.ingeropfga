@@ -1,0 +1,378 @@
+{
+  "_version": "1.60.0",
+  "sap.app": {
+    "id": "com.avv.ingerop.ingeropfga",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.3"
+    },
+    "title": "FGA",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:lrop",
+      "version": "1.16.5",
+      "toolsId": "bde04f5b-7939-48f5-b49b-a15d1c095456"
+    },
+    "dataSources": {
+      "ZFGA_ANNO_MDL": {
+        "uri": "/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Annotations(TechnicalName='ZFGA_ANNO_MDL',Version='0001')/$value/",
+        "type": "ODataAnnotation",
+        "settings": {
+          "localUri": "localService/mainService/ZFGA_ANNO_MDL.xml"
+        }
+      },
+      "annotation": {
+        "type": "ODataAnnotation",
+        "uri": "annotations/annotation.xml",
+        "settings": {
+          "localUri": "annotations/annotation.xml"
+        }
+      },
+      "mainService": {
+        "uri": "/sap/opu/odata/sap/ZFGA_SRV/",
+        "type": "OData",
+        "settings": {
+          "annotations": [
+            "ZFGA_ANNO_MDL",
+            "annotation"
+          ],
+          "localUri": "localService/mainService/metadata.xml",
+          "odataVersion": "2.0"
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": false,
+    "dependencies": {
+      "minUI5Version": "1.120.0",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.ushell": {},
+        "sap.f": {},
+        "sap.ui.comp": {},
+        "sap.ui.generic.app": {},
+        "sap.suite.ui.generic.template": {},
+        "sap.ui.fl": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "com.avv.ingerop.ingeropfga.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "defaultBindingMode": "TwoWay",
+          "defaultCountMode": "Inline",
+          "refreshAfterChange": false,
+          "metadataUrlParams": {
+            "sap-value-list": "none"
+          }
+        }
+      },
+      "@i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "uri": "i18n/i18n.properties"
+      },
+      "list": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock/list.json",
+        "preload": true
+      },
+      "listLine": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock/listLine.json",
+        "preload": true
+      },
+      "synthesis": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock/synthesis.json",
+        "preload": true
+      },
+      "syntPeriod": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock/syntPeriod.json",
+        "preload": true
+      },
+      "budget": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock/budget.json",
+        "preload": true
+      },
+      "budgetTabSettings": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock/budgetTabSettings.json",
+        "preload": true
+      },
+      "profile": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock/profile.json",
+        "preload": true
+      },
+      "profileList": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock/profileList.json",
+        "preload": true
+      },
+      "moProfile": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock/moProfile.json",
+        "preload": true
+      },
+      "scProfile": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock/scProfile.json",
+        "preload": true
+      },
+      "stProfile": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock/stProfile.json",
+        "preload": true
+      },
+      "prevProfile": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock/prevProfile.json",
+        "preload": true
+      },
+      "importCompta": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock/importCompta.json",
+        "preload": true
+      },
+      "importVentil": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock/importVentil.json",
+        "preload": true
+      },
+      "recap": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock/recap.json",
+        "preload": true
+      },
+      "progress": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock/progress.json",
+        "preload": true
+      },
+      "rbaEvol": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock/rbaEvol.json",
+        "preload": true
+      },
+      "moModelization": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock/moModelization.json",
+        "preload": true
+      },
+      "status": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock/status.json",
+        "preload": true
+      },
+      "prevision": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock/prevision.json",
+        "preload": true
+      },
+      "rafList": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock/rafList.json",
+        "preload": true
+      },
+      "rafDetail": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock/rafDetail.json",
+        "preload": true
+      },
+      "settings": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock/settings.json",
+        "preload": true
+      },
+      "column": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock/column.json",
+        "preload": true
+      },
+      "FormData": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock/FormData.json",
+        "preload": true
+      },
+      "FormDataFix": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock/FormDataFix.json",
+        "preload": true
+      },
+      "salesOrder": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock/SalesOrder.json",
+        "preload": true
+      },
+      "type": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock/Type.json",
+        "preload": true
+      },
+      "law": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock/Law.json",
+        "preload": true
+      },
+      "zone": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock/Zone.json",
+        "preload": true
+      },
+      "tarif": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock/Tarif.json",
+        "preload": true
+      },
+      "tarifByCost": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock/TarifByCost.json",
+        "preload": true
+      },
+      "defaultPhaseRate": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock/DefaultPhaseRate.json",
+        "preload": true
+      },
+      "json": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock/stiItems.json",
+        "preload": true
+      },
+      "TvaListModel": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock/TvaList.json",
+        "preload": true
+      }
+    },
+    "resources": {
+      "css": []
+    },
+    "routing": {
+      "config": {
+        "async": true
+      },
+      "routes": [],
+      "targets": {}
+    },
+    "extends": {
+      "extensions": {
+        "sap.ui.controllerExtensions": {
+          "sap.suite.ui.generic.template.ListReport.view.ListReport": {
+            "controllerName": "com.avv.ingerop.ingeropfga.ext.controller.extendLR"
+          },
+          "sap.suite.ui.generic.template.ObjectPage.view.Details": {
+            "controllerName": "com.avv.ingerop.ingeropfga.ext.controller.extendOP"
+          }
+        },
+        "sap.ui.viewExtensions": {
+          "sap.suite.ui.generic.template.ObjectPage.view.Details": {
+            "AfterFacet|ZC_FGASet|TableInfo": {
+              "className": "sap.ui.core.mvc.View",
+              "viewName": "com.avv.ingerop.ingeropfga.ext.view.Tab",
+              "type": "XML",
+              "sap.ui.generic.app": {
+                "title": "Budgets"
+              }
+            },
+            "AfterFacet|ZC_FGASet|GeneralInfo": {
+              "className": "sap.ui.core.mvc.View",
+              "viewName": "com.avv.ingerop.ingeropfga.ext.view.Recap",
+              "type": "XML",
+              "sap.ui.generic.app": {
+                "title": "Summary Table"
+              }
+            },
+            "AfterFacet|ZC_FGASet|GeneralInfo|1": {
+              "className": "sap.ui.core.mvc.View",
+              "viewName": "com.avv.ingerop.ingeropfga.ext.view.ChartInfos",
+              "type": "XML",
+              "sap.ui.generic.app": {
+                "title": "Graphics"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "sap.ui.generic.app": {
+    "_version": "1.3.0",
+    "settings": {
+      "forceGlobalRefresh": false,
+      "objectPageHeaderType": "Dynamic",
+      "considerAnalyticalParameters": true,
+      "showDraftToggle": false
+    },
+    "pages": {
+      "ListReport|ZC_FGASet": {
+        "entitySet": "ZC_FGASet",
+        "component": {
+          "name": "sap.suite.ui.generic.template.ListReport",
+          "list": true,
+          "settings": {
+            "condensedTableLayout": true,
+            "smartVariantManagement": true,
+            "enableTableFilterInPageVariant": true,
+            "filterSettings": {
+              "dateSettings": {
+                "useDateRange": true
+              }
+            },
+            "tableSettings": {
+              "type": "AnalyticalTable"
+            },
+            "dataLoadSettings": {
+              "loadDataOnAppLaunch": "always"
+            }
+          }
+        },
+        "pages": {
+          "ObjectPage|ZC_FGASet": {
+            "entitySet": "ZC_FGASet",
+            "defaultLayoutTypeIfExternalNavigation": "MidColumnFullScreen",
+            "component": {
+              "name": "sap.suite.ui.generic.template.ObjectPage"
+            }
+          }
+        }
+      }
+    }
+  },
+  "sap.fiori": {
+    "registrationIds": [],
+    "archeType": "transactional"
+  }
+}

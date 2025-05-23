@@ -1,0 +1,55 @@
+{
+        "HOAI_2021": {
+          "SalesOrder": "",
+          "Customer": "1000010",
+          "WBSElement": "",
+          "Version": "H2021",
+          "Law": "1",
+          "Cost": "25000",
+          "Zone": "I",
+          "TarifType": "Basishonorarsatz",
+          "DeliveryService": "100% =",
+          "NetCost": "3120",
+          "VATValue": "592.80",
+          "VATPercent":"19",
+          "BrutCost": "3712.80",
+          "Interpolation": {
+            "TarifBase": "0,00â‚¬",
+            "TarifBaseMin": "0,00â‚¬",
+            "TarifBaseMax": "0,00â‚¬",
+            "TarifSup": "25.000,00â‚¬",
+            "TarifSupMin": "3.120,00â‚¬",
+            "TarifMax": "3.657,00â‚¬"
+          },
+          "Result": {
+            "Base": "3.120,00â‚¬",
+            "OneQuarter": "3.254,25â‚¬",
+            "TwoQuarter": "3.388,50â‚¬",
+            "ThreeQuarter": "3.522,75â‚¬",
+            "Sup": "3.657,00â‚¬"
+          },
+          "Realize": {
+            "p1%": "2",
+            "p2%": "7",
+            "p3%": "15",
+            "p4%": "3",
+            "p5%": "25",
+            "p6%": "10",
+            "p7%": "4",
+            "p8%": "32",
+            "p9%": "2",
+            "Total%": "100",
+            "p1â‚¬": "62,40",
+            "p2â‚¬": "218,40",
+            "p3â‚¬": "468,00",
+            "p4â‚¬": "93,60",
+            "p5â‚¬": "780,00",
+            "p6â‚¬": "312,00",
+            "p7â‚¬": "124,80",
+            "p8â‚¬": "998,40",
+            "p9â‚¬": "62,40",
+            "Totalâ‚¬": "3.120,00â‚¬"
+          }
+        }
+      
+}

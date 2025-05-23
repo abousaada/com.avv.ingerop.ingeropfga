@@ -1,0 +1,258 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout"
+    xmlns:table="sap.ui.table"
+    xmlns:f="sap.ui.layout.form">
+    <!--table:Table id="INVIncomeTab" visibleRowCount="26" visibleRowCountMode="Fixed" class="syntheseTab" rows="{budget>/results}" selectionMode="None" rowsUpdated="onRowsUpdatedBudgetTab" -->
+    <table:TreeTable id="INVIncomeTab" visibleRowCount="26" visibleRowCountMode="Fixed" class="syntheseTab" 
+                     rows="{path: 'budget>/results', parameters: {arrayNames: ['children']}}" 
+                     selectionMode="None" rowsUpdated="onRowsUpdatedBudgetTab" 
+                     enableGrouping="true" collapseRecursive="false">     
+        <table:extension>
+            <Toolbar class="sapMTBHeader-CTX">
+                <ToolbarSpacer />
+            </Toolbar>
+        </table:extension>
+        <table:rowSettingsTemplate>
+            <table:RowSettings highlight="{= ${budget>Status} === 'Non acquis' ? 'Error' : ( ${budget>Status} === 'RÃ©clamÃ©' ? 'Warning' : 'None')}" />
+        </table:rowSettingsTemplate>
+        <table:columns>
+            <table:Column width="10rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="{i18n>budget.mission}" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{budget>Mission}" />
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="{i18n>budget.missionName}" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{budget>MissionName}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="{i18n>budget.status}" />
+                </table:multiLabels>
+                <table:template>
+                    <Select items="{status>/results}" selectedKey="{budget>Status}" visible="{= ${budget>children}.length === 0 }">
+                        <core:Item key="{status>Status}" text="{status>Status}" />
+                    </Select>
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="{i18n>budget.amount}" />
+                </table:multiLabels>
+                <table:template>
+                    <VBox>
+                        <!--Input change="onChangeBudget" textAlign="End" value="{path: 'budget>Amount', formatter: '.formatNumber'}" 
+                        visible="{= ${budget>children}.length === 0 }" /-->
+                        <!--ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Amount}) &lt; 0 ? 'Error': 'None'}" text="{path: 'budget>Amount', formatter: '.formatNumber' }" visible="{= !!${budget>Type}}" /-->
+                    
+            <Text text="{path: 'FormData>/HOAI_2021/Realize/p1â‚¬', formatter: '.formatter.formatCurrency'}" 
+                  visible="{= ${budget>Mission} === '1. Preliminary Investigation'}" />
+            <Text text="{path: 'FormData>/HOAI_2021/Realize/p2â‚¬', formatter: '.formatter.formatCurrency'}" 
+                  visible="{= ${budget>Mission} === '2. Preliminary Planning'}" />
+            <Text text="{path: 'FormData>/HOAI_2021/Realize/p3â‚¬', formatter: '.formatter.formatCurrency'}" 
+                  visible="{= ${budget>Mission} === '3. Design Planning'}" />
+            <Text text="{path: 'FormData>/HOAI_2021/Realize/p4â‚¬', formatter: '.formatter.formatCurrency'}" 
+                  visible="{= ${budget>Mission} === '4. Approval Planning'}" />
+            <Text text="{path: 'FormData>/HOAI_2021/Realize/p5â‚¬', formatter: '.formatter.formatCurrency'}" 
+                  visible="{= ${budget>Mission} === '5. Execution Planning'}" />
+            <Text text="{path: 'FormData>/HOAI_2021/Realize/p6â‚¬', formatter: '.formatter.formatCurrency'}" 
+                  visible="{= ${budget>Mission} === '6. Preparation of Tender'}" />
+            <Text text="{path: 'FormData>/HOAI_2021/Realize/p7â‚¬', formatter: '.formatter.formatCurrency'}" 
+                  visible="{= ${budget>Mission} === '7. Participation in Tender'}" />
+            <Text text="{path: 'FormData>/HOAI_2021/Realize/p8â‚¬', formatter: '.formatter.formatCurrency'}" 
+                  visible="{= ${budget>Mission} === '8. Construction Supervision and Documentation'}" />
+            <Text text="{path: 'FormData>/HOAI_2021/Realize/p9â‚¬', formatter: '.formatter.formatCurrency'}" 
+                  visible="{= ${budget>Mission} === '9. Project Management'}" />
+            
+            <!-- For all other cases - keep original Input field -->
+            <Input change="onChangeBudget" 
+                   textAlign="End" 
+                   value="{path: 'budget>Amount', formatter: '.formatNumber'}" 
+                   visible="{= 
+                ${budget>Mission} !== 'Order 4000007' &amp;&amp;
+                ${budget>Mission} !== 'Grouping 1' &amp;&amp;
+                ${budget>Mission} !== 'Grouping Hoai' &amp;&amp;
+                ${budget>Mission} !== '1. Preliminary Investigation' &amp;&amp;
+                ${budget>Mission} !== '2. Preliminary Planning' &amp;&amp;
+                ${budget>Mission} !== '3. Design Planning' &amp;&amp;
+                ${budget>Mission} !== '4. Approval Planning' &amp;&amp;
+                ${budget>Mission} !== '5. Execution Planning' &amp;&amp;
+                ${budget>Mission} !== '6. Preparation of Tender' &amp;&amp;
+                ${budget>Mission} !== '7. Participation in Tender' &amp;&amp;
+                ${budget>Mission} !== '8. Construction Supervision and Documentation' &amp;&amp;
+                ${budget>Mission} !== '9. Project Management'}" />
+            <!-- Replace with ${budget>children}.length === 0 not working now -->
+            
+            <ObjectStatus class="custObjStatus" 
+                         state="{= parseFloat(${budget>Amount}) &lt; 0 ? 'Error': 'None'}" 
+                         text="{path: 'budget>Amount', formatter: '.formatNumber'}" 
+                         visible="{= !!${budget>Type}}" />
+                    
+                    </VBox>
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="{i18n>budget.startDate}" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{budget>StartDate}" />
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="{i18n>budget.endDate}" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{budget>EndDate}" />
+                </table:template>
+            </table:Column>
+            <table:Column headerSpan="5">
+                <table:multiLabels>
+                    <Label text="{i18n>budget.invHeader1}" class="custHeadLbl" />
+                    <Label text="{i18n>budget.invExt}" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{path: 'budget>INVExt', formatter: '.formatNumber' }" />
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="{i18n>budget.invHeader1}" />
+                    <Label text="{i18n>budget.invOther}" />
+                </table:multiLabels>
+                <table:template>
+                    <VBox>
+                        <Input change="onChangeBudget" textAlign="End" value="{path: 'budget>INVOther', formatter: '.formatNumber'}" visible="{= ${budget>children}.length === 0 }" />
+                        <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>INVOther}) &lt; 0 ? 'Error': 'None'}" text="{path: 'budget>INVOther', formatter: '.formatNumber' }" visible="{= !!${budget>Type}}" />
+                    </VBox>
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="{i18n>budget.invHeader1}" />
+                    <Label text="{i18n>budget.invGrp}" />
+                </table:multiLabels>
+                <table:template>
+                    <VBox>
+                        <Input change="onChangeBudget" textAlign="End" value="{path: 'budget>INVGrp', formatter: '.formatNumber'}" visible="{= ${budget>children}.length === 0 }" />
+                        <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>INVGrp}) &lt; 0 ? 'Error': 'None'}" text="{path: 'budget>INVGrp', formatter: '.formatNumber' }" visible="{= !!${budget>Type}}" />
+                    </VBox>
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="{i18n>budget.invHeader1}" />
+                    <Label text="{i18n>budget.invInterUFO}" />
+                </table:multiLabels>
+                <table:template>
+                    <VBox>
+                        <Input change="onChangeBudget" textAlign="End" value="{path: 'budget>INVInterUFO', formatter: '.formatNumber'}" visible="{= ${budget>children}.length === 0 }" />
+                        <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>INVInterUFO}) &lt; 0 ? 'Error': 'None'}" text="{path: 'budget>INVInterUFO', formatter: '.formatNumber' }" visible="{= !!${budget>Type}}" />
+                    </VBox>
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="{i18n>budget.invHeader1}" />
+                    <Label text="{i18n>budget.invIntraUFO}" />
+                </table:multiLabels>
+                <table:template>
+                    <VBox>
+                        <Input change="onChangeBudget" textAlign="End" value="{path: 'budget>INVIntraUFO', formatter: '.formatNumber'}" visible="{= ${budget>children}.length === 0 }" />
+                        <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>INVIntraUFO}) &lt; 0 ? 'Error': 'None'}" text="{path: 'budget>INVIntraUFO', formatter: '.formatNumber' }" visible="{= !!${budget>Type}}" />
+                    </VBox>
+                </table:template>
+            </table:Column>
+            <table:Column headerSpan="3">
+                <table:multiLabels>
+                    <Label text="{i18n>budget.invHeader2}" />
+                    <Label text="{i18n>budget.invCumulCurr}" />
+                </table:multiLabels>
+                <table:template>
+                    <VBox>
+                        <Input change="onChangeBudget" textAlign="End" value="{path: 'budget>INVCumulCurr', formatter: '.formatNumber'}" visible="{= ${budget>children}.length === 0 }" />
+                        <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>INVCumulCurr}) &lt; 0 ? 'Error': 'None'}" text="{path: 'budget>INVCumulCurr', formatter: '.formatNumber' }" visible="{= !!${budget>Type}}" />
+                    </VBox>
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="{i18n>budget.invHeader2}" />
+                    <Label text="{i18n>budget.invCumulPerc}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>INVCumulPerc}) &lt; 0 ? 'Error': 'None'}" text="{path: 'budget>INVCumulPerc', formatter: '.formatPercent'}" />
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="{i18n>budget.invHeader2}" />
+                    <Label text="{i18n>budget.invYetToCome}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>INVYetToCome}) &lt; 0 ? 'Error': 'None'}" text="{path: 'budget>INVYetToCome', formatter: '.formatNumber'}" />
+                </table:template>
+            </table:Column>
+            <table:Column headerSpan="3">
+                <table:multiLabels>
+                    <Label text="{i18n>budget.invHeader3}" />
+                    <Label text="{i18n>budget.invContractInterUFO}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>INVContractInterUFO}) &lt; 0 ? 'Error': 'None'}" text="{path: 'budget>INVContractInterUFO', formatter: '.formatNumber'}" />
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="{i18n>budget.invHeader3}" />
+                    <Label text="{i18n>budget.invContractIntraUFO}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>INVContractIntraUFO}) &lt; 0 ? 'Error': 'None'}" text="{path: 'budget>INVContractIntraUFO', formatter: '.formatNumber'}" />
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="{i18n>budget.invHeader3}" />
+                    <Label text="{i18n>budget.invContractCoefST}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>INVContractCoefST}) &lt; 0 ? 'Error': 'None'}" text="{path: 'budget>INVContractCoefST', formatter: '.formatNumber'}" />
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="{i18n>budget.invForecast}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>INVForecast}) &lt; 0 ? 'Error': 'None'}" text="{path: 'budget>INVForecast', formatter: '.formatNumber'}" />
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="{i18n>budget.invComment}" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{budget>INVComment}" />
+                </table:template>
+            </table:Column>
+        </table:columns>
+    </table:TreeTable>
+</core:FragmentDefinition>

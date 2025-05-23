@@ -1,0 +1,114 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:l="sap.ui.layout"
+    xmlns:core="sap.ui.core">
+    
+		<VBox class="sapUiSmallMargin">
+			<f:Form id="ResultForm4" class="customFormReduce" editable="false">
+				<f:title>
+					<core:Title text="{i18n>form.realize.title}" />
+				</f:title>
+				<f:layout>
+					<f:ResponsiveGridLayout labelSpanXL="8" labelSpanL="8" labelSpanM="6" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false" />
+				</f:layout>
+				<f:formContainers>
+					<f:FormContainer>
+						<f:formElements>
+							<f:FormElement label="">
+								<f:fields>
+									<Text text="%"/>
+									<Text text="&#x20AC;"/>
+									<Text text="{i18n>form.header.otp}"/>
+									<Text text="{i18n>form.header.architect}"/>
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="{i18n>form.realize.p1}" visible="{FormData>/HOAI_2021/Realize/p1Visible}">
+								<f:fields>
+									<Text text="{FormData>/HOAI_2021/Realize/p1%}%">
+										<customData>
+											<core:CustomData key="checkPhase" value="{FormData>/HOAI_2021/Realize/p1Flag}" />
+										</customData>
+									</Text>
+									<Text text="{path: 'FormData>/HOAI_2021/Realize/p1â‚¬', formatter: '.formatter.formatCurrency'}&#x20AC;"/>
+									<Input />
+									<Input />
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="{i18n>form.realize.p2}" visible="{FormData>/HOAI_2021/Realize/p2Visible}">
+								<f:fields>
+									<Text text="{FormData>/HOAI_2021/Realize/p2%}%"/>
+									<Text text="{path: 'FormData>/HOAI_2021/Realize/p2â‚¬', formatter: '.formatter.formatCurrency'}&#x20AC;"/>
+									<Input />
+									<Input />
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="{i18n>form.realize.p3}" visible="{FormData>/HOAI_2021/Realize/p3Visible}">
+								<f:fields>
+									<Text text="{FormData>/HOAI_2021/Realize/p3%}%"/>
+									<Text text="{path: 'FormData>/HOAI_2021/Realize/p3â‚¬', formatter: '.formatter.formatCurrency'}&#x20AC;"/>
+									<Input />
+									<Input />
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="{i18n>form.realize.p4}" visible="{FormData>/HOAI_2021/Realize/p4Visible}">
+								<f:fields>
+									<Text text="{FormData>/HOAI_2021/Realize/p4%}%"/>
+									<Text text="{path: 'FormData>/HOAI_2021/Realize/p4â‚¬', formatter: '.formatter.formatCurrency'}&#x20AC;"/>
+									<Input />
+									<Input />
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="{i18n>form.realize.p5}" visible="{FormData>/HOAI_2021/Realize/p5Visible}">
+								<f:fields>
+									<Text text="{FormData>/HOAI_2021/Realize/p5%}%"/>
+									<Text text="{path: 'FormData>/HOAI_2021/Realize/p5â‚¬', formatter: '.formatter.formatCurrency'}&#x20AC;"/>
+									<Input />
+									<Input />
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="{i18n>form.realize.p6}" visible="{FormData>/HOAI_2021/Realize/p6Visible}">
+								<f:fields>
+									<Text text="{FormData>/HOAI_2021/Realize/p6%}%"/>
+									<Text text="{path: 'FormData>/HOAI_2021/Realize/p6â‚¬', formatter: '.formatter.formatCurrency'}&#x20AC;"/>
+									<Input />
+									<Input />
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="{i18n>form.realize.p7}" visible="{FormData>/HOAI_2021/Realize/p7Visible}">
+								<f:fields>
+									<Text text="{FormData>/HOAI_2021/Realize/p7%}%"/>
+									<Text text="{path: 'FormData>/HOAI_2021/Realize/p7â‚¬', formatter: '.formatter.formatCurrency'}&#x20AC;"/>
+									<Input />
+									<Input />
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="{i18n>form.realize.p8}" visible="{FormData>/HOAI_2021/Realize/p8Visible}">
+								<f:fields>
+									<Text text="{FormData>/HOAI_2021/Realize/p8%}%"/>
+									<Text text="{path: 'FormData>/HOAI_2021/Realize/p8â‚¬', formatter: '.formatter.formatCurrency'}&#x20AC;"/>
+									<Input />
+									<Input />
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="{i18n>form.realize.p9}" visible="{FormData>/HOAI_2021/Realize/p9Visible}">
+								<f:fields>
+									<Text text="{FormData>/HOAI_2021/Realize/p9%}%"/>
+									<Text text="{path: 'FormData>/HOAI_2021/Realize/p9â‚¬', formatter: '.formatter.formatCurrency'}&#x20AC;"/>
+									<Input />
+									<Input />
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="{i18n>}">
+								<f:fields>
+									<Text text="{FormData>/HOAI_2021/Realize/Total%}%"/>
+									<Text text="{path: 'FormData>/HOAI_2021/Realize/Totalâ‚¬', formatter: '.formatter.formatCurrency'}&#x20AC;"/>
+									<Input />
+									<Input />
+								</f:fields>
+							</f:FormElement>
+						</f:formElements>
+					</f:FormContainer>
+				</f:formContainers>
+			</f:Form>
+		</VBox>
+</core:FragmentDefinition>

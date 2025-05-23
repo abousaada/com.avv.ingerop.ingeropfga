@@ -1,0 +1,94 @@
+/* Enter your custom styles here */
+.fgaApp {
+    /* zoom: 90% !important; */
+}
+.syntheseTab .sapUiTableCell.sapUiTableHeaderCell,
+.syntheseTab .totalLine{
+    background-color: #333399;
+}
+
+.syntheseTab .sapUiTableCell.sapUiTableHeaderCell .sapMLabel,
+.syntheseTab .totalLine .sapMText,
+.syntheseTab .totalLine .sapMObjStatusNone .sapMObjStatusText {
+    color: whitesmoke;
+    font-weight: bold;
+}
+.syntheseTab .totalLine .sapMObjStatusText {
+    text-shadow: none;
+}
+
+.syntheseTab .sapMObjStatusError .sapMObjStatusText {
+    color: #ff0000;
+}
+
+.syntheseTab .sapUiTableHeaderDataCell>.sapUiTableCellInner>div:first-child {
+    justify-content: center !important;
+}
+
+.syntheseTab .sapUiTableDataCell {
+    text-align: end !important;
+    /* font-style: italic; */
+}
+
+.syntheseTab .sapUiTableColHdrTr {
+    height: 23px !important;
+}
+
+.syntheseTab .sapMText,
+.syntheseTab .sapMObjStatusText,
+.syntheseTab .sapMInputBaseInner,
+.syntheseTab .sapMSlt>.sapMSltLabel {
+    font-size: .775rem !important;
+    text-shadow: none;
+}
+.syntheseTab .custNegValue .sapMInputBaseInner {
+    color: #ff0000;
+}
+
+.syntheseTab .sapMInputBaseContentWrapper:not(.sapMInputBaseReadonlyWrapper):not(.sapMInputBaseContentWrapperState) {
+    box-shadow: none;
+}
+.syntheseTab .sapMInputBaseContentWrapper{
+    background: none;
+}
+
+.custItb, 
+.custItb .sapMITBContainerContent, 
+.custItb .sapMITBContent{
+    height: 100%;
+}
+
+.mandatoryZone {
+    background-color: #FFFF99;
+}
+
+.recommandedZone {
+    background-color: #9999FF;
+}
+
+
+.small-text .sapUiTableCnt {
+    font-size: 12px; /* Adjust the font size as needed */
+}
+
+.small-text .sapUiTableCol, 
+.small-text .sapUiTableTr {
+    font-size: 12px; /* Adjust the font size for headers and rows */
+}
+
+.small-text .sapMInputBaseInner {
+    font-size: 12px; /* Adjust the font size for input fields */
+}
+
+.small-text .sapMObjStatusText {
+    font-size: 12px; /* Adjust the font size for ObjectStatus */
+}
+
+.customTreeLink.sapMLnk {
+    color: #0064d9 !important;        /* Blue color */
+    text-decoration: underline !important;
+}
+
+.customTreeLink.sapMLnk:hover {
+    color: #004da3 !important;        /* Darker blue on hover */
+}

@@ -1,0 +1,88 @@
+{
+    "results": [
+    {
+    "ID": "CA",
+    "Desc": "Revenue",
+    "Type": "Actual",
+    "TypeDesc": "Actual",
+    "Value": "269300.76897619"
+    },
+    {
+    "ID": "FAC",
+    "Desc": "Billing",
+    "Type": "Actual",
+    "TypeDesc": "Actual",
+    "Value": "768516.01"
+    },
+    {
+    "ID": "CHA",
+    "Desc": "Expenses",
+    "Type": "Actual",
+    "TypeDesc": "Actual",
+    "Value": "253070.17"
+    },
+    {
+    "ID": "MO",
+    "Desc": "Labor",
+    "Type": "Actual",
+    "TypeDesc": "Actual",
+    "Value": "228964.86"
+    },
+    {
+    "ID": "DELM",
+    "Desc": "Timeframe (Months)",
+    "Type": "Actual",
+    "TypeDesc": "Completed",
+    "Value": "40"
+    },
+    {
+    "ID": "JH",
+    "Desc": "Man-days",
+    "Type": "Actual",
+    "TypeDesc": "Completed",
+    "Value": "369.298161290323"
+    },
+    {
+    "ID": "CA",
+    "Desc": "Turnover",
+    "Type": "YetToCome",
+    "TypeDesc": "To Come",
+    "Value": "1049415.93102381"
+    },
+    {
+    "ID": "FAC",
+    "Desc": "Billing",
+    "Type": "YetToCome",
+    "TypeDesc": "To Come",
+    "Value": "550200.69"
+    },
+    {
+    "ID": "CHA",
+    "Desc": "Charges",
+    "Type": "YetToCome",
+    "TypeDesc": "To Come",
+    "Value": "986168.25"
+    },
+    {
+    "ID": "MO",
+    "Desc": "Labor",
+    "Type": "YetToCome",
+    "TypeDesc": "To Come",
+    "Value": "436988.39"
+    },
+    {
+    "ID": "DELM",
+    "Desc": "Deadline (Months)",
+    "Type": "YetToCome",
+    "TypeDesc": "To Come",
+    "Value": "30"
+    },
+    {
+    "ID": "JH",
+    "Desc": "Man-days",
+    "Type": "YetToCome",
+    "TypeDesc": "YetToCome",
+    "Value": "704.819983870968"
+    }
+    ]
+    }

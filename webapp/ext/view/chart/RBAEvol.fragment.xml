@@ -1,0 +1,45 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:viz="sap.viz.ui5.controls"
+    xmlns:layout="sap.ui.layout"
+    xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+    xmlns:viz.data="sap.viz.ui5.data" height="100%">
+    <layout:FixFlex minFlexSize="400">
+        <!--Below is the setting panel -->
+        <layout:fixContent>
+
+        </layout:fixContent>
+        <layout:flexContent>
+            <viz:VizFrame id="idVizFrameRBAEvol" uiConfig="{applicationSet:'fiori'}" vizProperties="{ 
+                title: {
+                    visible: true,
+                    text: 'RBA Evolution (% CAHT)'
+                },
+                plotArea: {
+                    dataLabel: {
+                        visible: true
+                    },
+                    colorPalette:['#CCCCFF','#333399']
+                    
+                }
+            }" 
+        height='100%' width="100%" vizType='column'>
+                <viz:dataset>
+                    <viz.data:FlattenedDataset data="{rbaEvol>/results}">
+                        <viz.data:dimensions>
+                            <viz.data:DimensionDefinition name="Type" value="{rbaEvol>Type}" />
+                        </viz.data:dimensions>
+                        <viz.data:measures>
+                            <viz.data:MeasureDefinition name="RBA (%)" value="{rbaEvol>Percent}" />
+                        </viz.data:measures>
+                    </viz.data:FlattenedDataset>
+                </viz:dataset>
+
+                <viz:feeds>
+                    <viz.feeds:FeedItem uid="valueAxis" type="Measure" values="RBA (%)" />
+                    <viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Type" />
+                </viz:feeds>
+            </viz:VizFrame>
+        </layout:flexContent>
+    </layout:FixFlex>
+</core:FragmentDefinition>

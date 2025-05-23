@@ -1,0 +1,114 @@
+{
+    "results": [
+        {
+            "BudgetName": "CA MÃ©ritÃ©",
+            "BudgetInitial": ""
+        },
+        {
+            "BudgetName": "Marge",
+            "BudgetInitial": ""
+        },
+        {
+            "BudgetName": "Marge (%)",
+            "BudgetInitial": ""
+        },
+        {
+            "BudgetName": "Facturation",
+            "BudgetInitial": "",
+            "items": [
+                {
+                    "BudgetName": "Facturations externes",
+                    "BudgetInitial": ""
+                },
+                {
+                    "BudgetName": "Autres Produits",
+                    "BudgetInitial": ""
+                }
+            ]
+        },
+        {
+            "BudgetName": "Sous-traitance Interne",
+            "BudgetInitial": "",
+            "items": [
+                {
+                    "BudgetName": "Sous-traitance Filiale Groupe",
+                    "BudgetInitial": ""
+                },
+                {
+                    "BudgetName": "Sous-traitance Inter UFO",
+                    "BudgetInitial": ""
+                },
+                {
+                    "BudgetName": "Sous-traitance Intra UFO",
+                    "BudgetInitial": ""
+                }
+            ]
+        },
+        {
+            "BudgetName": "Main d'Å“uvre",
+            "BudgetInitial": "",
+            "items": [
+                {
+                    "BudgetName": "Main d'Å’uvre ventilÃ©e UFO",
+                    "BudgetInitial": ""
+                },
+                {
+                    "BudgetName": "Main d'Å’uvre ventilÃ©e autres UFO/StÃ©s",
+                    "BudgetInitial": ""
+                },
+                {
+                    "BudgetName": "Main d'Å“uvre intÃ©rimaire",
+                    "BudgetInitial": ""
+                }
+            ]
+        },
+        {
+            "BudgetName": "Sous-traitance Externe",
+            "BudgetInitial": "",
+            "items": [
+                {
+                    "BudgetName": "Frais gÃ©nÃ©raux sur sous-traitance",
+                    "BudgetInitial": ""
+                },
+                {
+                    "BudgetName": "Sous-Traitances Tiers",
+                    "BudgetInitial": ""
+                },
+                {
+                    "BudgetName": "Sous-Traitances Filiale Groupe",
+                    "BudgetInitial": ""
+                }
+            ]
+        },
+        {
+            "BudgetName": "Autres",
+            "BudgetInitial": "",
+            "items": [
+                {
+                    "BudgetName": "Voyages, dÃ©placements, rÃ©ception",
+                    "BudgetInitial": ""
+                },
+                {
+                    "BudgetName": "Autres frais de fonctionnement",
+                    "BudgetInitial": ""
+                },
+                {
+                    "BudgetName": "Provisions crÃ©ances douteuses",
+                    "BudgetInitial": ""
+                },
+                {
+                    "BudgetName": "AlÃ©as Etudes et travaux",
+                    "BudgetInitial": ""
+                },
+                {
+                    "BudgetName": "AlÃ©as Sinistres et Contentieux",
+                    "BudgetInitial": ""
+                },
+                {
+                    "BudgetName": "AlÃ©as Divers",
+                    "BudgetInitial": ""
+                }
+            ]
+        }
+    ]
+}

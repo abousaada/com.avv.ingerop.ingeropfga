@@ -1,0 +1,208 @@
+{
+    "moProfile": [
+        {
+            "ProfileNo": "1",
+            "ProfileID": "DIR",
+            "ProfileRate": "1000",
+            "ProfileName": ""
+        },
+        {
+            "ProfileNo": "2",
+            "ProfileID": "CDP",
+            "ProfileRate": "850",
+            "ProfileName": ""
+        },
+        {
+            "ProfileNo": "3",
+            "ProfileID": "Adj. CDP",
+            "ProfileRate": "700",
+            "ProfileName": ""
+        },
+        {
+            "ProfileNo": "4",
+            "ProfileID": "ASS / PROJ",
+            "ProfileRate": "600",
+            "ProfileName": ""
+        },
+        {
+            "ProfileNo": "5",
+            "ProfileID": "",
+            "ProfileRate": "",
+            "ProfileName": ""
+        },
+        {
+            "ProfileNo": "6",
+            "ProfileID": "STR",
+            "ProfileRate": "1",
+            "ProfileName": "MM410901"
+        },
+        {
+            "ProfileNo": "7",
+            "ProfileID": "ELEC",
+            "ProfileRate": "1",
+            "ProfileName": "MM410903"
+        },
+        {
+            "ProfileNo": "8",
+            "ProfileID": "VRD",
+            "ProfileRate": "1",
+            "ProfileName": "MM410902"
+        },
+        {
+            "ProfileNo": "9",
+            "ProfileID": "HQE",
+            "ProfileRate": "1",
+            "ProfileName": "MB410904"
+        },
+        {
+            "ProfileNo": "10",
+            "ProfileID": "CVCD PLB",
+            "ProfileRate": "1",
+            "ProfileName": "MM410905"
+        }
+    ],
+    "scProfile": [
+        {
+            "ProfileNo": "1",
+            "ProfileID": "",
+            "ProfileRate": "1.1",
+            "ProfileType": "Externe",
+            "ProfileName": "PCA"
+        },
+        {
+            "ProfileNo": "2",
+            "ProfileID": "",
+            "ProfileRate": "1.1",
+            "ProfileType": "Externe",
+            "ProfileName": "CTH"
+        },
+        {
+            "ProfileNo": "3",
+            "ProfileID": "64603",
+            "ProfileRate": "1.1",
+            "ProfileType": "Externe",
+            "ProfileName": "Nicolas 3D"
+        },
+        {
+            "ProfileNo": "4",
+            "ProfileID": "64886",
+            "ProfileRate": "1.1",
+            "ProfileType": "Externe",
+            "ProfileName": "VENAT"
+        }
+    ],
+    "stProfile": [
+        {
+            "ProfileNo": "1",
+            "ProfileID": "MM410901",
+            "ProfileRate": "1",
+            "ProfileType": "Intra UFO",
+            "ProfileName": "STR"
+        },
+        {
+            "ProfileNo": "2",
+            "ProfileID": "MM410902",
+            "ProfileRate": "1",
+            "ProfileType": "Intra UFO",
+            "ProfileName": "VRD"
+        },
+        {
+            "ProfileNo": "3",
+            "ProfileID": "MM410903",
+            "ProfileRate": "1",
+            "ProfileType": "Intra UFO",
+            "ProfileName": "ELEC"
+        },
+        {
+            "ProfileNo": "4",
+            "ProfileID": "MM410904",
+            "ProfileRate": "1",
+            "ProfileType": "Inter UFO",
+            "ProfileName": "HQE"
+        },
+        {
+            "ProfileNo": "5",
+            "ProfileID": "MM410905",
+            "ProfileRate": "1",
+            "ProfileType": "Intra UFO",
+            "ProfileName": "CVCD PLB"
+        },
+        {
+            "ProfileNo": "6",
+            "ProfileID": "MM410906",
+            "ProfileRate": "1",
+            "ProfileType": "Intra UFO",
+            "ProfileName": "ENVIRO"
+        },
+        {
+            "ProfileNo": "7",
+            "ProfileID": "MM410907",
+            "ProfileRate": "1",
+            "ProfileType": "Intra UFO",
+            "ProfileName": "HYDRO"
+        }
+
+    ],
+    "prevProfile": [
+        {
+            "ProfileNo": "1",
+            "ProfileID": "1",
+            "ProfileRate": "1200",
+            "ProfileName": "Profil 1"
+        },
+        {
+            "ProfileNo": "2",
+            "ProfileID": "2",
+            "ProfileRate": "1100",
+            "ProfileName": "Profil 2"
+        },
+        {
+            "ProfileNo": "3",
+            "ProfileID": "3",
+            "ProfileRate": "1000",
+            "ProfileName": "Profil 3"
+        },
+        {
+            "ProfileNo": "4",
+            "ProfileID": "4",
+            "ProfileRate": "900",
+            "ProfileName": "Profil 4"
+        },
+        {
+            "ProfileNo": "5",
+            "ProfileID": "5",
+            "ProfileRate": "800",
+            "ProfileName": "Profil 5"
+        },
+        {
+            "ProfileNo": "6",
+            "ProfileID": "6",
+            "ProfileRate": "700",
+            "ProfileName": "Profil 6"
+        },
+        {
+            "ProfileNo": "7",
+            "ProfileID": "7",
+            "ProfileRate": "600",
+            "ProfileName": "Profil 7"
+        },
+        {
+            "ProfileNo": "8",
+            "ProfileID": "8",
+            "ProfileRate": "500",
+            "ProfileName": "Profil 8"
+        },
+        {
+            "ProfileNo": "9",
+            "ProfileID": "9",
+            "ProfileRate": "400",
+            "ProfileName": "Profil 9"
+        },
+        {
+            "ProfileNo": "10",
+            "ProfileID": "10",
+            "ProfileRate": "300",
+            "ProfileName": "Profil 10"
+        }
+    ]
+}

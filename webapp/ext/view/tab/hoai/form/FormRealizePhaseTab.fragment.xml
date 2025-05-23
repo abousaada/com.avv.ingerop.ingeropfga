@@ -1,0 +1,122 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:l="sap.ui.layout"
+    xmlns:core="sap.ui.core">
+    <Table editable="true" class="sapUiSmallMarginBottom">
+        <headerToolbar>
+            <OverflowToolbar class="customHeaderTitle">
+                <content>
+                    <ToolbarSpacer />
+                    <Title text="{i18n>form.realize.title}" level="H2"/>
+                    <ToolbarSpacer />
+                </content>
+            </OverflowToolbar>
+        </headerToolbar>
+        <columns>
+            <Column width="5em"></Column>
+            <Column></Column>
+            <Column></Column>
+        </columns>
+        <items>
+            <ColumnListItem visible="{FormDataFix>/HOAI_2021/Realize/p1Visible}">
+                <cells>
+                    <CheckBox selected="{FormDataFix>/HOAI_2021/Realize/p1Flag}" />
+                    <Label text="{i18n>form.realize.p1}" />
+                    <Input id="RealizeP1" value="{FormDataFix>/HOAI_2021/Realize/p1%}" description="%" fieldWidth="90%">
+                        <layoutData>
+                            <l:GridData span="XL1 L2 M2 S4" />
+                        </layoutData>
+                    </Input>
+                </cells>
+            </ColumnListItem>
+            <ColumnListItem visible="{FormDataFix>/HOAI_2021/Realize/p2Visible}">
+                <cells>
+                    <CheckBox selected="{FormDataFix>/HOAI_2021/Realize/p2Flag}" />
+                    <Label text="{i18n>form.realize.p2}" />
+                    <Input id="RealizeP2" value="{FormDataFix>/HOAI_2021/Realize/p2%}" description="%" fieldWidth="90%">
+                        <layoutData>
+                            <l:GridData span="XL1 L2 M2 S4" />
+                        </layoutData>
+                    </Input>
+                </cells>
+            </ColumnListItem>
+            <ColumnListItem visible="{FormDataFix>/HOAI_2021/Realize/p3Visible}">
+                <cells>
+                    <CheckBox selected="{FormDataFix>/HOAI_2021/Realize/p3Flag}" />
+                    <Label text="{i18n>form.realize.p3}" />
+                    <Input id="RealizeP3" value="{FormDataFix>/HOAI_2021/Realize/p3%}" description="%" fieldWidth="90%">
+                        <layoutData>
+                            <l:GridData span="XL1 L2 M2 S4" />
+                        </layoutData>
+                    </Input>
+                </cells>
+            </ColumnListItem>
+            <ColumnListItem visible="{FormDataFix>/HOAI_2021/Realize/p4Visible}">
+                <cells>
+                    <CheckBox selected="{FormDataFix>/HOAI_2021/Realize/p4Flag}" />
+                    <Label text="{i18n>form.realize.p4}" />
+                    <Input id="RealizeP4" value="{FormDataFix>/HOAI_2021/Realize/p4%}" description="%" fieldWidth="90%">
+                        <layoutData>
+                            <l:GridData span="XL1 L2 M2 S4" />
+                        </layoutData>
+                    </Input>
+                </cells>
+            </ColumnListItem>
+            <ColumnListItem visible="{FormDataFix>/HOAI_2021/Realize/p5Visible}">
+                <cells>
+                    <CheckBox selected="{FormDataFix>/HOAI_2021/Realize/p5Flag}" />
+                    <Label text="{i18n>form.realize.p5}" />
+                    <Input id="RealizeP5" value="{FormDataFix>/HOAI_2021/Realize/p5%}" description="%" fieldWidth="90%">
+                        <layoutData>
+                            <l:GridData span="XL1 L2 M2 S4" />
+                        </layoutData>
+                    </Input>
+                </cells>
+            </ColumnListItem>
+            <ColumnListItem visible="{FormDataFix>/HOAI_2021/Realize/p6Visible}">
+                <cells>
+                    <CheckBox selected="{FormDataFix>/HOAI_2021/Realize/p6Flag}" />
+                    <Label text="{i18n>form.realize.p6}" />
+                    <Input id="RealizeP6" value="{FormDataFix>/HOAI_2021/Realize/p6%}" description="%" fieldWidth="90%">
+                        <layoutData>
+                            <l:GridData span="XL1 L2 M2 S4" />
+                        </layoutData>
+                    </Input>
+                </cells>
+            </ColumnListItem>
+            <ColumnListItem visible="{FormDataFix>/HOAI_2021/Realize/p7Visible}">
+                <cells>
+                    <CheckBox selected="{FormDataFix>/HOAI_2021/Realize/p7Flag}" />
+                    <Label text="{i18n>form.realize.p7}" />
+                    <Input id="RealizeP7" value="{FormDataFix>/HOAI_2021/Realize/p7%}" description="%" fieldWidth="90%">
+                        <layoutData>
+                            <l:GridData span="XL1 L2 M2 S4" />
+                        </layoutData>
+                    </Input>
+                </cells>
+            </ColumnListItem>
+            <ColumnListItem visible="{FormDataFix>/HOAI_2021/Realize/p8Visible}">
+                <cells>
+                    <CheckBox selected="{FormDataFix>/HOAI_2021/Realize/p8Flag}" />
+                    <Label text="{i18n>form.realize.p8}" />
+                    <Input id="RealizeP8" value="{FormDataFix>/HOAI_2021/Realize/p8%}" description="%" fieldWidth="90%">
+                        <layoutData>
+                            <l:GridData span="XL1 L2 M2 S4" />
+                        </layoutData>
+                    </Input>
+                </cells>
+            </ColumnListItem>
+            <ColumnListItem visible="{FormDataFix>/HOAI_2021/Realize/p9Visible}">
+                <cells>
+                    <CheckBox selected="{FormDataFix>/HOAI_2021/Realize/p9Flag}" />
+                    <Label text="{i18n>form.realize.p9}" />
+                    <Input id="RealizeP9" value="{FormDataFix>/HOAI_2021/Realize/p9%}" description="%" fieldWidth="90%">
+                        <layoutData>
+                            <l:GridData span="XL1 L2 M2 S4" />
+                        </layoutData>
+                    </Input>
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+</core:FragmentDefinition>

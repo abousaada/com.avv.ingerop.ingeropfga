@@ -1,0 +1,27 @@
+{
+    "results": [
+        {   
+            "level": "0",
+            "Mission": "Order 4000007",
+            "MissionName": "",
+            "Type": "",
+            "Status": "",
+            "Amount": "",
+            "StartDate": "",
+            "EndDate": "",
+            "children": [
+                {
+                    "Mission": "Grouping Hoai",
+                    "MissionName": "",
+                    "Type": "",
+                    "Status": "",
+                    "Amount": "",
+                    "StartDate": "",
+                    "EndDate": ""
+
+                }
+                
+            ]
+        }
+    ]
+}

@@ -1,0 +1,208 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:table="sap.ui.table">
+    <table:Table id="SimulTab" visibleRowCount="24" visibleRowCountMode="Fixed" class="syntheseTab" 
+    rows="{path: 'budget>/results', filters:[{path:'Type', operator:'EQ', value1: ''}, {path:'Type', operator:'EQ', value1: 'T'}]}" selectionMode="None" rowsUpdated="onRowsUpdatedSimulTab">
+        <table:rowSettingsTemplate>
+            <table:RowSettings highlight="{= ${budget>Status} === 'Non acquis' ? 'Error' : ( ${budget>Status} === 'RÃ©clamÃ©' ? 'Warning' : 'None')}" />
+        </table:rowSettingsTemplate>
+        <table:columns>
+            <table:Column width="10rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="{i18n>budget.mission}" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{budget>Mission}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="{i18n>budget.PrevForecast}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>INVForecast}) &lt; 0 ? 'Error': 'None'}" text="{path: 'budget>INVForecast', formatter: '.formatNumber'}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="{i18n>budget.PrevCost}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>PrevCost}) &lt; 0 ? 'Error': 'None'}" text="{path: 'budget>PrevCost', formatter: '.formatNumber'}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="{i18n>budget.PrevRBA}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>PrevRBA}) &lt; 0 ? 'Error': 'None'}" text="{path: 'budget>PrevRBA', formatter: '.formatNumber'}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="{i18n>budget.PrevRBAP}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>PrevRBAP}) &lt; 0 ? 'Error': 'None'}" text="{path: 'budget>PrevRBAP', formatter: '.formatNumber'}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem">
+                <table:multiLabels>
+                    <Label text="{i18n>budget.PrevPhysProgress1}" />
+                    <Label text="{i18n>budget.PrevPhysProgress2}" />
+                </table:multiLabels>
+                <table:template>
+                    <Input change="onChangeSimulation" textAlign="End" value="{path: 'budget>PrevPhysProgress', formatter: '.formatNumber'}" visible="{= !${budget>Type}}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem">
+                <table:multiLabels>
+                    <Label text="{i18n>budget.PrevMOCostForecast1}" />
+                    <Label text="{i18n>budget.PrevMOCostForecast2}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>PrevMOCostForecast}) &lt; 0 ? 'Error': 'None'}" text="{path: 'budget>PrevMOCostForecast', formatter: '.formatNumber'}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem">
+                <table:multiLabels>
+                    <Label text="{i18n>budget.PrevMOActual1}" />
+                    <Label text="{i18n>budget.PrevMOActual2}" />
+                </table:multiLabels>
+                <table:template>
+                    <Input change="onChangeSimulation" textAlign="End" value="{path: 'budget>PrevMOActual', formatter: '.formatNumber'}" visible="{= !${budget>Type}}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem">
+                <table:multiLabels>
+                    <Label text="{i18n>budget.PrevMOCostGap1}" />
+                    <Label text="{i18n>budget.PrevMOCostGap2}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>PrevMOCostGap}) &lt; 0 ? 'Error': 'None'}" text="{path: 'budget>PrevMOCostForecast', formatter: '.formatNumber'}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem">
+                <table:multiLabels>
+                    <Label text="{i18n>budget.PrevMOCostYetToCome1}" />
+                    <Label text="{i18n>budget.PrevMOCostYetToCome2}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>PrevMOCostYetToCome}) &lt; 0 ? 'Error': 'None'}" text="{path: 'budget>PrevMOCostForecast', formatter: '.formatNumber'}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem">
+                <table:multiLabels>
+                    <Label text="{prevProfile>/PrevProfile1Name}" />
+                    <Label text="{prevProfile>/PrevProfile1Rate}" />
+                </table:multiLabels>
+                <table:template>
+                    <Input change="onChangeSimulation" textAlign="End" value="{path: 'budget>PrevProfile1', formatter: '.formatNumber'}" visible="{= !${budget>Type}}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem">
+                <table:multiLabels>
+                    <Label text="{prevProfile>/PrevProfile2Name}" />
+                    <Label text="{prevProfile>/PrevProfile2Rate}" />
+                </table:multiLabels>
+                <table:template>
+                    <Input change="onChangeSimulation" textAlign="End" value="{path: 'budget>PrevProfile2', formatter: '.formatNumber'}" visible="{= !${budget>Type}}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem">
+                <table:multiLabels>
+                    <Label text="{prevProfile>/PrevProfile3Name}" />
+                    <Label text="{prevProfile>/PrevProfile3Rate}" />
+                </table:multiLabels>
+                <table:template>
+                    <Input change="onChangeSimulation" textAlign="End" value="{path: 'budget>PrevProfile3', formatter: '.formatNumber'}" visible="{= !${budget>Type}}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem">
+                <table:multiLabels>
+                    <Label text="{prevProfile>/PrevProfile4Name}" />
+                    <Label text="{prevProfile>/PrevProfile4Rate}" />
+                </table:multiLabels>
+                <table:template>
+                    <Input change="onChangeSimulation" textAlign="End" value="{path: 'budget>PrevProfile4', formatter: '.formatNumber'}" visible="{= !${budget>Type}}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem">
+                <table:multiLabels>
+                    <Label text="{prevProfile>/PrevProfile5Name}" />
+                    <Label text="{prevProfile>/PrevProfile5Rate}" />
+                </table:multiLabels>
+                <table:template>
+                    <Input change="onChangeSimulation" textAlign="End" value="{path: 'budget>PrevProfile5', formatter: '.formatNumber'}" visible="{= !${budget>Type}}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem">
+                <table:multiLabels>
+                    <Label text="{prevProfile>/PrevProfile6Name}" />
+                    <Label text="{prevProfile>/PrevProfile6Rate}" />
+                </table:multiLabels>
+                <table:template>
+                    <Input change="onChangeSimulation" textAlign="End" value="{path: 'budget>PrevProfile6', formatter: '.formatNumber'}" visible="{= !${budget>Type}}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem">
+                <table:multiLabels>
+                    <Label text="{prevProfile>/PrevProfile7Name}" />
+                    <Label text="{prevProfile>/PrevProfile7Rate}" />
+                </table:multiLabels>
+                <table:template>
+                    <Input change="onChangeSimulation" textAlign="End" value="{path: 'budget>PrevProfile7', formatter: '.formatNumber'}" visible="{= !${budget>Type}}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem">
+                <table:multiLabels>
+                    <Label text="{prevProfile>/PrevProfile8Name}" />
+                    <Label text="{prevProfile>/PrevProfile8Rate}" />
+                </table:multiLabels>
+                <table:template>
+                    <Input change="onChangeSimulation" textAlign="End" value="{path: 'budget>PrevProfile8', formatter: '.formatNumber'}" visible="{= !${budget>Type}}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem">
+                <table:multiLabels>
+                    <Label text="{prevProfile>/PrevProfile9Name}" />
+                    <Label text="{prevProfile>/PrevProfile9Rate}" />
+                </table:multiLabels>
+                <table:template>
+                    <Input change="onChangeSimulation" textAlign="End" value="{path: 'budget>PrevProfile9', formatter: '.formatNumber'}" visible="{= !${budget>Type}}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem">
+                <table:multiLabels>
+                    <Label text="{prevProfile>/PrevProfile10Name}" />
+                    <Label text="{prevProfile>/PrevProfile10Rate}" />
+                </table:multiLabels>
+                <table:template>
+                    <Input change="onChangeSimulation" textAlign="End" value="{path: 'budget>PrevProfile10', formatter: '.formatNumber'}" visible="{= !${budget>Type}}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="{i18n>budget.PrevYetToCome}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>PrevYetToCome}) &lt; 0 ? 'Error': 'None'}" text="{path: 'budget>PrevYetToCome', formatter: '.formatNumber'}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="{i18n>budget.PrevGapYetToCome}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>PrevGapYetToCome}) &lt; 0 ? 'Error': 'None'}" text="{path: 'budget>PrevGapYetToCome', formatter: '.formatNumber'}" />
+                </table:template>
+            </table:Column>
+        </table:columns>
+    </table:Table>
+</core:FragmentDefinition>

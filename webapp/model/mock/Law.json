@@ -1,0 +1,104 @@
+{
+    "results": [
+        {
+            "ID": "1",
+            "Text": "\u00A7 35 Abs. 1 Geb\u00E4ude",
+            "Article": "35"
+        },
+        {
+            "ID": "2",
+            "Text": "\u00A7 35 Abs. 1 Innenr\u00E4ume",
+            "Article": "35"
+        },
+        {
+            "ID": "3",
+            "Text": "\u00A7 40 Abs. 1 Freianlagen",
+            "Article": "45"
+        },
+        {
+            "ID": "4",
+            "Text": "\u00A7 20 Abs. 1 - Fl\u00E4chennutzungsplan",
+            "Article": "20"
+        },
+        {
+            "ID": "5",
+            "Text": "\u00A7 28 Abs. 1 - Landschaftsplan",
+            "Article": "28"
+        },
+        {
+            "ID": "6",
+            "Text": "\u00A7 29 Abs. 1 - Gr\u00FCnordnungsplan",
+            "Article": "28"
+        },
+        {
+            "ID": "7",
+            "Text": "\u00A7 30 Abs. 1 - Landschaftsrahmenplan",
+            "Article": "28"
+        },
+        {
+            "ID": "8",
+            "Text": "\u00A7 31 Abs. 1 - 1 Landschaftspflegerischer Begleitplan ",
+            "Article": "28"
+        },
+        {
+            "ID": "9",
+            "Text": "\u00A7 31 Abs. 1 - Pflege- und Entwicklungsplan",
+            "Article": "28"
+        },
+        {
+            "ID": "10",
+            "Text": "\u00A7 44 Abs. 1 - Ingenieurbauwerke (Anwendungsbereich des \u00A7 41)",
+            "Article": "28"
+        },
+        {
+            "ID": "11",
+            "Text": "\u00A7 48 Abs. 1 - Verkehrsanlagen (Anwendungsbereich des \u00A7 45)",
+            "Article": "28"
+        },
+        {
+            "ID": "12",
+            "Text": "\u00A7 52 Abs. 1 - Tragwerksplanung",
+            "Article": "28"
+        },
+        {
+            "ID": "13",
+            "Text": "\u00A7 56 Abs. 1 - Technische Ausr\u00FCstung",
+            "Article": "28"
+        },
+        {
+            "ID": "14",
+            "Text": "Anlage 1, Ziff. 1.1. - Umweltvertr\u00E4glichkeitsstudie",
+            "Article": "28"
+        },
+        {
+            "ID": "15",
+            "Text": "Anlage 1, Ziff. 1.2.3. - W\u00E4rmeschutz und Energiebilanzierung ",
+            "Article": "28"
+        },
+        {
+            "ID": "16",
+            "Text": "Anlage 1, Ziff. 1.2.4. - Bauakustik",
+            "Article": "28"
+        },
+        {
+            "ID": "17",
+            "Text": "Anlage 1, Ziff. 1.2.5. - Raumakustik",
+            "Article": "28"
+        },
+        {
+            "ID": "18",
+            "Text": "Anlage 1, Ziff. 1.3.4. - Geotechnik",
+            "Article": "28"
+        },
+        {
+            "ID": "19",
+            "Text": "Anlage 1, Ziff. 1.4.8. Abs. 1 - Planungsbegleitende Vermessung ",
+            "Article": "28"
+        },
+        {
+            "ID": "20",
+            "Text": "Anlage 1, Ziff. 1.4.8. Abs. 2 - Bauvermessung",
+            "Article": "28"
+        }
+    ]
+}

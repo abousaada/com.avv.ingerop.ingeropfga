@@ -1,0 +1,278 @@
+<core:FragmentDefinition 
+    xmlns:mvc="sap.ui.core.mvc" 
+    xmlns:uxap="sap.uxap"
+    xmlns="sap.m" 
+    xmlns:core="sap.ui.core" 
+    xmlns:microchart="sap.suite.ui.microchart" 
+    xmlns:layout="sap.ui.layout"
+    xmlns:form="sap.ui.layout.form" 
+    xmlns:table="sap.ui.table" 
+    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+	>
+
+    <uxap:ObjectPageLayout showTitleInHeaderContent="false" showHeaderContent="true" showEditHeaderButton="false" showFooter="false"
+        class="sapUiSizeCompact">
+       
+
+       	<uxap:headerTitle>
+			
+		</uxap:headerTitle >
+
+		<uxap:headerContent>
+		</uxap:headerContent> 
+
+		<uxap:sections>
+			<uxap:ObjectPageSection title="{i18n>title.hoai}">
+					<uxap:subSections>
+						<!--uxap:ObjectPageSubSection>
+							<VBox class="sapUiSmallMargin">
+							<form:Form editable="true">
+								<form:title>
+								</form:title>
+								<form:layout>
+									<form:ColumnLayout columnsM="2" columnsL="3" columnsXL="6" />
+								</form:layout>
+								<form:formContainers>
+									<form:FormContainer>
+										<form:formElements>
+											<form:FormElement label="{i18n>lbl.BusinessNo}">
+												<form:fields>
+													<Input value="{listLine>/BusinessNo}" />
+												</form:fields>
+											</form:FormElement>
+											<form:FormElement label="{i18n>lbl.BusinessName}">
+												<form:fields>
+													<Input value="{listLine>/BusinessName}" />
+												</form:fields>
+											</form:FormElement>
+											<form:FormElement label="{i18n>lbl.Mission}">
+												<form:fields>
+													<Input value="{listLine>/Mission}" />
+												</form:fields>
+											</form:FormElement>
+											<form:FormElement label="{i18n>lbl.Activity}">
+												<form:fields>
+													<Input value="{listLine>/Activity}" />
+												</form:fields>
+											</form:FormElement>
+											<form:FormElement label="{i18n>lbl.Period}">
+												<form:fields>
+													<Input value="{listLine>/Period}" />
+												</form:fields>
+											</form:FormElement>
+										</form:formElements>
+									</form:FormContainer>
+								</form:formContainers>
+							</form:Form>
+							<Panel expandable="true" headerText="Information">
+								<form:Form editable="true" >
+									<form:title>
+										<!- <core:Title text="Supplier" /> ->
+									</form:title>
+									<form:layout>
+										<form:ColumnLayout columnsM="2" columnsL="3" columnsXL="5" />
+									</form:layout>
+									<form:formContainers>
+										<form:FormContainer>
+											<form:formElements>
+												<form:FormElement label="{i18n>lbl.UFO}">
+													<form:fields>
+														<Input value="{listLine>/UFOName}" />
+													</form:fields>
+												</form:FormElement>
+												<form:FormElement label="{i18n>lbl.CDG}">
+													<form:fields>
+														<Input value="{listLine>/CDG}" />
+													</form:fields>
+												</form:FormElement>
+												<form:FormElement label="{i18n>lbl.CDP}">
+													<form:fields>
+														<Input value="{listLine>/CDP}" />
+													</form:fields>
+												</form:FormElement>
+												<form:FormElement label="{i18n>lbl.Client}">
+													<form:fields>
+														<Input value="{listLine>/Client}" />
+													</form:fields>
+												</form:FormElement>
+												<form:FormElement label="{i18n>lbl.NoClientMarche}">
+													<form:fields>
+														<Input value="{listLine>/NoClientMarche}" />
+													</form:fields>
+												</form:FormElement>
+												<form:FormElement label="{i18n>lbl.Type}">
+													<form:fields>
+														<Input value="{listLine>/BusinessType}" />
+													</form:fields>
+												</form:FormElement>
+											</form:formElements>
+										</form:FormContainer>
+
+										<form:FormContainer>
+											<form:formElements>
+												<form:FormElement label="{i18n>lbl.QuoteReview}">
+													<form:fields>
+														<Input value="{listLine>/QuoteReview}" />
+													</form:fields>
+												</form:FormElement>
+												<form:FormElement label="{i18n>lbl.ContractReview}">
+													<form:fields>
+														<Input value="{listLine>/ContractReview}" />
+													</form:fields>
+												</form:FormElement>
+												<form:FormElement label="{i18n>lbl.EngagementCommittee}">
+													<form:fields>
+														<Input value="{listLine>/EngagementCommittee}" />
+													</form:fields>
+												</form:FormElement>
+												<form:FormElement label="{i18n>lbl.StartReview}">
+													<form:fields>
+														<Input value="{listLine>/StartReview}" />
+													</form:fields>
+												</form:FormElement>
+												<form:FormElement label="{i18n>lbl.ProjectReview}">
+													<form:fields>
+														<Input value="{listLine>/ProjectReview}" />
+													</form:fields>
+												</form:FormElement>
+												<form:FormElement label="{i18n>lbl.EndProjectReview}">
+													<form:fields>
+														<Input value="{listLine>/EndProjectReview}" />
+													</form:fields>
+												</form:FormElement>
+											</form:formElements>
+										</form:FormContainer>
+										<form:FormContainer>
+											<form:formElements>
+												<form:FormElement label="{i18n>lbl.ReviActu}">
+													<form:fields>
+														<Input value="{listLine>/ReviActu}" />
+													</form:fields>
+												</form:FormElement>
+												<form:FormElement label="{i18n>lbl.ForfaitRegie}">
+													<form:fields>
+														<Input value="{listLine>/ForfaitRegie}" />
+													</form:fields>
+												</form:FormElement>
+												<form:FormElement label="{i18n>lbl.DownPayment}">
+													<form:fields>
+														<Input value="{listLine>/DownPayment}" />
+													</form:fields>
+												</form:FormElement>
+												<form:FormElement label="{i18n>lbl.Guarantee}">
+													<form:fields>
+														<Input value="{listLine>/Guarantee}" />
+													</form:fields>
+												</form:FormElement>
+												<form:FormElement label="{i18n>lbl.GrpConvention}">
+													<form:fields>
+														<Input value="{listLine>/GrpConvention}" />
+													</form:fields>
+												</form:FormElement>
+												<form:FormElement label="{i18n>lbl.Assurance}">
+													<form:fields>
+														<Input value="{listLine>/Assurance}" />
+													</form:fields>
+												</form:FormElement>
+											</form:formElements>
+										</form:FormContainer>
+										<form:FormContainer>
+											<form:formElements>
+												<form:FormElement label="{i18n>lbl.VAT}">
+													<form:fields>
+														<Input value="{listLine>/VAT}" />
+													</form:fields>
+												</form:FormElement>
+												<form:FormElement label="{i18n>lbl.RateDevis}">
+													<form:fields>
+														<Input value="{listLine>/RateDevis}" />
+													</form:fields>
+												</form:FormElement>
+												<form:FormElement label="{i18n>lbl.StartDate}">
+													<form:fields>
+														<Input value="{listLine>/StartDate}" />
+													</form:fields>
+												</form:FormElement>
+												<form:FormElement label="{i18n>lbl.EndDate}">
+													<form:fields>
+														<Input value="{listLine>/EndDate}" />
+													</form:fields>
+												</form:FormElement>
+												<form:FormElement label="{i18n>lbl.NbOfMonth}">
+													<form:fields>
+														<Input value="{listLine>/NbOfMonth}" />
+													</form:fields>
+												</form:FormElement>
+												<form:FormElement label="{i18n>lbl.RemainingMonth}">
+													<form:fields>
+														<Input value="{listLine>/RemainingMonth}" />
+													</form:fields>
+												</form:FormElement>
+											</form:formElements>
+										</form:FormContainer>
+										<form:FormContainer>
+											<form:formElements>
+												<form:FormElement label="{i18n>lbl.LastUpdate}">
+													<form:fields>
+														<Input value="{listLine>/LastUpdate}" />
+													</form:fields>
+												</form:FormElement>
+												<form:FormElement label="{i18n>lbl.DailyAvgRate}">
+													<form:fields>
+														<Input value="{listLine>/DailyAvgRate}" />
+													</form:fields>
+												</form:FormElement>
+												<form:FormElement label="{i18n>lbl.ContractAmount}">
+													<form:fields>
+														<Input value="{listLine>/ContractAmount}" />
+													</form:fields>
+												</form:FormElement>
+												<form:FormElement label="{i18n>lbl.IngeropPart}">
+													<form:fields>
+														<Input value="{listLine>/IngeropPart}" />
+													</form:fields>
+												</form:FormElement>
+												<form:FormElement label="{i18n>lbl.WorkAmount}">
+													<form:fields>
+														<Input value="{listLine>/WorkAmount}" />
+													</form:fields>
+												</form:FormElement>
+												<form:FormElement label="{i18n>lbl.Engineering}">
+													<form:fields>
+														<Input value="{listLine>/Engineering}" />
+													</form:fields>
+												</form:FormElement>
+											</form:formElements>
+										</form:FormContainer>
+									</form:formContainers>
+								</form:Form>
+							</Panel>
+						</VBox>
+						</uxap:ObjectPageSubSection -->
+
+						<uxap:ObjectPageSubSection>
+							
+								<Panel>
+									<content>
+										<core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.hoai.Form" type="XML" />
+										<core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.hoai.Result" type="XML" /> 
+									</content>
+								</Panel>
+							
+						</uxap:ObjectPageSubSection>
+					</uxap:subSections>
+				</uxap:ObjectPageSection>	
+		</uxap:sections>
+
+		<uxap:footer>
+			<OverflowToolbar>
+				<content>
+					<ToolbarSpacer/>
+					<Button text="{i18n>Button_Save}" type="Emphasized" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false"/>
+					<Button text="{i18n>Button_Cancel}" type="Default" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false"/>
+				</content>
+			</OverflowToolbar>
+		</uxap:footer>
+
+    </uxap:ObjectPageLayout>
+</core:FragmentDefinition>

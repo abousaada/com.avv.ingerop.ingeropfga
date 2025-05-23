@@ -1,0 +1,454 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:table="sap.ui.table">
+    <table:Table id="PlanPrevTab" rows="{prevision>/previsionnel}" selectionMode="None" class="syntheseTab" visibleRowCount="7" rowsUpdated="onRowsUpdatedSimulTab">
+        <table:columns>
+            <table:Column width="15rem" >
+                <Label text="{i18n>prev.prevTypeFact}" />
+                <table:template>
+                    <Text text="{prevision>TypeFact}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem" headerSpan="13">
+                <table:multiLabels>
+                    <Label text="{i18n>prev.currYear}" />
+                    <Label text="{i18n>synt.month1}" />
+                </table:multiLabels>
+                <table:template>
+                    <Input change="onChangePrevision" textAlign="End" value="{path: 'prevision>Month1', formatter: '.formatNumber'}" />
+                </table:template>
+                <table:customData>
+                    <core:CustomData key="Period" value="{syntPeriod>/Month1}"></core:CustomData>
+                </table:customData>
+            </table:Column>
+            <table:Column width="8rem" >
+                <table:multiLabels>
+                    <Label text="{i18n>prev.currYear}" />
+                    <Label text="{i18n>synt.month2}" />
+                </table:multiLabels>
+                <table:template>
+                    <Input change="onChangePrevision" textAlign="End" value="{path: 'prevision>Month2', formatter: '.formatNumber'}" />
+                </table:template>
+                <table:customData>
+                    <core:CustomData key="Period" value="{syntPeriod>/Month2}"></core:CustomData>
+                </table:customData>
+            </table:Column>
+            <table:Column width="8rem" >
+                <table:multiLabels>
+                    <Label text="{i18n>prev.currYear}" />
+                    <Label text="{i18n>synt.month3}" />
+                </table:multiLabels>
+                <table:template>
+                    <Input change="onChangePrevision" textAlign="End" value="{path: 'prevision>Month3', formatter: '.formatNumber'}" />
+                </table:template>
+                <table:customData>
+                    <core:CustomData key="Period" value="{syntPeriod>/Month3}"></core:CustomData>
+                </table:customData>
+            </table:Column>
+            <table:Column width="8rem" >
+                <table:multiLabels>
+                    <Label text="{i18n>prev.currYear}" />
+                    <Label text="{i18n>synt.month4}" />
+                </table:multiLabels>
+                <table:template>
+                    <Input change="onChangePrevision" textAlign="End" value="{path: 'prevision>Month4', formatter: '.formatNumber'}" />
+                </table:template>
+                <table:customData>
+                    <core:CustomData key="Period" value="{syntPeriod>/Month4}"></core:CustomData>
+                </table:customData>
+            </table:Column>
+            <table:Column width="8rem" >
+                <table:multiLabels>
+                    <Label text="{i18n>prev.currYear}" />
+                    <Label text="{i18n>synt.month5}" />
+                </table:multiLabels>
+                <table:template>
+                    <Input change="onChangePrevision" textAlign="End" value="{path: 'prevision>Month5', formatter: '.formatNumber'}" />
+                </table:template>
+                <table:customData>
+                    <core:CustomData key="Period" value="{syntPeriod>/Month5}"></core:CustomData>
+                </table:customData>
+            </table:Column>
+            <table:Column width="8rem" >
+                <table:multiLabels>
+                    <Label text="{i18n>prev.currYear}" />
+                    <Label text="{i18n>synt.month6}" />
+                </table:multiLabels>
+                <table:template>
+                    <Input change="onChangePrevision" textAlign="End" value="{path: 'prevision>Month6', formatter: '.formatNumber'}" />
+                </table:template>
+                <table:customData>
+                    <core:CustomData key="Period" value="{syntPeriod>/Month6}"></core:CustomData>
+                </table:customData>
+            </table:Column>
+            <table:Column width="8rem" >
+                <table:multiLabels>
+                    <Label text="{i18n>prev.currYear}" />
+                    <Label text="{i18n>synt.month7}" />
+                </table:multiLabels>
+                <table:template>
+                    <Input change="onChangePrevision" textAlign="End" value="{path: 'prevision>Month7', formatter: '.formatNumber'}" />
+                </table:template>
+                <table:customData>
+                    <core:CustomData key="Period" value="{syntPeriod>/Month7}"></core:CustomData>
+                </table:customData>
+            </table:Column>
+            <table:Column width="8rem" >
+                <table:multiLabels>
+                    <Label text="{i18n>prev.currYear}" />
+                    <Label text="{i18n>synt.month8}" />
+                </table:multiLabels>
+                <table:template>
+                    <Input change="onChangePrevision" textAlign="End" value="{path: 'prevision>Month8', formatter: '.formatNumber'}" />
+                </table:template>
+                <table:customData>
+                    <core:CustomData key="Period" value="{syntPeriod>/Month8}"></core:CustomData>
+                </table:customData>
+            </table:Column>
+            <table:Column width="8rem" >
+                <table:multiLabels>
+                    <Label text="{i18n>prev.currYear}" />
+                    <Label text="{i18n>synt.month9}" />
+                </table:multiLabels>
+                <table:template>
+                    <Input change="onChangePrevision" textAlign="End" value="{path: 'prevision>Month9', formatter: '.formatNumber'}" />
+                </table:template>
+                <table:customData>
+                    <core:CustomData key="Period" value="{syntPeriod>/Month9}"></core:CustomData>
+                </table:customData>
+            </table:Column>
+            <table:Column width="8rem" >
+                <table:multiLabels>
+                    <Label text="{i18n>prev.currYear}" />
+                    <Label text="{i18n>synt.month10}" />
+                </table:multiLabels>
+                <table:template>
+                    <Input change="onChangePrevision" textAlign="End" value="{path: 'prevision>Month10', formatter: '.formatNumber'}" />
+                </table:template>
+                <table:customData>
+                    <core:CustomData key="Period" value="{syntPeriod>/Month10}"></core:CustomData>
+                </table:customData>
+            </table:Column>
+            <table:Column width="8rem" >
+                <table:multiLabels>
+                    <Label text="{i18n>prev.currYear}" />
+                    <Label text="{i18n>synt.month11}" />
+                </table:multiLabels>
+                <table:template>
+                    <Input change="onChangePrevision" textAlign="End" value="{path: 'prevision>Month11', formatter: '.formatNumber'}" />
+                </table:template>
+                <table:customData>
+                    <core:CustomData key="Period" value="{syntPeriod>/Month11}"></core:CustomData>
+                </table:customData>
+            </table:Column>
+            <table:Column width="8rem" >
+                <table:multiLabels>
+                    <Label text="{i18n>prev.currYear}" />
+                    <Label text="{i18n>synt.month12}" />
+                </table:multiLabels>
+                <table:template>
+                    <Input change="onChangePrevision" textAlign="End" value="{path: 'prevision>Month12', formatter: '.formatNumber'}" />
+                </table:template>
+                <table:customData>
+                    <core:CustomData key="Period" value="{syntPeriod>/Month12}"></core:CustomData>
+                </table:customData>
+            </table:Column>
+            <table:Column width="8rem" >
+                <table:multiLabels>
+                    <Label text="{i18n>prev.currYear}" />
+                    <Label text="{i18n>prev.CumulN}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>CumulN}) &lt; 0 ? 'Error': 'None'}" text="{path: 'prevision>CumulN', formatter: '.formatNumber'}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem" headerSpan="5">
+                <table:multiLabels>
+                    <Label text="{i18n>prev.nextYear}" />
+                    <Label text="{i18n>prev.T1}" />
+                </table:multiLabels>
+                <table:template>
+                    <Input change="onChangePrevision" textAlign="End" value="{path: 'prevision>T1', formatter: '.formatNumber'}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem" >
+                <table:multiLabels>
+                    <Label text="{i18n>prev.nextYear}" />
+                    <Label text="{i18n>prev.T2}" />
+                </table:multiLabels>
+                <table:template>
+                    <Input change="onChangePrevision" textAlign="End" value="{path: 'prevision>T2', formatter: '.formatNumber'}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem" >
+                <table:multiLabels>
+                    <Label text="{i18n>prev.nextYear}" />
+                    <Label text="{i18n>prev.T3}" />
+                </table:multiLabels>
+                <table:template>
+                    <Input change="onChangePrevision" textAlign="End" value="{path: 'prevision>T3', formatter: '.formatNumber'}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem" >
+                <table:multiLabels>
+                    <Label text="{i18n>prev.nextYear}" />
+                    <Label text="{i18n>prev.T4}" />
+                </table:multiLabels>
+                <table:template>
+                    <Input change="onChangePrevision" textAlign="End" value="{path: 'prevision>T4', formatter: '.formatNumber'}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem" >
+                <table:multiLabels>
+                    <Label text="{i18n>prev.nextYear}" />
+                    <Label text="{i18n>prev.CumulN+1}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>CumulN+1}) &lt; 0 ? 'Error': 'None'}" text="{path: 'prevision>CumulN+1', formatter: '.formatNumber'}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem" >
+                    <Label text="{i18n>prev.YetToCome}" />
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>YetToCome}) &lt; 0 ? 'Error': 'None'}" text="{path: 'prevision>YetToCome', formatter: '.formatNumber'}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem" >
+                    <Label text="{i18n>prev.Forecast}" />
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Forecast}) &lt; 0 ? 'Error': 'None'}" text="{path: 'prevision>Forecast', formatter: '.formatNumber'}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem" >
+                    <Label text="{i18n>prev.CumulN-1}" />
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>CumulN-1}) &lt; 0 ? 'Error': 'None'}" text="{path: 'prevision>CumulN-1', formatter: '.formatNumber'}" />
+                </table:template>
+            </table:Column>
+        </table:columns>
+    </table:Table>
+    <table:Table id="PlanActualTab" rows="{prevision>/actual}" selectionMode="None" class="syntheseTab" visibleRowCount="7">
+        <table:columns>
+            <table:Column width="15rem" >
+                <Label text="{i18n>prev.actualTypeFact}" />
+                <table:template>
+                    <Text text="{prevision>TypeFact}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem" headerSpan="13">
+                <table:multiLabels>
+                    <Label text="{i18n>prev.currYear}" />
+                    <Label text="{i18n>synt.month1}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Month1}) &lt; 0 ? 'Error': 'None'}" text="{path: 'prevision>Month1', formatter: '.formatNumber'}" />
+                </table:template>
+                <table:customData>
+                    <core:CustomData key="Period" value="{syntPeriod>/Month1}"></core:CustomData>
+                </table:customData>
+            </table:Column>
+            <table:Column width="8rem" >
+                <table:multiLabels>
+                    <Label text="{i18n>prev.currYear}" />
+                    <Label text="{i18n>synt.month2}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Month2}) &lt; 0 ? 'Error': 'None'}" text="{path: 'prevision>Month2', formatter: '.formatNumber'}" />
+                </table:template>
+                <table:customData>
+                    <core:CustomData key="Period" value="{syntPeriod>/Month2}"></core:CustomData>
+                </table:customData>
+            </table:Column>
+            <table:Column width="8rem" >
+                <table:multiLabels>
+                    <Label text="{i18n>prev.currYear}" />
+                    <Label text="{i18n>synt.month3}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Month3}) &lt; 0 ? 'Error': 'None'}" text="{path: 'prevision>Month3', formatter: '.formatNumber'}" />
+                </table:template>
+                <table:customData>
+                    <core:CustomData key="Period" value="{syntPeriod>/Month3}"></core:CustomData>
+                </table:customData>
+            </table:Column>
+            <table:Column width="8rem" >
+                <table:multiLabels>
+                    <Label text="{i18n>prev.currYear}" />
+                    <Label text="{i18n>synt.month4}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Month4}) &lt; 0 ? 'Error': 'None'}" text="{path: 'prevision>Month4', formatter: '.formatNumber'}" />
+                </table:template>
+                <table:customData>
+                    <core:CustomData key="Period" value="{syntPeriod>/Month4}"></core:CustomData>
+                </table:customData>
+            </table:Column>
+            <table:Column width="8rem" >
+                <table:multiLabels>
+                    <Label text="{i18n>prev.currYear}" />
+                    <Label text="{i18n>synt.month5}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Month5}) &lt; 0 ? 'Error': 'None'}" text="{path: 'prevision>Month5', formatter: '.formatNumber'}" />
+                </table:template>
+                <table:customData>
+                    <core:CustomData key="Period" value="{syntPeriod>/Month5}"></core:CustomData>
+                </table:customData>
+            </table:Column>
+            <table:Column width="8rem" >
+                <table:multiLabels>
+                    <Label text="{i18n>prev.currYear}" />
+                    <Label text="{i18n>synt.month6}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Month6}) &lt; 0 ? 'Error': 'None'}" text="{path: 'prevision>Month6', formatter: '.formatNumber'}" />
+                </table:template>
+                <table:customData>
+                    <core:CustomData key="Period" value="{syntPeriod>/Month6}"></core:CustomData>
+                </table:customData>
+            </table:Column>
+            <table:Column width="8rem" >
+                <table:multiLabels>
+                    <Label text="{i18n>prev.currYear}" />
+                    <Label text="{i18n>synt.month7}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Month7}) &lt; 0 ? 'Error': 'None'}" text="{path: 'prevision>Month7', formatter: '.formatNumber'}" />
+                </table:template>
+                <table:customData>
+                    <core:CustomData key="Period" value="{syntPeriod>/Month7}"></core:CustomData>
+                </table:customData>
+            </table:Column>
+            <table:Column width="8rem" >
+                <table:multiLabels>
+                    <Label text="{i18n>prev.currYear}" />
+                    <Label text="{i18n>synt.month8}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Month8}) &lt; 0 ? 'Error': 'None'}" text="{path: 'prevision>Month8', formatter: '.formatNumber'}" />
+                </table:template>
+                <table:customData>
+                    <core:CustomData key="Period" value="{syntPeriod>/Month8}"></core:CustomData>
+                </table:customData>
+            </table:Column>
+            <table:Column width="8rem" >
+                <table:multiLabels>
+                    <Label text="{i18n>prev.currYear}" />
+                    <Label text="{i18n>synt.month9}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Month9}) &lt; 0 ? 'Error': 'None'}" text="{path: 'prevision>Month9', formatter: '.formatNumber'}" />
+                </table:template>
+                <table:customData>
+                    <core:CustomData key="Period" value="{syntPeriod>/Month9}"></core:CustomData>
+                </table:customData>
+            </table:Column>
+            <table:Column width="8rem" >
+                <table:multiLabels>
+                    <Label text="{i18n>prev.currYear}" />
+                    <Label text="{i18n>synt.month10}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Month10}) &lt; 0 ? 'Error': 'None'}" text="{path: 'prevision>Month10', formatter: '.formatNumber'}" />
+                </table:template>
+                <table:customData>
+                    <core:CustomData key="Period" value="{syntPeriod>/Month10}"></core:CustomData>
+                </table:customData>
+            </table:Column>
+            <table:Column width="8rem" >
+                <table:multiLabels>
+                    <Label text="{i18n>prev.currYear}" />
+                    <Label text="{i18n>synt.month11}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Month11}) &lt; 0 ? 'Error': 'None'}" text="{path: 'prevision>Month11', formatter: '.formatNumber'}" />
+                </table:template>
+                <table:customData>
+                    <core:CustomData key="Period" value="{syntPeriod>/Month11}"></core:CustomData>
+                </table:customData>
+            </table:Column>
+            <table:Column width="8rem" >
+                <table:multiLabels>
+                    <Label text="{i18n>prev.currYear}" />
+                    <Label text="{i18n>synt.month12}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Month12}) &lt; 0 ? 'Error': 'None'}" text="{path: 'prevision>Month12', formatter: '.formatNumber'}" />
+                </table:template>
+                <table:customData>
+                    <core:CustomData key="Period" value="{syntPeriod>/Month12}"></core:CustomData>
+                </table:customData>
+            </table:Column>
+            <table:Column width="8rem" >
+                <table:multiLabels>
+                    <Label text="{i18n>prev.currYear}" />
+                    <Label text="{i18n>prev.CumulN}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>CumulN}) &lt; 0 ? 'Error': 'None'}" text="{path: 'prevision>CumulN', formatter: '.formatNumber'}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem" headerSpan="5">
+                <table:multiLabels>
+                    <Label text="{i18n>prev.nextYear}" />
+                    <Label text="{i18n>prev.T1}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>T1}) &lt; 0 ? 'Error': 'None'}" text="{path: 'prevision>T1', formatter: '.formatNumber'}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem" >
+                <table:multiLabels>
+                    <Label text="{i18n>prev.nextYear}" />
+                    <Label text="{i18n>prev.T2}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>T2}) &lt; 0 ? 'Error': 'None'}" text="{path: 'prevision>T1', formatter: '.formatNumber'}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem" >
+                <table:multiLabels>
+                    <Label text="{i18n>prev.nextYear}" />
+                    <Label text="{i18n>prev.T3}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>T3}) &lt; 0 ? 'Error': 'None'}" text="{path: 'prevision>T1', formatter: '.formatNumber'}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem" >
+                <table:multiLabels>
+                    <Label text="{i18n>prev.nextYear}" />
+                    <Label text="{i18n>prev.T4}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>T4}) &lt; 0 ? 'Error': 'None'}" text="{path: 'prevision>T1', formatter: '.formatNumber'}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem" >
+                <table:multiLabels>
+                    <Label text="{i18n>prev.nextYear}" />
+                    <Label text="{i18n>prev.CumulN+1}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>CumulN+1}) &lt; 0 ? 'Error': 'None'}" text="{path: 'prevision>CumulN+1', formatter: '.formatNumber'}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem" >
+                    <Label text="{i18n>prev.YetToCome}" />
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>YetToCome}) &lt; 0 ? 'Error': 'None'}" text="{path: 'prevision>YetToCome', formatter: '.formatNumber'}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem" >
+                    <Label text="{i18n>prev.Forecast}" />
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Forecast}) &lt; 0 ? 'Error': 'None'}" text="{path: 'prevision>Forecast', formatter: '.formatNumber'}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="8rem" >
+                    <Label text="{i18n>prev.CumulN-1}" />
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>CumulN-1}) &lt; 0 ? 'Error': 'None'}" text="{path: 'prevision>CumulN-1', formatter: '.formatNumber'}" />
+                </table:template>
+            </table:Column>
+        </table:columns>
+    </table:Table>
+</core:FragmentDefinition>

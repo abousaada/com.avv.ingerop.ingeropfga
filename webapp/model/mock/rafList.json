@@ -1,0 +1,93 @@
+{
+    "results": [
+        {
+            "Mission": "<<FGAName>>",
+            "items": [
+                {
+                    "Mission": "Concours(APS)",
+                    "Status": "Acquis"
+                },
+                {
+                    "Mission": "TF APD",
+                    "Status": "Acquis"
+                },
+                {
+                    "Mission": "TF PC",
+                    "Status": "Acquis"
+                },
+                {
+                    "Mission": "TF PRO",
+                    "Status": "Acquis"
+                },
+                {
+                    "Mission": "TF VISA",
+                    "Status": "Acquis"
+                },
+                {
+                    "Mission": "TF DET",
+                    "Status": "Acquis"
+                },
+                {
+                    "Mission": "TF AOR",
+                    "Status": "Acquis"
+                },
+                {
+                    "Mission": "TF SYN",
+                    "Status": "Acquis"
+                },
+                {
+                    "Mission": "TC1 VISA",
+                    "Status": "Acquis"
+                },
+                {
+                    "Mission": "TC1 DET",
+                    "Status": "Acquis"
+                },
+                {
+                    "Mission": "TC1 AOR",
+                    "Status": "Acquis"
+                },
+                {
+                    "Mission": "TC1 SYN",
+                    "Status": "Acquis"
+                },
+                {
+                    "Mission": "TC2 APD",
+                    "Status": "Non acquis"
+                },
+                {
+                    "Mission": "TC2 PRO",
+                    "Status": "Non acquis"
+                },
+                {
+                    "Mission": "TC2 ACT",
+                    "Status": "Non acquis"
+                },
+                {
+                    "Mission": "TC2 VISA",
+                    "Status": "Non acquis"
+                },
+                {
+                    "Mission": "TC2 DET",
+                    "Status": "Non acquis"
+                },
+                {
+                    "Mission": "TC2 AOR",
+                    "Status": "Non acquis"
+                },
+                {
+                    "Mission": "TC2 SYN",
+                    "Status": "Non acquis"
+                },
+                {
+                    "Mission": "TC2 CSSI",
+                    "Status": "Non acquis"
+                },
+                {
+                    "Mission": "TC2 SEDI",
+                    "Status": "Non acquis"
+                }
+            ]
+        }
+    ]
+}

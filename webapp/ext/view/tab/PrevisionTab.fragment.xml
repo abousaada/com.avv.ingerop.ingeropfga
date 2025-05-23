@@ -1,0 +1,9 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core"  
+	xmlns:l="sap.ui.layout">
+    <Panel expanded="true" expandable="true" headerText="{i18n>synt.tab.prevision.planning}">
+        <core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.prevision.FinancialPlanning" type="XML" />
+    </Panel>
+    <Panel expanded="true" expandable="true" headerText="{i18n>synt.tab.prevision.simulation}">
+        <core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.prevision.Simulation" type="XML" />
+    </Panel>
+</core:FragmentDefinition>

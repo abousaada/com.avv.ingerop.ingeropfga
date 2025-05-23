@@ -1,0 +1,274 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core"  
+	xmlns:l="sap.ui.layout"
+    xmlns:table="sap.ui.table"
+	xmlns:f="sap.ui.layout.form">
+    <!-- Replace Table with TreeTable -->
+    <table:TreeTable id="STIncomeTab" 
+                     class="small-text"
+                     rows="{path: 'budget>/results', parameters: {arrayNames: ['children']}}" 
+                     selectionMode="None" rowsUpdated="onRowsUpdatedBudgetTab">
+        <table:extension>
+            <Toolbar class="sapMTBHeader-CTX">
+                <ToolbarSpacer />
+                <Button text="{i18n>btn.openSTProfile}" press="onBtnOpenSTProfilePress" type="Emphasized" />
+            </Toolbar>
+        </table:extension>
+        <table:rowSettingsTemplate>
+            <table:RowSettings highlight="{= ${budget>Status} === 'Non acquis' ? 'Error' : 'None'}" />
+        </table:rowSettingsTemplate>
+        <table:columns>
+            <table:Column width="10rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.mission}" />
+				</table:multiLabels>
+                <table:template>
+                    <!-- Conditional rendering: Link for first level, Text for others -->
+                    <VBox>
+                        <Link text="{budget>Mission}" press="onMissionLinkPress" 
+                              visible="{= ${budget>level} === '0'}" />
+                        <Text text="{budget>Mission}" 
+                              visible="{= ${budget>level} !== '0'}" />
+                    </VBox>
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.missionName}" />
+				</table:multiLabels>
+                <table:template>
+                    <Text text="{budget>MissionName}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="10rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.startDate}" />
+				</table:multiLabels>
+                <table:template>
+                    <Text text="{budget>StartDate}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="10rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.endDate}" />
+				</table:multiLabels>
+                <table:template>
+                    <Text text="{budget>EndDate}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="6rem" headerSpan="7">
+                <table:multiLabels>
+                    <Label text="{i18n>budget.internalHeader}" />
+                    <!--Label text="{stProfile>/Internal1Name}" />
+                    <Label text="{stProfile>/Internal1ID}" />
+                    <Label text="{stProfile>/Internal1Type}" / -->
+                    
+                    <Label text="{stProfile>/Internal1Name}" />
+                    <Label text="{stProfile>/Internal1ID}" />
+                    <Label text="{stProfile>/Internal1Type}" />
+                    <Label text="" />
+				</table:multiLabels>
+                <table:template>
+                    <VBox>
+                        <Input class="custNegValue" change="onChangeBudget" textAlign="End" value="{budget>Internal1}" 
+                        visible="{= ${budget>children}.length === 0 }" />
+                        <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Internal1}) &lt; 0 ? 'Error': 'None'}" text="{budget>Internal1}" visible="{= !!${budget>Type}}" />
+                    </VBox>
+                </table:template>
+            </table:Column>
+            <table:Column width="6rem">
+                <table:multiLabels>
+                    <Label text="{i18n>budget.internalHeader}" />
+                    <Label text="{stProfile>/Internal2Name}" />
+                    <Label text="{stProfile>/Internal2ID}" />
+                    <Label text="{stProfile>/Internal2Type}" />
+                    <Label text="" />
+				</table:multiLabels>
+                <table:template>
+                    <VBox>
+                        <Input class="custNegValue" change="onChangeBudget" textAlign="End" value="{budget>Internal2}" 
+                        visible="{= ${budget>children}.length === 0 }" />
+                        <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Internal2}) &lt; 0 ? 'Error': 'None'}" text="{budget>Internal2}" visible="{= !!${budget>Type}}" />
+                    </VBox>
+                </table:template>
+            </table:Column>
+            <table:Column width="6rem">
+                <table:multiLabels>
+                    <Label text="{i18n>budget.internalHeader}" />
+                    <Label text="{stProfile>/Internal3Name}" />
+                    <Label text="{stProfile>/Internal3ID}" />
+                    <Label text="{stProfile>/Internal3Type}" />
+                    <Label text="" />
+				</table:multiLabels>
+                <table:template>
+                    <VBox>
+                        <Input class="custNegValue" change="onChangeBudget" textAlign="End" value="{budget>Internal3}" visible="{= ${budget>children}.length === 0 }" />
+                        <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Internal3}) &lt; 0 ? 'Error': 'None'}" text="{budget>Internal3}" visible="{= !!${budget>Type}}" />
+                    </VBox>
+                </table:template>
+            </table:Column>
+            <table:Column width="6rem">
+                <table:multiLabels>
+                    <Label text="{i18n>budget.internalHeader}" />
+                    <Label text="{stProfile>/Internal4Name}" />
+                    <Label text="{stProfile>/Internal4ID}" />
+                    <Label text="{stProfile>/Internal4Type}" />
+                    <Label text="" />
+				</table:multiLabels>
+                <table:template>
+                    <VBox>
+                        <Input class="custNegValue" change="onChangeBudget" textAlign="End" value="{budget>Internal4}" visible="{= ${budget>children}.length === 0 }" />
+                        <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Internal4}) &lt; 0 ? 'Error': 'None'}" text="{budget>Internal4}" visible="{= !!${budget>Type}}" />
+                    </VBox>
+                </table:template>
+            </table:Column>
+            <table:Column width="6rem">
+                <table:multiLabels>
+                    <Label text="{i18n>budget.internalHeader}" />
+                    <Label text="{stProfile>/Internal5Name}" />
+                    <Label text="{stProfile>/Internal5ID}" />
+                    <Label text="{stProfile>/Internal5Type}" />
+                    <Label text="" />
+				</table:multiLabels>
+                <table:template>
+                    <VBox>
+                        <Input class="custNegValue" change="onChangeBudget" textAlign="End" value="{budget>Internal5}" visible="{= ${budget>children}.length === 0 }" />
+                        <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Internal5}) &lt; 0 ? 'Error': 'None'}" text="{budget>Internal5}" visible="{= !!${budget>Type}}" />
+                    </VBox>
+                </table:template>
+            </table:Column>
+            <table:Column width="6rem">
+                <table:multiLabels>
+                    <Label text="{i18n>budget.internalHeader}" />
+                    <Label text="{stProfile>/Internal6Name}" />
+                    <Label text="{stProfile>/Internal6ID}" />
+                    <Label text="{stProfile>/Internal6Type}" />
+                    <Label text="" />
+				</table:multiLabels>
+                <table:template>
+                    <VBox>
+                        <Input class="custNegValue" change="onChangeBudget" textAlign="End" value="{budget>Internal6}" visible="{= ${budget>children}.length === 0 }" />
+                        <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Internal6}) &lt; 0 ? 'Error': 'None'}" text="{budget>Internal6}" visible="{= !!${budget>Type}}" />
+                    </VBox>
+                </table:template>
+            </table:Column>
+            <table:Column width="6rem">
+                <table:multiLabels>
+                    <Label text="{i18n>budget.internalHeader}" />
+                    <Label text="{stProfile>/Internal7Name}" />
+                    <Label text="{stProfile>/Internal7ID}" />
+                    <Label text="{stProfile>/Internal7Type}" />
+                    <Label text="" />
+				</table:multiLabels>
+                <table:template>
+                    <VBox>
+                        <Input class="custNegValue" change="onChangeBudget" textAlign="End" value="{budget>Internal7}" visible="{= ${budget>children}.length === 0 }" />
+                        <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Internal7}) &lt; 0 ? 'Error': 'None'}" text="{budget>Internal7}" visible="{= !!${budget>Type}}" />
+                    </VBox>
+                </table:template>
+            </table:Column>
+            <!-- <table:Column width="6rem">
+                <table:multiLabels>
+                    <Label text="{i18n>budget.internalHeader}" />
+                    <Label text="{stProfile>/Internal8Name}" />
+                    <Label text="{stProfile>/Internal8ID}" />
+                    <Label text="{stProfile>/Internal8Type}" />
+                    <Label text="" />
+				</table:multiLabels>
+                <table:template>
+                    <VBox>
+                        <Input class="custNegValue" change="onChangeBudget" textAlign="End" value="{budget>Internal8}" visible="{= ${budget>children}.length === 0 }" />
+                        <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Internal8}) &lt; 0 ? 'Error': 'None'}" text="{budget>Internal8}" visible="{= !!${budget>Type}}" />
+                    </VBox>
+                </table:template>
+            </table:Column>
+            <table:Column width="6rem">
+                <table:multiLabels>
+                    <Label text="{i18n>budget.internalHeader}" />
+                    <Label text="{stProfile>/Internal9Name}" />
+                    <Label text="{stProfile>/Internal9ID}" />
+                    <Label text="{stProfile>/Internal9Type}" />
+                    <Label text="" />
+				</table:multiLabels>
+                <table:template>
+                    <VBox>
+                        <Input class="custNegValue" change="onChangeBudget" textAlign="End" value="{budget>Internal9}" visible="{= ${budget>children}.length === 0 }" />
+                        <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Internal9}) &lt; 0 ? 'Error': 'None'}" text="{budget>Internal9}" visible="{= !!${budget>Type}}" />
+                    </VBox>
+                </table:template>
+            </table:Column>
+            <table:Column width="6rem">
+                <table:multiLabels>
+                    <Label text="{i18n>budget.internalHeader}" />
+                    <Label text="{stProfile>/Internal10Name}" />
+                    <Label text="{stProfile>/Internal10ID}" />
+                    <Label text="{stProfile>/Internal10Type}" />
+                    <Label text="" />
+				</table:multiLabels>
+                <table:template>
+                    <VBox>
+                        <Input class="custNegValue" change="onChangeBudget" textAlign="End" value="{budget>Internal10}" visible="{= ${budget>children}.length === 0 }" />
+                        <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Internal10}) &lt; 0 ? 'Error': 'None'}" text="{budget>Internal10}" visible="{= !!${budget>Type}}" />
+                    </VBox>
+                </table:template>
+            </table:Column> -->
+            <table:Column headerSpan="3">
+                <table:multiLabels>
+                    <Label text="{i18n>budget.invHeader3}" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.invContractInterUFO}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>INVContractInterUFO}) &lt; 0 ? 'Error': 'None'}" text="{path: 'budget>INVContractInterUFO', formatter: '.formatNumber'}" />
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="{i18n>budget.invHeader3}" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.invContractIntraUFO}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>INVContractIntraUFO}) &lt; 0 ? 'Error': 'None'}" text="{path: 'budget>INVContractIntraUFO', formatter: '.formatNumber'}" />
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="{i18n>budget.invHeader3}" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.invContractCoefST}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>INVContractCoefST}) &lt; 0 ? 'Error': 'None'}" text="{path: 'budget>INVContractCoefST', formatter: '.formatNumber'}" />
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <Label text="{i18n>budget.invComment}" />
+                <table:template>
+                    <Text text="{budget>SCComment}" />
+                </table:template>
+            </table:Column>
+        </table:columns>
+    </table:TreeTable>
+</core:FragmentDefinition>

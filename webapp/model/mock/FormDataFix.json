@@ -1,0 +1,43 @@
+{
+    "HOAI_2021": {
+      "SalesOrder": "",
+      "Customer": "1000010",
+      "WBSElement": "",
+      "Version": "H2021",
+      "Law": "1",
+      "Cost": "",
+      "Zone": "1",
+      "TarifType": "1",
+      "VATPercent": "19",
+      "Realize": {
+        "p1%": "2",
+        "p2%": "7",
+        "p3%": "15",
+        "p4%": "3",
+        "p5%": "25",
+        "p6%": "10",
+        "p7%": "4",
+        "p8%": "32",
+        "p9%": "2",
+        "p1Flag": true,
+        "p2Flag": true,
+        "p3Flag": true,
+        "p4Flag": true,
+        "p5Flag": true,
+        "p6Flag": true,
+        "p7Flag": true,
+        "p8Flag": true,
+        "p9Flag": true,
+        "p1Visible": true,
+        "p2Visible": true,
+        "p3Visible": true,
+        "p4Visible": true,
+        "p5Visible": true,
+        "p6Visible": true,
+        "p7Visible": true,
+        "p8Visible": true,
+        "p9Visible": true
+      }
+    }
+  
+}

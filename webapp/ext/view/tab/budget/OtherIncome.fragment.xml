@@ -1,0 +1,151 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout"
+    xmlns:table="sap.ui.table"
+    xmlns:f="sap.ui.layout.form">
+    <!--table:Table id="OtherIncomeTab" visibleRowCount="26" visibleRowCountMode="Fixed" class="syntheseTab" rows="{budget>/results}" selectionMode="None" rowsUpdated="onRowsUpdatedBudgetTab" -->        
+    <table:TreeTable id="OtherIncomeTab" visibleRowCount="26" visibleRowCountMode="Fixed" class="syntheseTab" 
+                     rows="{path: 'budget>/results', parameters: {arrayNames: ['children']}}" 
+                     selectionMode="None" rowsUpdated="onRowsUpdatedBudgetTab" 
+                     enableGrouping="true" collapseRecursive="false">    
+        <table:extension>
+            <Toolbar class="sapMTBHeader-CTX">
+                <ToolbarSpacer />
+            </Toolbar>
+        </table:extension>
+        <table:rowSettingsTemplate>
+            <table:RowSettings highlight="{= ${budget>Status} === 'Non acquis' ? 'Error' : 'None'}" />
+        </table:rowSettingsTemplate>
+        <table:columns>
+            <table:Column width="10rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.mission}" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{budget>Mission}" />
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.missionName}" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{budget>MissionName}" />
+                </table:template>
+            </table:Column>
+            <table:Column headerSpan="6">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="{i18n>budget.TravelExpense1}" />
+                    <Label text="{i18n>budget.TravelExpense2}" />
+                </table:multiLabels>
+                <table:template>
+                    <VBox>
+                        <Input change="onChangeBudget" textAlign="End" value="{path: 'budget>TravelExpense', formatter:'.formatNumber'}" visible="{= ${budget>children}.length === 0 }" />
+                        <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>TravelExpense}) &lt; 0 ? 'Error': 'None'}"  text="{path: 'budget>TravelExpense', formatter:'.formatNumber'}" visible="{= !!${budget>Type}}" />
+                    </VBox>
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="{i18n>budget.OtherExpense1}" />
+                    <Label text="{i18n>budget.OtherExpense2}" />
+                </table:multiLabels>
+                <table:template>
+                    <VBox>
+                        <Input change="onChangeBudget" textAlign="End" value="{path: 'budget>OtherExpense', formatter:'.formatNumber'}" visible="{= ${budget>children}.length === 0 }" />
+                        <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>OtherExpense}) &lt; 0 ? 'Error': 'None'}"  text="{path: 'budget>OtherExpense', formatter:'.formatNumber'}" visible="{= !!${budget>Type}}" />
+                    </VBox>
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="{i18n>budget.Study1}" />
+                    <Label text="{i18n>budget.Study2}" />
+                </table:multiLabels>
+                <table:template>
+                    <VBox>
+                        <Input change="onChangeBudget" textAlign="End" value="{path: 'budget>Study', formatter:'.formatNumber'}" 
+                        visible="{= ${budget>children}.length === 0 }" />
+                        <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Study}) &lt; 0 ? 'Error': 'None'}"  text="{path: 'budget>Study', formatter:'.formatNumber'}" visible="{= !!${budget>Type}}" />
+                    </VBox>
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="{i18n>budget.ClaimLitigation1}" />
+                    <Label text="{i18n>budget.ClaimLitigation2}" />
+                </table:multiLabels>
+                <table:template>
+                    <VBox>
+                        <Input change="onChangeBudget" textAlign="End" value="{path: 'budget>ClaimLitigation', formatter:'.formatNumber'}" visible="{= ${budget>children}.length === 0 }" />
+                        <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>ClaimLitigation}) &lt; 0 ? 'Error': 'None'}"  text="{path: 'budget>ClaimLitigation', formatter:'.formatNumber'}" visible="{= !!${budget>Type}}" />
+                    </VBox>
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="{i18n>budget.OtherRisk1}" />
+                    <Label text="{i18n>budget.OtherRisk2}" />
+                </table:multiLabels>
+                <table:template>
+                    <VBox>
+                        <Input change="onChangeBudget" textAlign="End" value="{path: 'budget>OtherRisk', formatter:'.formatNumber'}" visible="{= ${budget>children}.length === 0 }" />
+                        <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>OtherRisk}) &lt; 0 ? 'Error': 'None'}"  text="{path: 'budget>OtherRisk', formatter:'.formatNumber'}" visible="{= !!${budget>Type}}" />
+                    </VBox>
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.OtherForecast}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>OtherForecast}) &lt; 0 ? 'Error': 'None'}"  text="{path: 'budget>OtherForecast', formatter:'.formatNumber'}" />
+                </table:template>
+            </table:Column>
+            <table:Column headerSpan="2">
+                <table:multiLabels>
+                    <Label text="{i18n>budget.costHeader}" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.OtherActual}" />
+                </table:multiLabels>
+                <table:template>
+                    <VBox>
+                        <Input change="onChangeBudget" textAlign="End" value="{path: 'budget>OtherActual', formatter:'.formatNumber'}" visible="{= ${budget>children}.length === 0 }" />
+                        <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>OtherActual}) &lt; 0 ? 'Error': 'None'}"  text="{path: 'budget>OtherActual', formatter:'.formatNumber'}" visible="{= !!${budget>Type}}" />
+                    </VBox>
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="{i18n>budget.costHeader}" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.OtherYetToCome}" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>OtherYetToCome}) &lt; 0 ? 'Error': 'None'}"  text="{path: 'budget>OtherYetToCome', formatter:'.formatNumber'}" />
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.invComment}" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{budget>OtherComment}" />
+                </table:template>
+            </table:Column>
+        </table:columns>
+    </table:TreeTable>
+</core:FragmentDefinition>

@@ -1,0 +1,83 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:l="sap.ui.layout"
+    xmlns:core="sap.ui.core">
+    <Table editable="true"  class="sapUiSmallMarginBottom">
+        <columns>
+            <Column></Column>
+            <Column></Column>
+        </columns>
+        <items>
+            <ColumnListItem>
+                <cells>
+                    <Label text="{i18n>form.price.cost}" />
+                    <Input id="priceCost" value="{FormDataFix>/HOAI_2021/Cost}" description="â‚¬" fieldWidth="90%">
+                        <layoutData>
+                            <l:GridData span="XL1 L2 M2 S4" />
+                        </layoutData>
+                    </Input>
+                </cells>
+            </ColumnListItem>
+            <ColumnListItem>
+                <cells>
+                    <Label text="{i18n>form.price.tax}" />
+                    <Input value="" description="%" fieldWidth="90%">
+                        <layoutData>
+                            <l:GridData span="XL1 L2 M2 S4" />
+                        </layoutData>
+                    </Input>
+                </cells>
+            </ColumnListItem>
+            <ColumnListItem>
+                <cells>
+                    <Label text="{i18n>form.price.timecost}" />
+                    <Input value="" description="â‚¬" fieldWidth="90%">
+                        <layoutData>
+                            <l:GridData span="XL1 L2 M2 S4" />
+                        </layoutData>
+                    </Input>
+                </cells>
+            </ColumnListItem>
+            <ColumnListItem>
+                <cells>
+                    <Label text="{i18n>form.price.service}" />
+                    <Input value="" description="â‚¬" fieldWidth="90%">
+                        <layoutData>
+                            <l:GridData span="XL1 L2 M2 S4" />
+                        </layoutData>
+                    </Input>
+                </cells>
+            </ColumnListItem>
+            <ColumnListItem>
+                <cells>
+                    <Label text="{i18n>form.price.addservice}" />
+                    <Input value="" description="â‚¬" fieldWidth="90%">
+                        <layoutData>
+                            <l:GridData span="XL1 L2 M2 S4" />
+                        </layoutData>
+                    </Input>
+                </cells>
+            </ColumnListItem>
+            <ColumnListItem>
+                <cells>
+                    <Label text="{i18n>form.price.addcost}" />
+                    <Input value="" description="%" fieldWidth="90%">
+                        <layoutData>
+                            <l:GridData span="XL1 L2 M2 S4" />
+                        </layoutData>
+                    </Input>
+                </cells>
+            </ColumnListItem>
+            <ColumnListItem>
+                <cells>
+                    <Label text="{i18n>form.price.vat}" />
+                    <Input id="MwStPercent" value="{FormDataFix>/HOAI_2021/VATPercent}" description="%" fieldWidth="90%">
+                        <layoutData>
+                            <l:GridData span="XL1 L2 M2 S4" />
+                        </layoutData>
+                    </Input>
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+</core:FragmentDefinition>

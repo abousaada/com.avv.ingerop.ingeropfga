@@ -1,0 +1,65 @@
+<core:FragmentDefinition xmlns="sap.m"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:l="sap.ui.layout"
+	xmlns:core="sap.ui.core">
+
+    <Panel expandable="true" visible="{settings>/showResult}" expanded="true" headerText="{i18n>result.header.title}" class="customHeaderTitle">
+		<VBox visible="{settings>/showResult}" class="sapUiSmallMarginBottom">
+			<!-- <Panel width="100%" class="sapUiSmallMarginBottom">
+				<headerToolbar>
+					<OverflowToolbar width="100%">
+						<Title text="{i18n>result.title}"/>
+					</OverflowToolbar>
+				</headerToolbar>
+				<OverflowToolbar>
+						<content>
+							<ToolbarSpacer />
+							<Title text="{i18n>result.header.title}" level="H2"/>
+							<ToolbarSpacer />
+						</content>
+					</OverflowToolbar>
+				<content>
+				</content>
+			</Panel> -->
+
+			<!-- <OverflowToolbar class="customHeaderTitle">
+				<content>
+					<ToolbarSpacer />
+					<Title text="{i18n>result.header.title}" level="H2"/>
+					<ToolbarSpacer />
+				</content>
+			</OverflowToolbar> -->
+
+
+			<core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.hoai.result.ResultHeader" type="XML" />
+			<core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.hoai.result.ResultInterpolation" type="XML" />
+			<core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.hoai.result.ResultSummary" type="XML" />
+			<core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.hoai.result.ResultRealizePhaseTab" type="XML" />
+			
+
+			<FlexBox alignItems="Center" justifyContent="Center">
+				<items>
+					<Button type="Default" press="submit" text="{i18n>result.btn.print}" width="100%" />
+				</items>
+			</FlexBox>
+			<FlexBox alignItems="Center" justifyContent="Center">
+				<items>
+					<Button type="Default" press="submit" text="{i18n>result.btn.exportPDF}" width="100%" />
+				</items>
+			</FlexBox>
+			<FlexBox alignItems="Center" justifyContent="Center">
+				<items>
+					<Button type="Default" press="submit" text="{i18n>result.btn.exportEmail}" width="100%" />
+				</items>
+			</FlexBox>
+			<FlexBox alignItems="Center" justifyContent="Center">
+				<items>
+					<Button type="Emphasized" press="onCreateSO" text="{i18n>result.btn.save}" width="100%" />
+				</items>
+			</FlexBox>
+
+		</VBox>
+	</Panel>
+
+
+</core:FragmentDefinition>

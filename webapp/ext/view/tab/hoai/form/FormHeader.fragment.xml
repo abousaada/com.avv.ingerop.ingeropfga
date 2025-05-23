@@ -1,0 +1,58 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:l="sap.ui.layout"
+    xmlns:core="sap.ui.core">
+    <VBox alignItems="Center"  class="sapUiSmallMarginBottom">
+        <!-- Mention -->
+        <!--<Title text="{i18n>form.header.title1}" class="sapUiSmallMarginBottom" />
+        <HBox class="sapUiSmallMarginBottom">
+            <Text text="{i18n>form.header.so}:" />
+            <Input value="{FormDataFix>/HOAI_2021/SalesOrder}" />
+        </HBox>
+        <HBox class="sapUiSmallMarginBottom">
+            <Text text="{i18n>form.header.customer}:" />
+            <Input value="{FormDataFix>/HOAI_2021/Customer}" />
+        </HBox>
+        <HBox class="sapUiSmallMarginBottom">
+            <Text text="{i18n>form.header.otp}:" />
+            <Input value="{FormDataFix>/HOAI_2021/WBSElement}" />
+        </HBox> -->
+        <Title text="{i18n>form.header.title2}" class="sapUiSmallMarginBottom" />
+        <!-- Version -->
+        <HBox class="sapUiSmallMarginBottom">
+            <Text text="{i18n>form.header.version}:" />
+            <ComboBox items="{type>/results}" selectedKey="{FormDataFix>/HOAI_2021/Version}">
+                <items>
+                    <core:Item key="{type>ID}" text="{type>Text}" />
+                </items>
+            </ComboBox>
+        </HBox>
+
+
+        <!-- <Title text="Title" class="sapUiSmallMarginBottom" /> -->
+        <!-- Law -->
+        <ComboBox items="{law>/results}" selectedKey="{FormDataFix>/HOAI_2021/Law}" change="onChangeLaw" width="20rem" class="sapUiSmallMarginBottom">
+            <items>
+                <core:Item key="{law>ID}" text="{law>Text}" />
+            </items>
+        </ComboBox>
+        <!-- Zone -->
+        <HBox>
+            <Text text="{i18n>form.header.zone}:" />
+            <ComboBox items="{zone>/results}" selectedKey="{FormDataFix>/HOAI_2021/Zone}">
+                <items>
+                    <core:Item key="{zone>ID}" text="{zone>Text}" />
+                </items>
+            </ComboBox>
+        </HBox>
+        <!-- Tarif -->
+        <HBox>
+            <Text text="{i18n>form.header.tarif}:" />
+            <ComboBox items="{tarif>/results}" selectedKey="{FormDataFix>/HOAI_2021/TarifType}">
+                <items>
+                    <core:Item key="{tarif>ID}" text="{tarif>Text}" />
+                </items>
+            </ComboBox>
+        </HBox>
+    </VBox>
+</core:FragmentDefinition>

@@ -1,0 +1,62 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:l="sap.ui.layout"
+    xmlns:core="sap.ui.core">
+    
+		<VBox class="sapUiSmallMargin">
+			<f:Form id="ResultForm1" class="customForm" editable="false">
+				<f:title>
+					<core:Title text="{FormData>/HOAI_2021/Law}" />
+				</f:title>
+				<f:layout>
+                <f:ResponsiveGridLayout labelSpanXL="8" labelSpanL="8" labelSpanM="6" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false" />
+            </f:layout>
+				<f:formContainers>
+					<f:FormContainer>
+						<f:formElements>
+							<f:FormElement label="{i18n>form.header.otp}">
+								<f:fields>
+									<Text text="{FormData>/HOAI_2021/WBSElement}"/>
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="{i18n>form.price.cost}">
+								<f:fields>
+									<Text text="{path: 'FormData>/HOAI_2021/Cost', formatter: '.formatter.formatCurrency'}&#x20AC;"/>
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="{i18n>result.tab1.zone}">
+								<f:fields>
+									<Text text="{FormData>/HOAI_2021/Zone}"/>
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="{i18n>result.tab1.tariffee}">
+								<f:fields>
+									<Text text="{FormData>/HOAI_2021/TarifType}"/>
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="{i18n>result.tab1.deliveryservice}">
+								<f:fields>
+									<Text id="NetFee" text="{FormData>/HOAI_2021/Realize/Total%}% = {path: 'FormData>/HOAI_2021/Realize/Totalâ‚¬', formatter: '.formatter.formatCurrency'}&#x20AC;"/>
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="{i18n>result.tab1.fixcost}">
+								<f:fields>
+									<Text text="{path: 'FormData>/HOAI_2021/NetCost', formatter: '.formatter.formatCurrency'}&#x20AC;"/>
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="{i18n>result.tab1.vat} {FormData>/HOAI_2021/VATPercent}%">
+								<f:fields>
+									<Text id="MwSt" text="{path: 'FormData>/HOAI_2021/VATValue', formatter: '.formatter.formatCurrency'}&#x20AC;"/>
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="{i18n>result.tab1.total}">
+								<f:fields>
+									<Text text="{path: 'FormData>/HOAI_2021/BrutCost', formatter: '.formatter.formatCurrency'}&#x20AC;"/>
+								</f:fields>
+							</f:FormElement>
+						</f:formElements>
+					</f:FormContainer>
+				</f:formContainers>
+			</f:Form>
+		</VBox>
+</core:FragmentDefinition>

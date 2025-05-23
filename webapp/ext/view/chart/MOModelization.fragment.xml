@@ -1,0 +1,68 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:viz="sap.viz.ui5.controls" xmlns:layout="sap.ui.layout" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+    xmlns:viz.data="sap.viz.ui5.data" height="100%">
+    <layout:FixFlex minFlexSize="400">
+        <!--Below is the setting panel -->
+        <layout:fixContent>
+            
+        </layout:fixContent>
+        <layout:flexContent>
+            <!-- <viz:Popover id="idPopOver"></viz:Popover> -->
+            <viz:VizFrame uiConfig="{applicationSet:'fiori'}" vizProperties="{
+                        plotArea: {
+                            window: {
+                                start: 'firstDataPoint',
+                                end: 'lastDataPoint'
+                            },
+                            dataLabel: {
+                                visible: false
+                            },
+                            colorPalette:['#333399','#CCCCFF']
+                        },
+                        valueAxis: {
+                            visible: true,
+                            title: {
+                                visible: false
+                            }
+                        },
+                        timeAxis: {
+                            title: {
+                                visible: false
+                            },
+                            interval : {
+                                unit : ''
+                            }
+                        },
+                        title: {
+                            visible: true,
+                            text: 'Workforce Modeling'
+                        },
+                        interaction: {
+                            syncValueAxis: false
+                        }
+                    }"
+                height='100%' width="100%" vizType='timeseries_line'>
+                <viz:dataset>
+                    <viz.data:FlattenedDataset data="{moModelization>/results}">
+                        <viz.data:dimensions>
+                            <viz.data:DimensionDefinition name="Mois"
+                                value="{moModelization>Date}" dataType="date"/>
+                        </viz.data:dimensions>
+                        <viz.data:measures>
+                            <viz.data:MeasureDefinition name="Modele"
+                                value="{moModelization>CumulModel}" />
+                            <viz.data:MeasureDefinition name="Reel"
+                                value="{moModelization>CumulActual}" />
+                        </viz.data:measures>
+                    </viz.data:FlattenedDataset>
+                </viz:dataset>
+
+                <viz:feeds>
+                    <viz.feeds:FeedItem uid="valueAxis" type="Measure"
+                        values="Modele,Reel" />
+                    <viz.feeds:FeedItem uid="timeAxis" type="Dimension"
+                        values="Mois" />
+                </viz:feeds>
+            </viz:VizFrame>
+        </layout:flexContent>
+</layout:FixFlex>
+</core:FragmentDefinition>

@@ -1,0 +1,16 @@
+{
+    "results": [
+        {
+            "Type": "P0",
+            "Percent": 0
+        },
+        {
+            "Type": "P1",
+            "Percent": 10
+        },
+        {
+            "Type": "P2",
+            "Percent": -10
+        }
+    ]
+}

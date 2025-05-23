@@ -1,0 +1,10 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m">
+<Page showHeader="false">
+    <Tree
+        id="Tree"
+        items="{path: 'rafList>/results'}" mode="SingleSelectMaster" selectionChange="onRAFListItemPress">
+        <StandardTreeItem title="{rafList>Mission}" 
+            highlight="{= ${rafList>Status} === 'Non acquis' ? 'Error' : ( ${rafList>Status} === 'RÃ©clamÃ©' ? 'Warning' : 'None')}"  />
+    </Tree>
+    </Page>
+</core:FragmentDefinition>

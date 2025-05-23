@@ -1,0 +1,7 @@
+{
+    "items": [
+        { "CodeId": "TVA20", "Description": "Standard Rate (20%)" },
+        { "CodeId": "TVA10", "Description": "Reduced Rate (10%)" },
+        { "CodeId": "TVA5", "Description": "Super Reduced Rate (5.5%)" }
+    ]
+}

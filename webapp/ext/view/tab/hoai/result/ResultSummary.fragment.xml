@@ -1,0 +1,47 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:l="sap.ui.layout"
+    xmlns:core="sap.ui.core">
+
+    <VBox alignItems="Center" >
+        <f:Form id="ResultForm3" class="customFormReduce" editable="false">
+            <f:title>
+                <core:Title text="{i18n>result.tab3.title}" />
+            </f:title>
+            <f:layout>
+                <f:ResponsiveGridLayout labelSpanXL="12" labelSpanL="8" labelSpanM="8" labelSpanS="8" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false" />
+            </f:layout>
+            <f:formContainers>
+                <f:FormContainer>
+                    <f:formElements>
+                        <f:FormElement label="{i18n>result.tab3.p1}" >
+                            <f:fields>
+                                <Text text="{path: 'FormData>/HOAI_2021/Result/Base', formatter: '.formatter.formatCurrency'}&#x20AC;"/>
+                            </f:fields>
+                        </f:FormElement>
+                        <f:FormElement label="{i18n>result.tab3.p2}">
+                            <f:fields>
+                                <Text text="{path: 'FormData>/HOAI_2021/Result/OneQuarter', formatter: '.formatter.formatCurrency'}&#x20AC;"/>
+                            </f:fields>
+                        </f:FormElement>
+                        <f:FormElement label="{i18n>result.tab3.p3}">
+                            <f:fields>
+                                <Text text="{path: 'FormData>/HOAI_2021/Result/TwoQuarter', formatter: '.formatter.formatCurrency'}&#x20AC;"/>
+                            </f:fields>
+                        </f:FormElement>
+                        <f:FormElement label="{i18n>result.tab3.p4}">
+                            <f:fields>
+                                <Text text="{path: 'FormData>/HOAI_2021/Result/ThreeQuarter', formatter: '.formatter.formatCurrency'}&#x20AC;"/>
+                            </f:fields>
+                        </f:FormElement>
+                        <f:FormElement label="{i18n>result.tab3.p5}">
+                            <f:fields>
+                                <Text text="{path: 'FormData>/HOAI_2021/Result/Sup', formatter: '.formatter.formatCurrency'}&#x20AC;"/>
+                            </f:fields>
+                        </f:FormElement>
+                    </f:formElements>
+                </f:FormContainer>
+            </f:formContainers>
+        </f:Form>
+    </VBox>
+</core:FragmentDefinition>

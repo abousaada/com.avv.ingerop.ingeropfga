@@ -1,0 +1,84 @@
+{
+    "results": [
+        {
+            "ColumnName": "Revenue",
+            "P0": false,
+            "CumulN-1": false,
+            "CumulN": false,
+            "YearN": false,
+            "MonthM": false,
+            "YetToCome": false,
+            "Forecast": false
+        },
+        {
+            "ColumnName": "Billing",
+            "P0": false,
+            "CumulN-1": false,
+            "CumulN": false,
+            "YearN": false,
+            "MonthM": false,
+            "YetToCome": false,
+            "Forecast": false
+        },
+        {
+            "ColumnName": "Adjustment",
+            "P0": false,
+            "CumulN-1": false,
+            "CumulN": false,
+            "YearN": false,
+            "MonthM": false,
+            "YetToCome": false,
+            "Forecast": false
+        },
+        {
+            "ColumnName": "Charges",
+            "P0": false,
+            "CumulN-1": false,
+            "CumulN": false,
+            "YearN": false,
+            "MonthM": false,
+            "YetToCome": false,
+            "Forecast": false
+        },
+        {
+            "ColumnName": "PAT",
+            "P0": false,
+            "CumulN-1": false,
+            "CumulN": false,
+            "YearN": false,
+            "MonthM": false,
+            "YetToCome": false,
+            "Forecast": false
+        },
+        {
+            "ColumnName": "RBA",
+            "P0": false,
+            "CumulN-1": true,
+            "CumulN": true,
+            "YearN": false,
+            "MonthM": true,
+            "YetToCome": false,
+            "Forecast": true
+        },
+        {
+            "ColumnName": "RBA (%)",
+            "P0": false,
+            "CumulN-1": false,
+            "CumulN": false,
+            "YearN": false,
+            "MonthM": false,
+            "YetToCome": false,
+            "Forecast": false
+        },
+        {
+            "ColumnName": "Advancement (%)",
+            "P0": false,
+            "CumulN-1": false,
+            "CumulN": false,
+            "YearN": false,
+            "MonthM": false,
+            "YetToCome": false,
+            "Forecast": false
+        }
+    ]
+}

@@ -1,0 +1,21 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout"
+    xmlns:table="sap.ui.table"
+    xmlns:f="sap.ui.layout.form">
+    <Dialog >
+        <IconTabBar >
+            <items>
+                <IconTabFilter key="CompteTab" text="{i18n>synt.tab.compta}" >
+                    <core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view..tab.synthese.dialog.ImportCompta" type="XML" />
+                </IconTabFilter>
+                <IconTabFilter key="VentilTab" text="{i18n>synt.tab.ventil}">
+                    <core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view..tab.synthese.dialog.ImportVentil" type="XML" />
+                </IconTabFilter>
+            </items>
+        </IconTabBar>
+        <buttons>
+            <Button text="{i18n>btn.cancel}" press="onBtnCancelPressed" />
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>
