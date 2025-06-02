@@ -2,7 +2,10 @@
 	xmlns:html="http://www.w3.org/1999/xhtml" controllerName="com.avv.ingerop.ingeropfga.ext.controller.extendOP"
     id="tab">
 	
-    <IconTabBar id="iconTabBar" class="custItb" select=".onTabSelect">
+    <IconTabBar id="iconTabBar" 
+        class="custItb" 
+        select=".onTabSelect"
+        visible="{= !${ui>/createMode}}">
         <items>
             <IconTabFilter text="{i18n>synt.tab.synthese}">
                 <core:Fragment id="SyntheseTab" fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.SyntheseTab" type="XML" />

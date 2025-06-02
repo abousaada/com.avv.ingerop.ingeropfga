@@ -103,10 +103,15 @@
                             </PropertyValue>
                         </Record>
                         <Record Type="UI.CollectionFacet">
-                            <PropertyValue Property="Label" String="Budgets"/>
+                            <PropertyValue Property="Label" String="Missions"/>
                             <PropertyValue Property="ID" String="Missions"/>
                             <PropertyValue Property="Facets">
-                                <Collection/>
+                                <Collection>
+                                    <Record Type="UI.ReferenceFacet">
+                                        <PropertyValue Property="Label" String="Missions"/>
+                                        <PropertyValue Property="Target" AnnotationPath="@UI.Identification"/>
+                                    </Record>
+                                </Collection>
                             </PropertyValue>
                         </Record>
                         <Record Type="UI.CollectionFacet">
@@ -374,6 +379,27 @@
                         <PropertyPath>CompanyCode</PropertyPath>
                         <PropertyPath>BusinessManager</PropertyPath>
                         <PropertyPath>PROJM</PropertyPath>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGA_MISSIONType">
+                <Annotation Term="UI.LineItem">
+                    <Collection>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="MissionCode"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="StartDate"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="EndDate"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="ExternalRevenue"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="LaborBudget"/>
+                        </Record>
                     </Collection>
                 </Annotation>
             </Annotations>

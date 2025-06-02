@@ -5,7 +5,11 @@
 	xmlns:layout="sap.ui.layout"
 	xmlns:html="http://www.w3.org/1999/xhtml" controllerName="com.avv.ingerop.ingeropfga.ext.controller.extendOP">
 	
-    <Panel class="sapUiSmallMargin" expanded="true" expandable="true" headerText="{i18n>synt.tab.recap.title}">
+    <Panel class="sapUiSmallMargin" 
+        expanded="true" expandable="true" 
+        headerText="{i18n>synt.tab.recap.title}"
+         visible="{= !${ui>/createMode}}">
+
         <HBox >
             <!--VBox class="sapUiSmallMargin" >
                 <Label text="Commentaires"></Label>
