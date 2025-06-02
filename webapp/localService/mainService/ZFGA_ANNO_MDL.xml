@@ -93,11 +93,11 @@
                                     </Record>
                                     <Record Type="UI.ReferenceFacet">
                                         <PropertyValue Property="Label" String="Durée"/>
-                                        <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Durée"/>
+                                        <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Duree"/>
                                     </Record>
                                     <Record Type="UI.ReferenceFacet">
                                         <PropertyValue Property="Label" String="Qualité"/>
-                                        <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Qualité"/>
+                                        <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Qualite"/>
                                     </Record>
                                 </Collection>
                             </PropertyValue>
@@ -147,6 +147,26 @@
                                 <Record Type="UI.DataField">
                                     <PropertyValue Property="Value" Path="GroupM"/>
                                 </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="Mandata"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.FieldGroup" Qualifier="Duree">
+                    <Record>
+                        <PropertyValue Property="Data">
+                            <Collection>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="StartDate"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="EndDate"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="NbMois"/>
+                                </Record>
                             </Collection>
                         </PropertyValue>
                     </Record>
@@ -156,16 +176,19 @@
                         <PropertyValue Property="Data">
                             <Collection>
                                 <Record Type="UI.DataField">
-                                    <PropertyValue Property="Value" Path="StartReview"/>
+                                    <PropertyValue Property="Value" Path="Modalr"/>
                                 </Record>
                                 <Record Type="UI.DataField">
-                                    <PropertyValue Property="Value" Path="EngagementCommittee"/>
+                                    <PropertyValue Property="Value" Path="Modalf"/>
                                 </Record>
                                 <Record Type="UI.DataField">
-                                    <PropertyValue Property="Value" Path="ContractReview"/>
+                                    <PropertyValue Property="Value" Path="Avance"/>
                                 </Record>
                                 <Record Type="UI.DataField">
-                                    <PropertyValue Property="Value" Path="QuoteReview"/>
+                                    <PropertyValue Property="Value" Path="Chorus"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="Rtgart"/>
                                 </Record>
                             </Collection>
                         </PropertyValue>
@@ -176,6 +199,9 @@
                         <PropertyValue Property="Data">
                             <Collection>
                                 <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="CautGA"/>
+                                </Record>
+                                <Record Type="UI.DataField">
                                     <PropertyValue Property="Value" Path="Assurance"/>
                                 </Record>
                             </Collection>
@@ -183,6 +209,17 @@
                     </Record>
                 </Annotation>
                 <Annotation Term="UI.FieldGroup" Qualifier="General">
+                    <Record>
+                        <PropertyValue Property="Data">
+                            <Collection>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="StiNbr"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.FieldGroup" Qualifier="Identification">
                     <Record>
                         <PropertyValue Property="Data">
                             <Collection>
@@ -196,24 +233,19 @@
                                     <PropertyValue Property="Value" Path="UFOName"/>
                                 </Record>
                                 <Record Type="UI.DataField">
-                                    <PropertyValue Property="Value" Path="StiNbr"/>
-                                </Record>
-                            </Collection>
-                        </PropertyValue>
-                    </Record>
-                </Annotation>
-                <Annotation Term="UI.FieldGroup" Qualifier="Identification">
-                    <Record>
-                        <PropertyValue Property="Data">
-                            <Collection>
-                                <Record Type="UI.DataField">
-                                    <PropertyValue Property="Value" Path="ReviActu"/>
+                                    <PropertyValue Property="Value" Path="Activity"/>
                                 </Record>
                                 <Record Type="UI.DataField">
-                                    <PropertyValue Property="Value" Path="EndProjectReview"/>
+                                    <PropertyValue Property="Value" Path="CDG"/>
                                 </Record>
                                 <Record Type="UI.DataField">
-                                    <PropertyValue Property="Value" Path="ProjectReview"/>
+                                    <PropertyValue Property="Value" Path="PROJM"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="BusinessStatus"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="Soufam"/>
                                 </Record>
                             </Collection>
                         </PropertyValue>
@@ -223,6 +255,12 @@
                     <Record>
                         <PropertyValue Property="Data">
                             <Collection>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="Period"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="Tmoyj"/>
+                                </Record>
                                 <Record Type="UI.DataField">
                                     <PropertyValue Property="Value" Path="Datmaj"/>
                                 </Record>
@@ -242,6 +280,17 @@
                                 </Record>
                                 <Record Type="UI.DataField">
                                     <PropertyValue Property="Value" Path="Paring"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.FieldGroup" Qualifier="Qualite">
+                    <Record>
+                        <PropertyValue Property="Data">
+                            <Collection>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="UrlCup"/>
                                 </Record>
                             </Collection>
                         </PropertyValue>

@@ -48,8 +48,6 @@ sap.ui.define(
                     // call the base component's init function
                     //UIComponent.prototype.init.apply(this, arguments);
 
-                    let publicMethods = this.base.getMetadata().get
-
                     var oDataModel = new sap.ui.model.odata.v2.ODataModel("/sap/opu/odata/sap/ZFGA_SRV");
                     var sPath = sap.ui.require.toUrl("com/avv/ingerop/ingeropfga/model/mock/");
                     
@@ -103,19 +101,6 @@ sap.ui.define(
                     }
 
                     this.getView().setModel(oBudgetModel, "budget");
-
-                    /*var oRecapModel = new JSONModel();
-                    // oRecapModel.loadData(sPath + "recap.json", null, false);
-                    this.getView().setModel(oRecapModel, "recap");
-
-                    /*const aPath = "/ZI_FGA_RECAP" + 
-                    "?$filter=BusinessNo eq '9000CC00FG'"
-
-                    var aRecapData = await this.fetchData(oDataModel, aPath);
-
-                    //aRecapData = await this.fetchData(oDataModel, "/ZI_FGA_RECAP");
-
-                    this.getView().getModel("recap").setProperty("/results", aRecapData.results); */
 
                     var oRbaEvolModel = new JSONModel();
                     oRbaEvolModel.loadData(sPath + "rbaEvol.json", null, false);
@@ -350,7 +335,12 @@ sap.ui.define(
                     }
                 });
             },*/
-            
+
+            formatMonthLabel: function(sMonth,sYear) {
+                //var sYear = "2028";
+                return sMonth + "/" + sYear;
+            },
+
             fetchData: function (oModel, sPath) {
                 return new Promise((resolve, reject) => {
                   oModel.read(sPath, {
@@ -1734,30 +1724,6 @@ sap.ui.define(
             return oTreeItem;
         },
 
-
-        /*onItemPress: function (oEvent) {
-        
-            var oItem = oEvent.getParameter("listItem");
-            var oContext = oItem.getBindingContext("budget");
-
-            var oNode = oContext.getObject();
-
-
-            if(oNode.Mission === "Grouping Hoai"){
-                
-                this.oView.byId("detailsTab--detailPage").setVisible(true);
-                this.oView.byId("detailsTab--detailPage2").setVisible(false);
-
-            }else if(oNode.Mission === "Order 4000007"){
-
-                this.oView.byId("detailsTab--detailPage2").setVisible(true);
-                this.oView.byId("detailsTab--detailPage").setVisible(false);
-            }else{
-                this.oView.byId("detailsTab--detailPage").setVisible(false);
-                this.oView.byId("detailsTab--detailPage2").setVisible(false);
-            }
-           
-        },*/
 
         onItemPress: function (oEvent) {
             var oItem = oEvent.getParameter("listItem");

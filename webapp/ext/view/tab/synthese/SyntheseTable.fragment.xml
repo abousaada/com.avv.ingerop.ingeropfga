@@ -8,109 +8,116 @@
             <table:Column width="18rem">
                 <Label text="{i18n>synt.desc}" />
                 <table:template>
-                    <Text text="{synthesis>Description}" />
+                    <Text text="{synthesis>description}" />
                 </table:template>
             </table:Column>
-            <table:Column >
+            <!--table:Column >
                 <Label text="{i18n>synt.initBudget}" />
                 <table:template>
                     <ObjectStatus class="custObjStatus" text="{path: 'synthesis>InitBudget', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>InitBudget}) &lt; 0 ? 'Error': 'None'}" />
                 </table:template>
-            </table:Column>
+            </table:Column-->
             <table:Column >
                 <Label text="{i18n>synt.cumulN-1}" />
                 <table:template>
-                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>CumulN-1', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>CumulN-1}) &lt; 0 ? 'Error': 'None'}" />
+                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>cumul_n1', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>CumulN-1}) &lt; 0 ? 'Error': 'None'}" />
                 </table:template>
                 <table:customData>
-                    <core:CustomData key="Period" value="{syntPeriod>/CumulN-1}"></core:CustomData>
+                    <core:CustomData key="Period" value="{syntPeriod>/cumul_n1}"></core:CustomData>
                 </table:customData>
             </table:Column>
             <table:Column >
-                <Label text="{i18n>synt.month1}" />
+                <Label text="{i18n>synt.month01}" />
+                <!--Label text="{
+                        parts: [
+                            'i18n>synt.month01',
+                            'yearModel>/year'
+                        ],
+                        formatter: '.formatMonthLabel'
+                    }" /-->
                 <table:template>
-                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>Month1', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>Month1}) &lt; 0 ? 'Error': 'None'}" />
+                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>month01', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>month01}) &lt; 0 ? 'Error': 'None'}" />
                 </table:template>
                 <table:customData>
-                    <core:CustomData key="Period" value="{syntPeriod>/Month1}"></core:CustomData>
+                    <core:CustomData key="Period" value="{syntPeriod>/Month01}"></core:CustomData>
                 </table:customData>
             </table:Column>
             <table:Column >
-                <Label text="{i18n>synt.month2}" />
+                <Label text="{i18n>synt.month02}" />
                 <table:template>
-                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>Month2', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>Month2}) &lt; 0 ? 'Error': 'None'}" />
+                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>month02', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>month02}) &lt; 0 ? 'Error': 'None'}" />
                 </table:template>
                 <table:customData>
-                    <core:CustomData key="Period" value="{syntPeriod>/Month2}"></core:CustomData>
+                    <core:CustomData key="Period" value="{syntPeriod>/Month02}"></core:CustomData>
                 </table:customData>
             </table:Column>
             <table:Column >
-                <Label text="{i18n>synt.month3}" />
+                <Label text="{i18n>synt.month03}" />
                 <table:template>
-                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>Month3', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>Month3}) &lt; 0 ? 'Error': 'None'}" />
+                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>month03', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>month03}) &lt; 0 ? 'Error': 'None'}" />
                 </table:template>
                 <table:customData>
-                    <core:CustomData key="Period" value="{syntPeriod>/Month3}"></core:CustomData>
+                    <core:CustomData key="Period" value="{syntPeriod>/Month03}"></core:CustomData>
                 </table:customData>
             </table:Column>
             <table:Column >
-                <Label text="{i18n>synt.month4}" />
+                <Label text="{i18n>synt.month04}" />
                 <table:template>
-                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>Month4', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>Month4}) &lt; 0 ? 'Error': 'None'}" />
+                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>month04', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>month04}) &lt; 0 ? 'Error': 'None'}" />
                 </table:template>
                 <table:customData>
-                    <core:CustomData key="Period" value="{syntPeriod>/Month4}"></core:CustomData>
+                    <core:CustomData key="Period" value="{syntPeriod>/Month04}"></core:CustomData>
                 </table:customData>
             </table:Column>
             <table:Column >
-                <Label text="{i18n>synt.month5}" />
+                <Label text="{i18n>synt.month05}" />
                 <table:template>
-                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>Month5', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>Month5}) &lt; 0 ? 'Error': 'None'}" />
+                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>month05', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>month05}) &lt; 0 ? 'Error': 'None'}" />
                 </table:template>
                 <table:customData>
-                    <core:CustomData key="Period" value="{syntPeriod>/Month5}"></core:CustomData>
+                    <core:CustomData key="Period" value="{syntPeriod>/Month05}"></core:CustomData>
                 </table:customData>
             </table:Column>
             <table:Column >
-                <Label text="{i18n>synt.month6}" />
+                <Label text="{i18n>synt.month06}" />
                 <table:template>
-                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>Month6', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>Month6}) &lt; 0 ? 'Error': 'None'}" />
+                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>month06', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>month06}) &lt; 0 ? 'Error': 'None'}" />
                 </table:template>
                 <table:customData>
-                    <core:CustomData key="Period" value="{syntPeriod>/Month6}"></core:CustomData>
+                    <core:CustomData key="Period" value="{syntPeriod>/Month06}"></core:CustomData>
                 </table:customData>
             </table:Column>
             <table:Column >
-                <Label text="{i18n>synt.month7}" />
+                <Label text="{i18n>synt.month07}" />
                 <table:template>
-                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>Month7', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>Month7}) &lt; 0 ? 'Error': 'None'}" />
+                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>month07', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>month07}) &lt; 0 ? 'Error': 'None'}" />
                 </table:template>
                 <table:customData>
-                    <core:CustomData key="Period" value="{syntPeriod>/Month7}"></core:CustomData>
+                    <core:CustomData key="Period" value="{syntPeriod>/Month07}"></core:CustomData>
                 </table:customData>
             </table:Column>
             <table:Column >
-                <Label text="{i18n>synt.month8}" />
+                <Label text="{i18n>synt.month08}" />
                 <table:template>
-                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>Month8', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>Month8}) &lt; 0 ? 'Error': 'None'}" />
+                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>month08', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>month08}) &lt; 0 ? 'Error': 'None'}" />
                 </table:template>
                 <table:customData>
-                    <core:CustomData key="Period" value="{syntPeriod>/Month8}"></core:CustomData>
+                    <core:CustomData key="Period" value="{syntPeriod>/Month08}"></core:CustomData>
                 </table:customData>
             </table:Column>
             <table:Column >
-                <Label text="{i18n>synt.month9}" />
+                <Label text="{i18n>synt.month09}" />
                 <table:template>
-                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>Month9', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>Month9}) &lt; 0 ? 'Error': 'None'}" />
+                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>month09', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>month09}) &lt; 0 ? 'Error': 'None'}" />
                 </table:template>
                 <table:customData>
-                    <core:CustomData key="Period" value="{syntPeriod>/Month9}"></core:CustomData>
+                    <core:CustomData key="Period" value="{syntPeriod>/Month09}"></core:CustomData>
                 </table:customData>
             </table:Column>
             <table:Column >
                 <Label text="{i18n>synt.month10}" />
                 <table:template>
-                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>Month10', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>Month10}) &lt; 0 ? 'Error': 'None'}" />
+                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>month10', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>month010}) &lt; 0 ? 'Error': 'None'}" />
                 </table:template>
                 <table:customData>
                     <core:CustomData key="Period" value="{syntPeriod>/Month10}"></core:CustomData>
@@ -119,7 +126,7 @@
             <table:Column >
                 <Label text="{i18n>synt.month11}" />
                 <table:template>
-                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>Month11', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>Month11}) &lt; 0 ? 'Error': 'None'}" />
+                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>month11', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>month011}) &lt; 0 ? 'Error': 'None'}" />
                 </table:template>
                 <table:customData>
                     <core:CustomData key="Period" value="{syntPeriod>/Month11}"></core:CustomData>
@@ -128,40 +135,46 @@
             <table:Column >
                 <Label text="{i18n>synt.month12}" />
                 <table:template>
-                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>Month12', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>Month12}) &lt; 0 ? 'Error': 'None'}" />
+                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>month12', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>month012}) &lt; 0 ? 'Error': 'None'}" />
                 </table:template>
                 <table:customData>
                     <core:CustomData key="Period" value="{syntPeriod>/Month12}"></core:CustomData>
                 </table:customData>
             </table:Column>
             <table:Column >
-                <Label text="{i18n>synt.yearN}" />
+                <Label text="{i18n>synt.AnneeN}" />
                 <table:template>
-                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>YearN', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>YearN}) &lt; 0 ? 'Error': 'None'}" />
+                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>AnneeN', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>annee_n}) &lt; 0 ? 'Error': 'None'}" />
                 </table:template>
                 <table:customData>
-                    <core:CustomData key="Period" value="{syntPeriod>/YearN}"></core:CustomData>
+                    <core:CustomData key="Period" value="{syntPeriod>/AnneeN}"></core:CustomData>
                 </table:customData>
             </table:Column>
             <table:Column >
-                <Label text="{i18n>synt.cumulN}" />
+                <Label text="{i18n>synt.CumulN}" />
                 <table:template>
-                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>CumulN', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>CumulN}) &lt; 0 ? 'Error': 'None'}" />
+                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>CumulN', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>cumul_n}) &lt; 0 ? 'Error': 'None'}" />
                 </table:template>
                 <table:customData>
                     <core:CustomData key="Period" value="{syntPeriod>/CumulN}"></core:CustomData>
                 </table:customData>
             </table:Column>
             <table:Column >
-                <Label text="{i18n>synt.yetToCome}" />
+                <Label text="{i18n>synt.AVenir}" />
                 <table:template>
-                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>YetToCome', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>YetToCome}) &lt; 0 ? 'Error': 'None'}" />
+                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>AVenir', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>YetToCome}) &lt; 0 ? 'Error': 'None'}" />
                 </table:template>
             </table:Column>
             <table:Column >
-                <Label text="{i18n>synt.forecast}" />
+                <Label text="{i18n>synt.FinAffaire}" />
                 <table:template>
-                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>Forecast', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>Forecast}) &lt; 0 ? 'Error': 'None'}" />
+                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>FinAffaire', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>Forecast}) &lt; 0 ? 'Error': 'None'}" />
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <Label text="{i18n>synt.HistBudgetObjectif}" />
+                <table:template>
+                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>HistBudgetObjectif', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>Forecast}) &lt; 0 ? 'Error': 'None'}" />
                 </table:template>
             </table:Column>
         </table:columns>

@@ -186,16 +186,17 @@
                 <Property Name="RBACumulN" Type="Edm.Int32" sap:label="Cumulative RBA N"/>
                 <Property Name="RBAMonthM" Type="Edm.Int32" sap:label="Monthly RBA M"/>
                 <Property Name="RBAForecast" Type="Edm.Int32" sap:label="End of Business RBA"/>
+                <Property Name="Soufam" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label=""/>
                 <Property Name="Criticality" Type="Edm.String" MaxLength="1" sap:display-format="NonNegative"/>
                 <Property Name="Mission" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Test" sap:quickinfo=""/>
                 <Property Name="Activity" Type="Edm.String" MaxLength="50" sap:label="Activity" sap:quickinfo="Text Field"/>
                 <Property Name="CDG" Type="Edm.String" MaxLength="50" sap:label="CDG" sap:quickinfo="Text Field"/>
                 <Property Name="Client" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Client" sap:quickinfo=""/>
                 <Property Name="NoClientMarche" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Client/Market Number" sap:quickinfo="Character Field with Length 10"/>
-                <Property Name="QuoteReview" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Révisable/Actualisable" sap:quickinfo="Character Field with Length 10"/>
-                <Property Name="ContractReview" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Forfaitaire/régie" sap:quickinfo="Character Field with Length 10"/>
-                <Property Name="EngagementCommittee" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Avance" sap:quickinfo="Character Field with Length 10"/>
-                <Property Name="StartReview" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Facturation Chronus" sap:quickinfo="Character Field with Length 10"/>
+                <Property Name="QuoteReview" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Quote Review" sap:quickinfo="Character Field with Length 10"/>
+                <Property Name="ContractReview" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Contract Review" sap:quickinfo="Character Field with Length 10"/>
+                <Property Name="EngagementCommittee" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Engagement Committee" sap:quickinfo="Character Field with Length 10"/>
+                <Property Name="StartReview" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Start Review" sap:quickinfo="Character Field with Length 10"/>
                 <Property Name="ProjectReview" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Project Review" sap:quickinfo="Character Field with Length 10"/>
                 <Property Name="EndProjectReview" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="End of Project Review" sap:quickinfo="Character Field with Length 10"/>
                 <Property Name="ReviActu" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Revisable/Updatable" sap:quickinfo="Single-Character Flag"/>
@@ -203,7 +204,7 @@
                 <Property Name="DownPayment" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Down Payment" sap:quickinfo="Character Field with Length 10"/>
                 <Property Name="Guarantee" Type="Edm.String" MaxLength="50" sap:label="Guarantee - Completion Bond" sap:quickinfo="Text Field"/>
                 <Property Name="GrpConvention" Type="Edm.String" MaxLength="50" sap:label="Group Convention" sap:quickinfo="Text Field"/>
-                <Property Name="Assurance" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Insurance" sap:quickinfo=""/>
+                <Property Name="Assurance" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Assurance" sap:quickinfo=""/>
                 <Property Name="VAT" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="VAT" sap:quickinfo="Character Field with Length 10"/>
                 <Property Name="RateDevis" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Rate/Currency" sap:quickinfo="Character Field with Length 10"/>
                 <Property Name="StartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Start Date" sap:quickinfo="Date"/>
@@ -221,14 +222,25 @@
                 <Property Name="CustomerName" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Customer Name" sap:quickinfo=""/>
                 <Property Name="Scclt" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Customer Sector" sap:quickinfo=""/>
                 <Property Name="GroupM" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Groupement (O/N)" sap:quickinfo=""/>
-                <Property Name="Mtctr" Type="Edm.Decimal" Precision="14" Scale="3" sap:label="NOUVEAU TEST"/>
-                <Property Name="Paring" Type="Edm.Decimal" Precision="14" Scale="3" sap:label="NOUVEAU TEST"/>
+                <Property Name="Mtctr" Type="Edm.Decimal" Precision="14" Scale="3" sap:label="Montant contrat KEUR"/>
+                <Property Name="Paring" Type="Edm.Decimal" Precision="14" Scale="3" sap:label="Part Ingerop KEUR"/>
                 <Property Name="Mttrvx" Type="Edm.Decimal" Precision="14" Scale="3" sap:label="Montant travaux KEUR"/>
                 <Property Name="Ingtrvx" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Ingénierie / Travaux" sap:quickinfo="Character field of length 40"/>
                 <Property Name="Period" Type="Edm.String" MaxLength="6" sap:display-format="UpperCase" sap:label="Période" sap:quickinfo="Character field of length 6"/>
                 <Property Name="Datmaj" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Maj du" sap:quickinfo="Field of type DATS"/>
                 <Property Name="Datcha" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Maj du" sap:quickinfo="Field of type DATS"/>
+                <Property Name="Modalr" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Révisable/Actualisable" sap:quickinfo=""/>
+                <Property Name="Modalf" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Forfaitaire/régie" sap:quickinfo=""/>
+                <Property Name="Avance" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Avance" sap:quickinfo=""/>
+                <Property Name="Chorus" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Facturation Chronus" sap:quickinfo=""/>
+                <Property Name="Rtgart" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Retenue de garantie" sap:quickinfo=""/>
+                <Property Name="CautGA" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Caution / Garantie à PD" sap:quickinfo=""/>
+                <Property Name="Mandata" Type="Edm.String" MaxLength="80" sap:display-format="UpperCase" sap:label="Mandataire" sap:quickinfo="Char 80"/>
+                <Property Name="Tmoyj" Type="Edm.String" MaxLength="10" sap:display-format="NonNegative" sap:label="Taux moyen journalier"/>
+                <Property Name="NbMois" Type="Edm.Int32" sap:label="Nombre mois" sap:quickinfo="4 Byte Signed Integer"/>
+                <Property Name="UrlCup" Type="Edm.String" MaxLength="255" sap:display-format="UpperCase" sap:label="URL" sap:quickinfo="Char255"/>
                 <Property Name="DataSource" Type="Edm.String" MaxLength="4" sap:label="DataSource"/>
+                <NavigationProperty Name="to_Previsions" Relationship="ZFGA_SRV.assoc_46F02B86EA595CABDE13979255EA6205" FromRole="FromRole_assoc_46F02B86EA595CABDE13979255EA6205" ToRole="ToRole_assoc_46F02B86EA595CABDE13979255EA6205"/>
                 <NavigationProperty Name="to_Recap" Relationship="ZFGA_SRV.assoc_F837EB1A53A90F9E9A5ACB62C9D7CE4B" FromRole="FromRole_assoc_F837EB1A53A90F9E9A5ACB62C9D7CE4B" ToRole="ToRole_assoc_F837EB1A53A90F9E9A5ACB62C9D7CE4B"/>
                 <NavigationProperty Name="Parameters" Relationship="ZFGA_SRV.assoc_FBAFCCB8228F35F33FFA98CD63EBFA5B" FromRole="ToRole_assoc_FBAFCCB8228F35F33FFA98CD63EBFA5B" ToRole="FromRole_assoc_FBAFCCB8228F35F33FFA98CD63EBFA5B" sap:filterable="false"/>
             </EntityType>
@@ -238,6 +250,37 @@
                 </Key>
                 <Property Name="p_period" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase" sap:parameter="mandatory" sap:label="Period MMYYYY" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <NavigationProperty Name="Set" Relationship="ZFGA_SRV.assoc_FBAFCCB8228F35F33FFA98CD63EBFA5B" FromRole="FromRole_assoc_FBAFCCB8228F35F33FFA98CD63EBFA5B" ToRole="ToRole_assoc_FBAFCCB8228F35F33FFA98CD63EBFA5B"/>
+            </EntityType>
+            <EntityType Name="ZC_FGA_PREVISIONSType" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="business_no"/>
+                    <PropertyRef Name="line_item"/>
+                </Key>
+                <Property Name="business_no" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Text 24" sap:quickinfo="Character field length 24"/>
+                <Property Name="line_item" Type="Edm.String" Nullable="false" MaxLength="40" sap:display-format="UpperCase" sap:label="Char" sap:quickinfo="Character field of length 40"/>
+                <Property Name="description" Type="Edm.String" MaxLength="38"/>
+                <Property Name="cumul_n1" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
+                <Property Name="month01" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
+                <Property Name="month02" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
+                <Property Name="month03" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
+                <Property Name="month04" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
+                <Property Name="month05" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
+                <Property Name="month06" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
+                <Property Name="month07" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
+                <Property Name="month08" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
+                <Property Name="month09" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
+                <Property Name="month10" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
+                <Property Name="month11" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
+                <Property Name="month12" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
+                <Property Name="AnneeN" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
+                <Property Name="CumulN" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
+                <Property Name="AVenir" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
+                <Property Name="FinAffaire" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
+                <Property Name="HistBudgetObjectif" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
+                <Property Name="created_by" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Created By" sap:quickinfo="Created By User"/>
+                <Property Name="created_at" Type="Edm.DateTimeOffset" Precision="7" sap:label="Created On" sap:quickinfo="Creation Date Time"/>
+                <Property Name="last_changed_by" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Changed By" sap:quickinfo="Last Changed By User"/>
+                <Property Name="last_changed_at" Type="Edm.DateTimeOffset" Precision="7" sap:label="Changed On" sap:quickinfo="Last Change Date Time"/>
             </EntityType>
             <EntityType Name="ZI_FGA_RECAPType" sap:content-version="1">
                 <Key>
@@ -265,6 +308,10 @@
             <Association Name="assoc_24FC23D321DDD66B6ED917396AA49B5A" sap:content-version="1">
                 <End Type="ZFGA_SRV.I_ProfitCenterStdVHType" Multiplicity="1" Role="FromRole_assoc_24FC23D321DDD66B6ED917396AA49B5A"/>
                 <End Type="ZFGA_SRV.I_ProfitCenterTextType" Multiplicity="*" Role="ToRole_assoc_24FC23D321DDD66B6ED917396AA49B5A"/>
+            </Association>
+            <Association Name="assoc_46F02B86EA595CABDE13979255EA6205" sap:content-version="1">
+                <End Type="ZFGA_SRV.ZC_FGAType" Multiplicity="1" Role="FromRole_assoc_46F02B86EA595CABDE13979255EA6205"/>
+                <End Type="ZFGA_SRV.ZC_FGA_PREVISIONSType" Multiplicity="*" Role="ToRole_assoc_46F02B86EA595CABDE13979255EA6205"/>
             </Association>
             <Association Name="assoc_F837EB1A53A90F9E9A5ACB62C9D7CE4B" sap:content-version="1">
                 <End Type="ZFGA_SRV.ZC_FGAType" Multiplicity="1" Role="FromRole_assoc_F837EB1A53A90F9E9A5ACB62C9D7CE4B"/>
@@ -313,8 +360,9 @@
                 <EntitySet Name="I_Language" EntityType="ZFGA_SRV.I_LanguageType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
                 <EntitySet Name="I_ProfitCenterStdVH" EntityType="ZFGA_SRV.I_ProfitCenterStdVHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
                 <EntitySet Name="I_ProfitCenterText" EntityType="ZFGA_SRV.I_ProfitCenterTextType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
-                <EntitySet Name="ZC_FGASet" EntityType="ZFGA_SRV.ZC_FGAType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="ZC_FGASet" EntityType="ZFGA_SRV.ZC_FGAType" sap:searchable="true" sap:addressable="false" sap:content-version="1"/>
                 <EntitySet Name="ZC_FGA" EntityType="ZFGA_SRV.ZC_FGAParameters" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="ZC_FGA_PREVISIONS" EntityType="ZFGA_SRV.ZC_FGA_PREVISIONSType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
                 <EntitySet Name="ZI_FGA_RECAP" EntityType="ZFGA_SRV.ZI_FGA_RECAPType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
                 <AssociationSet Name="assoc_288FEA07E9CACA304B22C3E4B7929D5A" Association="ZFGA_SRV.assoc_288FEA07E9CACA304B22C3E4B7929D5A" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
                     <End EntitySet="I_ProfitCenterText" Role="FromRole_assoc_288FEA07E9CACA304B22C3E4B7929D5A"/>
@@ -323,6 +371,10 @@
                 <AssociationSet Name="assoc_FBA82F058290BED0BE4336104DFD554A" Association="ZFGA_SRV.assoc_FBA82F058290BED0BE4336104DFD554A" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
                     <End EntitySet="I_ProfitCenterText" Role="FromRole_assoc_FBA82F058290BED0BE4336104DFD554A"/>
                     <End EntitySet="I_Language" Role="ToRole_assoc_FBA82F058290BED0BE4336104DFD554A"/>
+                </AssociationSet>
+                <AssociationSet Name="assoc_46F02B86EA595CABDE13979255EA6205" Association="ZFGA_SRV.assoc_46F02B86EA595CABDE13979255EA6205" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="ZC_FGASet" Role="FromRole_assoc_46F02B86EA595CABDE13979255EA6205"/>
+                    <End EntitySet="ZC_FGA_PREVISIONS" Role="ToRole_assoc_46F02B86EA595CABDE13979255EA6205"/>
                 </AssociationSet>
                 <AssociationSet Name="assoc_FBAFCCB8228F35F33FFA98CD63EBFA5B" Association="ZFGA_SRV.assoc_FBAFCCB8228F35F33FFA98CD63EBFA5B" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
                     <End EntitySet="ZC_FGA" Role="FromRole_assoc_FBAFCCB8228F35F33FFA98CD63EBFA5B"/>
@@ -713,6 +765,14 @@
                     <Record>
                         <PropertyValue Property="RestrictedProperties">
                             <Collection>
+                                <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_Previsions"/>
+                                    <PropertyValue Property="InsertRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Insertable" Bool="false"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
                                 <Record>
                                     <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_Recap"/>
                                     <PropertyValue Property="InsertRestrictions">
