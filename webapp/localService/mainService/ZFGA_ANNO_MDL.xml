@@ -104,6 +104,13 @@
                         </Record>
                         <Record Type="UI.CollectionFacet">
                             <PropertyValue Property="Label" String="Budgets"/>
+                            <PropertyValue Property="ID" String="Missions"/>
+                            <PropertyValue Property="Facets">
+                                <Collection/>
+                            </PropertyValue>
+                        </Record>
+                        <Record Type="UI.CollectionFacet">
+                            <PropertyValue Property="Label" String="Budgets"/>
                             <PropertyValue Property="ID" String="TableInfo"/>
                             <PropertyValue Property="Facets">
                                 <Collection>

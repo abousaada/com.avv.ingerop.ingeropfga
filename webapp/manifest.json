@@ -322,6 +322,14 @@
               "sap.ui.generic.app": {
                 "title": "Graphics"
               }
+            },
+            "AfterFacet|ZC_FGASet|Missions": {
+              "className": "sap.ui.core.mvc.View",
+              "viewName": "com.avv.ingerop.ingeropfga.ext.view.Mission",
+              "type": "XML",
+              "sap.ui.generic.app": {
+                "title": "Missions"
+              }
             }
           }
         }

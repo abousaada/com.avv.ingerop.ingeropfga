@@ -1,0 +1,120 @@
+
+<mvc:View
+  controllerName="com.avv.ingerop.ingeropfga.ext.controller.Mission"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
+  xmlns:core="sap.ui.core"
+  xmlns:table="sap.ui.table"
+  xmlns:l="sap.ui.layout"
+  xmlns:f="sap.ui.layout.form">
+  
+  <Panel headerText="Missions" expandable="true" expanded="true">
+    <table:Table
+      id="missionsTable"
+      rows="{path: '/missions', templateShareable: false}"
+      selectionMode="None"
+      visibleRowCount="5"
+      ariaLabelledBy="title">
+      
+      <table:columns>
+        <!-- Codification (auto-generated) -->
+        <table:Column width="12rem">
+          <Label text="Codification"/>
+          <table:template>
+            <Text text="{businessNo} - {missionNumber}"/>
+          </table:template>
+        </table:Column>
+        
+        <!-- Mission Type -->
+        <table:Column width="8rem">
+          <Label text="Mission"/>
+          <table:template>
+            <ComboBox
+              selectedKey="{missionType}"
+              items="{
+                path: '/missionTypes',
+                templateShareable: false
+              }"
+              width="100%">
+              <core:Item key="{code}" text="{description}"/>
+            </ComboBox>
+          </table:template>
+        </table:Column>
+        
+        <!-- Start Date -->
+        <table:Column width="10rem">
+          <Label text="Date début"/>
+          <table:template>
+            <DatePicker
+              value="{path: 'startDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd' }}"
+              displayFormat="short"
+              width="100%"/>
+          </table:template>
+        </table:Column>
+        
+        <!-- End Date -->
+        <table:Column width="10rem">
+          <Label text="Date fin"/>
+          <table:template>
+            <DatePicker
+              value="{path: 'endDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd' }}"
+              displayFormat="short"
+              width="100%"/>
+          </table:template>
+        </table:Column>
+        
+        <!-- Budget Recette Externe -->
+        <table:Column width="10rem">
+          <Label text="Budget recette externe"/>
+          <table:template>
+            <Input
+              value="{path: 'externalRevenue', type: 'sap.ui.model.type.Currency', formatOptions: { decimals: 2 }}"
+              description="€"
+              width="100%"/>
+          </table:template>
+        </table:Column>
+        
+        <!-- Budget Main d'œuvre -->
+        <table:Column width="10rem">
+          <Label text="Budget main d'œuvre"/>
+          <table:template>
+            <Input
+              value="{path: 'laborBudget', type: 'sap.ui.model.type.Currency', formatOptions: { decimals: 2 }}"
+              description="€"
+              width="100%"/>
+          </table:template>
+        </table:Column>
+        
+        <!-- Sous-traitance -->
+        <table:Column width="10rem">
+          <Label text="Sous-traitance"/>
+          <table:template>
+            <Input
+              value="{path: 'subcontracting', type: 'sap.ui.model.type.Currency', formatOptions: { decimals: 2 }}"
+              description="€"
+              width="100%"/>
+          </table:template>
+        </table:Column>
+        
+        <!-- Autres charges -->
+        <table:Column width="10rem">
+          <Label text="Autres charges"/>
+          <table:template>
+            <Input
+              value="{path: 'otherCosts', type: 'sap.ui.model.type.Currency', formatOptions: { decimals: 2 }}"
+              description="€"
+              width="100%"/>
+          </table:template>
+        </table:Column>
+      </table:columns>
+    </table:Table>
+    
+    <Toolbar>
+      <ToolbarSpacer/>
+      <Button
+        icon="sap-icon://add"
+        text="Ajouter une mission"
+        press="onAddMission"/>
+    </Toolbar>
+  </Panel>
+</mvc:View>
