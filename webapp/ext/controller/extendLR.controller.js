@@ -25,6 +25,8 @@ sap.ui.define(
                 onInit: function () {
                     // you can access the Fiori elements extensionAPI via this.base.getExtensionAPI
                     //var oModel = this.base.getExtensionAPI().getModel();
+
+                    
                 },
 
                 routing: {
@@ -52,10 +54,10 @@ sap.ui.define(
                     // Extract year from sPeriod (MMYYYY format)
                     var sYear = sPeriod.substring(2);
 
-                    /*// Create or get a model to store the year
-                    var oYearModel = this.getView().getModel("yearModel") || new sap.ui.model.json.JSONModel();
-                    oYearModel.setProperty("/year", sYear);
-                    this.getView().setModel(oYearModel, "yearModel");*/
+                    // Create or get a model to store the utilities
+                    var oUtilities = sap.ui.getCore().getModel("utilities") || new sap.ui.model.json.JSONModel();
+                    oUtilities.setProperty("/businessNo", sBusinessNo);
+                    sap.ui.getCore().setModel(oUtilities, "utilities");
 
 
                     console.log("Row selected in List Report:", oObject.BusinessNo);
@@ -75,6 +77,9 @@ sap.ui.define(
                                     .then(function () {
                                         return that._loadPrevisionsData(oDataModel, sBusinessNo, sPeriod);
                                     })
+                                    .then(function () {
+                                        return that._loadMissionsData(oDataModel, sBusinessNo, sPeriod); // Your new async call
+                                    })
                                     .catch(function (oError) {
                                         console.error("Error in loading data:", oError);
                                     });
@@ -93,17 +98,21 @@ sap.ui.define(
                     if (oSmartFilterBar) {
                         var oFilterData = oSmartFilterBar.getFilterData();
                         var sPeriod = oFilterData["$Parameter.p_period"];
-                      
+
                         // Extract year from sPeriod (MMYYYY format)
                         var sYear = sPeriod.substring(2);
                         // Create or get a model to store the year
-                        var oYearModel = this.getView().getModel("yearModel") || new sap.ui.model.json.JSONModel();
+                        var oYearModel = sap.ui.getCore().getModel("yearModel") || new sap.ui.model.json.JSONModel();
                         oYearModel.setProperty("/year", sYear);
                         this.getView().setModel(oYearModel, "yearModel");
                     }
 
                 }
 
+            },
+
+            onMyCustomActionPress: function(oEvent) {
+                sap.m.MessageToast.show("Custom button clicked!");
             },
 
             _loadRecapData: function (oDataModel, sBusinessNo, sPeriod) {
@@ -150,7 +159,31 @@ sap.ui.define(
                         }
                     });
                 }.bind(this));
-            }
+            },
+
+            _loadMissionsData: function (oDataModel, sBusinessNo, sPeriod) {
+                return new Promise(function (resolve, reject) {
+                    var sEntityPath = "/ZC_FGASet(BusinessNo='" + sBusinessNo + "',p_period='" + sPeriod + "')/to_Missions";
+
+                    oDataModel.read(sEntityPath, {
+                        success: function (oMissionsData) {
+                            var aMissions = oMissionsData.results || [];
+                            var oMissionsModel = this.getView().getModel("missions") ||
+                                new sap.ui.model.json.JSONModel({ results: [] });
+
+                            oMissionsModel.setProperty("/results", aMissions);
+                            this.getView().setModel(oMissionsModel, "missions");
+                            oMissionsModel.refresh(true);
+                            resolve();
+                        }.bind(this),
+                        error: function (oError) {
+                            console.error("Error loading to_Missions:", oError);
+                            reject(oError);
+                        }
+                    });
+                }.bind(this));
+            },
+
 
         });
     });

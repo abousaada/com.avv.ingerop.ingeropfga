@@ -27,14 +27,14 @@
                 </table:customData>
             </table:Column>
             <table:Column >
-                <Label text="{i18n>synt.month01}" />
-                <!--Label text="{
+                <!--Label text="{i18n>synt.month01}" /-->
+                <Label text="{
                         parts: [
                             'i18n>synt.month01',
                             'yearModel>/year'
                         ],
                         formatter: '.formatMonthLabel'
-                    }" /-->
+                    }" />
                 <table:template>
                     <ObjectStatus class="custObjStatus" text="{path: 'synthesis>month01', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>month01}) &lt; 0 ? 'Error': 'None'}" />
                 </table:template>

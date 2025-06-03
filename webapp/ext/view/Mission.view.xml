@@ -13,7 +13,7 @@
       id="missionsTable"
       rows="{path: '/missions', templateShareable: false}"
       selectionMode="None"
-      visibleRowCount="5"
+      visible="{= !${ui>/createMode}}"
       ariaLabelledBy="title">
       
       <table:columns>

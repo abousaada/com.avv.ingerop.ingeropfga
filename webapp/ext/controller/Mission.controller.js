@@ -42,6 +42,7 @@ sap.ui.define([
         //	}
 
         onInit: function () {
+
             // Initialize models
             var oMissionModel = new JSONModel({
                 missions: [],
@@ -66,8 +67,12 @@ sap.ui.define([
             var oModel = oTable.getModel();
             var aMissions = oModel.getProperty("/missions");
 
+
+            var oUtilities = sap.ui.getCore().getModel("utilities");
+            var sBusinessNo = oUtilities.getProperty("/businessNo");
+
             // Get business number from main entity
-            var sBusinessNo = this._oMainModel.getProperty("/businessNo");
+            //var sBusinessNo = this._oMainModel.getProperty("/businessNo");
 
             // Generate mission number (001, 002, etc.)
             var sMissionNumber = this._padNumber(aMissions.length + 1, 3);
