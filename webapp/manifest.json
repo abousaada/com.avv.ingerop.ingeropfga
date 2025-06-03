@@ -364,6 +364,17 @@
             },
             "dataLoadSettings": {
               "loadDataOnAppLaunch": "always"
+            },
+            "defaultContentView": "chart",
+            "toolBar": {
+              "actions": {
+                "myCustomAction": {
+                  "id": "myCustomAction",
+                  "text": "My Button",
+                  "press": "onMyCustomActionPress",
+                  "requiresSelection": false
+                }
+              }
             }
           }
         },
