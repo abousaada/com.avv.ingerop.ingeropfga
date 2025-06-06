@@ -86,6 +86,12 @@
           "bundleName": "com.avv.ingerop.ingeropfga.i18n.i18n"
         }
       },
+      "@i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "com.avv.ingerop.ingeropfga.i18n.i18n"
+        }
+      },
       "": {
         "dataSource": "mainService",
         "preload": true,
@@ -98,7 +104,6 @@
           }
         }
       },
-      
       "list": {
         "type": "sap.ui.model.json.JSONModel",
         "uri": "model/mock/list.json",
