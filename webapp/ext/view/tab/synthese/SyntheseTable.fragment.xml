@@ -29,10 +29,7 @@
             <table:Column >
                 <!--Label text="{i18n>synt.month01}" /-->
                 <Label text="{
-                        parts: [
-                            'i18n>synt.month01',
-                            'yearModel>/year'
-                        ],
+                        parts: [ 'i18n>synt.month01', 'yearModel>/year' ],
                         formatter: '.formatMonthLabel'
                     }" />
                 <table:template>
@@ -43,7 +40,11 @@
                 </table:customData>
             </table:Column>
             <table:Column >
-                <Label text="{i18n>synt.month02}" />
+                <!-- <Label text="{i18n>synt.month02}" /> -->
+                <Label text="{
+                        parts: [ 'i18n>synt.month02', 'yearModel>/year' ],
+                        formatter: '.formatMonthLabel'
+                    }" />
                 <table:template>
                     <ObjectStatus class="custObjStatus" text="{path: 'synthesis>month02', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>month02}) &lt; 0 ? 'Error': 'None'}" />
                 </table:template>
@@ -52,7 +53,11 @@
                 </table:customData>
             </table:Column>
             <table:Column >
-                <Label text="{i18n>synt.month03}" />
+                <!-- <Label text="{i18n>synt.month03}" /> -->
+                <Label text="{
+                        parts: [ 'i18n>synt.month03', 'yearModel>/year' ],
+                        formatter: '.formatMonthLabel'
+                    }" />
                 <table:template>
                     <ObjectStatus class="custObjStatus" text="{path: 'synthesis>month03', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>month03}) &lt; 0 ? 'Error': 'None'}" />
                 </table:template>
@@ -61,7 +66,11 @@
                 </table:customData>
             </table:Column>
             <table:Column >
-                <Label text="{i18n>synt.month04}" />
+                <!-- <Label text="{i18n>synt.month04}" /> -->
+                <Label text="{
+                        parts: [ 'i18n>synt.month04', 'yearModel>/year' ],
+                        formatter: '.formatMonthLabel'
+                    }" />
                 <table:template>
                     <ObjectStatus class="custObjStatus" text="{path: 'synthesis>month04', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>month04}) &lt; 0 ? 'Error': 'None'}" />
                 </table:template>
@@ -70,7 +79,11 @@
                 </table:customData>
             </table:Column>
             <table:Column >
-                <Label text="{i18n>synt.month05}" />
+                <!-- <Label text="{i18n>synt.month05}" /> -->
+                <Label text="{
+                        parts: [ 'i18n>synt.month05', 'yearModel>/year' ],
+                        formatter: '.formatMonthLabel'
+                    }" />
                 <table:template>
                     <ObjectStatus class="custObjStatus" text="{path: 'synthesis>month05', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>month05}) &lt; 0 ? 'Error': 'None'}" />
                 </table:template>
@@ -79,7 +92,11 @@
                 </table:customData>
             </table:Column>
             <table:Column >
-                <Label text="{i18n>synt.month06}" />
+                <!-- <Label text="{i18n>synt.month06}" /> -->
+                <Label text="{
+                        parts: [ 'i18n>synt.month06', 'yearModel>/year' ],
+                        formatter: '.formatMonthLabel'
+                    }" />
                 <table:template>
                     <ObjectStatus class="custObjStatus" text="{path: 'synthesis>month06', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>month06}) &lt; 0 ? 'Error': 'None'}" />
                 </table:template>
@@ -88,7 +105,11 @@
                 </table:customData>
             </table:Column>
             <table:Column >
-                <Label text="{i18n>synt.month07}" />
+                <!-- <Label text="{i18n>synt.month07}" /> -->
+                <Label text="{
+                        parts: [ 'i18n>synt.month07', 'yearModel>/year' ],
+                        formatter: '.formatMonthLabel'
+                    }" />
                 <table:template>
                     <ObjectStatus class="custObjStatus" text="{path: 'synthesis>month07', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>month07}) &lt; 0 ? 'Error': 'None'}" />
                 </table:template>
@@ -97,7 +118,11 @@
                 </table:customData>
             </table:Column>
             <table:Column >
-                <Label text="{i18n>synt.month08}" />
+                <!-- <Label text="{i18n>synt.month08}" /> -->
+                <Label text="{
+                        parts: [ 'i18n>synt.month08', 'yearModel>/year' ],
+                        formatter: '.formatMonthLabel'
+                    }" />
                 <table:template>
                     <ObjectStatus class="custObjStatus" text="{path: 'synthesis>month08', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>month08}) &lt; 0 ? 'Error': 'None'}" />
                 </table:template>
@@ -106,7 +131,11 @@
                 </table:customData>
             </table:Column>
             <table:Column >
-                <Label text="{i18n>synt.month09}" />
+                <!-- <Label text="{i18n>synt.month09}" /> -->
+                <Label text="{
+                        parts: [ 'i18n>synt.month09', 'yearModel>/year' ],
+                        formatter: '.formatMonthLabel'
+                    }" />
                 <table:template>
                     <ObjectStatus class="custObjStatus" text="{path: 'synthesis>month09', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>month09}) &lt; 0 ? 'Error': 'None'}" />
                 </table:template>
@@ -115,7 +144,11 @@
                 </table:customData>
             </table:Column>
             <table:Column >
-                <Label text="{i18n>synt.month10}" />
+                <!-- <Label text="{i18n>synt.month10}" /> -->
+                <Label text="{
+                        parts: [ 'i18n>synt.month10', 'yearModel>/year' ],
+                        formatter: '.formatMonthLabel'
+                    }" />
                 <table:template>
                     <ObjectStatus class="custObjStatus" text="{path: 'synthesis>month10', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>month010}) &lt; 0 ? 'Error': 'None'}" />
                 </table:template>
@@ -124,7 +157,11 @@
                 </table:customData>
             </table:Column>
             <table:Column >
-                <Label text="{i18n>synt.month11}" />
+                <!-- <Label text="{i18n>synt.month11}" /> -->
+                <Label text="{
+                        parts: [ 'i18n>synt.month11', 'yearModel>/year' ],
+                        formatter: '.formatMonthLabel'
+                    }" />
                 <table:template>
                     <ObjectStatus class="custObjStatus" text="{path: 'synthesis>month11', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>month011}) &lt; 0 ? 'Error': 'None'}" />
                 </table:template>
@@ -133,7 +170,11 @@
                 </table:customData>
             </table:Column>
             <table:Column >
-                <Label text="{i18n>synt.month12}" />
+                <!-- <Label text="{i18n>synt.month12}" /> -->
+                <Label text="{
+                        parts: [ 'i18n>synt.month12', 'yearModel>/year' ],
+                        formatter: '.formatMonthLabel'
+                    }" />
                 <table:template>
                     <ObjectStatus class="custObjStatus" text="{path: 'synthesis>month12', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>month012}) &lt; 0 ? 'Error': 'None'}" />
                 </table:template>

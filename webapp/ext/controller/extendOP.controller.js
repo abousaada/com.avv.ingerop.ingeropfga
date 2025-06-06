@@ -39,8 +39,15 @@ sap.ui.define(
 				return this.getInterface().getView().getController().extensionAPI;
 			},
 
-            _onObjectExtMatched: function () {
-				var a = "ok";
+            _onObjectExtMatched: function (e) {
+                const oYearModel = this.getInterface().getModel("yearModel");
+                // const year = oYearModel.getProperty("/year");
+                const sPeriod = e.context.getProperty("p_period");
+				// if(year != sPeriod){
+                    // Extract year from sPeriod (MMYYYY format)
+                    var sYear = sPeriod.substring(2);
+                    oYearModel.setProperty("/year", sYear);
+                // }
 			},
 
             // this section allows to extend lifecycle hooks or hooks provided by Fiori elements
@@ -346,10 +353,10 @@ sap.ui.define(
             },*/
 
             formatMonthLabel: function (sMonth, sYear) {
-                var oUtilities = sap.ui.getCore().getModel("yearMode");
-                var sYear = oUtilities.getProperty("/year");
+                // var oUtilities = sap.ui.getCore().getModel("yearMode");
+                // var sYear = oUtilities.getProperty("/year");
 
-                console.log("Formatter appelé avec :", sMonth, sYear);
+                // console.log("Formatter appelé avec :", sMonth, sYear);
                 return sMonth + "/" + sYear;
             },
 

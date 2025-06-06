@@ -26,8 +26,8 @@ sap.ui.define(
                     // you can access the Fiori elements extensionAPI via this.base.getExtensionAPI
                     // var oModel = this.base.getExtensionAPI().getModel();
                     //  "sap/ui/model/json/JSONModel"
-                    const yearModel = new sap.ui.model.json.JSONModel({});
-                    sap.ui.getCore().setModel(yearModel, "yearModel");
+                    // const yearModel = new sap.ui.model.json.JSONModel({});
+                    // sap.ui.getCore().setModel(yearModel, "yearModel");
                     
                 },
 
@@ -89,19 +89,20 @@ sap.ui.define(
 
                 onBeforeRebindTableExtension: function (oEvent) {
 
-                    var oSmartFilterBar = this.getView().byId("listReportFilter"); // default ID
+                //     var oSmartFilterBar = this.getView().byId("listReportFilter"); // default ID
 
-                    if (oSmartFilterBar) {
-                        var oFilterData = oSmartFilterBar.getFilterData();
-                        var sPeriod = oFilterData["$Parameter.p_period"];
+                //     if (oSmartFilterBar) {
+                //         var oFilterData = oSmartFilterBar.getFilterData();
+                //         var sPeriod = oFilterData["$Parameter.p_period"];
 
-                        // Extract year from sPeriod (MMYYYY format)
-                        var sYear = sPeriod.substring(2);
-                        // Create or get a model to store the year
-                        var oYearModel = sap.ui.getCore().getModel("yearModel") || new sap.ui.model.json.JSONModel();
-                        oYearModel.setProperty("/year", sYear);
-                        sap.ui.getCore().setModel(oYearModel, "yearModel");
-                    }
+                //         // Extract year from sPeriod (MMYYYY format)
+                //         var sYear = sPeriod.substring(2);
+                //         // Create or get a model to store the year
+                //         var oYearModel = this.getInterface().getView().getController().getOwnerComponent().getModel("yearModel");
+                //         // var oYearModel = sap.ui.getCore().getModel("yearModel") || new sap.ui.model.json.JSONModel();
+                //         oYearModel.setProperty("/year", sYear);
+                //         // sap.ui.getCore().setModel(oYearModel, "yearModel");
+                //     }
 
                 }
 
