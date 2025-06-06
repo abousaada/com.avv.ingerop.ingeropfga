@@ -24,26 +24,22 @@ sap.ui.define(
 
                 onInit: function () {
                     // you can access the Fiori elements extensionAPI via this.base.getExtensionAPI
-                    //var oModel = this.base.getExtensionAPI().getModel();
-
+                    // var oModel = this.base.getExtensionAPI().getModel();
+                    //  "sap/ui/model/json/JSONModel"
+                    const yearModel = new sap.ui.model.json.JSONModel({});
+                    sap.ui.getCore().setModel(yearModel, "yearModel");
                     
                 },
 
-                routing: {
-                    onAfterBinding: async function (oBindingContext) { }
+                // routing: {
+                //     onAfterBinding: async function (oBindingContext) { }
+                // },
 
-                },
-
-                onListItemPress: function () {
-
-                    console.log("onListItemPress");
-                    var oFCL = this.oView.getParent().getParent();
-
-                    oFCL.setLayout(fioriLibrary.LayoutType.TwoColumnsMidExpanded);
-
-
-                },
-
+                // onListItemPress: function () {
+                //     console.log("onListItemPress");
+                //     var oFCL = this.oView.getParent().getParent();
+                //     oFCL.setLayout(fioriLibrary.LayoutType.TwoColumnsMidExpanded);
+                // },
 
                 onListNavigationExtension: function (oEvent) {
                     var oBindingContext = oEvent.getSource().getBindingContext();
@@ -104,7 +100,7 @@ sap.ui.define(
                         // Create or get a model to store the year
                         var oYearModel = sap.ui.getCore().getModel("yearModel") || new sap.ui.model.json.JSONModel();
                         oYearModel.setProperty("/year", sYear);
-                        this.getView().setModel(oYearModel, "yearModel");
+                        sap.ui.getCore().setModel(oYearModel, "yearModel");
                     }
 
                 }

@@ -144,7 +144,7 @@ sap.ui.define(
 				aFilters.push(new Filter("CompanyId", FilterOperator.EQ, sCompany));
 
 				var oData = new JSONModel();
-				oData.loadData("./model/mock/TvaList.json");
+				oData.loadData("./model/mock/TVAList.json");
 
 				that.getModel("TvaListModel").setData(oData.results);
 				that.fnGetTvaListProrata(sCompany);

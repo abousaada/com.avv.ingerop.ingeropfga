@@ -60,6 +60,7 @@
     }
   },
   "sap.ui5": {
+    "componentName": "com.avv.ingerop.ingeropfga",
     "flexEnabled": false,
     "dependencies": {
       "minUI5Version": "1.120.0",
@@ -85,6 +86,18 @@
           "bundleName": "com.avv.ingerop.ingeropfga.i18n.i18n"
         }
       },
+      "@i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "uri": "i18n/i18n.properties"
+      },
+      "i18n|sap.suite.ui.generic.template.ObjectPage|ZC_FGA": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "uri": "i18n/i18n.properties"
+      },
+      "i18n|sap.suite.ui.generic.template.ObjectPage|ZC_FGA_EXT": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "uri": "i18n/i18n.properties"
+      },
       "": {
         "dataSource": "mainService",
         "preload": true,
@@ -97,10 +110,7 @@
           }
         }
       },
-      "@i18n": {
-        "type": "sap.ui.model.resource.ResourceModel",
-        "uri": "i18n/i18n.properties"
-      },
+      
       "list": {
         "type": "sap.ui.model.json.JSONModel",
         "uri": "model/mock/list.json",
@@ -213,7 +223,7 @@
       },
       "settings": {
         "type": "sap.ui.model.json.JSONModel",
-        "uri": "model/mock/settings.json",
+        "uri": "model/mock/Settings.json",
         "preload": true
       },
       "column": {
@@ -273,7 +283,7 @@
       },
       "TvaListModel": {
         "type": "sap.ui.model.json.JSONModel",
-        "uri": "model/mock/TvaList.json",
+        "uri": "model/mock/TVAList.json",
         "preload": true
       }
     },
@@ -305,6 +315,10 @@
               "type": "XML",
               "sap.ui.generic.app": {
                 "title": "Budgets"
+              },
+              "loadingBehavior": {
+                "waitForHeaderData": true,
+                "waitForViewportEnter": true
               }
             },
             "AfterFacet|ZC_FGASet|GeneralInfo": {
@@ -315,20 +329,20 @@
                 "title": "Summary Table"
               }
             },
-            "AfterFacet|ZC_FGASet|GeneralInfo|1": {
-              "className": "sap.ui.core.mvc.View",
-              "viewName": "com.avv.ingerop.ingeropfga.ext.view.ChartInfos",
-              "type": "XML",
-              "sap.ui.generic.app": {
-                "title": "Graphics"
-              }
-            },
             "AfterFacet|ZC_FGASet|Missions": {
               "className": "sap.ui.core.mvc.View",
               "viewName": "com.avv.ingerop.ingeropfga.ext.view.Mission",
               "type": "XML",
               "sap.ui.generic.app": {
                 "title": "Missions"
+              }
+            },
+            "AfterFacet|ZC_FGASet|GeneralInfo|1": {
+              "className": "sap.ui.core.mvc.View",
+              "viewName": "com.avv.ingerop.ingeropfga.ext.view.ChartInfos",
+              "type": "XML",
+              "sap.ui.generic.app": {
+                "title": "Graphics"
               }
             }
           }

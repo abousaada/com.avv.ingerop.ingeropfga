@@ -10,7 +10,7 @@
             <table:Column width="8rem" headerSpan="13">
                 <table:multiLabels>
                     <Label text="{i18n>prev.currYear}" />
-                    <Label text="{i18n>synt.month1}" />
+                    <Label text="{i18n>synt.month01}" />
                 </table:multiLabels>
                 <table:template>
                     <Input change="onChangePrevision" textAlign="End" value="{path: 'prevision>Month1', formatter: '.formatNumber'}" />
@@ -22,7 +22,7 @@
             <table:Column width="8rem" >
                 <table:multiLabels>
                     <Label text="{i18n>prev.currYear}" />
-                    <Label text="{i18n>synt.month2}" />
+                    <Label text="{i18n>synt.month02}" />
                 </table:multiLabels>
                 <table:template>
                     <Input change="onChangePrevision" textAlign="End" value="{path: 'prevision>Month2', formatter: '.formatNumber'}" />
@@ -34,7 +34,7 @@
             <table:Column width="8rem" >
                 <table:multiLabels>
                     <Label text="{i18n>prev.currYear}" />
-                    <Label text="{i18n>synt.month3}" />
+                    <Label text="{i18n>synt.month03}" />
                 </table:multiLabels>
                 <table:template>
                     <Input change="onChangePrevision" textAlign="End" value="{path: 'prevision>Month3', formatter: '.formatNumber'}" />
@@ -46,7 +46,7 @@
             <table:Column width="8rem" >
                 <table:multiLabels>
                     <Label text="{i18n>prev.currYear}" />
-                    <Label text="{i18n>synt.month4}" />
+                    <Label text="{i18n>synt.month04}" />
                 </table:multiLabels>
                 <table:template>
                     <Input change="onChangePrevision" textAlign="End" value="{path: 'prevision>Month4', formatter: '.formatNumber'}" />
@@ -58,7 +58,7 @@
             <table:Column width="8rem" >
                 <table:multiLabels>
                     <Label text="{i18n>prev.currYear}" />
-                    <Label text="{i18n>synt.month5}" />
+                    <Label text="{i18n>synt.month05}" />
                 </table:multiLabels>
                 <table:template>
                     <Input change="onChangePrevision" textAlign="End" value="{path: 'prevision>Month5', formatter: '.formatNumber'}" />
@@ -70,7 +70,7 @@
             <table:Column width="8rem" >
                 <table:multiLabels>
                     <Label text="{i18n>prev.currYear}" />
-                    <Label text="{i18n>synt.month6}" />
+                    <Label text="{i18n>synt.month06}" />
                 </table:multiLabels>
                 <table:template>
                     <Input change="onChangePrevision" textAlign="End" value="{path: 'prevision>Month6', formatter: '.formatNumber'}" />
@@ -82,7 +82,7 @@
             <table:Column width="8rem" >
                 <table:multiLabels>
                     <Label text="{i18n>prev.currYear}" />
-                    <Label text="{i18n>synt.month7}" />
+                    <Label text="{i18n>synt.month07}" />
                 </table:multiLabels>
                 <table:template>
                     <Input change="onChangePrevision" textAlign="End" value="{path: 'prevision>Month7', formatter: '.formatNumber'}" />
@@ -94,7 +94,7 @@
             <table:Column width="8rem" >
                 <table:multiLabels>
                     <Label text="{i18n>prev.currYear}" />
-                    <Label text="{i18n>synt.month8}" />
+                    <Label text="{i18n>synt.month08}" />
                 </table:multiLabels>
                 <table:template>
                     <Input change="onChangePrevision" textAlign="End" value="{path: 'prevision>Month8', formatter: '.formatNumber'}" />
@@ -106,7 +106,7 @@
             <table:Column width="8rem" >
                 <table:multiLabels>
                     <Label text="{i18n>prev.currYear}" />
-                    <Label text="{i18n>synt.month9}" />
+                    <Label text="{i18n>synt.month09}" />
                 </table:multiLabels>
                 <table:template>
                     <Input change="onChangePrevision" textAlign="End" value="{path: 'prevision>Month9', formatter: '.formatNumber'}" />
@@ -236,7 +236,7 @@
             <table:Column width="8rem" headerSpan="13">
                 <table:multiLabels>
                     <Label text="{i18n>prev.currYear}" />
-                    <Label text="{i18n>synt.month1}" />
+                    <Label text="{i18n>synt.month01}" />
                 </table:multiLabels>
                 <table:template>
                     <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Month1}) &lt; 0 ? 'Error': 'None'}" text="{path: 'prevision>Month1', formatter: '.formatNumber'}" />
@@ -248,7 +248,7 @@
             <table:Column width="8rem" >
                 <table:multiLabels>
                     <Label text="{i18n>prev.currYear}" />
-                    <Label text="{i18n>synt.month2}" />
+                    <Label text="{i18n>synt.month02}" />
                 </table:multiLabels>
                 <table:template>
                     <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Month2}) &lt; 0 ? 'Error': 'None'}" text="{path: 'prevision>Month2', formatter: '.formatNumber'}" />
@@ -260,7 +260,7 @@
             <table:Column width="8rem" >
                 <table:multiLabels>
                     <Label text="{i18n>prev.currYear}" />
-                    <Label text="{i18n>synt.month3}" />
+                    <Label text="{i18n>synt.month03}" />
                 </table:multiLabels>
                 <table:template>
                     <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Month3}) &lt; 0 ? 'Error': 'None'}" text="{path: 'prevision>Month3', formatter: '.formatNumber'}" />
@@ -272,7 +272,7 @@
             <table:Column width="8rem" >
                 <table:multiLabels>
                     <Label text="{i18n>prev.currYear}" />
-                    <Label text="{i18n>synt.month4}" />
+                    <Label text="{i18n>synt.month04}" />
                 </table:multiLabels>
                 <table:template>
                     <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Month4}) &lt; 0 ? 'Error': 'None'}" text="{path: 'prevision>Month4', formatter: '.formatNumber'}" />
@@ -284,7 +284,7 @@
             <table:Column width="8rem" >
                 <table:multiLabels>
                     <Label text="{i18n>prev.currYear}" />
-                    <Label text="{i18n>synt.month5}" />
+                    <Label text="{i18n>synt.month05}" />
                 </table:multiLabels>
                 <table:template>
                     <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Month5}) &lt; 0 ? 'Error': 'None'}" text="{path: 'prevision>Month5', formatter: '.formatNumber'}" />
@@ -296,7 +296,7 @@
             <table:Column width="8rem" >
                 <table:multiLabels>
                     <Label text="{i18n>prev.currYear}" />
-                    <Label text="{i18n>synt.month6}" />
+                    <Label text="{i18n>synt.month06}" />
                 </table:multiLabels>
                 <table:template>
                     <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Month6}) &lt; 0 ? 'Error': 'None'}" text="{path: 'prevision>Month6', formatter: '.formatNumber'}" />
@@ -308,7 +308,7 @@
             <table:Column width="8rem" >
                 <table:multiLabels>
                     <Label text="{i18n>prev.currYear}" />
-                    <Label text="{i18n>synt.month7}" />
+                    <Label text="{i18n>synt.month07}" />
                 </table:multiLabels>
                 <table:template>
                     <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Month7}) &lt; 0 ? 'Error': 'None'}" text="{path: 'prevision>Month7', formatter: '.formatNumber'}" />
@@ -320,7 +320,7 @@
             <table:Column width="8rem" >
                 <table:multiLabels>
                     <Label text="{i18n>prev.currYear}" />
-                    <Label text="{i18n>synt.month8}" />
+                    <Label text="{i18n>synt.month08}" />
                 </table:multiLabels>
                 <table:template>
                     <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Month8}) &lt; 0 ? 'Error': 'None'}" text="{path: 'prevision>Month8', formatter: '.formatNumber'}" />
@@ -332,7 +332,7 @@
             <table:Column width="8rem" >
                 <table:multiLabels>
                     <Label text="{i18n>prev.currYear}" />
-                    <Label text="{i18n>synt.month9}" />
+                    <Label text="{i18n>synt.month09}" />
                 </table:multiLabels>
                 <table:template>
                     <ObjectStatus class="custObjStatus" state="{= parseFloat(${budget>Month9}) &lt; 0 ? 'Error': 'None'}" text="{path: 'prevision>Month9', formatter: '.formatNumber'}" />

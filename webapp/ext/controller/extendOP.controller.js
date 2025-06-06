@@ -35,6 +35,14 @@ sap.ui.define(
         return ControllerExtension.extend("com.avv.ingerop.ingeropfga.ext.controller.extendOP", {
             // Override or add custom methods here
 
+            _getExtensionAPI: function () {
+				return this.getInterface().getView().getController().extensionAPI;
+			},
+
+            _onObjectExtMatched: function () {
+				var a = "ok";
+			},
+
             // this section allows to extend lifecycle hooks or hooks provided by Fiori elements
             override: {
                 /**
@@ -125,10 +133,13 @@ sap.ui.define(
 
                     this.onObjectMatched(this);
 
+                    this._getExtensionAPI().attachPageDataLoaded(this._onObjectExtMatched.bind(this));
+
                     // Bind the onItemPress function to the controller context
                     this.onItemPress = this.onItemPress.bind(this);
                     this.onCalculate = this.onCalculate.bind(this);
                     this.onAddHOAIItems = this.onAddHOAIItems.bind(this);
+                    this.formatMonthLabel = this.formatMonthLabel.bind(this);
 
                     // Attach event handler to the list
                     var oList = this.byId("budgetTree");
@@ -160,24 +171,24 @@ sap.ui.define(
                 },
 
                 // Called when data has been received from the backend
-                onDataReceivedExtension: function (oEvent) {
-                    console.log("onDataReceivedExtension called", oEvent);
-                },
+                // onDataReceivedExtension: function (oEvent) {
+                //     console.log("onDataReceivedExtension called", oEvent);
+                // },
 
                 // Called before the chart is rebound (if a chart exists)
-                onBeforeRebindChartExtension: function (oEvent) {
-                    console.log("onBeforeRebindChartExtension called", oEvent);
-                },
+                // onBeforeRebindChartExtension: function (oEvent) {
+                //     console.log("onBeforeRebindChartExtension called", oEvent);
+                // },
 
                 // Called before the filter bar is rebound (can be used to adjust filters)
-                onBeforeRebindFilterBarExtension: function (oEvent) {
-                    console.log("onBeforeRebindFilterBarExtension called", oEvent);
-                },
+                // onBeforeRebindFilterBarExtension: function (oEvent) {
+                //     console.log("onBeforeRebindFilterBarExtension called", oEvent);
+                // },
 
                 // Called before an action is triggered
-                onBeforeActionExtension: function (oEvent) {
-                    console.log("onBeforeActionExtension called", oEvent);
-                },
+                // onBeforeActionExtension: function (oEvent) {
+                //     console.log("onBeforeActionExtension called", oEvent);
+                // },
 
                 /*onAfterRendering: function() {
                     console.log("onAfterRendering called");
@@ -229,34 +240,32 @@ sap.ui.define(
                     }.bind(this), 100); // Reduced delay to 100ms (adjust as needed)
                 },*/
 
+                // onBeforeShow: function (oEvent) {
+                //     // 1. Get the current business number
+                //     var oContext = this.getView().getBindingContext();
+                //     if (oContext) {
+                //         var sBusinessNo = oContext.getProperty("BusinessNo");
 
+                //         // 2. Update the field (with retry logic)
+                //         var iAttempts = 0;
+                //         var updateField = function () {
+                //             var oField = sap.ui.getCore().byId(
+                //                 "com.avv.ingerop.ingeropfga::ZC_FGA--BusinessNo::Field"
+                //             );
 
-                onBeforeShow: function (oEvent) {
-                    // 1. Get the current business number
-                    var oContext = this.getView().getBindingContext();
-                    if (oContext) {
-                        var sBusinessNo = oContext.getProperty("BusinessNo");
+                //             if (oField) {
+                //                 oField.setText(sBusinessNo);
+                //             } else if (iAttempts++ < 5) {
+                //                 setTimeout(updateField, 300 * iAttempts);
+                //             }
+                //         };
+                //         updateField();
+                //     }
+                // },
 
-                        // 2. Update the field (with retry logic)
-                        var iAttempts = 0;
-                        var updateField = function () {
-                            var oField = sap.ui.getCore().byId(
-                                "com.avv.ingerop.ingeropfga::ZC_FGA--BusinessNo::Field"
-                            );
-
-                            if (oField) {
-                                oField.setText(sBusinessNo);
-                            } else if (iAttempts++ < 5) {
-                                setTimeout(updateField, 300 * iAttempts);
-                            }
-                        };
-                        updateField();
-                    }
-                },
-
-                onBindingContextChanged: function (oEvent) {
-                    console.log(" onPageDataLoaded triggered", oEvent);
-                }
+                // onBindingContextChanged: function (oEvent) {
+                //     console.log(" onPageDataLoaded triggered", oEvent);
+                // }
 
             },
 
@@ -340,6 +349,7 @@ sap.ui.define(
                 var oUtilities = sap.ui.getCore().getModel("yearMode");
                 var sYear = oUtilities.getProperty("/year");
 
+                console.log("Formatter appelé avec :", sMonth, sYear);
                 return sMonth + "/" + sYear;
             },
 
@@ -1625,7 +1635,7 @@ sap.ui.define(
                 aFilters.push(new Filter("CompanyId", FilterOperator.EQ, sCompany));
 
                 var oData = new JSONModel();
-                oData.loadData("./model/mock/TvaList.json");
+                oData.loadData("./model/mock/TVAList.json");
 
                 that.getModel("TvaListModel").setData(oData.results);
                 that.fnGetTvaListProrata(sCompany);
