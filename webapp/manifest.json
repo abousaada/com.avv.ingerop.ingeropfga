@@ -86,24 +86,6 @@
           "bundleName": "com.avv.ingerop.ingeropfga.i18n.i18n"
         }
       },
-      "@i18n": {
-        "type": "sap.ui.model.resource.ResourceModel",
-        "settings": {
-          "bundleName": "com.avv.ingerop.ingeropfga.i18n.i18n"
-        }
-      },
-      "i18n|sap.suite.ui.generic.template.ObjectPage|ZC_FGA": {
-        "type": "sap.ui.model.resource.ResourceModel",
-        "settings": {
-          "bundleName": "com.avv.ingerop.ingeropfga.i18n.i18n"
-        }
-      },
-      "i18n|sap.suite.ui.generic.template.ObjectPage|ZC_FGA_EXT": {
-        "type": "sap.ui.model.resource.ResourceModel",
-        "settings": {
-          "bundleName": "com.avv.ingerop.ingeropfga.i18n.i18n"
-        }
-      },
       "": {
         "dataSource": "mainService",
         "preload": true,
