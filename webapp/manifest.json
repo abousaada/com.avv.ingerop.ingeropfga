@@ -104,6 +104,10 @@
           }
         }
       },
+      "utilities": {
+        "type": "com.avv.ingerop.ingeropfga.model.utilities",
+        "preload": true
+      },
       "list": {
         "type": "sap.ui.model.json.JSONModel",
         "uri": "model/mock/list.json",
@@ -297,7 +301,12 @@
             "controllerName": "com.avv.ingerop.ingeropfga.ext.controller.extendLR"
           },
           "sap.suite.ui.generic.template.ObjectPage.view.Details": {
-            "controllerName": "com.avv.ingerop.ingeropfga.ext.controller.extendOP"
+            "controllerName": "com.avv.ingerop.ingeropfga.ext.controller.extendOP",
+            "methods": {
+              "onBeforeCreateExtension": {
+                "name": "onBeforeCreateExtension"
+              }
+            }
           }
         },
         "sap.ui.viewExtensions": {

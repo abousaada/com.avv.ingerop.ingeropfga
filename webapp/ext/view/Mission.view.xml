@@ -11,17 +11,17 @@
   <Panel headerText="Missions" expandable="true" expanded="true">
     <table:Table
       id="missionsTable"
-      rows="{path: '/missions', templateShareable: false}"
+      rows="{path: 'utilities>/missions', templateShareable: false}"
       selectionMode="None"
-      visible="{= !${ui>/createMode}}"
-      ariaLabelledBy="title">
       
+      ariaLabelledBy="title">
+      <!-- visible="{= !${ui>/createMode}}" -->
       <table:columns>
         <!-- Codification (auto-generated) -->
         <table:Column width="12rem">
           <Label text="Codification"/>
           <table:template>
-            <Text text="{businessNo} - {missionNumber}"/>
+            <Text text="{utilities>BusinessNo} - {utilities>MissionId}"/>
           </table:template>
         </table:Column>
         
@@ -30,13 +30,13 @@
           <Label text="Mission"/>
           <table:template>
             <ComboBox
-              selectedKey="{missionType}"
+              selectedKey="{utilities>MissionCode}"
               items="{
-                path: '/missionTypes',
+                path: 'utilities>/missionTypes',
                 templateShareable: false
               }"
               width="100%">
-              <core:Item key="{code}" text="{description}"/>
+              <core:Item key="{utilities>code}" text="{utilities>description}"/>
             </ComboBox>
           </table:template>
         </table:Column>
@@ -46,7 +46,7 @@
           <Label text="Date début"/>
           <table:template>
             <DatePicker
-              value="{path: 'startDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd' }}"
+              value="{path: 'utilities>StartDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd' }}"
               displayFormat="short"
               width="100%"/>
           </table:template>
@@ -57,7 +57,9 @@
           <Label text="Date fin"/>
           <table:template>
             <DatePicker
-              value="{path: 'endDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd' }}"
+              value="{path: 'utilities>EndDate', 
+              type: 'sap.ui.model.type.Date', 
+              formatOptions: { pattern: 'yyyy-MM-dd' }}"
               displayFormat="short"
               width="100%"/>
           </table:template>
@@ -67,8 +69,13 @@
         <table:Column width="10rem">
           <Label text="Budget recette externe"/>
           <table:template>
+           <!-- path: 'utilities>externalRevenue',  -->
             <Input
-              value="{path: 'externalRevenue', type: 'sap.ui.model.type.Currency', formatOptions: { decimals: 2 }}"
+              value="{
+                parts: ['utilities>ExternalRevenue', '€'],
+                type: 'sap.ui.model.type.Currency', 
+                formatOptions: { decimals: 2, showMeasure: false }
+              }"
               description="€"
               width="100%"/>
           </table:template>
@@ -79,33 +86,43 @@
           <Label text="Budget main d'œuvre"/>
           <table:template>
             <Input
-              value="{path: 'laborBudget', type: 'sap.ui.model.type.Currency', formatOptions: { decimals: 2 }}"
+              value="{
+                parts: ['utilities>LaborBudget', '€'],
+                type: 'sap.ui.model.type.Currency', 
+                formatOptions: { decimals: 2 , showMeasure: false}
+                }"
               description="€"
               width="100%"/>
           </table:template>
         </table:Column>
         
         <!-- Sous-traitance -->
-        <table:Column width="10rem">
+        <!-- <table:Column width="10rem">
           <Label text="Sous-traitance"/>
           <table:template>
             <Input
-              value="{path: 'subcontracting', type: 'sap.ui.model.type.Currency', formatOptions: { decimals: 2 }}"
+              value="{
+                parts: ['utilities>Subcontracting', '€'],
+                type: 'sap.ui.model.type.Currency', 
+                formatOptions: { decimals: 2, showMeasure: false }}"
               description="€"
               width="100%"/>
           </table:template>
-        </table:Column>
+        </table:Column> -->
         
         <!-- Autres charges -->
-        <table:Column width="10rem">
+        <!-- <table:Column width="10rem">
           <Label text="Autres charges"/>
           <table:template>
             <Input
-              value="{path: 'otherCosts', type: 'sap.ui.model.type.Currency', formatOptions: { decimals: 2 }}"
+              value="{
+                parts: ['utilities>OtherCosts', '€'],
+                type: 'sap.ui.model.type.Currency', 
+                formatOptions: { decimals: 2, showMeasure: false }}"
               description="€"
               width="100%"/>
           </table:template>
-        </table:Column>
+        </table:Column> -->
       </table:columns>
     </table:Table>
     

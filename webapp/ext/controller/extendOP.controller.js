@@ -13,7 +13,8 @@ sap.ui.define(
         "com/avv/ingerop/ingeropfga/ext/controller/BaseController",
         "sap/ui/core/UIComponent",
         "com/avv/ingerop/ingeropfga/model/models",
-        "sap/ui/model/Filter"
+        "sap/ui/model/Filter",
+        "com/avv/ingerop/ingeropfga/util/helper"
     ],
     function (
         ControllerExtension,
@@ -28,7 +29,9 @@ sap.ui.define(
         Controller,
         BaseController,
         UIComponent,
-        models
+        models,
+        Filter,
+        Helper
     ) {
         "use strict";
 
@@ -36,19 +39,25 @@ sap.ui.define(
             // Override or add custom methods here
 
             _getExtensionAPI: function () {
-				return this.getInterface().getView().getController().extensionAPI;
-			},
+                return this.getInterface().getView().getController().extensionAPI;
+            },
 
             _onObjectExtMatched: function (e) {
-                const oYearModel = this.getInterface().getModel("yearModel");
-                // const year = oYearModel.getProperty("/year");
+                const utilitiesModel = this.getInterface().getModel("utilities");
+
                 const sPeriod = e.context.getProperty("p_period");
-				// if(year != sPeriod){
+                if (sPeriod) {
                     // Extract year from sPeriod (MMYYYY format)
                     var sYear = sPeriod.substring(2);
-                    oYearModel.setProperty("/year", sYear);
-                // }
-			},
+                    utilitiesModel.setYear(sYear);
+                }
+
+                const sBusinessNo = e.context.getProperty("businessNo");
+                if (sBusinessNo) {
+                    utilitiesModel.setBusinessNo(sBusinessNo);
+                }
+
+            },
 
             // this section allows to extend lifecycle hooks or hooks provided by Fiori elements
             override: {
@@ -177,6 +186,44 @@ sap.ui.define(
                     console.log("onListNavigationExtension called", oEvent);
                 },
 
+                onBeforeCreateExtension(oEvent) {
+
+                },
+
+                beforeSaveExtension() {
+                    try {
+                        // Accès au contexte via la vue
+                        const oView = this.base.getView();
+                        const oContext = oView.getBindingContext();
+
+                        if (!oContext) {
+                            MessageBox.error("Aucun contexte lié à la vue !");
+                            throw new Error("Impossible d'accéder au contexte.");
+                        }
+
+                        return new Promise(async (resolve, reject) => {
+                            const utilitiesModel = this.getModel("utilities");
+                            const oModel = oContext.getModel();
+                            const sPath = oContext.getPath();
+                            const aMissions = utilitiesModel.getMissions();
+                            oModel.setProperty(sPath + "/to_Missions", aMissions, oContext);
+                            // const oPayload = Helper.extractPlainData(oContext.getObject());
+                            const oPayload = {
+                                // "BusinessNo": "999",
+                                "BusinessName" : "test xp",
+                                "to_Missions" : [{
+                                    // "BusinessNo": "999",
+                                    "MissionCode":"999",
+                                    // "LaborBudget":2
+                                }]
+                            };
+                            const createdFGA = await utilitiesModel.deepCreateFGA(oPayload);
+                            reject();
+                        });
+                    } catch (error) {
+                        console.log(error);
+                    }
+                },
                 // Called when data has been received from the backend
                 // onDataReceivedExtension: function (oEvent) {
                 //     console.log("onDataReceivedExtension called", oEvent);
@@ -353,9 +400,6 @@ sap.ui.define(
             },*/
 
             formatMonthLabel: function (sMonth, sYear) {
-                // var oUtilities = sap.ui.getCore().getModel("yearMode");
-                // var sYear = oUtilities.getProperty("/year");
-
                 // console.log("Formatter appelé avec :", sMonth, sYear);
                 return sMonth + "/" + sYear;
             },

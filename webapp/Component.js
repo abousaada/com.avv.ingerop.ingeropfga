@@ -7,8 +7,7 @@ sap.ui.define([
     var component = AppComponent.extend("com.avv.ingerop.ingeropfga.Component", {
         metadata: { manifest: "json" },
         onBeforeRendering: function (event) {
-            const yearModel = new JSONModel({});
-            this.setModel(yearModel, "yearModel");
+            this.getModel("utilities").init(this.getModel());
         }
     });
 

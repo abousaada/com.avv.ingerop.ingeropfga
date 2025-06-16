@@ -14,6 +14,19 @@ sap.ui.define(
 
         return ControllerExtension.extend("com.avv.ingerop.ingeropfga.ext.controller.extendLR", {
 
+
+            checkBeforeCreate: function () {
+                // Implémentez votre logique de vérification ici
+                // Retournez false pour empêcher la création
+
+                // Exemple:
+                // var oContext = this.byId("yourTableId").getBindingContext();
+                // if (!oContext || !this.validateData(oContext.getObject())) {
+                //   sap.m.MessageBox.error("Veuillez vérifier les données avant création");
+                //   return false;
+                // }
+                // return true;
+            },
             // this section allows to extend lifecycle hooks or hooks provided by Fiori elements
             override: {
                 /**
@@ -28,18 +41,8 @@ sap.ui.define(
                     //  "sap/ui/model/json/JSONModel"
                     // const yearModel = new sap.ui.model.json.JSONModel({});
                     // sap.ui.getCore().setModel(yearModel, "yearModel");
-                    
+
                 },
-
-                // routing: {
-                //     onAfterBinding: async function (oBindingContext) { }
-                // },
-
-                // onListItemPress: function () {
-                //     console.log("onListItemPress");
-                //     var oFCL = this.oView.getParent().getParent();
-                //     oFCL.setLayout(fioriLibrary.LayoutType.TwoColumnsMidExpanded);
-                // },
 
                 onListNavigationExtension: function (oEvent) {
                     var oBindingContext = oEvent.getSource().getBindingContext();
@@ -51,10 +54,9 @@ sap.ui.define(
                     var sYear = sPeriod.substring(2);
 
                     // Create or get a model to store the utilities
-                    var oUtilities = sap.ui.getCore().getModel("utilities") || new sap.ui.model.json.JSONModel();
-                    oUtilities.setProperty("/businessNo", sBusinessNo);
-                    sap.ui.getCore().setModel(oUtilities, "utilities");
-
+                    // var oUtilities = sap.ui.getCore().getModel("utilities") || new sap.ui.model.json.JSONModel();
+                    // oUtilities.setProperty("/businessNo", sBusinessNo);
+                    // sap.ui.getCore().setModel(oUtilities, "utilities");
 
                     console.log("Row selected in List Report:", oObject.BusinessNo);
 
@@ -89,26 +91,11 @@ sap.ui.define(
 
                 onBeforeRebindTableExtension: function (oEvent) {
 
-                //     var oSmartFilterBar = this.getView().byId("listReportFilter"); // default ID
-
-                //     if (oSmartFilterBar) {
-                //         var oFilterData = oSmartFilterBar.getFilterData();
-                //         var sPeriod = oFilterData["$Parameter.p_period"];
-
-                //         // Extract year from sPeriod (MMYYYY format)
-                //         var sYear = sPeriod.substring(2);
-                //         // Create or get a model to store the year
-                //         var oYearModel = this.getInterface().getView().getController().getOwnerComponent().getModel("yearModel");
-                //         // var oYearModel = sap.ui.getCore().getModel("yearModel") || new sap.ui.model.json.JSONModel();
-                //         oYearModel.setProperty("/year", sYear);
-                //         // sap.ui.getCore().setModel(oYearModel, "yearModel");
-                //     }
-
                 }
 
             },
 
-            onMyCustomActionPress: function(oEvent) {
+            onMyCustomActionPress: function (oEvent) {
                 sap.m.MessageToast.show("Custom button clicked!");
             },
 
