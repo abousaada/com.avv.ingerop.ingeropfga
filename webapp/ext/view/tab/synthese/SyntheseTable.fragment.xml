@@ -3,7 +3,9 @@
     xmlns:l="sap.ui.layout"
     xmlns:table="sap.ui.table"
     xmlns:f="sap.ui.layout.form">
-    <table:Table id="synthesisTab" visibleRowCount="22" rowsUpdated="onRowsUpdatedSyntTab" rows="{synthesis>/results}" class="syntheseTab sapUiSmallMargin" selectionMode="None">
+    <table:Table id="synthesisTab" visibleRowCount="22" 
+        rowsUpdated="onRowsUpdatedSyntTab" 
+        rows="{path:'synthesis>/results', templateShareable: false}" class="syntheseTab sapUiSmallMargin" selectionMode="None">
         <table:columns>
             <table:Column width="18rem">
                 <Label text="{i18n>synt.desc}" />
@@ -29,7 +31,7 @@
             <table:Column >
                 <!--Label text="{i18n>synt.month01}" /-->
                 <Label text="{
-                        parts: [ 'i18n>synt.month01', 'yearModel>/year' ],
+                        parts: [ 'i18n>synt.month01', 'utilities>/year' ],
                         formatter: '.formatMonthLabel'
                     }" />
                 <table:template>
@@ -42,7 +44,7 @@
             <table:Column >
                 <!-- <Label text="{i18n>synt.month02}" /> -->
                 <Label text="{
-                        parts: [ 'i18n>synt.month02', 'yearModel>/year' ],
+                        parts: [ 'i18n>synt.month02', 'utilities>/year' ],
                         formatter: '.formatMonthLabel'
                     }" />
                 <table:template>
@@ -55,7 +57,7 @@
             <table:Column >
                 <!-- <Label text="{i18n>synt.month03}" /> -->
                 <Label text="{
-                        parts: [ 'i18n>synt.month03', 'yearModel>/year' ],
+                        parts: [ 'i18n>synt.month03', 'utilities>/year' ],
                         formatter: '.formatMonthLabel'
                     }" />
                 <table:template>
@@ -68,7 +70,7 @@
             <table:Column >
                 <!-- <Label text="{i18n>synt.month04}" /> -->
                 <Label text="{
-                        parts: [ 'i18n>synt.month04', 'yearModel>/year' ],
+                        parts: [ 'i18n>synt.month04', 'utilities>/year' ],
                         formatter: '.formatMonthLabel'
                     }" />
                 <table:template>
@@ -81,7 +83,7 @@
             <table:Column >
                 <!-- <Label text="{i18n>synt.month05}" /> -->
                 <Label text="{
-                        parts: [ 'i18n>synt.month05', 'yearModel>/year' ],
+                        parts: [ 'i18n>synt.month05', 'utilities>/year' ],
                         formatter: '.formatMonthLabel'
                     }" />
                 <table:template>
@@ -94,7 +96,7 @@
             <table:Column >
                 <!-- <Label text="{i18n>synt.month06}" /> -->
                 <Label text="{
-                        parts: [ 'i18n>synt.month06', 'yearModel>/year' ],
+                        parts: [ 'i18n>synt.month06', 'utilities>/year' ],
                         formatter: '.formatMonthLabel'
                     }" />
                 <table:template>
@@ -107,7 +109,7 @@
             <table:Column >
                 <!-- <Label text="{i18n>synt.month07}" /> -->
                 <Label text="{
-                        parts: [ 'i18n>synt.month07', 'yearModel>/year' ],
+                        parts: [ 'i18n>synt.month07', 'utilities>/year' ],
                         formatter: '.formatMonthLabel'
                     }" />
                 <table:template>
@@ -120,7 +122,7 @@
             <table:Column >
                 <!-- <Label text="{i18n>synt.month08}" /> -->
                 <Label text="{
-                        parts: [ 'i18n>synt.month08', 'yearModel>/year' ],
+                        parts: [ 'i18n>synt.month08', 'utilities>/year' ],
                         formatter: '.formatMonthLabel'
                     }" />
                 <table:template>
@@ -133,7 +135,7 @@
             <table:Column >
                 <!-- <Label text="{i18n>synt.month09}" /> -->
                 <Label text="{
-                        parts: [ 'i18n>synt.month09', 'yearModel>/year' ],
+                        parts: [ 'i18n>synt.month09', 'utilities>/year' ],
                         formatter: '.formatMonthLabel'
                     }" />
                 <table:template>
@@ -146,7 +148,7 @@
             <table:Column >
                 <!-- <Label text="{i18n>synt.month10}" /> -->
                 <Label text="{
-                        parts: [ 'i18n>synt.month10', 'yearModel>/year' ],
+                        parts: [ 'i18n>synt.month10', 'utilities>/year' ],
                         formatter: '.formatMonthLabel'
                     }" />
                 <table:template>
@@ -159,7 +161,7 @@
             <table:Column >
                 <!-- <Label text="{i18n>synt.month11}" /> -->
                 <Label text="{
-                        parts: [ 'i18n>synt.month11', 'yearModel>/year' ],
+                        parts: [ 'i18n>synt.month11', 'utilities>/year' ],
                         formatter: '.formatMonthLabel'
                     }" />
                 <table:template>
@@ -172,7 +174,7 @@
             <table:Column >
                 <!-- <Label text="{i18n>synt.month12}" /> -->
                 <Label text="{
-                        parts: [ 'i18n>synt.month12', 'yearModel>/year' ],
+                        parts: [ 'i18n>synt.month12', 'utilities>/year' ],
                         formatter: '.formatMonthLabel'
                     }" />
                 <table:template>
