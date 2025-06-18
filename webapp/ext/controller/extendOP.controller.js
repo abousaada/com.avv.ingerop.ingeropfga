@@ -8,13 +8,14 @@ sap.ui.define(
         "sap/m/Button",
         "sap/m/MessageToast",
         "sap/ui/core/message/MessageType",
-        "sap/m/library",
         "sap/ui/core/mvc/Controller",
         "com/avv/ingerop/ingeropfga/ext/controller/BaseController",
         "sap/ui/core/UIComponent",
         "com/avv/ingerop/ingeropfga/model/models",
         "sap/ui/model/Filter",
-        "com/avv/ingerop/ingeropfga/util/helper"
+        "com/avv/ingerop/ingeropfga/util/helper",
+        "sap/ui/generic/app/navigation/service/SelectionVariant",
+        "sap/ui/generic/app/navigation/service/NavigationHandler",
     ],
     function (
         ControllerExtension,
@@ -25,13 +26,14 @@ sap.ui.define(
         Button,
         MessageToast,
         MessageType,
-        library,
         Controller,
         BaseController,
         UIComponent,
         models,
         Filter,
-        Helper
+        Helper,
+        SelectionVariant,
+        NavigationHandler
     ) {
         "use strict";
 
@@ -157,6 +159,7 @@ sap.ui.define(
                     this.onAddHOAIItems = this.onAddHOAIItems.bind(this);
                     this.formatMonthLabel = this.formatMonthLabel.bind(this);
 
+
                     // Attach event handler to the list
                     var oList = this.byId("budgetTree");
                     if (oList) {
@@ -210,10 +213,10 @@ sap.ui.define(
                             // const oPayload = Helper.extractPlainData(oContext.getObject());
                             const oPayload = {
                                 // "BusinessNo": "999",
-                                "BusinessName" : "test xp",
-                                "to_Missions" : [{
+                                "BusinessName": "test xp",
+                                "to_Missions": [{
                                     // "BusinessNo": "999",
-                                    "MissionCode":"999",
+                                    "MissionCode": "999",
                                     // "LaborBudget":2
                                 }]
                             };
@@ -2380,6 +2383,198 @@ sap.ui.define(
 
                     console.log("BusinessNo (onDetailsTabPress):", sBusinessNo);
                 }
-            }
+            },
+
+            
+            onPressMonthLink: function (oEvent) {
+                var oLink = oEvent.getSource();
+
+                // Get all custom data items from the link
+                var aCustomData = oLink.getCustomData();
+                var oCustomValues = {};
+
+                // Convert custom data array to key-value pairs
+                aCustomData.forEach(function (oCustomData) {
+                    oCustomValues[oCustomData.getKey()] = oCustomData.getValue();
+                });
+
+                var sMonthField = oCustomValues.monthField;
+                var sYearField = oCustomValues.yearField;
+
+                /*var oRowContext = oLink.getBindingContext("synthesis");
+                var oRowData = oRowContext.getObject();
+                var fMonthValue = oRowData[sMonthField];*/
+
+                // Display to ckeck
+                console.log("Clicked month field:", sMonthField);
+
+                // Call for navigation
+                this.monthLinkNavigation(oEvent, sMonthField, sYearField);
+
+
+            },
+
+            monthLinkNavigation: async function (oEvent, sMonthValue, sYearValue) {
+
+                try {
+                    const oLink = oEvent.getSource();
+                    const oRowContext = oLink.getBindingContext("synthesis");
+                    const oRowData = oRowContext.getObject();
+
+                    // 2. Get GL Accounts
+                    const oContext = oLink.getBindingContext("synthesis");
+                    const oData = oContext.getObject();
+                    const rawGLAccounts = oData.GLAccounts;
+                    const glAccounts = rawGLAccounts
+                        ? rawGLAccounts.split(";").map(a => a.trim()).filter(a => a.length > 0)
+                        : [];
+
+                    if (glAccounts.length === 0) {
+                        sap.m.MessageToast.show("GLAccount non disponible.");
+                        return;
+                    }
+
+                    // 3. Get Date range
+                    const year = sYearValue;
+                    const month = sMonthValue;
+
+                    // Calculate first and last day of the month
+                    const firstDay = `${year}${month}01`;
+                    const lastDay = this.getLastDayOfMonth(year, month);
+                    const formattedFirstDay = `${firstDay.substring(0, 4)}-${firstDay.substring(4, 6)}-${firstDay.substring(6, 8)}`;
+
+                    console.log(`Navigating for month ${month}/${year} (${firstDay} to ${lastDay})`);
+
+                    const oComponent = sap.ui.core.Component.getOwnerComponentFor(this.oView);
+                    const oAppStateService = sap.ushell.Container.getService("AppState");
+                    const oSelectionVariant = new sap.ui.generic.app.navigation.service.SelectionVariant();
+
+                    oSelectionVariant.addSelectOption(
+                        "PostingDate",
+                        "I",
+                        "BT",
+                        firstDay,
+                        lastDay
+                    );
+
+                    const oAppState = await oAppStateService.createEmptyAppState(oComponent);
+                    oAppState.setData(oSelectionVariant.toJSONString());
+                    await oAppState.save();
+
+                    const sAppStateKey = oAppState.getKey();
+                    const oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
+
+                    /*const sUrl = oCrossAppNavigator.toExternal({
+                        target: {
+                            semanticObject: "GLAccount",
+                            action: "displayGLLineItemReportingView"
+                        },
+                        params: {
+                            PostingDate: `GE${firstDay}&LE${lastDay}`,
+                            GLAccount: ["0041000001"],
+                            WBSElementExternalID: ["PROJET CAS TEST1"],
+                            P_DisplayCurrency: "EUR",
+                            P_ExchangeRateType: "M",
+                            P_ExchangeRateDate: "2019-01-01"
+                        }
+                    });
+                    // Ouverture dans une nouvelle fenêtre
+                    window.open(sUrl, "_blank");
+                    */
+
+                    // Construct the URL parameters
+                    const params = {
+                        //PostingDate: `GE${firstDay}&LE${lastDay}`,
+                        PostingDate: formattedFirstDay,//[firstDay, lastDay],
+                        GLAccount: glAccounts,
+                        WBSElementExternalID: [oData.business_no],
+                    };
+
+                    // Convert params to URL string
+                    const sParams = Object.entries(params)
+                        .map(([key, value]) => {
+                            if (Array.isArray(value)) {
+                                return value.map(v => `${key}=${encodeURIComponent(v)}`).join('&');
+                            }
+                            return `${key}=${encodeURIComponent(value)}`;
+                        })
+                        .join('&');
+
+                    // Get the base URL for the target app
+                    const sHash = oCrossAppNavigator.hrefForExternal({
+                        target: {
+                            semanticObject: "GLAccount",
+                            action: "displayGLLineItemReportingView"
+                        }
+                    });
+
+                    // Get the FLP base URL
+                    const sBaseUrl = window.location.origin + window.location.pathname;
+
+                    // Construct the full URL
+                    const sUrl = `${sBaseUrl}#${sHash}&${sParams}`;
+
+                    // Open in new window
+                    window.open(sUrl, "_blank", "noopener,noreferrer");
+
+                } catch (err) {
+                    console.error("Error during navigation:", err);
+                }
+            },
+
+            // Helper function to get last day of month
+            getLastDayOfMonth: function (year, month) {
+                // Note: month is 1-12 (not 0-11 like in JS Date)
+                const lastDay = new Date(year, month, 0).getDate();
+                return `${year}${month.padStart(2, '0')}${lastDay.toString().padStart(2, '0')}`;
+            },
+
+            /*monthLinkNavigation1: function (oEvent, sMonthField) {
+                const oComponent = sap.ui.core.Component.getOwnerComponentFor(this.oView);
+
+                const oAppStateService = sap.ushell.Container.getService("AppState");
+
+                const oSelectionVariant = new sap.ui.generic.app.navigation.service.SelectionVariant();
+
+                oSelectionVariant.addSelectOption(
+                    "PostingDate",
+                    "I",
+                    "BT",
+                    "20250601",
+                    "20250611"
+                );
+
+                console.log("oSelectionVariant :", oSelectionVariant.toJSONString());
+
+                try {
+                    const oAppState = await oAppStateService.createEmptyAppState(oComponent);
+                    oAppState.setData(oSelectionVariant.toJSONString());
+
+                    await oAppState.save();
+                    const sAppStateKey = oAppState.getKey();
+
+                    const oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
+                    oCrossAppNavigator.toExternal({
+                        target: {
+                            semanticObject: "GLAccount",
+                            action: "displayGLLineItemReportingView"
+                        },
+                        params: {
+                            //"sap-xapp-state-data": sAppStateKey,
+                            PostingDate: "GE20250601&LE20250615",
+                            GLAccount: ["0041000001"],
+                            WBSElementExternalID: ["PROJET CAS TEST1"],
+                            P_DisplayCurrency: "EUR",
+                            P_ExchangeRateType: "M",
+                            P_ExchangeRateDate: "2019-01-01"
+                        }
+                    });
+
+                } catch (err) {
+                    console.error("Erreur lors de la création/sauvegarde de l'état :", err);
+                }
+            },*/
+
+
         });
     });

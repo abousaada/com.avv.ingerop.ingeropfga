@@ -1,11 +1,18 @@
-<core:FragmentDefinition xmlns="sap.m"
+<core:FragmentDefinition
+    xmlns="sap.m"
     xmlns:core="sap.ui.core"
     xmlns:l="sap.ui.layout"
     xmlns:table="sap.ui.table"
-    xmlns:f="sap.ui.layout.form">
-    <table:Table id="synthesisTab" visibleRowCount="22" 
-        rowsUpdated="onRowsUpdatedSyntTab" 
-        rows="{path:'synthesis>/results', templateShareable: false}" class="syntheseTab sapUiSmallMargin" selectionMode="None">
+    xmlns:f="sap.ui.layout.form"
+>
+    <table:Table
+        id="synthesisTab"
+        visibleRowCount="22"
+        rowsUpdated="onRowsUpdatedSyntTab"
+        rows="{path:'synthesis>/results', templateShareable: false}"
+        class="syntheseTab sapUiSmallMargin"
+        selectionMode="None"
+    >
         <table:columns>
             <table:Column width="18rem">
                 <Label text="{i18n>synt.desc}" />
@@ -19,207 +26,529 @@
                     <ObjectStatus class="custObjStatus" text="{path: 'synthesis>InitBudget', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>InitBudget}) &lt; 0 ? 'Error': 'None'}" />
                 </table:template>
             </table:Column-->
-            <table:Column >
+            <table:Column>
                 <Label text="{i18n>synt.cumulN-1}" />
                 <table:template>
-                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>cumul_n1', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>CumulN-1}) &lt; 0 ? 'Error': 'None'}" />
+                    <Link
+                        text="{path: 'synthesis>cumul_n1', formatter: '.formatNumbToNoDecimal'}"
+                        press=".onPressMonthLink"
+                    >
+                        <customData>
+                            <core:CustomData
+                                key="monthField"
+                                value="N1"
+                            />
+                        </customData>
+                        <customData>
+                            <core:CustomData
+                                key="yearField"
+                                value="{utilities>/year}"
+                            />
+                        </customData>
+                    </Link>
                 </table:template>
                 <table:customData>
-                    <core:CustomData key="Period" value="{syntPeriod>/cumul_n1}"></core:CustomData>
+                    <core:CustomData
+                        key="Period"
+                        value="{syntPeriod>/cumul_n1}"
+                    />
                 </table:customData>
             </table:Column>
-            <table:Column >
+            <table:Column>
                 <!--Label text="{i18n>synt.month01}" /-->
-                <Label text="{
+                <Label
+                    text="{
                         parts: [ 'i18n>synt.month01', 'utilities>/year' ],
                         formatter: '.formatMonthLabel'
-                    }" />
+                    }"
+                />
                 <table:template>
-                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>month01', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>month01}) &lt; 0 ? 'Error': 'None'}" />
+                    <!--ObjectStatus class="custObjStatus" text="{path: 'synthesis>month01', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>month01}) &lt; 0 ? 'Error': 'None'}" /-->
+                    <Link
+                        text="{path: 'synthesis>month01', formatter: '.formatNumbToNoDecimal'}"
+                        press=".onPressMonthLink"
+                    >
+                        <customData>
+                            <core:CustomData
+                                key="monthField"
+                                value="01"
+                            />
+                        </customData>
+                        <customData>
+                            <core:CustomData
+                                key="yearField"
+                                value="{utilities>/year}"
+                            />
+                        </customData>
+                    </Link>
                 </table:template>
                 <table:customData>
-                    <core:CustomData key="Period" value="{syntPeriod>/Month01}"></core:CustomData>
+                    <core:CustomData
+                        key="Period"
+                        value="{syntPeriod>/Month01}"
+                    />
                 </table:customData>
             </table:Column>
-            <table:Column >
+            <table:Column>
                 <!-- <Label text="{i18n>synt.month02}" /> -->
-                <Label text="{
+                <Label
+                    text="{
                         parts: [ 'i18n>synt.month02', 'utilities>/year' ],
                         formatter: '.formatMonthLabel'
-                    }" />
+                    }"
+                />
                 <table:template>
-                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>month02', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>month02}) &lt; 0 ? 'Error': 'None'}" />
+                    <Link
+                        text="{path: 'synthesis>month02', formatter: '.formatNumbToNoDecimal'}"
+                        press=".onPressMonthLink"
+                    >
+                        <customData>
+                            <core:CustomData
+                                key="monthField"
+                                value="02"
+                            />
+                        </customData>
+                        <customData>
+                            <core:CustomData
+                                key="yearField"
+                                value="{utilities>/year}"
+                            />
+                        </customData>
+                    </Link>
                 </table:template>
                 <table:customData>
-                    <core:CustomData key="Period" value="{syntPeriod>/Month02}"></core:CustomData>
+                    <core:CustomData
+                        key="Period"
+                        value="{syntPeriod>/Month02}"
+                    />
                 </table:customData>
             </table:Column>
-            <table:Column >
+            <table:Column>
                 <!-- <Label text="{i18n>synt.month03}" /> -->
-                <Label text="{
+                <Label
+                    text="{
                         parts: [ 'i18n>synt.month03', 'utilities>/year' ],
                         formatter: '.formatMonthLabel'
-                    }" />
+                    }"
+                />
                 <table:template>
-                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>month03', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>month03}) &lt; 0 ? 'Error': 'None'}" />
+                    <Link
+                        text="{path: 'synthesis>month03', formatter: '.formatNumbToNoDecimal'}"
+                        press=".onPressMonthLink"
+                    >
+                        <customData>
+                            <core:CustomData
+                                key="monthField"
+                                value="03"
+                            />
+                        </customData>
+                        <customData>
+                            <core:CustomData
+                                key="yearField"
+                                value="{utilities>/year}"
+                            />
+                        </customData>
+                    </Link>
                 </table:template>
                 <table:customData>
-                    <core:CustomData key="Period" value="{syntPeriod>/Month03}"></core:CustomData>
+                    <core:CustomData
+                        key="Period"
+                        value="{syntPeriod>/Month03}"
+                    />
                 </table:customData>
             </table:Column>
-            <table:Column >
+            <table:Column>
                 <!-- <Label text="{i18n>synt.month04}" /> -->
-                <Label text="{
+                <Label
+                    text="{
                         parts: [ 'i18n>synt.month04', 'utilities>/year' ],
                         formatter: '.formatMonthLabel'
-                    }" />
+                    }"
+                />
                 <table:template>
-                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>month04', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>month04}) &lt; 0 ? 'Error': 'None'}" />
+                    <Link
+                        text="{path: 'synthesis>month04', formatter: '.formatNumbToNoDecimal'}"
+                        press=".onPressMonthLink"
+                    >
+                        <customData>
+                            <core:CustomData
+                                key="monthField"
+                                value="04"
+                            />
+                        </customData>
+                        <customData>
+                            <core:CustomData
+                                key="yearField"
+                                value="{utilities>/year}"
+                            />
+                        </customData>
+                    </Link>
                 </table:template>
                 <table:customData>
-                    <core:CustomData key="Period" value="{syntPeriod>/Month04}"></core:CustomData>
+                    <core:CustomData
+                        key="Period"
+                        value="{syntPeriod>/Month04}"
+                    />
                 </table:customData>
             </table:Column>
-            <table:Column >
+            <table:Column>
                 <!-- <Label text="{i18n>synt.month05}" /> -->
-                <Label text="{
+                <Label
+                    text="{
                         parts: [ 'i18n>synt.month05', 'utilities>/year' ],
                         formatter: '.formatMonthLabel'
-                    }" />
+                    }"
+                />
                 <table:template>
-                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>month05', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>month05}) &lt; 0 ? 'Error': 'None'}" />
+                    <Link
+                        text="{path: 'synthesis>month05', formatter: '.formatNumbToNoDecimal'}"
+                        press=".onPressMonthLink"
+                    >
+                        <customData>
+                            <core:CustomData
+                                key="monthField"
+                                value="05"
+                            />
+                        </customData>
+                        <customData>
+                            <core:CustomData
+                                key="yearField"
+                                value="{utilities>/year}"
+                            />
+                        </customData>
+                    </Link>
                 </table:template>
                 <table:customData>
-                    <core:CustomData key="Period" value="{syntPeriod>/Month05}"></core:CustomData>
+                    <core:CustomData
+                        key="Period"
+                        value="{syntPeriod>/Month05}"
+                    />
                 </table:customData>
             </table:Column>
-            <table:Column >
+            <table:Column>
                 <!-- <Label text="{i18n>synt.month06}" /> -->
-                <Label text="{
+                <Label
+                    text="{
                         parts: [ 'i18n>synt.month06', 'utilities>/year' ],
                         formatter: '.formatMonthLabel'
-                    }" />
+                    }"
+                />
                 <table:template>
-                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>month06', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>month06}) &lt; 0 ? 'Error': 'None'}" />
+                    <Link
+                        text="{path: 'synthesis>month06', formatter: '.formatNumbToNoDecimal'}"
+                        press=".onPressMonthLink"
+                    >
+                        <customData>
+                            <core:CustomData
+                                key="monthField"
+                                value="06"
+                            />
+                        </customData>
+                        <customData>
+                            <core:CustomData
+                                key="yearField"
+                                value="{utilities>/year}"
+                            />
+                        </customData>
+                    </Link>
                 </table:template>
                 <table:customData>
-                    <core:CustomData key="Period" value="{syntPeriod>/Month06}"></core:CustomData>
+                    <core:CustomData
+                        key="Period"
+                        value="{syntPeriod>/Month06}"
+                    />
                 </table:customData>
             </table:Column>
-            <table:Column >
+            <table:Column>
                 <!-- <Label text="{i18n>synt.month07}" /> -->
-                <Label text="{
+                <Label
+                    text="{
                         parts: [ 'i18n>synt.month07', 'utilities>/year' ],
                         formatter: '.formatMonthLabel'
-                    }" />
+                    }"
+                />
                 <table:template>
-                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>month07', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>month07}) &lt; 0 ? 'Error': 'None'}" />
+                    <Link
+                        text="{path: 'synthesis>month07', formatter: '.formatNumbToNoDecimal'}"
+                        press=".onPressMonthLink"
+                    >
+                        <customData>
+                            <core:CustomData
+                                key="monthField"
+                                value="07"
+                            />
+                        </customData>
+                        <customData>
+                            <core:CustomData
+                                key="yearField"
+                                value="{utilities>/year}"
+                            />
+                        </customData>
+                    </Link>
                 </table:template>
                 <table:customData>
-                    <core:CustomData key="Period" value="{syntPeriod>/Month07}"></core:CustomData>
+                    <core:CustomData
+                        key="Period"
+                        value="{syntPeriod>/Month07}"
+                    />
                 </table:customData>
             </table:Column>
-            <table:Column >
+            <table:Column>
                 <!-- <Label text="{i18n>synt.month08}" /> -->
-                <Label text="{
+                <Label
+                    text="{
                         parts: [ 'i18n>synt.month08', 'utilities>/year' ],
                         formatter: '.formatMonthLabel'
-                    }" />
+                    }"
+                />
                 <table:template>
-                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>month08', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>month08}) &lt; 0 ? 'Error': 'None'}" />
+                    <Link
+                        text="{path: 'synthesis>month08', formatter: '.formatNumbToNoDecimal'}"
+                        press=".onPressMonthLink"
+                    >
+                        <customData>
+                            <core:CustomData
+                                key="monthField"
+                                value="08"
+                            />
+                        </customData>
+                        <customData>
+                            <core:CustomData
+                                key="yearField"
+                                value="{utilities>/year}"
+                            />
+                        </customData>
+                    </Link>
                 </table:template>
                 <table:customData>
-                    <core:CustomData key="Period" value="{syntPeriod>/Month08}"></core:CustomData>
+                    <core:CustomData
+                        key="Period"
+                        value="{syntPeriod>/Month08}"
+                    />
                 </table:customData>
             </table:Column>
-            <table:Column >
+            <table:Column>
                 <!-- <Label text="{i18n>synt.month09}" /> -->
-                <Label text="{
+                <Label
+                    text="{
                         parts: [ 'i18n>synt.month09', 'utilities>/year' ],
                         formatter: '.formatMonthLabel'
-                    }" />
+                    }"
+                />
                 <table:template>
-                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>month09', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>month09}) &lt; 0 ? 'Error': 'None'}" />
+                    <Link
+                        text="{path: 'synthesis>month09', formatter: '.formatNumbToNoDecimal'}"
+                        press=".onPressMonthLink"
+                    >
+                        <customData>
+                            <core:CustomData
+                                key="monthField"
+                                value="09"
+                            />
+                        </customData>
+                        <customData>
+                            <core:CustomData
+                                key="yearField"
+                                value="{utilities>/year}"
+                            />
+                        </customData>
+                    </Link>
                 </table:template>
                 <table:customData>
-                    <core:CustomData key="Period" value="{syntPeriod>/Month09}"></core:CustomData>
+                    <core:CustomData
+                        key="Period"
+                        value="{syntPeriod>/Month09}"
+                    />
                 </table:customData>
             </table:Column>
-            <table:Column >
+            <table:Column>
                 <!-- <Label text="{i18n>synt.month10}" /> -->
-                <Label text="{
+                <Label
+                    text="{
                         parts: [ 'i18n>synt.month10', 'utilities>/year' ],
                         formatter: '.formatMonthLabel'
-                    }" />
+                    }"
+                />
                 <table:template>
-                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>month10', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>month010}) &lt; 0 ? 'Error': 'None'}" />
+                    <Link
+                        text="{path: 'synthesis>month10', formatter: '.formatNumbToNoDecimal'}"
+                        press=".onPressMonthLink"
+                    >
+                        <customData>
+                            <core:CustomData
+                                key="monthField"
+                                value="10"
+                            />
+                        </customData>
+                        <customData>
+                            <core:CustomData
+                                key="yearField"
+                                value="{utilities>/year}"
+                            />
+                        </customData>
+                    </Link>
                 </table:template>
                 <table:customData>
-                    <core:CustomData key="Period" value="{syntPeriod>/Month10}"></core:CustomData>
+                    <core:CustomData
+                        key="Period"
+                        value="{syntPeriod>/Month10}"
+                    />
                 </table:customData>
             </table:Column>
-            <table:Column >
+            <table:Column>
                 <!-- <Label text="{i18n>synt.month11}" /> -->
-                <Label text="{
+                <Label
+                    text="{
                         parts: [ 'i18n>synt.month11', 'utilities>/year' ],
                         formatter: '.formatMonthLabel'
-                    }" />
+                    }"
+                />
                 <table:template>
-                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>month11', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>month011}) &lt; 0 ? 'Error': 'None'}" />
+                    <Link
+                        text="{path: 'synthesis>month11', formatter: '.formatNumbToNoDecimal'}"
+                        press=".onPressMonthLink"
+                    >
+                        <customData>
+                            <core:CustomData
+                                key="monthField"
+                                value="11"
+                            />
+                        </customData>
+                        <customData>
+                            <core:CustomData
+                                key="yearField"
+                                value="{utilities>/year}"
+                            />
+                        </customData>
+                    </Link>
                 </table:template>
                 <table:customData>
-                    <core:CustomData key="Period" value="{syntPeriod>/Month11}"></core:CustomData>
+                    <core:CustomData
+                        key="Period"
+                        value="{syntPeriod>/Month11}"
+                    />
                 </table:customData>
             </table:Column>
-            <table:Column >
+            <table:Column>
                 <!-- <Label text="{i18n>synt.month12}" /> -->
-                <Label text="{
+                <Label
+                    text="{
                         parts: [ 'i18n>synt.month12', 'utilities>/year' ],
                         formatter: '.formatMonthLabel'
-                    }" />
+                    }"
+                />
                 <table:template>
-                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>month12', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>month012}) &lt; 0 ? 'Error': 'None'}" />
+                    <Link
+                        text="{path: 'synthesis>month11', formatter: '.formatNumbToNoDecimal'}"
+                        press=".onPressMonthLink"
+                    >
+                        <customData>
+                            <core:CustomData
+                                key="monthField"
+                                value="11"
+                            />
+                        </customData>
+                        <customData>
+                            <core:CustomData
+                                key="yearField"
+                                value="{utilities>/year}"
+                            />
+                        </customData>
+                    </Link>
                 </table:template>
                 <table:customData>
-                    <core:CustomData key="Period" value="{syntPeriod>/Month12}"></core:CustomData>
+                    <core:CustomData
+                        key="Period"
+                        value="{syntPeriod>/Month12}"
+                    />
                 </table:customData>
             </table:Column>
-            <table:Column >
+            <table:Column>
                 <Label text="{i18n>synt.AnneeN}" />
                 <table:template>
-                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>AnneeN', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>annee_n}) &lt; 0 ? 'Error': 'None'}" />
+                    <Link
+                        text="{path: 'synthesis>month12', formatter: '.formatNumbToNoDecimal'}"
+                        press=".onPressMonthLink"
+                    >
+                        <customData>
+                            <core:CustomData
+                                key="monthField"
+                                value="12"
+                            />
+                        </customData>
+                        <customData>
+                            <core:CustomData
+                                key="yearField"
+                                value="{utilities>/year}"
+                            />
+                        </customData>
+                    </Link>
                 </table:template>
                 <table:customData>
-                    <core:CustomData key="Period" value="{syntPeriod>/AnneeN}"></core:CustomData>
+                    <core:CustomData
+                        key="Period"
+                        value="{syntPeriod>/AnneeN}"
+                    />
                 </table:customData>
             </table:Column>
-            <table:Column >
+            <table:Column>
                 <Label text="{i18n>synt.CumulN}" />
                 <table:template>
-                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>CumulN', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>cumul_n}) &lt; 0 ? 'Error': 'None'}" />
+                    <Link
+                        text="{path: 'synthesis>AnneeN', formatter: '.formatNumbToNoDecimal'}"
+                        press=".onPressMonthLink"
+                    >
+                        <customData>
+                            <core:CustomData
+                                key="monthField"
+                                value="N0"
+                            />
+                        </customData>
+                        <customData>
+                            <core:CustomData
+                                key="yearField"
+                                value="{utilities>/year}"
+                            />
+                        </customData>
+                    </Link>
                 </table:template>
                 <table:customData>
-                    <core:CustomData key="Period" value="{syntPeriod>/CumulN}"></core:CustomData>
+                    <core:CustomData
+                        key="Period"
+                        value="{syntPeriod>/CumulN}"
+                    />
                 </table:customData>
             </table:Column>
-            <table:Column >
+            <!--table:Column>
                 <Label text="{i18n>synt.AVenir}" />
                 <table:template>
-                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>AVenir', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>YetToCome}) &lt; 0 ? 'Error': 'None'}" />
+                    <ObjectStatus
+                        class="custObjStatus"
+                        text="{path: 'synthesis>AVenir', formatter:'.formatNumbToNoDecimal'}"
+                        state="{= parseFloat(${synthesis>YetToCome}) &lt; 0 ? 'Error': 'None'}"
+                    />
                 </table:template>
             </table:Column>
-            <table:Column >
+            <table:Column>
                 <Label text="{i18n>synt.FinAffaire}" />
                 <table:template>
-                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>FinAffaire', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>Forecast}) &lt; 0 ? 'Error': 'None'}" />
+                    <ObjectStatus
+                        class="custObjStatus"
+                        text="{path: 'synthesis>FinAffaire', formatter:'.formatNumbToNoDecimal'}"
+                        state="{= parseFloat(${synthesis>Forecast}) &lt; 0 ? 'Error': 'None'}"
+                    />
                 </table:template>
             </table:Column>
-            <table:Column >
+            <table:Column>
                 <Label text="{i18n>synt.HistBudgetObjectif}" />
                 <table:template>
-                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>HistBudgetObjectif', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>Forecast}) &lt; 0 ? 'Error': 'None'}" />
+                    <ObjectStatus
+                        class="custObjStatus"
+                        text="{path: 'synthesis>HistBudgetObjectif', formatter:'.formatNumbToNoDecimal'}"
+                        state="{= parseFloat(${synthesis>Forecast}) &lt; 0 ? 'Error': 'None'}"
+                    />
                 </table:template>
-            </table:Column>
+            </table:Column-->
         </table:columns>
     </table:Table>
 </core:FragmentDefinition>
