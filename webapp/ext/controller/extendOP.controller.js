@@ -42,19 +42,28 @@ sap.ui.define(
                 return this.getInterface().getView().getController().extensionAPI;
             },
 
-            _onObjectExtMatched: function (e) {
+            _onObjectExtMatched: async function (e) {
                 const utilitiesModel = this.getInterface().getModel("utilities");
 
                 const sPeriod = e.context.getProperty("p_period");
                 if (sPeriod) {
-                    // Extract year from sPeriod (MMYYYY format)
-                    var sYear = sPeriod.substring(2);
-                    utilitiesModel.setYear(sYear);
+                    utilitiesModel.setYearByPeriod(sPeriod);
                 }
 
-                const sBusinessNo = e.context.getProperty("businessNo");
+                const sBusinessNo = e.context.getProperty("BusinessNo");
                 if (sBusinessNo) {
                     utilitiesModel.setBusinessNo(sBusinessNo);
+                }
+
+                //redirection, si pas de period ou non en création mode
+                if(!utilitiesModel.getYear() && !this.getModel("ui").getProperty("/createMode")){
+                    window.location.hash = "";
+                    return;
+                }
+
+                if(sPeriod && sBusinessNo){
+                    const missions = await utilitiesModel.getBEMissions(sPeriod, sBusinessNo);
+                    utilitiesModel.setMissions(missions || []);
                 }
 
             },
@@ -150,7 +159,7 @@ sap.ui.define(
                     this.onObjectMatched(this);
 
                     this._getExtensionAPI().attachPageDataLoaded(this._onObjectExtMatched.bind(this));
-
+                    
                     // Bind the onItemPress function to the controller context
                     this.onItemPress = this.onItemPress.bind(this);
                     this.onCalculate = this.onCalculate.bind(this);
@@ -186,10 +195,6 @@ sap.ui.define(
                     console.log("onListNavigationExtension called", oEvent);
                 },
 
-                onBeforeCreateExtension(oEvent) {
-
-                },
-
                 beforeSaveExtension() {
                     try {
                         // Accès au contexte via la vue
@@ -203,24 +208,52 @@ sap.ui.define(
 
                         return new Promise(async (resolve, reject) => {
                             const utilitiesModel = this.getModel("utilities");
-                            const oModel = oContext.getModel();
-                            const sPath = oContext.getPath();
-                            const aMissions = utilitiesModel.getMissions();
-                            oModel.setProperty(sPath + "/to_Missions", aMissions, oContext);
-                            // const oPayload = Helper.extractPlainData(oContext.getObject());
-                            const oPayload = {
-                                // "BusinessNo": "999",
-                                "BusinessName" : "test xp",
-                                "to_Missions" : [{
-                                    // "BusinessNo": "999",
-                                    "MissionCode":"999",
-                                    // "LaborBudget":2
-                                }]
-                            };
+                            // const oModel = oContext.getModel();
+                            // const sPath = oContext.getPath();
+                            const formattedMissions = utilitiesModel.getFormattedMissions();
+                            // oModel.setProperty(sPath + "/to_Missions", aMissions, oContext);
+                            const oPayload = Helper.extractPlainData({
+                                ...oContext.getObject(), 
+                                "to_Missions" : formattedMissions 
+                            });
+                            
+                            // const oPayload = {
+                            //     // "p_period": "062023",
+                            //     // "BusinessNo": "AFFAIRE123",
+                            //     "BusinessName": "Nom de l'affaire : text XP",
+                            //     "CompanyCode": "9000",
+                            //     "PROFITCENTER": "MEDNBTS000",
+                            //     "Mission": "05",
+                            //     "StartDate": new Date("2025-01-01"),
+                            //     "EndDate": new Date("2025-02-28"),
+                            //     "to_Missions": [
+                                //   {
+                                //     "MissionId": "001",
+                                //     // "BusinessNo": "AFFAIRE123",
+                                //     "MissionCode": "AVP",
+                                //     "StartDate": new Date("2025-01-01"),
+                                //     "EndDate": new Date("2025-01-30"),
+                                //     "ExternalRevenue": "100000.00",
+                                //     "LaborBudget": "50000.00"
+                                //   },
+                            //       {
+                            //         "MissionId": "002",
+                            //         // "BusinessNo": "AFFAIRE123",
+                            //         "MissionCode": "PRO",
+                            //         "StartDate": new Date("2025-01-01"),
+                            //         "EndDate": new Date("2025-01-30"),
+                            //         "ExternalRevenue": "150000.00",
+                            //         "LaborBudget": "75000.00"
+                            //       }
+                            //     ]
+                            //   };
                             const createdFGA = await utilitiesModel.deepCreateFGA(oPayload);
+                            sap.m.MessageToast.show("FGA created: " + createdFGA.BusinessNo);
                             reject();
+                            // resolve();
                         });
                     } catch (error) {
+                        sap.m.MessageToast.show("FGA create fail");
                         console.log(error);
                     }
                 },
@@ -244,55 +277,56 @@ sap.ui.define(
                 //     console.log("onBeforeActionExtension called", oEvent);
                 // },
 
-                /*onAfterRendering: function() {
-                    console.log("onAfterRendering called");
-                    
-                    setTimeout(async function() {
-                        var oBindingContext = this.getView().getBindingContext();
-                        if (oBindingContext) {
-                            //var sBusinessNo = oBindingContext.getProperty("BusinessNo");
-                            var sBusinessNo = encodeURIComponent(oBindingContext.getProperty("BusinessNo"));
+                // onAfterRendering: function () {
+                //     console.log("onAfterRendering called");
 
-                            console.log("onAfterRendering for BusinessNo:", sBusinessNo)
+                    // setTimeout(async function() {
+                    //     var oBindingContext = this.getView().getBindingContext();
+                    //     if (oBindingContext) {
+                    //         //var sBusinessNo = oBindingContext.getProperty("BusinessNo");
+                    //         var sBusinessNo = encodeURIComponent(oBindingContext.getProperty("BusinessNo"));
 
-                            /*const aPath = "/ZI_FGA_RECAP" + 
-                            "?$filter=BusinessNo eq '${sBusinessNo}'";* /
-                            
-                            //const aPath = "/ZI_FGA_RECAP" + "?BusinessNo='${sBusinessNo}'";
+                    //         console.log("onAfterRendering for BusinessNo:", sBusinessNo)
 
-                            const aPath = "/ZI_FGA_RECAP(p_businessno='" + sBusinessNo + "')/Set?BusinessNo='${sBusinessNo}'";
+                    //         const aPath = "/ZI_FGA_RECAP" + 
+                    //         "?$filter=BusinessNo eq '${sBusinessNo}'";
 
-                            var oDataModel = new sap.ui.model.odata.v2.ODataModel("/sap/opu/odata/sap/ZFGA_SRV");
-                
-                            try {
-                                // Wait for the data to be fetched
-                                
-                                var aRecapData = await this.fetchData(oDataModel, aPath);
-                                
-                                this.getView().getModel("recap").setProperty("/results", []);
+                    //         //const aPath = "/ZI_FGA_RECAP" + "?BusinessNo='${sBusinessNo}'";
 
-                                // Set the data in the model
-                                this.getView().getModel("recap").setProperty("/results", aRecapData.results);
-                
-                                // Load budget data
-                                var sPath = sap.ui.require.toUrl("com/avv/ingerop/ingeropfga/model/mock/");
-                                var oBudgetModel = new JSONModel();
-                                
-                                if(sBusinessNo === "CC526901") { //Hoai
-                                    await oBudgetModel.loadData(sPath + "budgetHoai.json", null, false);
-                                } else {
-                                    await oBudgetModel.loadData(sPath + "budget.json", null, false);
-                                }
-                                
-                                this.getView().setModel(oBudgetModel, "budget");
-                
-                                console.log("Data loaded successfully for BusinessNo:", sBusinessNo);
-                            } catch (error) {
-                                console.error("Error loading data:", error);
-                            }
-                        }
-                    }.bind(this), 100); // Reduced delay to 100ms (adjust as needed)
-                },*/
+                    //         const aPath = "/ZI_FGA_RECAP(p_businessno='" + sBusinessNo + "')/Set?BusinessNo='${sBusinessNo}'";
+
+                    //         var oDataModel = new sap.ui.model.odata.v2.ODataModel("/sap/opu/odata/sap/ZFGA_SRV");
+
+                    //         try {
+                    //             // Wait for the data to be fetched
+
+                    //             var aRecapData = await this.fetchData(oDataModel, aPath);
+
+                    //             this.getView().getModel("recap").setProperty("/results", []);
+
+                    //             // Set the data in the model
+                    //             this.getView().getModel("recap").setProperty("/results", aRecapData.results);
+
+                    //             // Load budget data
+                    //             var sPath = sap.ui.require.toUrl("com/avv/ingerop/ingeropfga/model/mock/");
+                    //             var oBudgetModel = new JSONModel();
+
+                    //             if(sBusinessNo === "CC526901") { //Hoai
+                    //                 await oBudgetModel.loadData(sPath + "budgetHoai.json", null, false);
+                    //             } else {
+                    //                 await oBudgetModel.loadData(sPath + "budget.json", null, false);
+                    //             }
+
+                    //             this.getView().setModel(oBudgetModel, "budget");
+
+                    //             console.log("Data loaded successfully for BusinessNo:", sBusinessNo);
+                    //         } catch (error) {
+                    //             console.error("Error loading data:", error);
+                    //         }
+
+                    //     }
+                    // }.bind(this), 100); // Reduced delay to 100ms (adjust as needed)
+                // },
 
                 // onBeforeShow: function (oEvent) {
                 //     // 1. Get the current business number

@@ -29,9 +29,30 @@ sap.ui.define([
 
             //Odata V2 RESP API Call function examples
 
-            async create(entity, data){
+            async create(entity, data, options={}){
                 return new Promise((resolve, reject) => 
                     this.oModel.create(entity, data, {
+                        ...options,
+                        success:function(odata){ resolve(odata) },
+                        error:function(oError){ reject(oError); }
+                    })
+                );
+            },
+
+            async read(entity, options={} ){
+                return new Promise((resolve, reject) => 
+                    this.oModel.read(entity, {
+                        ...options,
+                        success:function(odata){ resolve(odata) },
+                        error:function(oError){ reject(oError); }
+                    })
+                );
+            },
+
+            async update(entity, data, options={} ) {
+                return new Promise((resolve, reject) => 
+                    this.oModel.update(entity, data, {
+                        ...options,
                         success:function(odata){ resolve(odata) },
                         error:function(oError){ reject(oError); }
                     })

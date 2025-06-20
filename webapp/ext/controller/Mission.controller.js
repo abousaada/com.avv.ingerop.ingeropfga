@@ -46,7 +46,6 @@ sap.ui.define([
 
         onAddMission: function () {
             this.getView().getModel("utilities").addMissionNewLine();
-            
             const oTable = this.byId("missionsTable");
             // Focus on the new row
             setTimeout(function () {

@@ -32,7 +32,6 @@ function (BaseModel, InitialData, Formatter, Filter) {
                 // OtherCosts: 0.00
             };
             
-
             const newMissions = [...oldMissions, newMission];
             this.setMissions(newMissions);
         },
@@ -58,6 +57,33 @@ function (BaseModel, InitialData, Formatter, Filter) {
                 console.log(error);
             }
         },
+
+        async getBEMissions(period, businessNo){
+            try {
+                const sPath = `/ZC_FGASet(BusinessNo='${businessNo}',p_period='${period}')/to_Missions`;
+                console.log(`retrieve missions with period: ${period} and BusinessNo: ${businessNo}`);
+                
+                const missions = await this.read(sPath);
+                console.log(`Missions: ${missions.results}` );
+                return missions.results;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        setYearByPeriod(period){
+            // Extract year from sPeriod (MMYYYY format)
+            var sYear = period.substring(2);
+            this.setYear(sYear);
+        },
+
+        getFormattedMissions(){
+            return this.getMissions().map(mission => {
+                mission.ExternalRevenue = parseFloat(mission.ExternalRevenue).toFixed(2).toString();
+                mission.LaborBudget = parseFloat(mission.LaborBudget).toFixed(2).toString();
+                return mission;
+            });
+        }
 
     });
 

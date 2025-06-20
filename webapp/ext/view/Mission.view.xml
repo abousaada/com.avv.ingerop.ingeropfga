@@ -131,6 +131,7 @@
       <Button
         icon="sap-icon://add"
         text="Ajouter une mission"
+        visible="{ui>/editable}"
         press="onAddMission"/>
     </Toolbar>
   </Panel>

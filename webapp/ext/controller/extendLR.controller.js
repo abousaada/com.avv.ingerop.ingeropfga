@@ -27,6 +27,11 @@ sap.ui.define(
                 // }
                 // return true;
             },
+
+            isYearEmpty:function(year){
+                return !!year;
+            },
+
             // this section allows to extend lifecycle hooks or hooks provided by Fiori elements
             override: {
                 /**
@@ -37,66 +42,75 @@ sap.ui.define(
 
                 onInit: function () {
                     // you can access the Fiori elements extensionAPI via this.base.getExtensionAPI
-                    // var oModel = this.base.getExtensionAPI().getModel();
-                    //  "sap/ui/model/json/JSONModel"
-                    // const yearModel = new sap.ui.model.json.JSONModel({});
-                    // sap.ui.getCore().setModel(yearModel, "yearModel");
 
+                    // this.base.getView().byId("addEntry").bindProperty("enabled", {
+                    //     path: "utilities>/year",
+                    //     formatter: this.getInterface().isYearEmpty
+                    // });
                 },
 
-                onListNavigationExtension: function (oEvent) {
-                    var oBindingContext = oEvent.getSource().getBindingContext();
-                    var oObject = oBindingContext.getObject();
-
-                    var sBusinessNo = encodeURIComponent(oObject.BusinessNo);
-                    var sPeriod = encodeURIComponent(oObject.p_period);
-                    // Extract year from sPeriod (MMYYYY format)
-                    var sYear = sPeriod.substring(2);
-
-                    // Create or get a model to store the utilities
-                    // var oUtilities = sap.ui.getCore().getModel("utilities") || new sap.ui.model.json.JSONModel();
-                    // oUtilities.setProperty("/businessNo", sBusinessNo);
-                    // sap.ui.getCore().setModel(oUtilities, "utilities");
-
-                    console.log("Row selected in List Report:", oObject.BusinessNo);
-
-                    // Use the existing model or get it from the component
-                    var oDataModel = new sap.ui.model.odata.v2.ODataModel("/sap/opu/odata/sap/ZFGA_SRV");
-                    var that = this;
-
-                    // Step 1: Load filtered entity
-                    var sFunctionPath = "/ZC_FGA(p_period='" + sPeriod + "')/Set?$filter=BusinessNo eq '" + sBusinessNo + "'";
-
-                    oDataModel.read(sFunctionPath, {
-                        success: function (oData) {
-                            if (oData && oData.results && oData.results.length > 0) {
-                                // Chain the requests to avoid conflicts
-                                that._loadRecapData(oDataModel, sBusinessNo, sPeriod)
-                                    .then(function () {
-                                        return that._loadPrevisionsData(oDataModel, sBusinessNo, sPeriod);
-                                    })
-                                    .then(function () {
-                                        return that._loadMissionsData(oDataModel, sBusinessNo, sPeriod); // Your new async call
-                                    })
-                                    .catch(function (oError) {
-                                        console.error("Error in loading data:", oError);
-                                    });
-                            }
-                        },
-                        error: function (oError) {
-                            console.error("Error loading main entity:", oError);
+                onInitSmartFilterBarExtension: function(oEvent){
+                    //set Year Data on List Report Page
+                    oEvent.getSource().attachFilterChange(function(event){
+                        if(event.getParameters().getParameter("id").includes("p_period")){
+                            const period = event.getParameters().getParameter("newValue");
+                            this.getModel("utilities").setYearByPeriod(period);
                         }
                     });
                 },
+
+                // onListNavigationExtension: async function (oEvent) {
+                //     var oBindingContext = oEvent.getSource().getBindingContext();
+                //     var oObject = oBindingContext.getObject();
+
+                //     var sBusinessNo = encodeURIComponent(oObject.BusinessNo);
+                //     var sPeriod = encodeURIComponent(oObject.p_period);
+                //     // Extract year from sPeriod (MMYYYY format)
+                //     var sYear = sPeriod.substring(2);
+
+                //     // Create or get a model to store the utilities
+                //     // var oUtilities = sap.ui.getCore().getModel("utilities") || new sap.ui.model.json.JSONModel();
+                //     // oUtilities.setProperty("/businessNo", sBusinessNo);
+                //     // sap.ui.getCore().setModel(oUtilities, "utilities");
+
+                //     console.log("Row selected in List Report:", oObject.BusinessNo);
+
+                //     // Use the existing model or get it from the component
+                //     // var oDataModel = new sap.ui.model.odata.v2.ODataModel("/sap/opu/odata/sap/ZFGA_SRV");
+                //     // var that = this;
+
+                //     // Step 1: Load filtered entity
+                //     // var sFunctionPath = "/ZC_FGA(p_period='" + sPeriod + "')/Set?$filter=BusinessNo eq '" + sBusinessNo + "'";
+
+                //     // oDataModel.read(sFunctionPath, {
+                //     //     success: function (oData) {
+                //     //         if (oData && oData.results && oData.results.length > 0) {
+                //     //             // Chain the requests to avoid conflicts
+                //     //             that._loadRecapData(oDataModel, sBusinessNo, sPeriod)
+                //     //                 .then(function () {
+                //     //                     return that._loadPrevisionsData(oDataModel, sBusinessNo, sPeriod);
+                //     //                 })
+                //     //                 .then(function () {
+                //     //                     return that._loadMissionsData(oDataModel, sBusinessNo, sPeriod); // Your new async call
+                //     //                 })
+                //     //                 .catch(function (oError) {
+                //     //                     console.error("Error in loading data:", oError);
+                //     //                 });
+                //     //         }
+                //     //     },
+                //     //     error: function (oError) {
+                //     //         console.error("Error loading main entity:", oError);
+                //     //     }
+                //     // });
+                //     return new Promise(async (resolve, reject) => {
+                //         resolve();
+                //     })
+                // },
 
                 onBeforeRebindTableExtension: function (oEvent) {
 
                 }
 
-            },
-
-            onMyCustomActionPress: function (oEvent) {
-                sap.m.MessageToast.show("Custom button clicked!");
             },
 
             _loadRecapData: function (oDataModel, sBusinessNo, sPeriod) {
