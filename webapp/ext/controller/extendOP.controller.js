@@ -211,25 +211,48 @@ sap.ui.define(
 
                         return new Promise(async (resolve, reject) => {
                             const utilitiesModel = this.getModel("utilities");
-                            const oModel = oContext.getModel();
-                            const sPath = oContext.getPath();
-                            const aMissions = utilitiesModel.getMissions();
-                            oModel.setProperty(sPath + "/to_Missions", aMissions, oContext);
-                            // const oPayload = Helper.extractPlainData(oContext.getObject());
-                            const oPayload = {
-                                // "BusinessNo": "999",
-                                "BusinessName" : "test xp",
-                                "to_Missions" : [{
-                                    // "BusinessNo": "999",
-                                    "MissionCode":"999",
-                                    // "LaborBudget":2
-                                }]
-                            };
+                            const formattedMissions = utilitiesModel.getFormattedMissions();
+                            const oPayload = Helper.extractPlainData({
+                                ...oContext.getObject(), 
+                                "to_Missions" : formattedMissions 
+                            });
+                            
+                            // const oPayload = {
+                            //     // "p_period": "062023",
+                            //     // "BusinessNo": "AFFAIRE123",
+                            //     "BusinessName": "Nom de l'affaire : text XP",
+                            //     "CompanyCode": "9000",
+                            //     "PROFITCENTER": "MEDNBTS000",
+                            //     "Mission": "05",
+                            //     "StartDate": new Date("2025-01-01"),
+                            //     "EndDate": new Date("2025-02-28"),
+                            //     "to_Missions": [
+                                //   {
+                                //     "MissionId": "001",
+                                //     // "BusinessNo": "AFFAIRE123",
+                                //     "MissionCode": "AVP",
+                                //     "StartDate": new Date("2025-01-01"),
+                                //     "EndDate": new Date("2025-01-30"),
+                                //     "ExternalRevenue": "100000.00",
+                                //     "LaborBudget": "50000.00"
+                                //   },
+                            //       {
+                            //         "MissionId": "002",
+                            //         // "BusinessNo": "AFFAIRE123",
+                            //         "MissionCode": "PRO",
+                            //         "StartDate": new Date("2025-01-01"),
+                            //         "EndDate": new Date("2025-01-30"),
+                            //         "ExternalRevenue": "150000.00",
+                            //         "LaborBudget": "75000.00"
+                            //       }
+                            //     ]
+                            //   };
                             const createdFGA = await utilitiesModel.deepCreateFGA(oPayload);
                             sap.m.MessageToast.show("FGA created: " + createdFGA.BusinessNo);
                             reject();
                             // resolve();
                         });
+
                     } catch (error) {
                         sap.m.MessageToast.show("FGA create fail");
                         console.log(error);
