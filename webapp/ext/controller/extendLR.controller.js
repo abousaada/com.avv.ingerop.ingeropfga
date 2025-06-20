@@ -115,7 +115,9 @@ sap.ui.define(
 
             _loadRecapData: function (oDataModel, sBusinessNo, sPeriod) {
                 return new Promise(function (resolve, reject) {
-                    var sEntityPath = "/ZC_FGASet(BusinessNo='" + sBusinessNo + "',p_period='" + sPeriod + "')/to_Recap";
+                    //var sEntityPath = "/ZC_FGASet(BusinessNo='" + sBusinessNo + "',p_period='" + sPeriod + "')/to_Recap";
+
+                    var sEntityPath = "/ZI_FGA_RECAP(p_businessno='" + sBusinessNo + "',p_period='" + sPeriod + "')/Set";
 
                     oDataModel.read(sEntityPath, {
                         success: function (oRecapData) {
@@ -138,8 +140,10 @@ sap.ui.define(
 
             _loadPrevisionsData: function (oDataModel, sBusinessNo, sPeriod) {
                 return new Promise(function (resolve, reject) {
-                    var sEntityPath = "/ZC_FGASet(BusinessNo='" + sBusinessNo + "',p_period='" + sPeriod + "')/to_Previsions";
+                    //var sEntityPath = "/ZC_FGASet(BusinessNo='" + sBusinessNo + "',p_period='" + sPeriod + "')/to_Previsions";
 
+                    var sEntityPath = "/ZC_FGA_PREVISIONS(p_businessno='" + sBusinessNo + "',p_period='" + sPeriod + "')/Set";
+                    
                     oDataModel.read(sEntityPath, {
                         success: function (oPrevisions) {
                             var aPrevisions = oPrevisions.results || [];
