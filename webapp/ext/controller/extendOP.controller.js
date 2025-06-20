@@ -54,29 +54,36 @@ sap.ui.define(
                 if (sBusinessNo) { utilitiesModel.setBusinessNo(sBusinessNo); }
 
                 //redirection, si pas de period ou non en création mode
-                if(!utilitiesModel.getYear() && !this.getModel("ui").getProperty("/createMode")){
+                if (!utilitiesModel.getYear() && !this.getModel("ui").getProperty("/createMode")) {
                     window.location.hash = "";
                     return;
                 }
 
-                if(sPeriod && sBusinessNo){
+                const bCreateMode = this.getView().getModel("ui").getProperty("/createMode");
+                this.getView().byId("AfterFacet::ZC_FGASet::GeneralInfo::Section").setVisible(!bCreateMode);
+                this.getView().byId("AfterFacet::ZC_FGASet::TableInfo::Section").setVisible(!bCreateMode);
+                this.getView().byId("template:::ObjectPageSection:::AfterFacetExtensionSectionWithKey:::sFacet::GeneralInfo:::sEntitySet::ZC_FGASet:::sFacetExtensionKey::1").setVisible(!bCreateMode);
+                  
+                if (sPeriod && sBusinessNo) {
                     const missions = await utilitiesModel.getBEMissions(sPeriod, sBusinessNo);
                     utilitiesModel.setMissions(missions || []);
                 }
             },
 
-            _hideNoNeededSectionOnCreate(oView){
+            _hideNoNeededSectionOnCreate(oView) {
                 oView.addEventDelegate({
                     onAfterRendering: function (e) {
                         // cacher les sections Budget/Graphique/Recap
                         const bCreateMode = oView.getModel("ui").getProperty("/createMode");
-                        if(bCreateMode){
-                            oView.byId("AfterFacet::ZC_FGASet::GeneralInfo::Section").setVisible(false);
-                            oView.byId("AfterFacet::ZC_FGASet::TableInfo::Section").setVisible(false);
-                            oView.byId("template:::ObjectPageSection:::AfterFacetExtensionSectionWithKey:::sFacet::GeneralInfo:::sEntitySet::ZC_FGASet:::sFacetExtensionKey::1").setVisible(false);
-                        }
+                        oView.byId("AfterFacet::ZC_FGASet::GeneralInfo::Section").setVisible(!bCreateMode);
+                        oView.byId("AfterFacet::ZC_FGASet::TableInfo::Section").setVisible(!bCreateMode);
+                        oView.byId("template:::ObjectPageSection:::AfterFacetExtensionSectionWithKey:::sFacet::GeneralInfo:::sEntitySet::ZC_FGASet:::sFacetExtensionKey::1").setVisible(!bCreateMode);
                     }
-                  }, this);
+                }, this);
+            },
+
+            _onRouteMatched(event){
+                console.logs(event);
             },
 
             // this section allows to extend lifecycle hooks or hooks provided by Fiori elements
@@ -170,8 +177,10 @@ sap.ui.define(
                     this.onObjectMatched(this);
 
                     this._getExtensionAPI().attachPageDataLoaded(this._onObjectExtMatched.bind(this));
-                    
-                    this._hideNoNeededSectionOnCreate(this.getView());
+
+                    // this._hideNoNeededSectionOnCreate(this.getView());
+
+                    // this.base.getView().getController().getOwnerComponent().getRouter("ZC_FGASet").attachRoutePatternMatched(this._onRouteMatched, this);
 
                     // Bind the onItemPress function to the controller context
                     this.onItemPress = this.onItemPress.bind(this);
@@ -223,7 +232,7 @@ sap.ui.define(
                         return new Promise(async (resolve, reject) => {
                             const utilitiesModel = this.getModel("utilities");
                             const formattedMissions = utilitiesModel.getFormattedMissions();
-                            const oPayload = Helper.extractPlainData({...oContext.getObject(), "to_Missions" : formattedMissions });
+                            const oPayload = Helper.extractPlainData({ ...oContext.getObject(), "to_Missions": formattedMissions });
                             const createdFGA = await utilitiesModel.deepCreateFGA(oPayload);
                             //mettre la redirection dans onClose de validMessage
                             Helper.validMessage("FGA created: " + createdFGA.BusinessNo, this.getView());
@@ -240,15 +249,15 @@ sap.ui.define(
                             //     "StartDate": new Date("2025-01-01"),
                             //     "EndDate": new Date("2025-02-28"),
                             //     "to_Missions": [
-                                //   {
-                                //     "MissionId": "001",
-                                //     // "BusinessNo": "AFFAIRE123",
-                                //     "MissionCode": "AVP",
-                                //     "StartDate": new Date("2025-01-01"),
-                                //     "EndDate": new Date("2025-01-30"),
-                                //     "ExternalRevenue": "100000.00",
-                                //     "LaborBudget": "50000.00"
-                                //   },
+                            //   {
+                            //     "MissionId": "001",
+                            //     // "BusinessNo": "AFFAIRE123",
+                            //     "MissionCode": "AVP",
+                            //     "StartDate": new Date("2025-01-01"),
+                            //     "EndDate": new Date("2025-01-30"),
+                            //     "ExternalRevenue": "100000.00",
+                            //     "LaborBudget": "50000.00"
+                            //   },
                             //       {
                             //         "MissionId": "002",
                             //         // "BusinessNo": "AFFAIRE123",
@@ -292,52 +301,52 @@ sap.ui.define(
                 // onAfterRendering: function () {
                 //     console.log("onAfterRendering called");
 
-                    // setTimeout(async function() {
-                    //     var oBindingContext = this.getView().getBindingContext();
-                    //     if (oBindingContext) {
-                    //         //var sBusinessNo = oBindingContext.getProperty("BusinessNo");
-                    //         var sBusinessNo = encodeURIComponent(oBindingContext.getProperty("BusinessNo"));
+                // setTimeout(async function() {
+                //     var oBindingContext = this.getView().getBindingContext();
+                //     if (oBindingContext) {
+                //         //var sBusinessNo = oBindingContext.getProperty("BusinessNo");
+                //         var sBusinessNo = encodeURIComponent(oBindingContext.getProperty("BusinessNo"));
 
-                    //         console.log("onAfterRendering for BusinessNo:", sBusinessNo)
+                //         console.log("onAfterRendering for BusinessNo:", sBusinessNo)
 
-                    //         const aPath = "/ZI_FGA_RECAP" + 
-                    //         "?$filter=BusinessNo eq '${sBusinessNo}'";
+                //         const aPath = "/ZI_FGA_RECAP" + 
+                //         "?$filter=BusinessNo eq '${sBusinessNo}'";
 
-                    //         //const aPath = "/ZI_FGA_RECAP" + "?BusinessNo='${sBusinessNo}'";
+                //         //const aPath = "/ZI_FGA_RECAP" + "?BusinessNo='${sBusinessNo}'";
 
-                    //         const aPath = "/ZI_FGA_RECAP(p_businessno='" + sBusinessNo + "')/Set?BusinessNo='${sBusinessNo}'";
+                //         const aPath = "/ZI_FGA_RECAP(p_businessno='" + sBusinessNo + "')/Set?BusinessNo='${sBusinessNo}'";
 
-                    //         var oDataModel = new sap.ui.model.odata.v2.ODataModel("/sap/opu/odata/sap/ZFGA_SRV");
+                //         var oDataModel = new sap.ui.model.odata.v2.ODataModel("/sap/opu/odata/sap/ZFGA_SRV");
 
-                    //         try {
-                    //             // Wait for the data to be fetched
+                //         try {
+                //             // Wait for the data to be fetched
 
-                    //             var aRecapData = await this.fetchData(oDataModel, aPath);
+                //             var aRecapData = await this.fetchData(oDataModel, aPath);
 
-                    //             this.getView().getModel("recap").setProperty("/results", []);
+                //             this.getView().getModel("recap").setProperty("/results", []);
 
-                    //             // Set the data in the model
-                    //             this.getView().getModel("recap").setProperty("/results", aRecapData.results);
+                //             // Set the data in the model
+                //             this.getView().getModel("recap").setProperty("/results", aRecapData.results);
 
-                    //             // Load budget data
-                    //             var sPath = sap.ui.require.toUrl("com/avv/ingerop/ingeropfga/model/mock/");
-                    //             var oBudgetModel = new JSONModel();
+                //             // Load budget data
+                //             var sPath = sap.ui.require.toUrl("com/avv/ingerop/ingeropfga/model/mock/");
+                //             var oBudgetModel = new JSONModel();
 
-                    //             if(sBusinessNo === "CC526901") { //Hoai
-                    //                 await oBudgetModel.loadData(sPath + "budgetHoai.json", null, false);
-                    //             } else {
-                    //                 await oBudgetModel.loadData(sPath + "budget.json", null, false);
-                    //             }
+                //             if(sBusinessNo === "CC526901") { //Hoai
+                //                 await oBudgetModel.loadData(sPath + "budgetHoai.json", null, false);
+                //             } else {
+                //                 await oBudgetModel.loadData(sPath + "budget.json", null, false);
+                //             }
 
-                    //             this.getView().setModel(oBudgetModel, "budget");
+                //             this.getView().setModel(oBudgetModel, "budget");
 
-                    //             console.log("Data loaded successfully for BusinessNo:", sBusinessNo);
-                    //         } catch (error) {
-                    //             console.error("Error loading data:", error);
-                    //         }
+                //             console.log("Data loaded successfully for BusinessNo:", sBusinessNo);
+                //         } catch (error) {
+                //             console.error("Error loading data:", error);
+                //         }
 
-                    //     }
-                    // }.bind(this), 100); // Reduced delay to 100ms (adjust as needed)
+                //     }
+                // }.bind(this), 100); // Reduced delay to 100ms (adjust as needed)
                 // },
 
                 // onBeforeShow: function (oEvent) {
@@ -2428,7 +2437,7 @@ sap.ui.define(
                 }
             },
 
-            
+
             onPressMonthLink: function (oEvent) {
                 var oLink = oEvent.getSource();
 
