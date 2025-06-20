@@ -14,20 +14,6 @@ sap.ui.define(
 
         return ControllerExtension.extend("com.avv.ingerop.ingeropfga.ext.controller.extendLR", {
 
-
-            checkBeforeCreate: function () {
-                // Implémentez votre logique de vérification ici
-                // Retournez false pour empêcher la création
-
-                // Exemple:
-                // var oContext = this.byId("yourTableId").getBindingContext();
-                // if (!oContext || !this.validateData(oContext.getObject())) {
-                //   sap.m.MessageBox.error("Veuillez vérifier les données avant création");
-                //   return false;
-                // }
-                // return true;
-            },
-
             isYearEmpty:function(year){
                 return !!year;
             },

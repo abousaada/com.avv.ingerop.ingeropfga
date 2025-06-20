@@ -1,4 +1,6 @@
-sap.ui.define([], function () {
+sap.ui.define([
+  "sap/m/MessageBox",
+], function (MessageBox) {
   "use strict";
 
   function _extract(obj) {
@@ -41,6 +43,16 @@ sap.ui.define([], function () {
   }
 
   return {
-    extractPlainData: _extract
+    extractPlainData: _extract,
+    validMessage: function(message, oView, onClose){
+      return MessageBox.success(message, {
+				actions: [MessageBox.Action.CLOSE],
+				onClose,
+				dependentOn: oView
+			});
+    },
+    errorMessage: function(message){
+      return MessageBox.error(message);
+    }
   };
 });

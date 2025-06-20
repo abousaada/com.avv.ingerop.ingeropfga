@@ -48,14 +48,10 @@ sap.ui.define(
                 const utilitiesModel = this.getInterface().getModel("utilities");
 
                 const sPeriod = e.context.getProperty("p_period");
-                if (sPeriod) {
-                    utilitiesModel.setYearByPeriod(sPeriod);
-                }
+                if (sPeriod) { utilitiesModel.setYearByPeriod(sPeriod); }
 
                 const sBusinessNo = e.context.getProperty("BusinessNo");
-                if (sBusinessNo) {
-                    utilitiesModel.setBusinessNo(sBusinessNo);
-                }
+                if (sBusinessNo) { utilitiesModel.setBusinessNo(sBusinessNo); }
 
                 //redirection, si pas de period ou non en création mode
                 if(!utilitiesModel.getYear() && !this.getModel("ui").getProperty("/createMode")){
@@ -67,7 +63,20 @@ sap.ui.define(
                     const missions = await utilitiesModel.getBEMissions(sPeriod, sBusinessNo);
                     utilitiesModel.setMissions(missions || []);
                 }
+            },
 
+            _hideNoNeededSectionOnCreate(oView){
+                oView.addEventDelegate({
+                    onAfterRendering: function (e) {
+                        // cacher les sections Budget/Graphique/Recap
+                        const bCreateMode = oView.getModel("ui").getProperty("/createMode");
+                        if(bCreateMode){
+                            oView.byId("AfterFacet::ZC_FGASet::GeneralInfo::Section").setVisible(false);
+                            oView.byId("AfterFacet::ZC_FGASet::TableInfo::Section").setVisible(false);
+                            oView.byId("template:::ObjectPageSection:::AfterFacetExtensionSectionWithKey:::sFacet::GeneralInfo:::sEntitySet::ZC_FGASet:::sFacetExtensionKey::1").setVisible(false);
+                        }
+                    }
+                  }, this);
             },
 
             // this section allows to extend lifecycle hooks or hooks provided by Fiori elements
@@ -162,6 +171,8 @@ sap.ui.define(
 
                     this._getExtensionAPI().attachPageDataLoaded(this._onObjectExtMatched.bind(this));
                     
+                    this._hideNoNeededSectionOnCreate(this.getView());
+
                     // Bind the onItemPress function to the controller context
                     this.onItemPress = this.onItemPress.bind(this);
                     this.onCalculate = this.onCalculate.bind(this);
@@ -212,11 +223,13 @@ sap.ui.define(
                         return new Promise(async (resolve, reject) => {
                             const utilitiesModel = this.getModel("utilities");
                             const formattedMissions = utilitiesModel.getFormattedMissions();
-                            const oPayload = Helper.extractPlainData({
-                                ...oContext.getObject(), 
-                                "to_Missions" : formattedMissions 
-                            });
-                            
+                            const oPayload = Helper.extractPlainData({...oContext.getObject(), "to_Missions" : formattedMissions });
+                            const createdFGA = await utilitiesModel.deepCreateFGA(oPayload);
+                            //mettre la redirection dans onClose de validMessage
+                            Helper.validMessage("FGA created: " + createdFGA.BusinessNo, this.getView());
+                            reject();
+                            // resolve();
+
                             // const oPayload = {
                             //     // "p_period": "062023",
                             //     // "BusinessNo": "AFFAIRE123",
@@ -247,14 +260,12 @@ sap.ui.define(
                             //       }
                             //     ]
                             //   };
-                            const createdFGA = await utilitiesModel.deepCreateFGA(oPayload);
-                            sap.m.MessageToast.show("FGA created: " + createdFGA.BusinessNo);
-                            reject();
-                            // resolve();
+
                         });
 
                     } catch (error) {
-                        sap.m.MessageToast.show("FGA create fail");
+                        // sap.m.MessageToast.show("FGA create fail");
+                        Helper.errorMessage("FGA create fail");
                         console.log(error);
                     }
                 },
