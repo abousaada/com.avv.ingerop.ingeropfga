@@ -73,6 +73,13 @@ sap.ui.define(
                     oPrevisionsModel.setProperty("/results", previsions);
                     this.getView().setModel(oPrevisionsModel, "synthesis");
                     oPrevisionsModel.refresh(true);
+
+                    const recaps = await utilitiesModel.getBERecaps(sPeriod, sBusinessNo);
+                    var oRecapModel = this.getView().getModel("recap") || new sap.ui.model.json.JSONModel({ results: [] });
+                    oRecapModel.setProperty("/results", recaps);
+                    this.getView().setModel(oRecapModel, "recap");
+                    oRecapModel.refresh(true);
+                    
                 }
             },
 
