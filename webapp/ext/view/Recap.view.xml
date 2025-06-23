@@ -25,13 +25,13 @@
                             <Text text="{recap>row_description}" />
                         </table:template>
                     </table:Column>
-                    <table:Column>
+                    <!--table:Column>
                         <Label text="Budget Initial"/>
                         <table:template>
                             <Text text="{recap>budget_initial}" />
-                            <!--ObjectStatus class="custObjStatus" state="{= parseFloat(${recap>P0}) &lt; 0 ? 'Error': 'None'}" text="{ 'parts':[{ path: 'recap>P0' }, {path: 'recap>Type'}], formatter: '.formatRecap' }" /-->
+                            <!- -ObjectStatus class="custObjStatus" state="{= parseFloat(${recap>P0}) &lt; 0 ? 'Error': 'None'}" text="{ 'parts':[{ path: 'recap>P0' }, {path: 'recap>Type'}], formatter: '.formatRecap' }" /
                         </table:template>
-                    </table:Column>
+                    </table:Column-->
                     <table:Column>
                         <Label text="Budget Objectif"/>
                         <table:template>
