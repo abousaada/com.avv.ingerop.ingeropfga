@@ -439,7 +439,7 @@
                 />
                 <table:template>
                     <Link
-                        text="{path: 'synthesis>month11', formatter: '.formatNumbToNoDecimal'}"
+                        text="{path: 'synthesis>month12', formatter: '.formatNumbToNoDecimal'}"
                         press=".onPressMonthLink"
                     >
                         <customData>
@@ -467,7 +467,7 @@
                 <Label text="{i18n>synt.AnneeN}" />
                 <table:template>
                     <Link
-                        text="{path: 'synthesis>month12', formatter: '.formatNumbToNoDecimal'}"
+                        text="{path: 'synthesis>AnneeN', formatter: '.formatNumbToNoDecimal'}"
                         press=".onPressMonthLink"
                     >
                         <customData>
@@ -495,7 +495,7 @@
                 <Label text="{i18n>synt.CumulN}" />
                 <table:template>
                     <Link
-                        text="{path: 'synthesis>AnneeN', formatter: '.formatNumbToNoDecimal'}"
+                        text="{path: 'synthesis>CumulN', formatter: '.formatNumbToNoDecimal'}"
                         press=".onPressMonthLink"
                     >
                         <customData>
