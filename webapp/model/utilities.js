@@ -60,12 +60,15 @@ function (BaseModel, InitialData, Formatter, Filter) {
 
         async getBEMissions(period, businessNo){
             try {
-                const sPath = `/ZC_FGASet(BusinessNo='${businessNo}',p_period='${period}')/to_Missions`;
+                const urlBusinessNo = encodeURIComponent(businessNo);
+                const urlPeriod = encodeURIComponent(period);
+
+                const sPath = `/ZC_FGASet(BusinessNo='${urlBusinessNo}',p_period='${urlPeriod}')/to_Missions`;
                 console.log(`retrieve missions with period: ${period} and BusinessNo: ${businessNo}`);
                 
                 const missions = await this.read(sPath);
-                console.log(`Missions: ${missions.results}` );
-                return missions.results;
+                console.log(`Missions: ${missions?.results}` );
+                return missions?.results || [];
             } catch (error) {
                 console.log(error);
             }
@@ -74,12 +77,14 @@ function (BaseModel, InitialData, Formatter, Filter) {
         async getBEPrevisions(period, businessNo){
             try {
 
-                const sPath = `/ZC_FGA_PREVISIONS(p_businessno='${businessNo}',p_period='${period}')/Set`;
+                const urlBusinessNo = encodeURIComponent(businessNo);
+                const urlPeriod = encodeURIComponent(period);
+                const sPath = `/ZC_FGA_PREVISIONS(p_businessno='${urlBusinessNo}',p_period='${urlPeriod}')/Set`;
                 console.log(`retrieve previsions with period: ${period} and BusinessNo: ${businessNo}`);
                 
                 const previsions = await this.read(sPath);
-                console.log(`Previsions: ${previsions.results}` );
-                return previsions.results;
+                console.log(`Previsions: ${previsions?.results}` );
+                return previsions?.results || [];
             } catch (error) {
                 console.log(error);
             }
@@ -87,12 +92,13 @@ function (BaseModel, InitialData, Formatter, Filter) {
 
         async getBERecaps(period, businessNo){
             try {
-                const sPath = `/ZI_FGA_RECAP(p_businessno='${businessNo}',p_period='${period}')/Set`;
+                const urlBusinessNo = encodeURIComponent(businessNo);
+                const urlPeriod = encodeURIComponent(period);
+                const sPath = `/ZI_FGA_RECAP(p_businessno='${urlBusinessNo}',p_period='${urlPeriod}')/Set`;
                 console.log(`retrieve recaps with period: ${period} and BusinessNo: ${businessNo}`);
-                
                 const recaps = await this.read(sPath);
-                console.log(`recaps: ${recaps.results}` );
-                return recaps.results;
+                console.log(`recaps: ${recaps?.results}` );
+                return recaps?.results || [];
             } catch (error) {
                 console.log(error);
             }
