@@ -71,6 +71,33 @@ function (BaseModel, InitialData, Formatter, Filter) {
             }
         },
 
+        async getBEPrevisions(period, businessNo){
+            try {
+
+                const sPath = `/ZC_FGA_PREVISIONS(p_businessno='${businessNo}',p_period='${period}')/Set`;
+                console.log(`retrieve previsions with period: ${period} and BusinessNo: ${businessNo}`);
+                
+                const previsions = await this.read(sPath);
+                console.log(`Previsions: ${previsions.results}` );
+                return previsions.results;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        async getBERecaps(period, businessNo){
+            try {
+                const sPath = `/ZI_FGA_RECAP(p_businessno='${businessNo}',p_period='${period}')/Set`;
+                console.log(`retrieve recaps with period: ${period} and BusinessNo: ${businessNo}`);
+                
+                const recaps = await this.read(sPath);
+                console.log(`recaps: ${recaps.results}` );
+                return recaps.results;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
         setYearByPeriod(period){
             // Extract year from sPeriod (MMYYYY format)
             var sYear = period.substring(2);
