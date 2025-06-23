@@ -67,6 +67,12 @@ sap.ui.define(
                 if (sPeriod && sBusinessNo) {
                     const missions = await utilitiesModel.getBEMissions(sPeriod, sBusinessNo);
                     utilitiesModel.setMissions(missions || []);
+
+                    const previsions = await utilitiesModel.getBEPrevisions(sPeriod, sBusinessNo);
+                    var oPrevisionsModel = this.getView().getModel("synthesis") || new sap.ui.model.json.JSONModel({ results: [] });
+                    oPrevisionsModel.setProperty("/results", previsions);
+                    this.getView().setModel(oPrevisionsModel, "synthesis");
+                    oPrevisionsModel.refresh(true);
                 }
             },
 
