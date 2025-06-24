@@ -2548,12 +2548,24 @@ sap.ui.define(
                     */
 
                     // Construct the URL parameters
-                    const params = {
-                        //PostingDate: `GE${firstDay}&LE${lastDay}`,
-                        PostingDate: formattedFirstDay,//[firstDay, lastDay],
-                        GLAccount: glAccounts,
-                        WBSElementExternalID: [oData.business_no],
-                    };
+                    var params
+
+                    if (sMonthValue === 'N1' || sMonthValue === 'N0') {
+                        params = {
+                            FiscalYear: `${sYearValue}`,
+                            //FiscalPeriod: `${sYearValue}0${month}`,
+                            GLAccount: glAccounts,
+                            WBSElementExternalID: [oData.business_no],
+                        };
+                    }else{
+                        params = {
+                            FiscalYearPeriod: `${sYearValue}0${month}`,
+                            //FiscalPeriod: `${sYearValue}0${month}`,
+                            GLAccount: glAccounts,
+                            WBSElementExternalID: [oData.business_no],
+                        };
+                    }
+                    
 
                     // Convert params to URL string
                     const sParams = Object.entries(params)
