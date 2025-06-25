@@ -174,13 +174,13 @@
                 <Property Name="BusinessNo" Type="Edm.String" Nullable="false" MaxLength="24" sap:label="Business Number" sap:creatable="false" sap:updatable="false"/>
                 <Property Name="BusinessName" Type="Edm.String" MaxLength="40" sap:label="Business Name" sap:quickinfo="PS: Short description (1st text line)"/>
                 <Property Name="CompanyCode" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Company" sap:quickinfo="Company code for WBS element" sap:value-list="standard"/>
-                <Property Name="UFOName" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="UFO" sap:quickinfo="Set Name" sap:creatable="false" sap:updatable="false"/>
-                <Property Name="PROFITCENTER" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Profit Center" sap:value-list="standard"/>
-                <Property Name="PROJM" Type="Edm.String" MaxLength="25" sap:label="Project Manager" sap:quickinfo="Name of responsible person (Project manager)" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="UFOName" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="UFO Name" sap:quickinfo="Set Name"/>
+                <Property Name="ProfitCenter" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="CDG" sap:quickinfo="Profit Center" sap:value-list="standard"/>
+                <Property Name="PROJM" Type="Edm.String" MaxLength="25" sap:label="Project Manager" sap:quickinfo="Name of responsible person (Project manager)"/>
                 <Property Name="StiNbr" Type="Edm.Int16" sap:label="Linked STIs" sap:creatable="false" sap:updatable="false"/>
-                <Property Name="Type" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Business Type" sap:quickinfo="Project Type" sap:creatable="false" sap:updatable="false"/>
-                <Property Name="BusinessManager" Type="Edm.String" MaxLength="50" sap:label="Business Manager" sap:quickinfo=""/>
-                <Property Name="BusinessType" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Type" sap:quickinfo="" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="Type" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Business Type" sap:quickinfo="Project Type"/>
+                <Property Name="BusinessManager" Type="Edm.String" MaxLength="25" sap:label="Business Manager" sap:quickinfo=""/>
+                <Property Name="BusinessType" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Type" sap:quickinfo="" sap:creatable="false" sap:updatable="false"/>
                 <Property Name="BusinessStatus" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Status" sap:quickinfo="" sap:value-list="fixed-values"/>
                 <Property Name="BusinessFactRule" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Billing Rule" sap:quickinfo=""/>
                 <Property Name="RBACumulNm1" Type="Edm.Int32" sap:label="Cumulative RBA N-1"/>
@@ -189,9 +189,9 @@
                 <Property Name="RBAForecast" Type="Edm.Int32" sap:label="End of Business RBA"/>
                 <Property Name="Soufam" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Sous famille" sap:quickinfo="" sap:value-list="fixed-values"/>
                 <Property Name="Criticality" Type="Edm.String" MaxLength="1" sap:display-format="NonNegative"/>
-                <Property Name="Mission" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Mission" sap:quickinfo="" sap:value-list="fixed-values"/>
-                <Property Name="Activity" Type="Edm.String" MaxLength="50" sap:label="Activity" sap:quickinfo=""/>
-                <Property Name="CDG" Type="Edm.String" MaxLength="50" sap:label="CDG" sap:quickinfo="Text Field" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="Mission" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Mission" sap:quickinfo="" sap:value-list="fixed-values"/>
+                <Property Name="Activity" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="Activity" sap:quickinfo=""/>
+                <Property Name="CDG" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="CDG" sap:quickinfo="" sap:value-list="standard"/>
                 <Property Name="Client" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Client" sap:quickinfo=""/>
                 <Property Name="NoClientMarche" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Client/Market Number" sap:quickinfo="Character Field with Length 10"/>
                 <Property Name="QuoteReview" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Quote Review" sap:quickinfo="Character Field with Length 10"/>
@@ -208,8 +208,8 @@
                 <Property Name="Assurance" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Insurance" sap:quickinfo="" sap:value-list="fixed-values"/>
                 <Property Name="VAT" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="VAT" sap:quickinfo="Character Field with Length 10"/>
                 <Property Name="RateDevis" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Rate/Currency" sap:quickinfo="Character Field with Length 10"/>
-                <Property Name="StartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Start Date" sap:quickinfo="Date"/>
-                <Property Name="EndDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="End Date" sap:quickinfo="Date"/>
+                <Property Name="StartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Start Date" sap:quickinfo="WBS element: Basic start date"/>
+                <Property Name="EndDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="End Date" sap:quickinfo="WBS element: Basic finish date"/>
                 <Property Name="NbOfMonth" Type="Edm.Int32" sap:label="Number of Months" sap:quickinfo="4 Byte Signed Integer"/>
                 <Property Name="RemainingMonth" Type="Edm.Int32" sap:label="Remaining Months" sap:quickinfo="4 Byte Signed Integer"/>
                 <Property Name="LastUpdate" Type="Edm.String" MaxLength="20" sap:display-format="UpperCase" sap:label="Last Update" sap:quickinfo="Char 20"/>
@@ -227,11 +227,11 @@
                 <Property Name="Paring" Type="Edm.Decimal" Precision="14" Scale="3" sap:label="Part Ingerop KEUR"/>
                 <Property Name="Mttrvx" Type="Edm.Decimal" Precision="14" Scale="3" sap:label="Montant travaux KEUR"/>
                 <Property Name="Ingtrvx" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Ingénierie / Travaux" sap:quickinfo="Character field of length 40"/>
-                <Property Name="Period" Type="Edm.String" MaxLength="6" sap:display-format="UpperCase" sap:label="Période" sap:quickinfo="Character field of length 6"/>
+                <Property Name="Period" Type="Edm.String" MaxLength="6" sap:label="Période"/>
                 <Property Name="Datmaj" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Maj du" sap:quickinfo="Field of type DATS"/>
                 <Property Name="Datcha" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Maj du" sap:quickinfo="Field of type DATS"/>
                 <Property Name="Modalr" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Révisable / Actualisable" sap:quickinfo="" sap:value-list="fixed-values"/>
-                <Property Name="Modalf" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Fofaitaire / Régie" sap:quickinfo="" sap:value-list="fixed-values"/>
+                <Property Name="Modalf" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Fofaitaire / Régie" sap:quickinfo=""/>
                 <Property Name="Avance" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Avance" sap:quickinfo="" sap:value-list="fixed-values"/>
                 <Property Name="Chorus" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Chorus" sap:quickinfo="" sap:value-list="fixed-values"/>
                 <Property Name="Rtgart" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Retenue de garantie" sap:quickinfo="" sap:value-list="fixed-values"/>
@@ -240,7 +240,9 @@
                 <Property Name="Tmoyj" Type="Edm.String" MaxLength="10" sap:display-format="NonNegative" sap:label="Taux moyen journalier"/>
                 <Property Name="NbMois" Type="Edm.Int32" sap:label="Nombre mois" sap:quickinfo="4 Byte Signed Integer"/>
                 <Property Name="UrlCup" Type="Edm.String" MaxLength="255" sap:display-format="UpperCase" sap:label="URL" sap:quickinfo="Char255"/>
+                <Property Name="Rgfact" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Règle de facturation" sap:quickinfo=""/>
                 <Property Name="DataSource" Type="Edm.String" MaxLength="4" sap:label="DataSource"/>
+                <Property Name="HeaderDescription" Type="Edm.String" MaxLength="31"/>
                 <NavigationProperty Name="to_Missions" Relationship="ZFGA_SRV.assoc_C3CEBB4F914AE5B0F6B34A7D0ECC717D" FromRole="FromRole_assoc_C3CEBB4F914AE5B0F6B34A7D0ECC717D" ToRole="ToRole_assoc_C3CEBB4F914AE5B0F6B34A7D0ECC717D"/>
                 <NavigationProperty Name="Parameters" Relationship="ZFGA_SRV.assoc_FBAFCCB8228F35F33FFA98CD63EBFA5B" FromRole="ToRole_assoc_FBAFCCB8228F35F33FFA98CD63EBFA5B" ToRole="FromRole_assoc_FBAFCCB8228F35F33FFA98CD63EBFA5B" sap:filterable="false"/>
             </EntityType>
@@ -309,11 +311,22 @@
                 <Property Name="p_period" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase" sap:parameter="mandatory" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <NavigationProperty Name="Set" Relationship="ZFGA_SRV.assoc_BC39B087465F974A895526BF7592B66D" FromRole="FromRole_assoc_BC39B087465F974A895526BF7592B66D" ToRole="ToRole_assoc_BC39B087465F974A895526BF7592B66D"/>
             </EntityType>
+            <EntityType Name="ZI_FGA_ACTIVITY_VHType" sap:label="Aide à la recherche Activity" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Activity"/>
+                    <PropertyRef Name="Spras"/>
+                </Key>
+                <Property Name="Activity" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:text="description" sap:label=""/>
+                <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Language Key"/>
+                <Property Name="description" Type="Edm.String" MaxLength="80" sap:display-format="UpperCase" sap:label=""/>
+            </EntityType>
             <EntityType Name="ZI_FGA_ASSUR_VHType" sap:label="Aide à la recherche Assur" sap:value-list="true" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Assur"/>
+                    <PropertyRef Name="Spras"/>
                 </Key>
                 <Property Name="Assur" Type="Edm.String" Nullable="false" MaxLength="8" sap:display-format="UpperCase" sap:text="description" sap:label="char8" sap:quickinfo="Character field, 8 characters long"/>
+                <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Language ID"/>
                 <Property Name="description" Type="Edm.String" MaxLength="50" sap:label="c" sap:quickinfo="Comment"/>
             </EntityType>
             <EntityType Name="ZI_FGA_AVANCE_VHType" sap:label="Aide à la recherche Avance" sap:value-list="true" sap:content-version="1">
@@ -337,15 +350,19 @@
             <EntityType Name="ZI_FGA_CHORUS_VHType" sap:label="Aide à la recherche Soufam" sap:value-list="true" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Chorus"/>
+                    <PropertyRef Name="Spras"/>
                 </Key>
                 <Property Name="Chorus" Type="Edm.String" Nullable="false" MaxLength="1" sap:display-format="UpperCase" sap:text="description" sap:label="Single-Character Flag" sap:heading=""/>
+                <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Language ID"/>
                 <Property Name="description" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Character Field with Length 10" sap:heading=""/>
             </EntityType>
             <EntityType Name="ZI_FGA_GROUPM_VHType" sap:label="Aide à la recherche GroupM" sap:value-list="true" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="GroupM"/>
+                    <PropertyRef Name="spras"/>
                 </Key>
                 <Property Name="GroupM" Type="Edm.String" Nullable="false" MaxLength="1" sap:display-format="UpperCase" sap:text="description" sap:label="Single-Character Flag" sap:heading=""/>
+                <Property Name="spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Language ID"/>
                 <Property Name="description" Type="Edm.String" MaxLength="5" sap:display-format="UpperCase" sap:label="R/2 table"/>
             </EntityType>
             <EntityType Name="ZI_FGA_MISSION_VHType" sap:label="Aide à la recherche Missionr" sap:value-list="true" sap:content-version="1">
@@ -353,9 +370,10 @@
                     <PropertyRef Name="Mission"/>
                 </Key>
                 <Property Name="Mission" Type="Edm.String" Nullable="false" MaxLength="5" sap:display-format="UpperCase" sap:text="description" sap:label="R/2 table"/>
+                <Property Name="spras" Type="Edm.String" MaxLength="2" sap:label="Language ID"/>
                 <Property Name="description" Type="Edm.String" MaxLength="80" sap:display-format="UpperCase" sap:label="Char80" sap:quickinfo="Char 80"/>
             </EntityType>
-            <EntityType Name="ZI_FGA_MODALF_VHType" sap:label="Aide à la recherche ModalF" sap:value-list="true" sap:content-version="1">
+            <EntityType Name="ZI_FGA_MODALF_VHType" sap:label="Aide à la recherche ModalF" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Modalf"/>
                 </Key>
@@ -383,11 +401,11 @@
                 <Property Name="business_no" Type="Edm.String" MaxLength="24"/>
                 <Property Name="period" Type="Edm.String" MaxLength="6"/>
                 <Property Name="row_description" Type="Edm.String" MaxLength="19"/>
-                <Property Name="budget_initial" Type="Edm.Decimal" Precision="25" Scale="3"/>
-                <Property Name="budget_objectif" Type="Edm.Decimal" Precision="25" Scale="3"/>
-                <Property Name="budget_actif" Type="Edm.Decimal" Precision="32" Scale="3"/>
+                <Property Name="budget_initial" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
+                <Property Name="budget_objectif" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
+                <Property Name="budget_actif" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
                 <Property Name="ecart_objectif" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
-                <Property Name="cumul_n1" Type="Edm.Decimal" Precision="32" Scale="3"/>
+                <Property Name="cumul_n1" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
                 <Property Name="cumul_ce_jour" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
                 <Property Name="annee_en_cours" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
                 <Property Name="mois_m" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
@@ -412,29 +430,37 @@
             <EntityType Name="ZI_FGA_RTGART_VHType" sap:label="Aide à la recherche Soufam" sap:value-list="true" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Rtgart"/>
+                    <PropertyRef Name="Spras"/>
                 </Key>
                 <Property Name="Rtgart" Type="Edm.String" Nullable="false" MaxLength="1" sap:display-format="UpperCase" sap:text="description" sap:label="Single-Character Flag" sap:heading=""/>
+                <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Language ID"/>
                 <Property Name="description" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Character Field with Length 10" sap:heading=""/>
             </EntityType>
             <EntityType Name="ZI_FGA_SCCLT_VHType" sap:label="Aide à la recherche Scclt" sap:value-list="true" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Scclt"/>
+                    <PropertyRef Name="spras"/>
                 </Key>
                 <Property Name="Scclt" Type="Edm.String" Nullable="false" MaxLength="2" sap:text="description"/>
+                <Property Name="spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Language ID"/>
                 <Property Name="description" Type="Edm.String" MaxLength="20"/>
             </EntityType>
             <EntityType Name="ZI_FGA_SOUFAM_VHType" sap:label="Aide à la recherche Soufam" sap:value-list="true" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Soufam"/>
+                    <PropertyRef Name="Spras"/>
                 </Key>
                 <Property Name="Soufam" Type="Edm.String" Nullable="false" MaxLength="3" sap:display-format="UpperCase" sap:text="description" sap:label="3-Byte field" sap:heading=""/>
+                <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Language Key"/>
                 <Property Name="description" Type="Edm.String" MaxLength="80" sap:display-format="UpperCase" sap:label="Char80" sap:quickinfo="Char 80"/>
             </EntityType>
             <EntityType Name="ZI_FGA_STATUS_VHType" sap:label="Aide à la recherche Status" sap:value-list="true" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Status"/>
+                    <PropertyRef Name="Spras"/>
                 </Key>
                 <Property Name="Status" Type="Edm.String" Nullable="false" MaxLength="1" sap:display-format="UpperCase" sap:text="description" sap:label="Single-Character Flag" sap:heading=""/>
+                <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Language ID"/>
                 <Property Name="description" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Character Field with Length 10" sap:heading=""/>
             </EntityType>
             <Association Name="assoc_24FC23D321DDD66B6ED917396AA49B5A" sap:content-version="1">
@@ -501,6 +527,7 @@
                 <EntitySet Name="ZC_FGA_MISSION" EntityType="ZFGA_SRV.ZC_FGA_MISSIONType" sap:content-version="1"/>
                 <EntitySet Name="ZC_FGA_PREVISIONSSet" EntityType="ZFGA_SRV.ZC_FGA_PREVISIONSType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:addressable="false" sap:content-version="1"/>
                 <EntitySet Name="ZC_FGA_PREVISIONS" EntityType="ZFGA_SRV.ZC_FGA_PREVISIONSParameters" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="ZI_FGA_ACTIVITY_VH" EntityType="ZFGA_SRV.ZI_FGA_ACTIVITY_VHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
                 <EntitySet Name="ZI_FGA_ASSUR_VH" EntityType="ZFGA_SRV.ZI_FGA_ASSUR_VHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
                 <EntitySet Name="ZI_FGA_AVANCE_VH" EntityType="ZFGA_SRV.ZI_FGA_AVANCE_VHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
                 <EntitySet Name="ZI_FGA_CAUTGA_VH" EntityType="ZFGA_SRV.ZI_FGA_CAUTGA_VHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
@@ -736,9 +763,6 @@
                             <Collection>
                                 <Record Type="Common.ValueListParameterInOut">
                                     <PropertyValue Property="LocalDataProperty" PropertyPath="CompanyCode"/>
-                                    <PropertyValue Property="ValueListProperty" String="COMPANYCODE"/>
-                                </Record>
-                                <Record Type="Common.ValueListParameterDisplayOnly">
                                     <PropertyValue Property="ValueListProperty" String="CompanyCode"/>
                                 </Record>
                                 <Record Type="Common.ValueListParameterDisplayOnly">
@@ -782,7 +806,7 @@
                     </Record>
                 </Annotation>
             </Annotations>
-            <Annotations Target="ZFGA_SRV.ZC_FGAType/PROFITCENTER" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <Annotations Target="ZFGA_SRV.ZC_FGAType/ProfitCenter" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Common.ValueList">
                     <Record>
                         <PropertyValue Property="Label" String="Profit Center"/>
@@ -790,15 +814,12 @@
                         <PropertyValue Property="SearchSupported" Bool="true"/>
                         <PropertyValue Property="Parameters">
                             <Collection>
-                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="ProfitCenter"/>
                                     <PropertyValue Property="ValueListProperty" String="ProfitCenter"/>
                                 </Record>
                                 <Record Type="Common.ValueListParameterDisplayOnly">
                                     <PropertyValue Property="ValueListProperty" String="ControllingArea"/>
-                                </Record>
-                                <Record Type="Common.ValueListParameterInOut">
-                                    <PropertyValue Property="LocalDataProperty" PropertyPath="PROFITCENTER"/>
-                                    <PropertyValue Property="ValueListProperty" String="PROFITCENTER"/>
                                 </Record>
                                 <Record Type="Common.ValueListParameterDisplayOnly">
                                     <PropertyValue Property="ValueListProperty" String="ProfitCenter_Text"/>
@@ -877,6 +898,35 @@
                 </Annotation>
                 <Annotation Term="Common.ValueListWithFixedValues"/>
             </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGAType/CDG" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.ValueList">
+                    <Record>
+                        <PropertyValue Property="Label" String="Profit Center"/>
+                        <PropertyValue Property="CollectionPath" String="I_ProfitCenterStdVH"/>
+                        <PropertyValue Property="SearchSupported" Bool="true"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="CDG"/>
+                                    <PropertyValue Property="ValueListProperty" String="ProfitCenter"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="ControllingArea"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="ProfitCenter_Text"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="ValidityEndDate"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="ValidityStartDate"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_FGAType/Assurance" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Common.ValueList">
                     <Record>
@@ -951,27 +1001,6 @@
                                 <Record Type="Common.ValueListParameterInOut">
                                     <PropertyValue Property="LocalDataProperty" PropertyPath="Modalr"/>
                                     <PropertyValue Property="ValueListProperty" String="Modalr"/>
-                                </Record>
-                                <Record Type="Common.ValueListParameterDisplayOnly">
-                                    <PropertyValue Property="ValueListProperty" String="description"/>
-                                </Record>
-                            </Collection>
-                        </PropertyValue>
-                    </Record>
-                </Annotation>
-                <Annotation Term="Common.ValueListWithFixedValues"/>
-            </Annotations>
-            <Annotations Target="ZFGA_SRV.ZC_FGAType/Modalf" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-                <Annotation Term="Common.ValueList">
-                    <Record>
-                        <PropertyValue Property="Label" String="Aide à la recherche ModalF"/>
-                        <PropertyValue Property="CollectionPath" String="ZI_FGA_MODALF_VH"/>
-                        <PropertyValue Property="SearchSupported" Bool="true"/>
-                        <PropertyValue Property="Parameters">
-                            <Collection>
-                                <Record Type="Common.ValueListParameterInOut">
-                                    <PropertyValue Property="LocalDataProperty" PropertyPath="Modalf"/>
-                                    <PropertyValue Property="ValueListProperty" String="Modalf"/>
                                 </Record>
                                 <Record Type="Common.ValueListParameterDisplayOnly">
                                     <PropertyValue Property="ValueListProperty" String="description"/>
