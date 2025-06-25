@@ -33,7 +33,7 @@ sap.ui.define([
                 return new Promise((resolve, reject) => 
                     this.oModel.create(entity, data, {
                         ...options,
-                        success:function(odata){ resolve(odata) },
+                        success:function(odata){ resolve(odata); },
                         error:function(oError){ reject(oError); }
                     })
                 );
@@ -43,7 +43,7 @@ sap.ui.define([
                 return new Promise((resolve, reject) => 
                     this.oModel.read(entity, {
                         ...options,
-                        success:function(odata){ resolve(odata) },
+                        success:function(odata){ resolve(odata); },
                         error:function(oError){ reject(oError); }
                     })
                 );
@@ -53,7 +53,7 @@ sap.ui.define([
                 return new Promise((resolve, reject) => 
                     this.oModel.update(entity, data, {
                         ...options,
-                        success:function(odata){ resolve(odata) },
+                        success:function(odata){ resolve(odata); },
                         error:function(oError){ reject(oError); }
                     })
                 );

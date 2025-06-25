@@ -2,16 +2,21 @@ sap.ui.define([
     "./baseModel",
     "./utilities/initialData",
     "./utilities/formatter",
-    "./utilities/filter"
+    "./utilities/filter",
+    // ""
 ], 
-function (BaseModel, InitialData, Formatter, Filter) {
+function (BaseModel, InitialData, Formatter, Filter, /* Helper */) {
     "use strict";
 
     return BaseModel.extend("com.avv.ingerop.ingeropfga.model.utilities", {
 
         init: function (oModel) {
-            this.setData(InitialData);
+            this.setData({...InitialData});
             this.initModel(oModel);
+        },
+
+        reInit(){
+            this.setData({...InitialData});
         },
 
         addMissionNewLine(){
@@ -55,49 +60,50 @@ function (BaseModel, InitialData, Formatter, Filter) {
                 return createdFGA;
             } catch (error) {
                 console.log(error);
+                // Helper.errorMessage("Creation error: " + error?.responseText );
             }
         },
 
-        async getBEMissions(period, businessNo){
+        async getBEMissions(){
             try {
+                const businessNo = this.getBusinessNo();
+                const period = this.getPeriod();
                 const urlBusinessNo = encodeURIComponent(businessNo);
                 const urlPeriod = encodeURIComponent(period);
 
                 const sPath = `/ZC_FGASet(BusinessNo='${urlBusinessNo}',p_period='${urlPeriod}')/to_Missions`;
                 console.log(`retrieve missions with period: ${period} and BusinessNo: ${businessNo}`);
-                
                 const missions = await this.read(sPath);
-                console.log(`Missions: ${missions?.results}` );
                 return missions?.results || [];
             } catch (error) {
                 console.log(error);
             }
         },
 
-        async getBEPrevisions(period, businessNo){
+        async getBEPrevisions(){
             try {
-
+                const businessNo = this.getBusinessNo();
+                const period = this.getPeriod();
                 const urlBusinessNo = encodeURIComponent(businessNo);
                 const urlPeriod = encodeURIComponent(period);
                 const sPath = `/ZC_FGA_PREVISIONS(p_businessno='${urlBusinessNo}',p_period='${urlPeriod}')/Set`;
                 console.log(`retrieve previsions with period: ${period} and BusinessNo: ${businessNo}`);
-                
                 const previsions = await this.read(sPath);
-                console.log(`Previsions: ${previsions?.results}` );
                 return previsions?.results || [];
             } catch (error) {
                 console.log(error);
             }
         },
 
-        async getBERecaps(period, businessNo){
+        async getBERecaps(){
             try {
+                const businessNo = this.getBusinessNo();
+                const period = this.getPeriod();
                 const urlBusinessNo = encodeURIComponent(businessNo);
                 const urlPeriod = encodeURIComponent(period);
                 const sPath = `/ZI_FGA_RECAP(p_businessno='${urlBusinessNo}',p_period='${urlPeriod}')/Set`;
                 console.log(`retrieve recaps with period: ${period} and BusinessNo: ${businessNo}`);
                 const recaps = await this.read(sPath);
-                console.log(`recaps: ${recaps?.results}` );
                 return recaps?.results || [];
             } catch (error) {
                 console.log(error);
@@ -105,6 +111,8 @@ function (BaseModel, InitialData, Formatter, Filter) {
         },
 
         setYearByPeriod(period){
+            this.setPeriod(period);
+            
             // Extract year from sPeriod (MMYYYY format)
             var sYear = period.substring(2);
             this.setYear(sYear);

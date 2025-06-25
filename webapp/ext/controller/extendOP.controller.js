@@ -44,8 +44,44 @@ sap.ui.define(
                 return this.getInterface().getView().getController().extensionAPI;
             },
 
+            _setTabsVisible(bCreate){
+                this.getView().byId("AfterFacet::ZC_FGASet::GeneralInfo::Section").setVisible(bCreate);
+                this.getView().byId("AfterFacet::ZC_FGASet::TableInfo::Section").setVisible(bCreate);
+                this.getView().byId("template:::ObjectPageSection:::AfterFacetExtensionSectionWithKey:::sFacet::GeneralInfo:::sEntitySet::ZC_FGASet:::sFacetExtensionKey::1").setVisible(bCreate);
+            },
+
+            async _getTabsData(){
+                const utilitiesModel = this.getInterface().getModel("utilities");
+                const [missions, previsions, recaps] = await Promise.all([
+                    utilitiesModel.getBEMissions(),
+                    utilitiesModel.getBEPrevisions(),
+                    utilitiesModel.getBERecaps()
+                ]);
+
+                utilitiesModel.setMissions(missions || []);
+                utilitiesModel.setRecaps(recaps || []);
+                utilitiesModel.setPrevisions(previsions || []);
+                
+                //à enlever une fois les corrections effectués dans les view XML
+                var oPrevisionsModel = this.getView().getModel("synthesis") || new sap.ui.model.json.JSONModel({ results: [] });
+                oPrevisionsModel.setProperty("/results", previsions || []);
+                this.getView().setModel(oPrevisionsModel, "synthesis");
+                oPrevisionsModel.refresh(true);
+                
+                var oRecapModel = this.getView().getModel("recap") || new sap.ui.model.json.JSONModel({ results: [] });
+                oRecapModel.setProperty("/results", recaps || []);
+                this.getView().setModel(oRecapModel, "recap");
+                oRecapModel.refresh(true);
+            },
+
             _onObjectExtMatched: async function (e) {
                 const utilitiesModel = this.getInterface().getModel("utilities");
+                const bCreateMode = this.getView().getModel("ui").getProperty("/createMode");
+
+                this._setTabsVisible(!bCreateMode);
+                
+                //if create
+                if(bCreateMode){ utilitiesModel.reInit(); return }
 
                 const sPeriod = e.context.getProperty("p_period");
                 if (sPeriod) { utilitiesModel.setYearByPeriod(sPeriod); }
@@ -54,32 +90,17 @@ sap.ui.define(
                 if (sBusinessNo) { utilitiesModel.setBusinessNo(sBusinessNo); }
 
                 //redirection, si pas de period ou non en création mode
-                if (!utilitiesModel.getYear() && !this.getModel("ui").getProperty("/createMode")) {
+                if (!utilitiesModel.getYear() && !bCreateMode) {
                     window.location.hash = "";
                     return;
                 }
 
-                const bCreateMode = this.getView().getModel("ui").getProperty("/createMode");
-                this.getView().byId("AfterFacet::ZC_FGASet::GeneralInfo::Section").setVisible(!bCreateMode);
-                this.getView().byId("AfterFacet::ZC_FGASet::TableInfo::Section").setVisible(!bCreateMode);
-                this.getView().byId("template:::ObjectPageSection:::AfterFacetExtensionSectionWithKey:::sFacet::GeneralInfo:::sEntitySet::ZC_FGASet:::sFacetExtensionKey::1").setVisible(!bCreateMode);
-                  
-                if (sPeriod && sBusinessNo) {
-                    const missions = await utilitiesModel.getBEMissions(sPeriod, sBusinessNo);
-                    utilitiesModel.setMissions(missions || []);
-
-                    const previsions = await utilitiesModel.getBEPrevisions(sPeriod, sBusinessNo);
-                    var oPrevisionsModel = this.getView().getModel("synthesis") || new sap.ui.model.json.JSONModel({ results: [] });
-                    oPrevisionsModel.setProperty("/results", previsions);
-                    this.getView().setModel(oPrevisionsModel, "synthesis");
-                    oPrevisionsModel.refresh(true);
-
-                    const recaps = await utilitiesModel.getBERecaps(sPeriod, sBusinessNo);
-                    var oRecapModel = this.getView().getModel("recap") || new sap.ui.model.json.JSONModel({ results: [] });
-                    oRecapModel.setProperty("/results", recaps);
-                    this.getView().setModel(oRecapModel, "recap");
-                    oRecapModel.refresh(true);
-                    
+                if (sPeriod && sBusinessNo && !bCreateMode) {
+                    try {
+                        const tabData = await this._getTabsData();
+                    } catch (error) {
+                        console.logs(error);
+                    }
                 }
             },
 
@@ -247,8 +268,9 @@ sap.ui.define(
                             const formattedMissions = utilitiesModel.getFormattedMissions();
                             const oPayload = Helper.extractPlainData({ ...oContext.getObject(), "to_Missions": formattedMissions });
                             const createdFGA = await utilitiesModel.deepCreateFGA(oPayload);
-                            //mettre la redirection dans onClose de validMessage
-                            Helper.validMessage("FGA created: " + createdFGA.BusinessNo, this.getView());
+                            if(createdFGA){
+                                Helper.validMessage("FGA created: " + createdFGA.BusinessNo, this.getView());
+                            }
                             reject();
                             // resolve();
 

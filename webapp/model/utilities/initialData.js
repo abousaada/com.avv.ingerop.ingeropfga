@@ -3,7 +3,10 @@ sap.ui.define([], function() {
       return {
         "year": null,
         "businessNo": null,
+        "period": null,
         "missions": [],
+        "recaps": [],
+        "previsions": [],
         "missionTypes": [
             { code: "AVP", description: "AVP" },
             { code: "PRO", description: "PRO" },
