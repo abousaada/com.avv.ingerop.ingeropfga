@@ -44,13 +44,13 @@ sap.ui.define(
                 return this.getInterface().getView().getController().extensionAPI;
             },
 
-            _setTabsVisible(bCreate){
+            _setTabsVisible(bCreate) {
                 this.getView().byId("AfterFacet::ZC_FGASet::GeneralInfo::Section").setVisible(bCreate);
                 this.getView().byId("AfterFacet::ZC_FGASet::TableInfo::Section").setVisible(bCreate);
                 this.getView().byId("template:::ObjectPageSection:::AfterFacetExtensionSectionWithKey:::sFacet::GeneralInfo:::sEntitySet::ZC_FGASet:::sFacetExtensionKey::1").setVisible(bCreate);
             },
 
-            async _getTabsData(){
+            async _getTabsData() {
                 const utilitiesModel = this.getInterface().getModel("utilities");
                 const [missions, previsions, recaps] = await Promise.all([
                     utilitiesModel.getBEMissions(),
@@ -61,13 +61,13 @@ sap.ui.define(
                 utilitiesModel.setMissions(missions || []);
                 utilitiesModel.setRecaps(recaps || []);
                 utilitiesModel.setPrevisions(previsions || []);
-                
+
                 //à enlever une fois les corrections effectués dans les view XML
                 var oPrevisionsModel = this.getView().getModel("synthesis") || new sap.ui.model.json.JSONModel({ results: [] });
                 oPrevisionsModel.setProperty("/results", previsions || []);
                 this.getView().setModel(oPrevisionsModel, "synthesis");
                 oPrevisionsModel.refresh(true);
-                
+
                 var oRecapModel = this.getView().getModel("recap") || new sap.ui.model.json.JSONModel({ results: [] });
                 oRecapModel.setProperty("/results", recaps || []);
                 this.getView().setModel(oRecapModel, "recap");
@@ -79,9 +79,9 @@ sap.ui.define(
                 const bCreateMode = this.getView().getModel("ui").getProperty("/createMode");
 
                 this._setTabsVisible(!bCreateMode);
-                
+
                 //if create
-                if(bCreateMode){ utilitiesModel.reInit(); return }
+                if (bCreateMode) { utilitiesModel.reInit(); return }
 
                 const sPeriod = e.context.getProperty("p_period");
                 if (sPeriod) { utilitiesModel.setYearByPeriod(sPeriod); }
@@ -116,7 +116,7 @@ sap.ui.define(
                 }, this);
             },
 
-            _onRouteMatched(event){
+            _onRouteMatched(event) {
                 console.logs(event);
             },
 
@@ -268,7 +268,7 @@ sap.ui.define(
                             const formattedMissions = utilitiesModel.getFormattedMissions();
                             const oPayload = Helper.extractPlainData({ ...oContext.getObject(), "to_Missions": formattedMissions });
                             const createdFGA = await utilitiesModel.deepCreateFGA(oPayload);
-                            if(createdFGA){
+                            if (createdFGA) {
                                 Helper.validMessage("FGA created: " + createdFGA.BusinessNo, this.getView());
                             }
                             reject();
@@ -2532,17 +2532,27 @@ sap.ui.define(
 
                     console.log(`Navigating for month ${month}/${year} (${firstDay} to ${lastDay})`);
 
+                    // 4. Get missions
+                    const utilitiesModel = this.oView.getModel("utilities");
+                    let missions = [];
+                    try {
+                        missions = await utilitiesModel.getBEMissions();
+                        // Use missions here
+                    } catch (error) {
+                        console.error("Failed to fetch missions:", error);
+                        throw error; // Optional: re-throw if needed
+                    }
+
+                    const wbsElements = [oData.business_no];
+                    if (missions.length > 0) {
+                        // Add missions to the WBS elements array
+                        wbsElements.push(...missions.map(mission => mission.id));
+                    }
+
+                    // 5. Create navigation
                     const oComponent = sap.ui.core.Component.getOwnerComponentFor(this.oView);
                     const oAppStateService = sap.ushell.Container.getService("AppState");
                     const oSelectionVariant = new sap.ui.generic.app.navigation.service.SelectionVariant();
-
-                    oSelectionVariant.addSelectOption(
-                        "PostingDate",
-                        "I",
-                        "BT",
-                        firstDay,
-                        lastDay
-                    );
 
                     const oAppState = await oAppStateService.createEmptyAppState(oComponent);
                     oAppState.setData(oSelectionVariant.toJSONString());
@@ -2577,17 +2587,17 @@ sap.ui.define(
                             FiscalYear: `${sYearValue}`,
                             //FiscalPeriod: `${sYearValue}0${month}`,
                             GLAccount: glAccounts,
-                            WBSElementExternalID: [oData.business_no],
+                            WBSElementExternalID: wbsElements //[oData.business_no],
                         };
-                    }else{
+                    } else {
                         params = {
                             FiscalYearPeriod: `${sYearValue}0${month}`,
                             //FiscalPeriod: `${sYearValue}0${month}`,
                             GLAccount: glAccounts,
-                            WBSElementExternalID: [oData.business_no],
+                            WBSElementExternalID: wbsElements
                         };
                     }
-                    
+
 
                     // Convert params to URL string
                     const sParams = Object.entries(params)
@@ -2627,52 +2637,6 @@ sap.ui.define(
                 const lastDay = new Date(year, month, 0).getDate();
                 return `${year}${month.padStart(2, '0')}${lastDay.toString().padStart(2, '0')}`;
             },
-
-            /*monthLinkNavigation1: function (oEvent, sMonthField) {
-                const oComponent = sap.ui.core.Component.getOwnerComponentFor(this.oView);
-
-                const oAppStateService = sap.ushell.Container.getService("AppState");
-
-                const oSelectionVariant = new sap.ui.generic.app.navigation.service.SelectionVariant();
-
-                oSelectionVariant.addSelectOption(
-                    "PostingDate",
-                    "I",
-                    "BT",
-                    "20250601",
-                    "20250611"
-                );
-
-                console.log("oSelectionVariant :", oSelectionVariant.toJSONString());
-
-                try {
-                    const oAppState = await oAppStateService.createEmptyAppState(oComponent);
-                    oAppState.setData(oSelectionVariant.toJSONString());
-
-                    await oAppState.save();
-                    const sAppStateKey = oAppState.getKey();
-
-                    const oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
-                    oCrossAppNavigator.toExternal({
-                        target: {
-                            semanticObject: "GLAccount",
-                            action: "displayGLLineItemReportingView"
-                        },
-                        params: {
-                            //"sap-xapp-state-data": sAppStateKey,
-                            PostingDate: "GE20250601&LE20250615",
-                            GLAccount: ["0041000001"],
-                            WBSElementExternalID: ["PROJET CAS TEST1"],
-                            P_DisplayCurrency: "EUR",
-                            P_ExchangeRateType: "M",
-                            P_ExchangeRateDate: "2019-01-01"
-                        }
-                    });
-
-                } catch (err) {
-                    console.error("Erreur lors de la création/sauvegarde de l'état :", err);
-                }
-            },*/
 
 
         });
