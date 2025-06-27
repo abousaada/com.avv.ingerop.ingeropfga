@@ -104,7 +104,6 @@ sap.ui.define(
                     }
                 }
             },
-
             _onRouteMatched(event) {
                 console.logs(event);
             },
@@ -249,7 +248,7 @@ sap.ui.define(
                             MessageBox.error("Aucun contexte lié à la vue !");
                             throw new Error("Impossible d'accéder au contexte.");
                         }
-
+                        
                         isCreationMode = oView.getModel("ui").getProperty("/createMode");
                         if (isCreationMode) {
                             return new Promise(async (resolve, reject) => {
@@ -2497,17 +2496,27 @@ sap.ui.define(
 
                     console.log(`Navigating for month ${month}/${year} (${firstDay} to ${lastDay})`);
 
+                    // 4. Get missions
+                    const utilitiesModel = this.oView.getModel("utilities");
+                    let missions = [];
+                    try {
+                        missions = await utilitiesModel.getBEMissions();
+                        // Use missions here
+                    } catch (error) {
+                        console.error("Failed to fetch missions:", error);
+                        throw error; // Optional: re-throw if needed
+                    }
+
+                    const wbsElements = [oData.business_no];
+                    if (missions.length > 0) {
+                        // Add missions to the WBS elements array
+                        wbsElements.push(...missions.map(mission => mission.id));
+                    }
+
+                    // 5. Create navigation
                     const oComponent = sap.ui.core.Component.getOwnerComponentFor(this.oView);
                     const oAppStateService = sap.ushell.Container.getService("AppState");
                     const oSelectionVariant = new sap.ui.generic.app.navigation.service.SelectionVariant();
-
-                    oSelectionVariant.addSelectOption(
-                        "PostingDate",
-                        "I",
-                        "BT",
-                        firstDay,
-                        lastDay
-                    );
 
                     const oAppState = await oAppStateService.createEmptyAppState(oComponent);
                     oAppState.setData(oSelectionVariant.toJSONString());
@@ -2542,14 +2551,14 @@ sap.ui.define(
                             FiscalYear: `${sYearValue}`,
                             //FiscalPeriod: `${sYearValue}0${month}`,
                             GLAccount: glAccounts,
-                            WBSElementExternalID: [oData.business_no],
+                            WBSElementExternalID: wbsElements //[oData.business_no],
                         };
                     } else {
                         params = {
                             FiscalYearPeriod: `${sYearValue}0${month}`,
                             //FiscalPeriod: `${sYearValue}0${month}`,
                             GLAccount: glAccounts,
-                            WBSElementExternalID: [oData.business_no],
+                            WBSElementExternalID: wbsElements
                         };
                     }
 
@@ -2592,52 +2601,6 @@ sap.ui.define(
                 const lastDay = new Date(year, month, 0).getDate();
                 return `${year}${month.padStart(2, '0')}${lastDay.toString().padStart(2, '0')}`;
             },
-
-            /*monthLinkNavigation1: function (oEvent, sMonthField) {
-                const oComponent = sap.ui.core.Component.getOwnerComponentFor(this.oView);
-
-                const oAppStateService = sap.ushell.Container.getService("AppState");
-
-                const oSelectionVariant = new sap.ui.generic.app.navigation.service.SelectionVariant();
-
-                oSelectionVariant.addSelectOption(
-                    "PostingDate",
-                    "I",
-                    "BT",
-                    "20250601",
-                    "20250611"
-                );
-
-                console.log("oSelectionVariant :", oSelectionVariant.toJSONString());
-
-                try {
-                    const oAppState = await oAppStateService.createEmptyAppState(oComponent);
-                    oAppState.setData(oSelectionVariant.toJSONString());
-
-                    await oAppState.save();
-                    const sAppStateKey = oAppState.getKey();
-
-                    const oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
-                    oCrossAppNavigator.toExternal({
-                        target: {
-                            semanticObject: "GLAccount",
-                            action: "displayGLLineItemReportingView"
-                        },
-                        params: {
-                            //"sap-xapp-state-data": sAppStateKey,
-                            PostingDate: "GE20250601&LE20250615",
-                            GLAccount: ["0041000001"],
-                            WBSElementExternalID: ["PROJET CAS TEST1"],
-                            P_DisplayCurrency: "EUR",
-                            P_ExchangeRateType: "M",
-                            P_ExchangeRateDate: "2019-01-01"
-                        }
-                    });
-
-                } catch (err) {
-                    console.error("Erreur lors de la création/sauvegarde de l'état :", err);
-                }
-            },*/
 
 
         });
