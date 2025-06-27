@@ -171,6 +171,19 @@
                                 }" />
                             </table:template>
                         </table:Column>
+                        <table:Column>
+                            <Label text="Budget N-1" />
+                            <table:template>
+                                <!--Text text="{recap>budget_n1}" /-->
+                                <Text text="{
+                                    parts: [
+                                        {path: 'recap>budget_n1'},
+                                        {path: 'recap>row_type'}
+                                    ],
+                                    formatter: '.formatPercentage'
+                                }" />
+                            </table:template>
+                        </table:Column>
                         <!--table:Column>
                         <Label text="{i18n>recap.CumulN}"/>
                         <table:template>
