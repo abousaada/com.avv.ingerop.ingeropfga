@@ -1,98 +1,177 @@
-<mvc:View xmlns:core="sap.ui.core" 
-	xmlns:mvc="sap.ui.core.mvc" 
-	xmlns="sap.m"
-	xmlns:table="sap.ui.table"
-	xmlns:layout="sap.ui.layout"
-	xmlns:html="http://www.w3.org/1999/xhtml" controllerName="com.avv.ingerop.ingeropfga.ext.controller.extendOP">
-	
-    <Panel class="sapUiSmallMargin" 
-        expanded="true" expandable="true" 
+<mvc:View
+    xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:table="sap.ui.table"
+    xmlns:layout="sap.ui.layout"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    controllerName="com.avv.ingerop.ingeropfga.ext.controller.extendOP"
+>
+    <Panel
+        class="sapUiSmallMargin"
+        expanded="true"
+        expandable="true"
         headerText="{i18n>synt.tab.recap.title}"
-         visible="{= !${ui>/createMode}}">
-
-        <HBox >
+        visible="{= !${ui>/createMode}}"
+    >
+        <HBox>
             <!--VBox class="sapUiSmallMargin" >
                 <Label text="Commentaires"></Label>
                 <TextArea height="20rem" width="25rem"></TextArea>
             </VBox-->
             <VBox class="sapUiSmallMargin">
-                <Label text=""></Label>
-            <table:Table id="idRecapTable" rows="{recap>/results}" class="syntheseTab"  selectionMode="None">
-                <table:columns>
-                    <table:Column>
-                        <Label text="{i18n>recap.ID}"/>
-                        <table:template>
-                            <Text text="{recap>row_description}" />
-                        </table:template>
-                    </table:Column>
-                    <!--table:Column>
+                <Label text="" />
+                <table:Table
+                    id="idRecapTable"
+                    rows="{recap>/results}"
+                    class="syntheseTab"
+                    selectionMode="None"
+                >
+                    <table:columns>
+                        <table:Column>
+                            <Label text="{i18n>recap.ID}" />
+                            <table:template>
+                                <Text text="{recap>row_description}" />
+                            </table:template>
+                        </table:Column>
+                        <!--table:Column>
                         <Label text="Budget Initial"/>
                         <table:template>
                             <Text text="{recap>budget_initial}" />
                             <!- -ObjectStatus class="custObjStatus" state="{= parseFloat(${recap>P0}) &lt; 0 ? 'Error': 'None'}" text="{ 'parts':[{ path: 'recap>P0' }, {path: 'recap>Type'}], formatter: '.formatRecap' }" /
                         </table:template>
                     </table:Column-->
-                    <table:Column>
-                        <Label text="Budget Objectif"/>
-                        <table:template>
-                            <Text text="{recap>budget_objectif}" />
-                        </table:template>
-                    </table:Column>
-                    <table:Column>
-                        <Label text="Ecart objectif"/>
-                        <table:template>
-                            <Text text="{recap>ecart_objectif}" />
-                        </table:template>
-                    </table:Column>
-                    <table:Column>
-                        <Label text="Cumul N-1"/>
-                        <table:template>
-                            <Text text="{recap>cumul_n1}" />
-                        </table:template>
-                    </table:Column>
-                    <table:Column>
-                        <Label text="Cumul à ce jour"/>
-                        <table:template>
-                            <Text text="{recap>cumul_ce_jour}" />
-                        </table:template>
-                    </table:Column>
-                    <table:Column>
-                        <Label text="Année en cours"/>
-                        <table:template>
-                            <Text text="{recap>annee_en_cours}" />
-                        </table:template>
-                    </table:Column>
-                    <table:Column>
-                        <Label text="Mois M"/>
-                        <table:template>
-                            <Text text="{recap>mois_m}" />
-                        </table:template>
-                    </table:Column>
-                    <table:Column>
-                        <Label text="Reste à Venir"/>
-                        <table:template>
-                            <Text text="{recap>reste_a_venir}" />
-                        </table:template>
-                    </table:Column>
-                    <table:Column>
-                        <Label text="Budget actif"/>
-                        <table:template>
-                            <Text text="{recap>budget_actif}" />
-                        </table:template>
-                    </table:Column>
-                    <table:Column>
-                        <Label text="Budget actif M-1"/>
-                        <table:template>
-                            <Text text="{recap>budget_actif_m1}" />
-                        </table:template>
-                    </table:Column>
-                    <table:Column>
-                        <Label text="Ecart"/>
-                        <table:template>
-                            <Text text="{recap>ecart}" />
-                        </table:template>
-                    </table:Column>
-                    <!--table:Column>
+                        <table:Column>
+                            <Label text="Budget Objectif" />
+                            <table:template>
+                                <!--Text text="{recap>budget_objectif}" /-->
+                                <Text text="{
+                                    parts: [
+                                        {path: 'recap>budget_objectif'},
+                                        {path: 'recap>row_type'}
+                                    ],
+                                    formatter: '.formatPercentage'
+                                }" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column>
+                            <Label text="Ecart objectif" />
+                            <table:template>
+                                <!--Text text="{recap>ecart_objectif}" /-->
+                                <Text text="{
+                                    parts: [
+                                        {path: 'recap>ecart_objectif'},
+                                        {path: 'recap>row_type'}
+                                    ],
+                                    formatter: '.formatPercentage'
+                                }" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column>
+                            <Label text="Cumul N-1" />
+                            <table:template>
+                                <!--Text text="{recap>cumul_n1}" /-->
+                                <Text text="{
+                                    parts: [
+                                        {path: 'recap>cumul_n1'},
+                                        {path: 'recap>row_type'}
+                                    ],
+                                    formatter: '.formatPercentage'
+                                }" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column>
+                            <Label text="Cumul à ce jour" />
+                            <table:template>
+                                <!--Text text="{recap>cumul_ce_jour}" /-->
+                                <Text text="{
+                                    parts: [
+                                        {path: 'recap>cumul_ce_jour'},
+                                        {path: 'recap>row_type'}
+                                    ],
+                                    formatter: '.formatPercentage'
+                                }" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column>
+                            <Label text="Année en cours" />
+                            <table:template>
+                                <!--Text text="{recap>annee_en_cours}" /-->
+                                <Text text="{
+                                    parts: [
+                                        {path: 'recap>annee_en_cours'},
+                                        {path: 'recap>row_type'}
+                                    ],
+                                    formatter: '.formatPercentage'
+                                }" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column>
+                            <Label text="Mois M" />
+                            <table:template>
+                                <!--Text text="{recap>mois_m}" /-->
+                                <Text text="{
+                                    parts: [
+                                        {path: 'recap>mois_m'},
+                                        {path: 'recap>row_type'}
+                                    ],
+                                    formatter: '.formatPercentage'
+                                }" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column>
+                            <Label text="Reste à Venir" />
+                            <table:template>
+                                <!--Text text="{recap>reste_a_venir}" /-->
+                                <Text text="{
+                                    parts: [
+                                        {path: 'recap>reste_a_venir'},
+                                        {path: 'recap>row_type'}
+                                    ],
+                                    formatter: '.formatPercentage'
+                                }" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column>
+                            <Label text="Budget actif" />
+                            <table:template>
+                                <!--Text text="{recap>budget_actif}" /-->
+                                <Text text="{
+                                    parts: [
+                                        {path: 'recap>budget_actif'},
+                                        {path: 'recap>row_type'}
+                                    ],
+                                    formatter: '.formatPercentage'
+                                }" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column>
+                            <Label text="Budget actif M-1" />
+                            <table:template>
+                                <!--Text text="{recap>budget_actif_m1}" /-->
+                                <Text text="{
+                                    parts: [
+                                        {path: 'recap>budget_actif_m1'},
+                                        {path: 'recap>row_type'}
+                                    ],
+                                    formatter: '.formatPercentage'
+                                }" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column>
+                            <Label text="Ecart" />
+                            <table:template>
+                                <!--Text text="{recap>ecart}" /-->
+                                <Text text="{
+                                    parts: [
+                                        {path: 'recap>ecart'},
+                                        {path: 'recap>row_type'}
+                                    ],
+                                    formatter: '.formatPercentage'
+                                }" />
+                            </table:template>
+                        </table:Column>
+                        <!--table:Column>
                         <Label text="{i18n>recap.CumulN}"/>
                         <table:template>
                             <ObjectStatus class="custObjStatus" state="{= parseFloat(${recap>CumulN}) &lt; 0 ? 'Error': 'None'}" text="{ 'parts':[{ path: 'recap>CumulN' }, {path: 'recap>Type'}], formatter: '.formatRecap' }" />
@@ -122,11 +201,9 @@
                             <ObjectStatus class="custObjStatus" state="{= parseFloat(${recap>Forecast}) &lt; 0 ? 'Error': 'None'}" text="{ 'parts':[{ path: 'recap>Forecast' }, {path: 'recap>Type'}], formatter: '.formatRecap' }" />
                         </table:template>
                     </table:Column-->
-                </table:columns>
-            </table:Table>
+                    </table:columns>
+                </table:Table>
             </VBox>
         </HBox>
     </Panel>
-
-	
 </mvc:View>

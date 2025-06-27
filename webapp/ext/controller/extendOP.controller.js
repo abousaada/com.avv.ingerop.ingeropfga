@@ -2437,6 +2437,18 @@ sap.ui.define(
             },
 
 
+            formatPercentage: function(value, row_type) {
+                if (value == null) return "";  
+                
+                // Check if this should be a percentage value
+                if (row_type === "RBAPCT" || row_type === "AVANCE") {
+                    const formattedValue = parseFloat(value).toFixed(2);
+                    return `${formattedValue}%`;
+                }
+                
+                return value.toString();
+            },
+
             onPressMonthLink: function (oEvent) {
                 var oLink = oEvent.getSource();
 
