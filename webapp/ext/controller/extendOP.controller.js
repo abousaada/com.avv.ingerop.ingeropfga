@@ -44,13 +44,14 @@ sap.ui.define(
                 return this.getInterface().getView().getController().extensionAPI;
             },
 
-            _setTabsVisible(bCreate){
+            _setTabsVisible(bCreate) {
                 this.getView().byId("AfterFacet::ZC_FGASet::GeneralInfo::Section").setVisible(bCreate);
                 this.getView().byId("AfterFacet::ZC_FGASet::TableInfo::Section").setVisible(bCreate);
                 this.getView().byId("template:::ObjectPageSection:::AfterFacetExtensionSectionWithKey:::sFacet::GeneralInfo:::sEntitySet::ZC_FGASet:::sFacetExtensionKey::1").setVisible(bCreate);
+                this.getView().byId("AfterFacet::ZC_FGASet::Missions::Section").setVisible(bCreate);
             },
 
-            async _getTabsData(){
+            async _getTabsData() {
                 const utilitiesModel = this.getInterface().getModel("utilities");
                 const [missions, previsions, recaps] = await Promise.all([
                     utilitiesModel.getBEMissions(),
@@ -61,13 +62,13 @@ sap.ui.define(
                 utilitiesModel.setMissions(missions || []);
                 utilitiesModel.setRecaps(recaps || []);
                 utilitiesModel.setPrevisions(previsions || []);
-                
+
                 //à enlever une fois les corrections effectués dans les view XML
                 var oPrevisionsModel = this.getView().getModel("synthesis") || new sap.ui.model.json.JSONModel({ results: [] });
                 oPrevisionsModel.setProperty("/results", previsions || []);
                 this.getView().setModel(oPrevisionsModel, "synthesis");
                 oPrevisionsModel.refresh(true);
-                
+
                 var oRecapModel = this.getView().getModel("recap") || new sap.ui.model.json.JSONModel({ results: [] });
                 oRecapModel.setProperty("/results", recaps || []);
                 this.getView().setModel(oRecapModel, "recap");
@@ -79,9 +80,9 @@ sap.ui.define(
                 const bCreateMode = this.getView().getModel("ui").getProperty("/createMode");
 
                 this._setTabsVisible(!bCreateMode);
-                
+
                 //if create
-                if(bCreateMode){ utilitiesModel.reInit(); return }
+                if (bCreateMode) { utilitiesModel.reInit(); return }
 
                 const sPeriod = e.context.getProperty("p_period");
                 if (sPeriod) { utilitiesModel.setYearByPeriod(sPeriod); }
@@ -104,19 +105,7 @@ sap.ui.define(
                 }
             },
 
-            _hideNoNeededSectionOnCreate(oView) {
-                oView.addEventDelegate({
-                    onAfterRendering: function (e) {
-                        // cacher les sections Budget/Graphique/Recap
-                        const bCreateMode = oView.getModel("ui").getProperty("/createMode");
-                        oView.byId("AfterFacet::ZC_FGASet::GeneralInfo::Section").setVisible(!bCreateMode);
-                        oView.byId("AfterFacet::ZC_FGASet::TableInfo::Section").setVisible(!bCreateMode);
-                        oView.byId("template:::ObjectPageSection:::AfterFacetExtensionSectionWithKey:::sFacet::GeneralInfo:::sEntitySet::ZC_FGASet:::sFacetExtensionKey::1").setVisible(!bCreateMode);
-                    }
-                }, this);
-            },
-
-            _onRouteMatched(event){
+            _onRouteMatched(event) {
                 console.logs(event);
             },
 
@@ -212,10 +201,6 @@ sap.ui.define(
 
                     this._getExtensionAPI().attachPageDataLoaded(this._onObjectExtMatched.bind(this));
 
-                    // this._hideNoNeededSectionOnCreate(this.getView());
-
-                    // this.base.getView().getController().getOwnerComponent().getRouter("ZC_FGASet").attachRoutePatternMatched(this._onRouteMatched, this);
-
                     // Bind the onItemPress function to the controller context
                     this.onItemPress = this.onItemPress.bind(this);
                     this.onCalculate = this.onCalculate.bind(this);
@@ -254,59 +239,39 @@ sap.ui.define(
 
                 beforeSaveExtension() {
                     try {
+                        const utilitiesModel = this.getModel("utilities");
+
                         // Accès au contexte via la vue
                         const oView = this.base.getView();
                         const oContext = oView.getBindingContext();
-
+                        
                         if (!oContext) {
                             MessageBox.error("Aucun contexte lié à la vue !");
                             throw new Error("Impossible d'accéder au contexte.");
                         }
 
-                        return new Promise(async (resolve, reject) => {
-                            const utilitiesModel = this.getModel("utilities");
-                            const formattedMissions = utilitiesModel.getFormattedMissions();
-                            const oPayload = Helper.extractPlainData({ ...oContext.getObject(), "to_Missions": formattedMissions });
-                            const createdFGA = await utilitiesModel.deepCreateFGA(oPayload);
-                            if(createdFGA){
-                                Helper.validMessage("FGA created: " + createdFGA.BusinessNo, this.getView());
-                            }
-                            reject();
-                            // resolve();
-
-                            // const oPayload = {
-                            //     // "p_period": "062023",
-                            //     // "BusinessNo": "AFFAIRE123",
-                            //     "BusinessName": "Nom de l'affaire : text XP",
-                            //     "CompanyCode": "9000",
-                            //     "PROFITCENTER": "MEDNBTS000",
-                            //     "Mission": "05",
-                            //     "StartDate": new Date("2025-01-01"),
-                            //     "EndDate": new Date("2025-02-28"),
-                            //     "to_Missions": [
-                            //   {
-                            //     "MissionId": "001",
-                            //     // "BusinessNo": "AFFAIRE123",
-                            //     "MissionCode": "AVP",
-                            //     "StartDate": new Date("2025-01-01"),
-                            //     "EndDate": new Date("2025-01-30"),
-                            //     "ExternalRevenue": "100000.00",
-                            //     "LaborBudget": "50000.00"
-                            //   },
-                            //       {
-                            //         "MissionId": "002",
-                            //         // "BusinessNo": "AFFAIRE123",
-                            //         "MissionCode": "PRO",
-                            //         "StartDate": new Date("2025-01-01"),
-                            //         "EndDate": new Date("2025-01-30"),
-                            //         "ExternalRevenue": "150000.00",
-                            //         "LaborBudget": "75000.00"
-                            //       }
-                            //     ]
-                            //   };
-
-                        });
-
+                        isCreationMode = oView.getModel("ui").getProperty("/createMode");
+                        if (isCreationMode) {
+                            return new Promise(async (resolve, reject) => {
+                                const formattedMissions = utilitiesModel.getFormattedMissions();
+                                const oPayload = Helper.extractPlainData({ ...oContext.getObject(), "to_Missions": formattedMissions });
+                                const createdFGA = await utilitiesModel.deepCreateFGA(oPayload);
+                                if (createdFGA) {
+                                    Helper.validMessage("FGA created: " + createdFGA.BusinessNo, this.getView());
+                                }
+                                reject();
+                            });
+                        } else {
+                            return new Promise(async (resolve, reject) => {
+                                const formattedMissions = utilitiesModel.getFormattedMissions();
+                                const oPayload = Helper.extractPlainData({...oContext.getObject(), "to_Missions": formattedMissions });
+                                const updatedFGA = await utilitiesModel.deepUpdatedFGA(oPayload);
+                                if (updatedFGA) {
+                                    Helper.validMessage("FGA updated: " + updatedFGA.BusinessNo, this.getView());
+                                }
+                                reject();
+                            });
+                        }
                     } catch (error) {
                         // sap.m.MessageToast.show("FGA create fail");
                         Helper.errorMessage("FGA create fail");
@@ -2579,7 +2544,7 @@ sap.ui.define(
                             GLAccount: glAccounts,
                             WBSElementExternalID: [oData.business_no],
                         };
-                    }else{
+                    } else {
                         params = {
                             FiscalYearPeriod: `${sYearValue}0${month}`,
                             //FiscalPeriod: `${sYearValue}0${month}`,
@@ -2587,7 +2552,7 @@ sap.ui.define(
                             WBSElementExternalID: [oData.business_no],
                         };
                     }
-                    
+
 
                     // Convert params to URL string
                     const sParams = Object.entries(params)
