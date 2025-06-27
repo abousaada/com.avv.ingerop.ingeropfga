@@ -2501,16 +2501,16 @@ sap.ui.define(
                     let missions = [];
                     try {
                         missions = await utilitiesModel.getBEMissions();
-                        // Use missions here
+                        
                     } catch (error) {
                         console.error("Failed to fetch missions:", error);
-                        throw error; // Optional: re-throw if needed
+                        throw error; 
                     }
 
                     const wbsElements = [oData.business_no];
-                    if (missions.length > 0) {
+                    if (missions && missions.length > 0) {
                         // Add missions to the WBS elements array
-                        wbsElements.push(...missions.map(mission => mission.id));
+                        wbsElements.push(...missions.map(mission => mission.MissionId));
                     }
 
                     // 5. Create navigation
