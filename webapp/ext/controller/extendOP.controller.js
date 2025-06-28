@@ -249,7 +249,8 @@ sap.ui.define(
                             throw new Error("Impossible d'accéder au contexte.");
                         }
                         
-                        isCreationMode = oView.getModel("ui").getProperty("/createMode");
+                        const isCreationMode = oView.getModel("ui").getProperty("/createMode");
+
                         if (isCreationMode) {
                             return new Promise(async (resolve, reject) => {
                                 const formattedMissions = utilitiesModel.getFormattedMissions();

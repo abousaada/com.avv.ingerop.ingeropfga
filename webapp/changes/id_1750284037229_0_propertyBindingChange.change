@@ -1,0 +1,41 @@
+{
+    "fileName": "id_1750284037229_0_propertyBindingChange",
+    "fileType": "change",
+    "changeType": "propertyBindingChange",
+    "moduleName": "",
+    "reference": "com.avv.ingerop.ingeropfga.Component",
+    "packageName": "",
+    "content": {
+        "property": "visible",
+        "newBinding": "{= !${ui>/CreateMode}}"
+    },
+    "selector": {
+        "id": "com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--TableInfo::Section",
+        "idIsLocal": false,
+        "type": "sap.uxap.ObjectPageSection"
+    },
+    "layer": "CUSTOMER_BASE",
+    "texts": {},
+    "namespace": "apps/com.avv.ingerop.ingeropfga/changes/",
+    "projectId": "",
+    "creation": 1750284067597,
+    "originalLanguage": "",
+    "support": {
+        "generator": "changeUtils: SAPFioriTools",
+        "service": "",
+        "user": "",
+        "sapui5Version": " ",
+        "sourceChangeFileName": "",
+        "compositeCommand": ""
+    },
+    "oDataInformation": {},
+    "dependentSelector": {},
+    "validAppVersions": {
+        "from": "0.0.3",
+        "to": "0.0.3",
+        "creation": "0.0.3"
+    },
+    "jsOnly": false,
+    "variantReference": "",
+    "appDescriptorChange": false
+}
