@@ -143,7 +143,7 @@ sap.ui.define([
                         const missionPath = `/ZC_FGA_MISSION(MissionId='${encodeURIComponent(mission.MissionId)}',BusinessNo='${encodeURIComponent(mission.BusinessNo)}')`;
 
                         return this.update(missionPath, mission, {
-                            method: 'PATCH', // or 'POST' if creating new missions
+                            method: 'PATCH', 
                             headers: {
                                 'Content-Type': 'application/json'
                             }

@@ -227,10 +227,7 @@
                                     <PropertyValue Property="Value" Path="Modalr"/>
                                 </Record>
                                 <Record Type="UI.DataField">
-                                    <PropertyValue Property="Value" Path="Modalf"/>
-                                </Record>
-                                <Record Type="UI.DataField">
-                                    <PropertyValue Property="Value" Path="Avance"/>
+                                    <PropertyValue Property="Value" Path="plateformDemat"/>
                                 </Record>
                                 <Record Type="UI.DataField">
                                     <PropertyValue Property="Value" Path="plateformDemat"/>
@@ -305,12 +302,22 @@
                                     <PropertyValue Property="Value" Path="CDG"/>
                                 </Record>
                                 <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="CDG"/>
+                                </Record>
+                                <Record Type="UI.DataField">
                                     <PropertyValue Property="Value" Path="UFOName"/>
                                 </Record>
                                 <Record Type="UI.DataField">
                                     <PropertyValue Property="Value" Path="Activity"/>
                                 </Record>
                                 <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="Soufam"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="Type"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="Rgfact"/>
                                     <PropertyValue Property="Value" Path="Soufam"/>
                                 </Record>
                                 <Record Type="UI.DataField">
@@ -326,13 +333,7 @@
                                     <PropertyValue Property="Value" Path="CompanyCode"/>
                                 </Record>
                                 <Record Type="UI.DataField">
-                                    <PropertyValue Property="Value" Path="Project_lib"/>
-                                </Record>
-                                <Record Type="UI.DataField">
                                     <PropertyValue Property="Value" Path="Site"/>
-                                </Record>
-                                <Record Type="UI.DataField">
-                                    <PropertyValue Property="Value" Path="International"/>
                                 </Record>
                             </Collection>
                         </PropertyValue>
@@ -406,6 +407,7 @@
                         <PropertyValue Property="Description">
                             <Record Type="UI.DataField">
                                 <PropertyValue Property="Value" Path="HeaderDescription"/>
+                                <PropertyValue Property="Value" Path="HeaderDescription"/>
                             </Record>
                         </PropertyValue>
                     </Record>
@@ -420,11 +422,14 @@
                         </Record>
                         <Record Type="UI.DataField">
                             <PropertyValue Property="Value" Path="CompanyCode"/>
+                            <PropertyValue Property="Value" Path="CompanyCode"/>
                         </Record>
                         <Record Type="UI.DataField">
                             <PropertyValue Property="Value" Path="ProfitCenter"/>
+                            <PropertyValue Property="Value" Path="ProfitCenter"/>
                         </Record>
                         <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="UFOName"/>
                             <PropertyValue Property="Value" Path="UFOName"/>
                         </Record>
                         <Record Type="UI.DataField">
@@ -448,6 +453,8 @@
                         <PropertyPath>BusinessName</PropertyPath>
                         <PropertyPath>CompanyCode</PropertyPath>
                         <PropertyPath>BusinessManager</PropertyPath>
+                        <PropertyPath>UFOName</PropertyPath>
+                        <PropertyPath>ProfitCenter</PropertyPath>
                         <PropertyPath>UFOName</PropertyPath>
                         <PropertyPath>ProfitCenter</PropertyPath>
                         <PropertyPath>PROJM</PropertyPath>
@@ -487,7 +494,22 @@
             <Annotations Target="ZFGA_SRV.ZI_FGA_ASSUR_VHType/Spras">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_FGA_ACTIVITY_VHType/Spras">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_FGA_ASSUR_VHType/Spras">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
             <Annotations Target="ZFGA_SRV.ZI_FGA_CAUTGA_VHType/Spras">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_FGA_CHORUS_VHType/Spras">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_FGA_GROUPM_VHType/spras">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_FGA_MISSION_VHType/spras">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
             <Annotations Target="ZFGA_SRV.ZI_FGA_CHORUS_VHType/Spras">
@@ -506,6 +528,18 @@
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
             <Annotations Target="ZFGA_SRV.ZI_FGA_RECAPType/p_period">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_FGA_RTGART_VHType/Spras">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_FGA_SCCLT_VHType/spras">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_FGA_SOUFAM_VHType/Spras">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_FGA_STATUS_VHType/Spras">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
             <Annotations Target="ZFGA_SRV.ZI_FGA_RTGART_VHType/Spras">
