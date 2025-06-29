@@ -35,8 +35,6 @@ sap.ui.define([
                     LaborBudget: 0.00,
                     // Subcontracting: 0.00,
                     // OtherCosts: 0.00
-                    isNew: true,             // <--- ABO 
-                    toBeDeleted: false       // <--- ABO
                 };
 
                 const newMissions = [...oldMissions, newMission];
@@ -123,9 +121,14 @@ sap.ui.define([
                     const urlBusinessNo = encodeURIComponent(businessNo);
                     const urlPeriod = encodeURIComponent(period);
 
+                    const createdFGA = await this.create("/ZC_FGASet", data);
+                    console.log(createdFGA);
+                    return createdFGA;
+
+                    /*
                     // 2. Process parent entity (ZC_FGA)
                     const sPath = `/ZC_FGASet(p_period='${urlPeriod}',BusinessNo='${urlBusinessNo}')`;
-
+                                       
                     //save to_Missions
                     const missionsToProcess = data.to_Missions || [];
 
@@ -171,13 +174,11 @@ sap.ui.define([
                     const deletePromises = missionsToDelete.map((mission) => {
                         const missionPath = `/ZC_FGA_MISSION(MissionId='${encodeURIComponent(mission.MissionId)}',BusinessNo='${encodeURIComponent(mission.BusinessNo)}')`;
                         return this.update(missionPath, null, { method: 'DELETE' }); // Use `update` with DELETE
-                    });*/
+                    });* /
 
-                    //await Promise.all([...createPromises, ...updatePromises, ...deletePromises]);
+                    await Promise.all([...createPromises, ...updatePromises, ...deletePromises]);
 
-                    await Promise.all([...createPromises, ...updatePromises]);
-
-                    return updatedParentFGA;
+                    return updatedParentFGA;*/
 
                 } catch (error) {
                     console.error('Error in deepUpdatedFGA:', error);

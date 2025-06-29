@@ -64,23 +64,10 @@ sap.ui.define([
                        mission.BusinessNo === oRowContext.getProperty("BusinessNo");
             });
             
-            aMissions.forEach(m => {
-                if (typeof m.toBeDeleted === "undefined") {
-                    m.toBeDeleted = false;
-                }
-            });
-            this.getView().getModel("utilities").setProperty("/missions", aMissions);
-
             if (iIndex !== -1) {
-                aMissions[iIndex].toBeDeleted = true;
-        
+                aMissions.splice(iIndex, 1);
+                
                 this.getView().getModel("utilities").setProperty("/missions", aMissions);
-        
-                // Reapply table filtering
-                var oTable = this.byId("missionsTable");
-                var oBinding = oTable.getBinding("rows"); // or "items" for responsive table
-                var oFilter = new sap.ui.model.Filter("toBeDeleted", sap.ui.model.FilterOperator.NE, true);
-                oBinding.filter([oFilter]);
             }
         }
         
