@@ -54,5 +54,22 @@ sap.ui.define([
             }, 200);
         },
 
+        onDeleteMission: function(oEvent) {
+            var oRowContext = oEvent.getSource().getBindingContext("utilities");
+            
+            var aMissions = this.getView().getModel("utilities").getProperty("/missions");
+            
+            var iIndex = aMissions.findIndex(function(mission) {
+                return mission.MissionId === oRowContext.getProperty("MissionId") && 
+                       mission.BusinessNo === oRowContext.getProperty("BusinessNo");
+            });
+            
+            if (iIndex !== -1) {
+                aMissions.splice(iIndex, 1);
+                
+                this.getView().getModel("utilities").setProperty("/missions", aMissions);
+            }
+        }
+
     });
 });

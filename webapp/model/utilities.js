@@ -139,18 +139,34 @@ sap.ui.define([
                     // 2. Process child entities (to_Missions)
 
                     //const missionsToProcess = to_Missions || [];
-                    const missionUpdatePromises = missionsToProcess.map(async (mission) => {
-                        const missionPath = `/ZC_FGA_MISSION(MissionId='${encodeURIComponent(mission.MissionId)}',BusinessNo='${encodeURIComponent(mission.BusinessNo)}')`;
 
+                    const missionsToCreate = missionsToProcess.filter(m => !m.MissionId || m.isNew === true);
+                    const missionsToUpdate = missionsToProcess.filter(m =>
+                      m.MissionId && m.MissionId !== "" && !m.toBeDeleted && !m.isNew
+                    );
+                    const missionsToDelete = missionsToProcess.filter(m => m.toBeDeleted === true);
+
+                    // UPDATE
+                    const updatePromises = missionsToUpdate.map((mission) => {
+                        const missionPath = `/ZC_FGA_MISSION(MissionId='${encodeURIComponent(mission.MissionId)}',BusinessNo='${encodeURIComponent(mission.BusinessNo)}')`;
                         return this.update(missionPath, mission, {
-                            method: 'PATCH', 
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
+                            method: 'PATCH',
+                            headers: { 'Content-Type': 'application/json' }
                         });
                     });
+                    
+                    // CREATE
+                    const createPromises = missionsToCreate.map((mission) => {
+                        return this.create('/ZC_FGA_MISSION', mission);
+                    });
 
-                    await Promise.all(missionUpdatePromises);
+                    // DELETE
+                    const deletePromises = missionsToDelete.map((mission) => {
+                        const missionPath = `/ZC_FGA_MISSION(MissionId='${encodeURIComponent(mission.MissionId)}',BusinessNo='${encodeURIComponent(mission.BusinessNo)}')`;
+                        return this.remove(missionPath);
+                    });
+
+                    await Promise.all([...createPromises, ...updatePromises, ...deletePromises]);
 
                     return updatedParentFGA;
 

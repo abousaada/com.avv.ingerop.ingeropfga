@@ -96,6 +96,18 @@
           </table:template>
         </table:Column>
         
+        <table:Column width="4rem" visible = "{ui>/editable}">
+          <Label text=""/>
+          <table:template>
+            <Button 
+              icon="sap-icon://decline" 
+              tooltip="Delete Mission"
+              press="onDeleteMission"
+              visible="{ui>/editable}"
+              type="Reject"/>
+          </table:template>
+        </table:Column>
+
         <!-- Sous-traitance -->
         <!-- <table:Column width="10rem">
           <Label text="Sous-traitance"/>
