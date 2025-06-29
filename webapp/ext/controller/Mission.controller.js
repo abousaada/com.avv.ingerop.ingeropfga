@@ -54,22 +54,36 @@ sap.ui.define([
             }, 200);
         },
 
-        onDeleteMission: function(oEvent) {
+
+        onDeleteMission: function (oEvent) {
             var oRowContext = oEvent.getSource().getBindingContext("utilities");
-            
             var aMissions = this.getView().getModel("utilities").getProperty("/missions");
-            
-            var iIndex = aMissions.findIndex(function(mission) {
-                return mission.MissionId === oRowContext.getProperty("MissionId") && 
+        
+            var iIndex = aMissions.findIndex(function (mission) {
+                return mission.MissionId === oRowContext.getProperty("MissionId") &&
                        mission.BusinessNo === oRowContext.getProperty("BusinessNo");
             });
             
+            aMissions.forEach(m => {
+                if (typeof m.toBeDeleted === "undefined") {
+                    m.toBeDeleted = false;
+                }
+            });
+            this.getView().getModel("utilities").setProperty("/missions", aMissions);
+
             if (iIndex !== -1) {
-                aMissions.splice(iIndex, 1);
-                
+                aMissions[iIndex].toBeDeleted = true;
+        
                 this.getView().getModel("utilities").setProperty("/missions", aMissions);
+        
+                // Reapply table filtering
+                var oTable = this.byId("missionsTable");
+                var oBinding = oTable.getBinding("rows"); // or "items" for responsive table
+                var oFilter = new sap.ui.model.Filter("toBeDeleted", sap.ui.model.FilterOperator.NE, true);
+                oBinding.filter([oFilter]);
             }
         }
-
+        
+       
     });
 });

@@ -35,6 +35,8 @@ sap.ui.define([
                     LaborBudget: 0.00,
                     // Subcontracting: 0.00,
                     // OtherCosts: 0.00
+                    isNew: true,             // <--- ABO 
+                    toBeDeleted: false       // <--- ABO
                 };
 
                 const newMissions = [...oldMissions, newMission];
@@ -128,21 +130,16 @@ sap.ui.define([
                     const missionsToProcess = data.to_Missions || [];
 
                     delete data.to_Missions;
-                    //const updatedFGA = await this.update(sPath, payload, { method: 'PATCH' });
                     const updatedParentFGA = await this.update(sPath, data, {
-                        method: 'PATCH',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
+                        method: 'PATCH'
                     });
 
                     // 2. Process child entities (to_Missions)
 
                     //const missionsToProcess = to_Missions || [];
-
                     const missionsToCreate = missionsToProcess.filter(m => !m.MissionId || m.isNew === true);
                     const missionsToUpdate = missionsToProcess.filter(m =>
-                      m.MissionId && m.MissionId !== "" && !m.toBeDeleted && !m.isNew
+                        m.MissionId && m.MissionId !== "" && !m.toBeDeleted && !m.isNew
                     );
                     const missionsToDelete = missionsToProcess.filter(m => m.toBeDeleted === true);
 
@@ -150,23 +147,35 @@ sap.ui.define([
                     const updatePromises = missionsToUpdate.map((mission) => {
                         const missionPath = `/ZC_FGA_MISSION(MissionId='${encodeURIComponent(mission.MissionId)}',BusinessNo='${encodeURIComponent(mission.BusinessNo)}')`;
                         return this.update(missionPath, mission, {
-                            method: 'PATCH',
-                            headers: { 'Content-Type': 'application/json' }
+                            method: 'PATCH'
                         });
                     });
-                    
+
                     // CREATE
                     const createPromises = missionsToCreate.map((mission) => {
-                        return this.create('/ZC_FGA_MISSION', mission);
+                        const trimmedBusinessNo = mission.BusinessNo.slice(0, -2);
+                        mission.BusinessNo = trimmedBusinessNo;
+
+                        delete mission.isNew;
+                        delete mission.toBeDeleted;
+
+                        return this.create("/ZC_FGA_MISSION", mission);
                     });
 
                     // DELETE
-                    const deletePromises = missionsToDelete.map((mission) => {
+                    /*const deletePromises = missionsToDelete.map((mission) => {
                         const missionPath = `/ZC_FGA_MISSION(MissionId='${encodeURIComponent(mission.MissionId)}',BusinessNo='${encodeURIComponent(mission.BusinessNo)}')`;
                         return this.remove(missionPath);
                     });
 
-                    await Promise.all([...createPromises, ...updatePromises, ...deletePromises]);
+                    const deletePromises = missionsToDelete.map((mission) => {
+                        const missionPath = `/ZC_FGA_MISSION(MissionId='${encodeURIComponent(mission.MissionId)}',BusinessNo='${encodeURIComponent(mission.BusinessNo)}')`;
+                        return this.update(missionPath, null, { method: 'DELETE' }); // Use `update` with DELETE
+                    });*/
+
+                    //await Promise.all([...createPromises, ...updatePromises, ...deletePromises]);
+
+                    await Promise.all([...createPromises, ...updatePromises]);
 
                     return updatedParentFGA;
 
