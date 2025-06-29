@@ -121,40 +121,39 @@ sap.ui.define([
                     const urlBusinessNo = encodeURIComponent(businessNo);
                     const urlPeriod = encodeURIComponent(period);
 
-                    //const sPath = `/ZC_FGASet(p_period='${urlPeriod}',BusinessNo='${urlBusinessNo}')`;
+                    // 2. Process parent entity (ZC_FGA)
+                    const sPath = `/ZC_FGASet(p_period='${urlPeriod}',BusinessNo='${urlBusinessNo}')`;
 
-                    const sPath = `/ZC_FGASet(BusinessNo='${urlBusinessNo}',p_period='${urlPeriod}')`
+                    //save to_Missions
+                    const missionsToProcess = data.to_Missions || [];
 
-                    const payload = {
-                        "p_period": "092025",
-                        "BusinessNo": "PROJET CAS TEST1'",
-                        "BusinessName": "Nom de l'affaire",
-                        "CompanyCode": "9000",
-                        "Mission": "01",
-                        "StartDate": "/Date(1672531200000)/",
-                        "EndDate": "/Date(1703980800000)/",
-                        /*"to_Missions": [
-                            {
-                                 "MissionId": "001",
-                                 "MissionCode": "AVP",
-                                 "StartDate": new Date("2025-01-01"),
-                                 "EndDate": new Date("2025-01-30"),
-                                 "ExternalRevenue": "100000.00",
-                                 "LaborBudget": "50000.00"
-                            }
-                            
-                        ]*/
-                    }
-
+                    delete data.to_Missions;
                     //const updatedFGA = await this.update(sPath, payload, { method: 'PATCH' });
-                    const updatedFGA = await this.update(sPath, payload, { 
+                    const updatedParentFGA = await this.update(sPath, data, {
                         method: 'PATCH',
                         headers: {
                             'Content-Type': 'application/json'
                         }
                     });
 
-                    return updatedFGA;
+                    // 2. Process child entities (to_Missions)
+
+                    //const missionsToProcess = to_Missions || [];
+                    const missionUpdatePromises = missionsToProcess.map(async (mission) => {
+                        const missionPath = `/ZC_FGA_MISSION(MissionId='${encodeURIComponent(mission.MissionId)}',BusinessNo='${encodeURIComponent(mission.BusinessNo)}')`;
+
+                        return this.update(missionPath, mission, {
+                            method: 'PATCH', // or 'POST' if creating new missions
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        });
+                    });
+
+                    await Promise.all(missionUpdatePromises);
+
+                    return updatedParentFGA;
+
                 } catch (error) {
                     console.error('Error in deepUpdatedFGA:', error);
                     throw error;
