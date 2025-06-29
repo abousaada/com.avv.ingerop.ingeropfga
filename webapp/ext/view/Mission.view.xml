@@ -13,7 +13,6 @@
       id="missionsTable"
       rows="{path: 'utilities>/missions', templateShareable: false}"
       selectionMode="None"
-      
       ariaLabelledBy="title">
       <!-- visible="{= !${ui>/createMode}}" -->
       <table:columns>
@@ -35,6 +34,7 @@
                 path: 'utilities>/missionTypes',
                 templateShareable: false
               }"
+              editable="{ui>/editable}"
               width="100%">
               <core:Item key="{utilities>code}" text="{utilities>description}"/>
             </ComboBox>
@@ -48,6 +48,7 @@
             <DatePicker
               value="{path: 'utilities>StartDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd' }}"
               displayFormat="short"
+              editable="{ui>/editable}"
               width="100%"/>
           </table:template>
         </table:Column>
@@ -61,6 +62,7 @@
               type: 'sap.ui.model.type.Date', 
               formatOptions: { pattern: 'yyyy-MM-dd' }}"
               displayFormat="short"
+              editable="{ui>/editable}"
               width="100%"/>
           </table:template>
         </table:Column>
@@ -77,6 +79,7 @@
                 formatOptions: { decimals: 2, showMeasure: false }
               }"
               description="€"
+              editable="{ui>/editable}"
               width="100%"/>
           </table:template>
         </table:Column>
@@ -92,6 +95,7 @@
                 formatOptions: { decimals: 2 , showMeasure: false}
                 }"
               description="€"
+              editable="{ui>/editable}"
               width="100%"/>
           </table:template>
         </table:Column>
