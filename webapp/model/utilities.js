@@ -21,9 +21,10 @@ sap.ui.define([
 
             addMissionNewLine() {
                 const oldMissions = this.getMissions();
-                const sBusinessNo = this.getBusinessNo();
+                const sBusinessNo = this.getBusinessNo().slice(0, -2); // <-- ABO
                 const sMissionNumber = Formatter.getMissionsNumber(oldMissions.length + 1);
 
+                sBusinessNo
                 // Create new mission
                 const newMission = {
                     BusinessNo: sBusinessNo,
