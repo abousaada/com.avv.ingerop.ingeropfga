@@ -56,6 +56,30 @@ sap.ui.define(
                 Constant.headerFieldToBeHiddenMapping.map(({identifiant, field}) => this.getView().byId(Helper.headerFieldIdBySectionAndFieldName(identifiant, field)).setVisible(isCreateMode))
             },
 
+            _attachChangeEventOnFields(){
+                this.getView().byId(Helper.headerFieldIdBySectionAndFieldName("Identification", "Type")).attachChange(this.onTypeChange.bind(this));
+            },
+
+            onTypeChange(event){
+                const newValue = event.getParameter("newValue");
+                this._setMandatoryFieldByType(newValue);
+            },
+
+            _setMandatoryFieldByType(type){
+                const headerFieldMandatory = Constant.headerFieldMandatoryByType[type];
+                if(headerFieldMandatory){
+                    Object.entries(Constant.headerFieldsList).map(([identifiant, champs]) => {
+                        champs.map(champ => {
+                            if(headerFieldMandatory[identifiant]?.includes(champ)){
+                                this.getView().byId(Helper.headerFieldIdBySectionAndFieldName(identifiant, champ)).setMandatory(true);
+                            }else{
+                                this.getView().byId(Helper.headerFieldIdBySectionAndFieldName(identifiant, champ)).setMandatory(false);
+                            }
+                        });
+                    });
+                }
+            },
+
             async _getTabsData() {
                 const utilitiesModel = this.getInterface().getModel("utilities");
                 const [missions, previsions, recaps, opport] = await Promise.all([
@@ -88,7 +112,8 @@ sap.ui.define(
 
                 this._setTabsVisible();
                 this._setFieldVisible();
-
+                this._attachChangeEventOnFields();
+                
                 //if create
                 if (bCreateMode) { utilitiesModel.reInit(); return }
 
@@ -298,19 +323,6 @@ sap.ui.define(
             formatMonthLabel: function (sMonth, sYear) {
                 // console.log("Formatter appelé avec :", sMonth, sYear);
                 return sMonth + "/" + sYear;
-            },
-
-            fetchData: function (oModel, sPath) {
-                return new Promise((resolve, reject) => {
-                    oModel.read(sPath, {
-                        success: function (oData) {
-                            resolve(oData);
-                        },
-                        error: function (oError) {
-                            reject(oError);
-                        }
-                    });
-                });
             },
 
             _logAllControlIds: function (oControl) {

@@ -12,22 +12,39 @@ sap.ui.define([
             // Subcontracting: 0.00,
             // OtherCosts: 0.00
         },
+        //only for modification, hide listed fields
         headerFieldToBeHiddenMapping: [
             {
-                identifiant:"Facturation",
-                field:"paysFacture"
-            },{
-                identifiant:"Client",
-                field:"isFrance"
+                identifiant: "Facturation",
+                field: "paysFacture"
+            }, {
+                identifiant: "Client",
+                field: "isFrance"
             }
         ],
+        //only for creation, hide listed sections
         headerSectionToBeHiddenMapping: [
             "AfterFacet::ZC_FGASet::GeneralInfo::Section", //Summary Tab 
             "AfterFacet::ZC_FGASet::TableInfo::Section", //Budget Tab
             "AfterFacet::ZC_FGASet::Missions::Section", //Missions Tab
             "template:::ObjectPageSection:::AfterFacetExtensionSectionWithKey:::sFacet::GeneralInfo:::sEntitySet::ZC_FGASet:::sFacetExtensionKey::1" //Graphic Tab
         ],
-        headerFieldsList: [{
+        //set mandatory field by affaire type
+        headerFieldMandatoryByType: {
+            "PO": {
+                "Identification": ["BusinessNo", "BusinessName", "CDG", "UFOName", "Activity", "Soufam", "Type", "Rgfact", "PROJM", "Project_lib", "Site", "International"],
+            },
+            "OI": {
+               "Facturation": ["Modalr", "Modalf", "Avance", "plateformDemat", "Chorus", "Rtgart", "VAT", "Currency", "contactFacture", "mailFacture", "libelleFacture", "adresseFacture", "paysFacture"],
+            },
+            "RF": {},
+            "FG": {},
+            "FS": {},
+            "OF": {},
+            "PI": {}
+        },
+        //All header fields
+        headerFieldsList: {
             "Identification": ["BusinessNo", "BusinessName", "CDG", "UFOName", "Activity", "Soufam", "Type", "Rgfact", "PROJM", "Project_lib", "Site", "International"],
             "Facturation": ["Modalr", "Modalf", "Avance", "plateformDemat", "Chorus", "Rtgart", "VAT", "Currency", "contactFacture", "mailFacture", "libelleFacture", "adresseFacture", "paysFacture"],
             "Client": ["NClient", "CustomerName", "Scclt", "Interlocuteur", "Fonction", "Telephone", "Email", "isFrance", "Siret", "otherIdentification"],
@@ -38,7 +55,7 @@ sap.ui.define([
             "Info": ["Period"],
             "Duree": ["StartDate", "EndDate"],
             "Qualite": ["UrlCup"],
-        }],
+        },
 
     };
 });
