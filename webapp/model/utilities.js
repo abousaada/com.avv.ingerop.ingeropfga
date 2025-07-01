@@ -3,9 +3,9 @@ sap.ui.define([
     "./utilities/initialData",
     "./utilities/formatter",
     "./utilities/filter",
-    // ""
+    "../util/constant"
 ],
-    function (BaseModel, InitialData, Formatter, Filter, /* Helper */) {
+    function (BaseModel, InitialData, Formatter, Filter, Constant) {
         "use strict";
 
         return BaseModel.extend("com.avv.ingerop.ingeropfga.model.utilities", {
@@ -21,23 +21,10 @@ sap.ui.define([
 
             addMissionNewLine() {
                 const oldMissions = this.getMissions();
-                const sBusinessNo = this.getBusinessNo().slice(0, -2); // <-- ABO
-                const sMissionNumber = Formatter.getMissionsNumber(oldMissions.length + 1);
-
-                sBusinessNo
+                const BusinessNo = this.getBusinessNo().slice(0, -2); // <-- ABO
+                const MissionId = Formatter.getMissionsNumber(oldMissions.length + 1);
                 // Create new mission
-                const newMission = {
-                    BusinessNo: sBusinessNo,
-                    MissionId: sMissionNumber,
-                    MissionsCode: null,
-                    StartDate: null,
-                    EndDate: null,
-                    ExternalRevenue: 0.00,
-                    LaborBudget: 0.00,
-                    // Subcontracting: 0.00,
-                    // OtherCosts: 0.00
-                };
-
+                const newMission = { BusinessNo, MissionId, ...Constant.defaultMission };
                 const newMissions = [...oldMissions, newMission];
                 this.setMissions(newMissions);
             },

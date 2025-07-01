@@ -16,6 +16,7 @@ sap.ui.define(
         "com/avv/ingerop/ingeropfga/util/helper",
         "sap/ui/generic/app/navigation/service/SelectionVariant",
         "sap/ui/generic/app/navigation/service/NavigationHandler",
+        "com/avv/ingerop/ingeropfga/util/constant"
     ],
     function (
         ControllerExtension,
@@ -33,7 +34,8 @@ sap.ui.define(
         Filter,
         Helper,
         SelectionVariant,
-        NavigationHandler
+        NavigationHandler,
+        Constant
     ) {
         "use strict";
 
@@ -44,11 +46,14 @@ sap.ui.define(
                 return this.getInterface().getView().getController().extensionAPI;
             },
 
-            _setTabsVisible(bCreate) {
-                this.getView().byId("AfterFacet::ZC_FGASet::GeneralInfo::Section").setVisible(bCreate);
-                this.getView().byId("AfterFacet::ZC_FGASet::TableInfo::Section").setVisible(bCreate);
-                this.getView().byId("template:::ObjectPageSection:::AfterFacetExtensionSectionWithKey:::sFacet::GeneralInfo:::sEntitySet::ZC_FGASet:::sFacetExtensionKey::1").setVisible(bCreate);
-                this.getView().byId("AfterFacet::ZC_FGASet::Missions::Section").setVisible(bCreate);
+            _setTabsVisible() {
+                const isCreateMode = this.getView().getModel("ui").getProperty("/createMode");
+                Constant.headerSectionToBeHiddenMapping.map(section => this.getView().byId(section).setVisible(!isCreateMode));
+            },
+
+            _setFieldVisible(){
+                const isCreateMode = this.getView().getModel("ui").getProperty("/createMode");
+                Constant.headerFieldToBeHiddenMapping.map(({identifiant, field}) => this.getView().byId(Helper.headerFieldIdBySectionAndFieldName(identifiant, field)).setVisible(isCreateMode))
             },
 
             async _getTabsData() {
@@ -79,7 +84,8 @@ sap.ui.define(
                 const utilitiesModel = this.getInterface().getModel("utilities");
                 const bCreateMode = this.getView().getModel("ui").getProperty("/createMode");
 
-                this._setTabsVisible(!bCreateMode);
+                this._setTabsVisible();
+                this._setFieldVisible();
 
                 //if create
                 if (bCreateMode) { utilitiesModel.reInit(); return }
