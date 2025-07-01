@@ -7,6 +7,7 @@ sap.ui.define([], function() {
         "missions": [],
         "recaps": [],
         "previsions": [],
+        "opport": [],
         "missionTypes": [
             { code: "AVP", description: "AVP" },
             { code: "PRO", description: "PRO" },

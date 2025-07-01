@@ -113,60 +113,6 @@ sap.ui.define([
                     console.log(createdFGA);
                     return createdFGA;
 
-                    /*
-                    // 2. Process parent entity (ZC_FGA)
-                    const sPath = `/ZC_FGASet(p_period='${urlPeriod}',BusinessNo='${urlBusinessNo}')`;
-                                       
-                    //save to_Missions
-                    const missionsToProcess = data.to_Missions || [];
-
-                    delete data.to_Missions;
-                    const updatedParentFGA = await this.update(sPath, data, {
-                        method: 'PATCH'
-                    });
-
-                    // 2. Process child entities (to_Missions)
-
-                    //const missionsToProcess = to_Missions || [];
-                    const missionsToCreate = missionsToProcess.filter(m => !m.MissionId || m.isNew === true);
-                    const missionsToUpdate = missionsToProcess.filter(m =>
-                        m.MissionId && m.MissionId !== "" && !m.toBeDeleted && !m.isNew
-                    );
-                    const missionsToDelete = missionsToProcess.filter(m => m.toBeDeleted === true);
-
-                    // UPDATE
-                    const updatePromises = missionsToUpdate.map((mission) => {
-                        const missionPath = `/ZC_FGA_MISSION(MissionId='${encodeURIComponent(mission.MissionId)}',BusinessNo='${encodeURIComponent(mission.BusinessNo)}')`;
-                        return this.update(missionPath, mission, {
-                            method: 'PATCH'
-                        });
-                    });
-
-                    // CREATE
-                    const createPromises = missionsToCreate.map((mission) => {
-                        const trimmedBusinessNo = mission.BusinessNo.slice(0, -2);
-                        mission.BusinessNo = trimmedBusinessNo;
-
-                        delete mission.isNew;
-                        delete mission.toBeDeleted;
-
-                        return this.create("/ZC_FGA_MISSION", mission);
-                    });
-
-                    // DELETE
-                    /*const deletePromises = missionsToDelete.map((mission) => {
-                        const missionPath = `/ZC_FGA_MISSION(MissionId='${encodeURIComponent(mission.MissionId)}',BusinessNo='${encodeURIComponent(mission.BusinessNo)}')`;
-                        return this.remove(missionPath);
-                    });
-
-                    const deletePromises = missionsToDelete.map((mission) => {
-                        const missionPath = `/ZC_FGA_MISSION(MissionId='${encodeURIComponent(mission.MissionId)}',BusinessNo='${encodeURIComponent(mission.BusinessNo)}')`;
-                        return this.update(missionPath, null, { method: 'DELETE' }); // Use `update` with DELETE
-                    });* /
-
-                    await Promise.all([...createPromises, ...updatePromises, ...deletePromises]);
-
-                    return updatedParentFGA;*/
 
                 } catch (error) {
                     console.error('Error in deepUpdatedFGA:', error);
@@ -216,6 +162,21 @@ sap.ui.define([
                     console.log(`retrieve recaps with period: ${period} and BusinessNo: ${businessNo}`);
                     const recaps = await this.read(sPath);
                     return recaps?.results || [];
+                } catch (error) {
+                    console.log(error);
+                }
+            },
+
+            async getBEOpport() {
+                try {
+                    const businessNo = this.getBusinessNo();
+                    const period = this.getPeriod();
+                    const urlBusinessNo = encodeURIComponent(businessNo);
+                    const urlPeriod = encodeURIComponent(period);
+                    const sPath = `/zc_fga_opport(p_businessno='${urlBusinessNo}',p_period='${urlPeriod}')/Set`;
+                    console.log(`retrieve recaps with period: ${period} and BusinessNo: ${businessNo}`);
+                    const opport = await this.read(sPath);
+                    return opport?.results || [];
                 } catch (error) {
                     console.log(error);
                 }

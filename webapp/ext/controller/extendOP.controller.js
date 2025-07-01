@@ -58,15 +58,17 @@ sap.ui.define(
 
             async _getTabsData() {
                 const utilitiesModel = this.getInterface().getModel("utilities");
-                const [missions, previsions, recaps] = await Promise.all([
+                const [missions, previsions, recaps, opport] = await Promise.all([
                     utilitiesModel.getBEMissions(),
                     utilitiesModel.getBEPrevisions(),
-                    utilitiesModel.getBERecaps()
+                    utilitiesModel.getBERecaps(),
+                    utilitiesModel.getBEOpport()
                 ]);
 
                 utilitiesModel.setMissions(missions || []);
                 utilitiesModel.setRecaps(recaps || []);
                 utilitiesModel.setPrevisions(previsions || []);
+                utilitiesModel.setOpport(opport || []);
 
                 //à enlever une fois les corrections effectués dans les view XML
                 var oPrevisionsModel = this.getView().getModel("synthesis") || new sap.ui.model.json.JSONModel({ results: [] });

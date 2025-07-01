@@ -183,6 +183,11 @@
         "uri": "model/mock/recap.json",
         "preload": true
       },
+      "opport": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock/recap.json",
+        "preload": true
+      },
       "progress": {
         "type": "sap.ui.model.json.JSONModel",
         "uri": "model/mock/progress.json",

@@ -99,7 +99,7 @@ sap.ui.define(
 
             },
 
-            _loadRecapData: function (oDataModel, sBusinessNo, sPeriod) {
+            /*_loadRecapData: function (oDataModel, sBusinessNo, sPeriod) {
                 return new Promise(function (resolve, reject) {
                     //var sEntityPath = "/ZC_FGASet(BusinessNo='" + sBusinessNo + "',p_period='" + sPeriod + "')/to_Recap";
 
@@ -147,7 +147,7 @@ sap.ui.define(
                         }
                     });
                 }.bind(this));
-            },
+            },*/
 
             _loadMissionsData: function (oDataModel, sBusinessNo, sPeriod) {
                 return new Promise(function (resolve, reject) {
