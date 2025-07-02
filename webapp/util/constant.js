@@ -32,7 +32,11 @@ sap.ui.define([
         //set mandatory field by affaire type
         headerFieldMandatoryByType: {
             "PO": {
-                "Identification": ["BusinessNo", "BusinessName", "CDG", "UFOName", "Activity", "Soufam", "Type", "Rgfact", "PROJM", "Project_lib", "Site", "International"],
+                "Identification": ["BusinessName", "CDG", "UFOName", "Activity", "Soufam", "Type", "Rgfact", "PROJM", "Project_lib", "Site", "International"],
+                "Facturation": ["Modalr", "Modalf", "Avance", "plateformDemat", "Chorus", "Rtgart", "VAT", "Currency", "contactFacture", "mailFacture", "libelleFacture", "adresseFacture", "paysFacture"],
+                "Client": ["NClient", "CustomerName", "Scclt", "Interlocuteur", "isFrance", "Siret"],
+                "Contrat": ["Mission", "GroupM", "projetAgora", "voletEcologie", "Business", "eligibleCir", "projetCup"],
+                "Duree": ["StartDate", "EndDate"]
             },
             "OI": {
                "Facturation": ["Modalr", "Modalf", "Avance", "plateformDemat", "Chorus", "Rtgart", "VAT", "Currency", "contactFacture", "mailFacture", "libelleFacture", "adresseFacture", "paysFacture"],
