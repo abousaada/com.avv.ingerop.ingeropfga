@@ -36,7 +36,7 @@ server:
         backend:
           - path: /sap
             url: https://ds4.dest
-            destination: DS4
+            destination: DS4_050
     - name: sap-fe-mockserver
       beforeMiddleware: csp
       configuration:

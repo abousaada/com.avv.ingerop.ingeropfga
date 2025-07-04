@@ -15,12 +15,113 @@ sap.ui.define([
         //only for modification, hide listed fields
         headerFieldToBeHiddenMapping: [
             {
+                identifiant: "Identification",
+                field: "PROJM"
+            },
+            {
+                identifiant: "Identification",
+                field: "Project_lib"
+            },
+            {
+                identifiant: "Identification",
+                field: "Site"
+            },
+            {
+                identifiant: "Identification",
+                field: "International"
+            },
+            {
                 identifiant: "Facturation",
                 field: "paysFacture"
-            }, {
+            }, 
+            {
+                identifiant: "Facturation",
+                field: "plateformDemat"
+            }, 
+            {
+                identifiant: "Facturation",
+                field: "contactFacture"
+            }, 
+            {
+                identifiant: "Facturation",
+                field: "mailFacture"
+            }, 
+            {
+                identifiant: "Facturation",
+                field: "libelleFacture"
+            },
+            {
+                identifiant: "Facturation",
+                field: "adresseFacture"
+            }, 
+            {
+                identifiant: "Facturation",
+                field: "Modalf"
+            }, 
+            {
                 identifiant: "Client",
                 field: "isFrance"
-            }
+            },
+            {
+                identifiant: "Client",
+                field: "Interlocuteur"
+            },
+            {
+                identifiant: "Client",
+                field: "Siret"
+            },
+            {
+                identifiant: "Client",
+                field: "Fonction"
+            },
+            {
+                identifiant: "Client",
+                field: "Telephone"
+            },
+            {
+                identifiant: "Client",
+                field: "Email"
+            }, 
+            {
+                identifiant: "Client",
+                field: "otherIdentification"
+            },
+            {
+                identifiant: "Garantie",
+                field: "CautGA"
+            },
+            {
+                identifiant: "Contrat",
+                field: "membreGroupement"
+            },
+            {
+                identifiant: "Contrat",
+                field: "projetAgora"
+            },
+            {
+                identifiant: "Contrat",
+                field: "voletEcologie"
+            },
+            {
+                identifiant: "Contrat",
+                field: "Business"
+            },
+            {
+                identifiant: "Contrat",
+                field: "eligibleCir"
+            },
+            {
+                identifiant: "Contrat",
+                field: "projetCup"
+            },
+            {
+                identifiant: "Prix",
+                field: "nonAcquis"
+            },
+            {
+                identifiant: "Prix",
+                field: "depenseCommercial"
+            },
         ],
         //only for creation, hide listed sections
         headerSectionToBeHiddenMapping: [
