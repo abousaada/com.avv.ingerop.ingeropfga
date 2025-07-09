@@ -49,6 +49,7 @@ sap.ui.define(
             _setTabsVisible() {
                 const isCreateMode = this.getView().getModel("ui").getProperty("/createMode");
                 Constant.headerSectionToBeHiddenMapping.map(section => this.getView().byId(section).setVisible(!isCreateMode));
+                this.getView().byId("AfterFacet::ZC_FGASet::Missions::Section").setVisible(false);
             },
 
             _setFieldVisible() {
@@ -162,20 +163,40 @@ sap.ui.define(
                 // Clear any existing content
                 oContainer.destroyItems();
 
-                try {
-                    const oFragment = await sap.ui.core.Fragment.load({
-                        name: "com.avv.ingerop.ingeropfga.ext.view.tab.detail." + sFragmentName,
-                        id: sViewId,
-                        controller: this
-                    });
 
-                    oContainer.addItem(oFragment);
-                } catch (oError) {
-                    sap.m.MessageBox.error("Failed to load fragment: " + oError.message);
+                //if missions -- clean this !
+                if (sFragmentName === "missions") 
+                {
+                    try {
+                        const oFragment = await sap.ui.core.Fragment.load({
+                            name: "com.avv.ingerop.ingeropfga.ext.view.tab.detail." + sFragmentName,
+                            id: sViewId,
+                            controller: this
+                        });
+
+                        oContainer.addItem(oFragment);
+                    } catch (oError) {
+                        sap.m.MessageBox.error("Failed to load fragment: " + oError.message);
+                    }
+
+                    //Prepare tree for missions
+                    this.prepareTreeData();
                 }
+                else {
 
-                //Prepare tree for missions
-                this.prepareTreeData();
+                    try {
+                        const oFragment = await sap.ui.core.Fragment.load({
+                            name: "com.avv.ingerop.ingeropfga.ext.view.tab.DetailsTab" ,
+                            id: sViewId,
+                            controller: this
+                        });
+
+                        oContainer.addItem(oFragment);
+                    } catch (oError) {
+                        sap.m.MessageBox.error("Failed to load fragment: " + oError.message);
+                    }
+
+                }
 
             },
 
