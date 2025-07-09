@@ -46,6 +46,9 @@
                     </Collection>
                 </Annotation>
             </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGAType/CompanyCountry">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_FGAType/p_period">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
@@ -151,25 +154,10 @@
                                     <PropertyValue Property="Value" Path="Scclt"/>
                                 </Record>
                                 <Record Type="UI.DataField">
-                                    <PropertyValue Property="Value" Path="Interlocuteur"/>
-                                </Record>
-                                <Record Type="UI.DataField">
-                                    <PropertyValue Property="Value" Path="Fonction"/>
-                                </Record>
-                                <Record Type="UI.DataField">
-                                    <PropertyValue Property="Value" Path="Telephone"/>
-                                </Record>
-                                <Record Type="UI.DataField">
-                                    <PropertyValue Property="Value" Path="Email"/>
-                                </Record>
-                                <Record Type="UI.DataField">
-                                    <PropertyValue Property="Value" Path="isFrance"/>
-                                </Record>
-                                <Record Type="UI.DataField">
                                     <PropertyValue Property="Value" Path="Siret"/>
                                 </Record>
                                 <Record Type="UI.DataField">
-                                    <PropertyValue Property="Value" Path="otherIdentification"/>
+                                    <PropertyValue Property="Value" Path="Country"/>
                                 </Record>
                             </Collection>
                         </PropertyValue>
@@ -220,6 +208,12 @@
                                 <Record Type="UI.DataField">
                                     <PropertyValue Property="Value" Path="EndDate"/>
                                 </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="NbOfMonth"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="RemainingMonth"/>
+                                </Record>
                             </Collection>
                         </PropertyValue>
                     </Record>
@@ -230,9 +224,6 @@
                             <Collection>
                                 <Record Type="UI.DataField">
                                     <PropertyValue Property="Value" Path="Modalr"/>
-                                </Record>
-                                <Record Type="UI.DataField">
-                                    <PropertyValue Property="Value" Path="Modalf"/>
                                 </Record>
                                 <Record Type="UI.DataField">
                                     <PropertyValue Property="Value" Path="Avance"/>
@@ -253,19 +244,13 @@
                                     <PropertyValue Property="Value" Path="Currency"/>
                                 </Record>
                                 <Record Type="UI.DataField">
-                                    <PropertyValue Property="Value" Path="contactFacture"/>
+                                    <PropertyValue Property="Value" Path="Reflet"/>
                                 </Record>
                                 <Record Type="UI.DataField">
-                                    <PropertyValue Property="Value" Path="mailFacture"/>
+                                    <PropertyValue Property="Value" Path="CurrencyHedging"/>
                                 </Record>
                                 <Record Type="UI.DataField">
-                                    <PropertyValue Property="Value" Path="libelleFacture"/>
-                                </Record>
-                                <Record Type="UI.DataField">
-                                    <PropertyValue Property="Value" Path="adresseFacture"/>
-                                </Record>
-                                <Record Type="UI.DataField">
-                                    <PropertyValue Property="Value" Path="paysFacture"/>
+                                    <PropertyValue Property="Value" Path="exchangeRateHedging"/>
                                 </Record>
                             </Collection>
                         </PropertyValue>
@@ -275,9 +260,6 @@
                     <Record>
                         <PropertyValue Property="Data">
                             <Collection>
-                                <Record Type="UI.DataField">
-                                    <PropertyValue Property="Value" Path="CautGA"/>
-                                </Record>
                                 <Record Type="UI.DataField">
                                     <PropertyValue Property="Value" Path="Assurance"/>
                                 </Record>
@@ -304,13 +286,19 @@
                                     <PropertyValue Property="Value" Path="BusinessNo"/>
                                 </Record>
                                 <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="Type"/>
+                                </Record>
+                                <Record Type="UI.DataField">
                                     <PropertyValue Property="Value" Path="BusinessName"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="UFOName"/>
                                 </Record>
                                 <Record Type="UI.DataField">
                                     <PropertyValue Property="Value" Path="CDG"/>
                                 </Record>
                                 <Record Type="UI.DataField">
-                                    <PropertyValue Property="Value" Path="UFOName"/>
+                                    <PropertyValue Property="Value" Path="CompanyCode"/>
                                 </Record>
                                 <Record Type="UI.DataField">
                                     <PropertyValue Property="Value" Path="Activity"/>
@@ -319,22 +307,16 @@
                                     <PropertyValue Property="Value" Path="Soufam"/>
                                 </Record>
                                 <Record Type="UI.DataField">
-                                    <PropertyValue Property="Value" Path="Type"/>
-                                </Record>
-                                <Record Type="UI.DataField">
-                                    <PropertyValue Property="Value" Path="Rgfact"/>
-                                </Record>
-                                <Record Type="UI.DataField">
                                     <PropertyValue Property="Value" Path="PROJM"/>
-                                </Record>
-                                <Record Type="UI.DataField">
-                                    <PropertyValue Property="Value" Path="Project_lib"/>
                                 </Record>
                                 <Record Type="UI.DataField">
                                     <PropertyValue Property="Value" Path="Site"/>
                                 </Record>
                                 <Record Type="UI.DataField">
                                     <PropertyValue Property="Value" Path="International"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="Rgfact"/>
                                 </Record>
                             </Collection>
                         </PropertyValue>
@@ -456,6 +438,9 @@
                     </Collection>
                 </Annotation>
             </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGA_MISSIONType/Regroupement">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_FGA_MISSIONType">
                 <Annotation Term="UI.LineItem">
                     <Collection>
@@ -495,6 +480,9 @@
             <Annotations Target="ZFGA_SRV.ZI_FGA_ASSUR_VHType/Spras">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_FGA_BUSINESS_VHType/spras">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
             <Annotations Target="ZFGA_SRV.ZI_FGA_CAUTGA_VHType/Spras">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
@@ -525,7 +513,13 @@
             <Annotations Target="ZFGA_SRV.ZI_FGA_SOUFAM_VHType/Spras">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_FGA_SOUFAM_VHType/Activity">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
             <Annotations Target="ZFGA_SRV.ZI_FGA_STATUS_VHType/Spras">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_FGA_TYPE_VHType/spras">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
         </Schema>

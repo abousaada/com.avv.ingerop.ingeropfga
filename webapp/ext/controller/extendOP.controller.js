@@ -51,28 +51,28 @@ sap.ui.define(
                 Constant.headerSectionToBeHiddenMapping.map(section => this.getView().byId(section).setVisible(!isCreateMode));
             },
 
-            _setFieldVisible(){
+            _setFieldVisible() {
                 const isCreateMode = this.getView().getModel("ui").getProperty("/createMode");
-                Constant.headerFieldToBeHiddenMapping.map(({identifiant, field}) => this.getView().byId(Helper.headerFieldIdBySectionAndFieldName(identifiant, field)).setVisible(isCreateMode))
+                //Constant.headerFieldToBeHiddenMapping.map(({identifiant, field}) => this.getView().byId(Helper.headerFieldIdBySectionAndFieldName(identifiant, field)).setVisible(isCreateMode))
             },
 
-            _attachChangeEventOnFields(){
+            _attachChangeEventOnFields() {
                 this.getView().byId(Helper.headerFieldIdBySectionAndFieldName("Identification", "Type")).attachChange(this.onTypeChange.bind(this));
             },
 
-            onTypeChange(event){
+            onTypeChange(event) {
                 const newValue = event.getParameter("newValue");
                 this._setMandatoryFieldByType(newValue);
             },
 
-            _setMandatoryFieldByType(type){
+            _setMandatoryFieldByType(type) {
                 const headerFieldMandatory = Constant.headerFieldMandatoryByType[type];
-                if(headerFieldMandatory){
+                if (headerFieldMandatory) {
                     Object.entries(Constant.headerFieldsList).map(([identifiant, champs]) => {
                         champs.map(champ => {
-                            if(headerFieldMandatory[identifiant]?.includes(champ)){
+                            if (headerFieldMandatory[identifiant]?.includes(champ)) {
                                 this.getView().byId(Helper.headerFieldIdBySectionAndFieldName(identifiant, champ)).setMandatory(true);
-                            }else{
+                            } else {
                                 this.getView().byId(Helper.headerFieldIdBySectionAndFieldName(identifiant, champ)).setMandatory(false);
                             }
                         });
@@ -113,8 +113,8 @@ sap.ui.define(
                 this._setTabsVisible();
                 this._setFieldVisible();
                 this._attachChangeEventOnFields();
-                
-                //if create
+
+                //1. if create
                 if (bCreateMode) { utilitiesModel.reInit(); return }
 
                 const sPeriod = e.context.getProperty("p_period");
@@ -136,7 +136,49 @@ sap.ui.define(
                         console.logs(error);
                     }
                 }
+
+                //2. Display Different Fragments Based on Company Code Country
+                const sCountry = e.context.getProperty("CompanyCountry");
+
+                if (sCountry === "FR") {
+                    this._loadFragment("missions");
+                } else {
+                    this._loadFragment("hoai");
+                }
+
             },
+
+            //_loadFragment: function (sFragmentName) {
+            _loadFragment: async function (sFragmentName) {
+                var sViewId = this.getView().getId();
+                var oContainer = sap.ui.getCore().byId(
+                    sViewId + "--budgets--detailsDynamicContainer");
+
+                if (!oContainer) {
+                    console.error("Dynamic container not found");
+                    return;
+                }
+
+                // Clear any existing content
+                oContainer.destroyItems();
+
+                try {
+                    const oFragment = await sap.ui.core.Fragment.load({
+                        name: "com.avv.ingerop.ingeropfga.ext.view.tab.detail." + sFragmentName,
+                        id: sViewId,
+                        controller: this
+                    });
+
+                    oContainer.addItem(oFragment);
+                } catch (oError) {
+                    sap.m.MessageBox.error("Failed to load fragment: " + oError.message);
+                }
+
+                //Prepare tree for missions
+                this.prepareTreeData();
+
+            },
+
             _onRouteMatched(event) {
                 console.logs(event);
             },
@@ -154,7 +196,7 @@ sap.ui.define(
                     // call the base component's init function
                     //UIComponent.prototype.init.apply(this, arguments);
 
-                    var oDataModel = new sap.ui.model.odata.v2.ODataModel("/sap/opu/odata/sap/ZFGA_SRV");
+                    /*var oDataModel = new sap.ui.model.odata.v2.ODataModel("/sap/opu/odata/sap/ZFGA_SRV");
                     var sPath = sap.ui.require.toUrl("com/avv/ingerop/ingeropfga/model/mock/");
 
                     var oRafListModel = new JSONModel();
@@ -188,10 +230,10 @@ sap.ui.define(
 
                     var oPrevProfileModel = new JSONModel();
                     oPrevProfileModel.loadData(sPath + "prevProfile.json", null, false);
-                    this.getView().setModel(oPrevProfileModel, "prevProfile");
+                    this.getView().setModel(oPrevProfileModel, "prevProfile");*/
 
 
-                    var oBudgetModel = new JSONModel();
+                    /*var oBudgetModel = new JSONModel();
                     oBudgetModel.loadData(sPath + "budget.json", null, false);
 
                     var oBindingContext = this.getView().getBindingContext();
@@ -204,9 +246,9 @@ sap.ui.define(
                         } else {
                             oBudgetModel.loadData(sPath + "budget.json", null, false);
                         }
-                    }
+                    }*/
 
-                    this.getView().setModel(oBudgetModel, "budget");
+                    /*this.getView().setModel(oBudgetModel, "budget");
 
                     var oRbaEvolModel = new JSONModel();
                     oRbaEvolModel.loadData(sPath + "rbaEvol.json", null, false);
@@ -226,10 +268,10 @@ sap.ui.define(
 
                     var oFormData = new JSONModel();
                     oFormData.loadData(sPath + "FormData.json", null, false);
-                    this.getView().setModel(oFormData, "FormData");
+                    this.getView().setModel(oFormData, "FormData");*/
 
 
-                    this.onObjectMatched(this);
+                    //this.onObjectMatched(this);
 
                     this._getExtensionAPI().attachPageDataLoaded(this._onObjectExtMatched.bind(this));
 
@@ -250,18 +292,12 @@ sap.ui.define(
                     if (oTable) {
                         oTable.addStyleClass("small-text");
                     }
-
-                    /*if (!this._DrilldownDialogFrg) {
-                        this._DrilldownDialogFrg = this.loadFragment({
-                            name: "com.avv.ingerop.ingeropfga.ext.view.tab.synthese.dialog.DrilldownDialog"
-                        });
-                    }*/
-
                 },
 
                 // Called before the table is rebound (can be used to adjust binding parameters)
                 onBeforeRebindTableExtension: function (oEvent) {
                     console.log("onBeforeRebindTableExtension called", oEvent);
+
                 },
 
                 // Called when the list navigation is triggered
@@ -276,12 +312,12 @@ sap.ui.define(
                         // Accès au contexte via la vue
                         const oView = this.base.getView();
                         const oContext = oView.getBindingContext();
-                        
+
                         if (!oContext) {
                             MessageBox.error("Aucun contexte lié à la vue !");
                             throw new Error("Impossible d'accéder au contexte.");
                         }
-                        
+
                         const isCreationMode = oView.getModel("ui").getProperty("/createMode");
 
                         if (isCreationMode) {
@@ -297,7 +333,7 @@ sap.ui.define(
                         } else {
                             return new Promise(async (resolve, reject) => {
                                 const formattedMissions = utilitiesModel.getFormattedMissions();
-                                const oPayload = Helper.extractPlainData({...oContext.getObject(), "to_Missions": formattedMissions });
+                                const oPayload = Helper.extractPlainData({ ...oContext.getObject(), "to_Missions": formattedMissions });
                                 const updatedFGA = await utilitiesModel.deepUpdatedFGA(oPayload);
                                 if (updatedFGA) {
                                     Helper.validMessage("FGA updated: " + updatedFGA.BusinessNo, this.getView());
@@ -317,6 +353,45 @@ sap.ui.define(
 
             routing: {
 
+            },
+
+
+            prepareTreeData: function () {
+                var missions = this.getView().getModel("utilities").getProperty("/missions");
+                var treeData = [];
+
+                // Group by FGA (BusinessNo)
+                var fgaGroups = {};
+                missions.forEach(function (mission) {
+                    if (!fgaGroups[mission.BusinessNo]) {
+                        fgaGroups[mission.BusinessNo] = {
+                            name: mission.BusinessNo,
+                            isNode: true,
+                            children: {}
+                        };
+                    }
+
+                    // Group by Regroupement within each FGA
+                    if (!fgaGroups[mission.BusinessNo].children[mission.Regroupement]) {
+                        fgaGroups[mission.BusinessNo].children[mission.Regroupement] = {
+                            name: mission.Regroupement,
+                            isNode: true,
+                            children: []
+                        };
+                    }
+
+                    // Add mission
+                    fgaGroups[mission.BusinessNo].children[mission.Regroupement].children.push(mission);
+                });
+
+                // Convert to array structure
+                for (var fga in fgaGroups) {
+                    var fgaNode = fgaGroups[fga];
+                    fgaNode.children = Object.values(fgaNode.children);
+                    treeData.push(fgaNode);
+                }
+
+                this.getView().getModel("utilities").setProperty("/missionsHierarchy", treeData);
             },
 
 
@@ -368,7 +443,7 @@ sap.ui.define(
                 }
             },
 
-            onObjectMatched: function (oThis) {
+            /*onObjectMatched: function (oThis) {
                 //var oArgument = oEvent.getParameter("arguments");
                 //var sId = oArgument.id;
 
@@ -394,7 +469,7 @@ sap.ui.define(
 
                 this._calculAll();
 
-            },
+            },*/
 
             onRowsUpdatedSyntTab: function () {
                 //this._addSynthesisStyle();
@@ -2240,13 +2315,13 @@ sap.ui.define(
 
             onTabSelect: function (oEvent) {
 
-                this.oView.byId("detailsTab--detailPage").setVisible(false);
+                /*this.oView.byId("detailsTab--detailPage").setVisible(false);
 
                 var iSelectedIndex = oEvent.getParameter("selectedKey"); // Returns tab index (0-based)
 
                 if (iSelectedIndex.includes("detailsTabFilter")) { // Assuming DetailsTab is the 2nd tab (index 1)
                     this.onDetailsTabPress();
-                }
+                }*/
             },
 
             onDetailsTabPress: function () {
@@ -2291,15 +2366,15 @@ sap.ui.define(
             },
 
 
-            formatPercentage: function(value, row_type) {
-                if (value == null) return "";  
-                
+            formatPercentage: function (value, row_type) {
+                if (value == null) return "";
+
                 // Check if this should be a percentage value
                 if (row_type === "RBAPCT" || row_type === "AVANCE") {
                     const formattedValue = parseFloat(value).toFixed(2);
                     return `${formattedValue}%`;
                 }
-                
+
                 return value.toString();
             },
 
@@ -2367,10 +2442,10 @@ sap.ui.define(
                     let missions = [];
                     try {
                         missions = await utilitiesModel.getBEMissions();
-                        
+
                     } catch (error) {
                         console.error("Failed to fetch missions:", error);
-                        throw error; 
+                        throw error;
                     }
 
                     const wbsElements = [oData.business_no];

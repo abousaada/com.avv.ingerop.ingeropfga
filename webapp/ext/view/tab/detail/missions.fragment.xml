@@ -1,0 +1,114 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:table="sap.ui.table"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+>
+    <Panel
+        headerText="Missions"
+        expandable="true"
+        expanded="true"
+    >
+        <table:TreeTable
+            id="missionsTreeTable"
+            rows="{
+                path: 'utilities>/missionsHierarchy',
+                parameters: {
+                    arrayNames: ['children']
+                }
+            }"
+            selectionMode="None"
+            ariaLabelledBy="title"
+            enableColumnReordering="false"
+        >
+            <table:columns>
+                <!-- Codification (auto-generated) -->
+                <table:Column width="20rem">
+                    <Label text="Hierarchy" />
+                    <table:template>
+                        <!-- For nodes (FGA and Regroupement) -->
+                        <Text 
+                            text="{= ${utilities>isNode} ? ${utilities>name} : ${utilities>BusinessNo} + ' - ' + ${utilities>MissionId}}"
+                        />
+                    </table:template>
+                </table:Column>
+
+                <!-- Mission Type -->
+                <table:Column width="8rem">
+                    <Label text="Mission" />
+                    <table:template>
+                        <ComboBox
+                            selectedKey="{utilities>MissionCode}"
+                            items="{
+                                path: 'utilities>/missionTypes',
+                                templateShareable: false
+                            }"
+                            editable="{ui>/editable}"
+                            width="100%"
+                            visible="{= !${utilities>isNode}}"
+                        >
+                            <core:Item
+                                key="{utilities>code}"
+                                text="{utilities>description}"
+                            />
+                        </ComboBox>
+                    </table:template>
+                </table:Column>
+
+                <!-- Start Date -->
+                <table:Column width="10rem">
+                    <Label text="Date début" />
+                    <table:template>
+                        <DatePicker
+                            value="{path: 'utilities>StartDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd' }}"
+                            displayFormat="short"
+                            editable="{ui>/editable}"
+                            width="100%"
+                            visible="{= !${utilities>isNode}}"
+                        />
+                    </table:template>
+                </table:Column>
+
+                <!-- End Date -->
+                <table:Column width="10rem">
+                    <Label text="Date fin" />
+                    <table:template>
+                        <DatePicker
+                            value="{path: 'utilities>EndDate', 
+                            type: 'sap.ui.model.type.Date', 
+                            formatOptions: { pattern: 'yyyy-MM-dd' }}"
+                            displayFormat="short"
+                            editable="{ui>/editable}"
+                            width="100%"
+                            visible="{= !${utilities>isNode}}"
+                        />
+                    </table:template>
+                </table:Column>
+
+                <table:Column width="4rem" visible="{ui>/editable}">
+                    <Label text="" />
+                    <table:template>
+                        <Button
+                            icon="sap-icon://decline"
+                            tooltip="Delete Mission"
+                            press="onDeleteMission"
+                            visible="{= ${ui>/editable} &amp;&amp; !${utilities>isNode}}"
+                            type="Reject"
+                        />
+                    </table:template>
+                </table:Column>
+            </table:columns>
+        </table:TreeTable>
+
+        <Toolbar>
+            <ToolbarSpacer />
+            <Button
+                icon="sap-icon://add"
+                text="Ajouter une mission"
+                visible="{ui>/editable}"
+                press="onAddMission"
+            />
+        </Toolbar>
+    </Panel>
+</core:FragmentDefinition>
