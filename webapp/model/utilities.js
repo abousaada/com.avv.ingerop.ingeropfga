@@ -22,7 +22,27 @@ sap.ui.define([
             addMissionNewLine() {
                 const oldMissions = this.getMissions();
                 const BusinessNo = this.getBusinessNo().slice(0, -2); // <-- ABO
-                const MissionId = Formatter.getMissionsNumber(oldMissions.length + 1);
+                //let MissionId = Formatter.getMissionsNumber(oldMissions.length + 1); 
+
+                const maxMission = oldMissions // <-- ABO : added this fix 
+                    .filter(mission => mission.BusinessNo === BusinessNo)
+                    .reduce((max, current) => {
+                        const currentMatch = current.MissionId.match(/-(\d+)$/);
+                        const currentNum = currentMatch ? parseInt(currentMatch[1]) : 0;
+
+                        const maxMatch = max.MissionId?.match(/-(\d+)$/); 
+                        const maxNum = maxMatch ? parseInt(maxMatch[1]) : 0;
+
+                        return currentNum > maxNum ? current : max;
+                    }, { MissionId: `${BusinessNo}-000` }); 
+
+                const match = maxMission.MissionId.match(/-(\d+)$/);
+                const currentMax = match ? parseInt(match[1]) : 0;
+                const nextNum = currentMax + 1;
+                const paddedNum = String(nextNum).padStart(3, '0'); // add zeros "005"
+                const MissionId = `${BusinessNo}-${paddedNum}`; // "MEDXXXXXX000000069-005"
+
+
                 // Create new mission
                 const newMission = { BusinessNo, MissionId, ...Constant.defaultMission };
                 const newMissions = [...oldMissions, newMission];

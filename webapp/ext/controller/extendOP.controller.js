@@ -49,7 +49,7 @@ sap.ui.define(
             _setTabsVisible() {
                 const isCreateMode = this.getView().getModel("ui").getProperty("/createMode");
                 Constant.headerSectionToBeHiddenMapping.map(section => this.getView().byId(section).setVisible(!isCreateMode));
-                this.getView().byId("AfterFacet::ZC_FGASet::Missions::Section").setVisible(false);
+                //this.getView().byId("AfterFacet::ZC_FGASet::Missions::Section").setVisible(false);
             },
 
             _setFieldVisible() {
@@ -180,7 +180,7 @@ sap.ui.define(
                     }
 
                     //Prepare tree for missions
-                    this.prepareTreeData();
+                    this.prepareMissionsTreeData();
                 }
                 else {
 
@@ -377,7 +377,7 @@ sap.ui.define(
             },
 
 
-            prepareTreeData: function () {
+            prepareMissionsTreeData: function () {
                 var missions = this.getView().getModel("utilities").getProperty("/missions");
                 var treeData = [];
 
@@ -413,6 +413,72 @@ sap.ui.define(
                 }
 
                 this.getView().getModel("utilities").setProperty("/missionsHierarchy", treeData);
+            },
+
+            isGroupementAddVisible: function (editable, isNode, regroupement) {
+                return editable === true && isNode === true && regroupement === true;
+            },
+            isFGAAddVisible: function (editable, isNode, regroupement) {
+                return editable === true && isNode === true && !regroupement;
+            },
+            isDeleteVisible: function (editable, isNode) {
+                return editable === true && isNode !== true;
+            },
+
+            onAddGroupement: function(oEvent) {
+                // Get the FGA (BusinessNo) node
+                var oContext = oEvent.getSource().getBindingContext("utilities");
+                var oFGANode = oContext.getObject();
+                
+                // Show dialog to get new groupement name
+                sap.m.prompt("Enter new groupement name", {
+                    title: "Add Groupement",
+                    onClose: function(sValue) {
+                        if (sValue) {
+                            // Create new groupement node
+                            var oNewGroupement = {
+                                name: sValue,
+                                isNode: true,
+                                Regroupement: sValue, // Set the Regroupement value
+                                children: []
+                            };
+                            
+                            // Add to the FGA node's children
+                            oFGANode.children.push(oNewGroupement);
+                            
+                            // Update the model
+                            var oUtilitiesModel = this.getView().getModel("utilities");
+                            oUtilitiesModel.setProperty("/missionsHierarchy", oUtilitiesModel.getProperty("/missionsHierarchy"));
+                        }
+                    }.bind(this)
+                });
+            },
+            
+            onAddMissionToGroupement: function(oEvent) {
+                // Get the groupement node
+                var oContext = oEvent.getSource().getBindingContext("utilities");
+                var oGroupementNode = oContext.getObject();
+                
+                // Create new mission with default values
+                var oNewMission = {
+                    BusinessNo: oGroupementNode.name, // Or get from parent if stored differently
+                    Regroupement: oGroupementNode.Regroupement,
+                    MissionId: "NEW_MISSION_" + new Date().getTime(),
+                    MissionCode: "",
+                    StartDate: null,
+                    EndDate: null,
+                    isNode: false
+                };
+                
+                // Add to the groupement's children
+                oGroupementNode.children.push(oNewMission);
+                
+                // Update the model
+                var oUtilitiesModel = this.getView().getModel("utilities");
+                oUtilitiesModel.setProperty("/missionsHierarchy", oUtilitiesModel.getProperty("/missionsHierarchy"));
+                
+                // Optional: Scroll to the new mission
+                this.getView().byId("missionsTreeTable").getBinding("rows").refresh();
             },
 
 

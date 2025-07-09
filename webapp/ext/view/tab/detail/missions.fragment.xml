@@ -23,18 +23,17 @@
             enableColumnReordering="false"
         >
             <table:columns>
-                <!-- Codification (auto-generated) -->
+                <!-- Hierarchy Column -->
                 <table:Column width="20rem">
                     <Label text="Hierarchy" />
                     <table:template>
-                        <!-- For nodes (FGA and Regroupement) -->
-                        <Text 
+                        <Text
                             text="{= ${utilities>isNode} ? ${utilities>name} : ${utilities>BusinessNo} + ' - ' + ${utilities>MissionId}}"
                         />
                     </table:template>
                 </table:Column>
 
-                <!-- Mission Type -->
+                <!-- Mission Type Column -->
                 <table:Column width="8rem">
                     <Label text="Mission" />
                     <table:template>
@@ -56,7 +55,7 @@
                     </table:template>
                 </table:Column>
 
-                <!-- Start Date -->
+                <!-- Start Date Column -->
                 <table:Column width="10rem">
                     <Label text="Date début" />
                     <table:template>
@@ -70,14 +69,12 @@
                     </table:template>
                 </table:Column>
 
-                <!-- End Date -->
+                <!-- End Date Column -->
                 <table:Column width="10rem">
                     <Label text="Date fin" />
                     <table:template>
                         <DatePicker
-                            value="{path: 'utilities>EndDate', 
-                            type: 'sap.ui.model.type.Date', 
-                            formatOptions: { pattern: 'yyyy-MM-dd' }}"
+                            value="{path: 'utilities>EndDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd' }}"
                             displayFormat="short"
                             editable="{ui>/editable}"
                             width="100%"
@@ -86,22 +83,60 @@
                     </table:template>
                 </table:Column>
 
-                <table:Column width="4rem" visible="{ui>/editable}">
-                    <Label text="" />
+                <!-- Actions Column (Add/Delete) -->
+                <table:Column
+                    width="8rem"
+                    visible="{ui>/editable}"
+                >
+                    <Label text="Actions" />
                     <table:template>
-                        <Button
-                            icon="sap-icon://decline"
-                            tooltip="Delete Mission"
-                            press="onDeleteMission"
-                            visible="{= ${ui>/editable} &amp;&amp; !${utilities>isNode}}"
-                            type="Reject"
-                        />
+                        <HBox>
+                            <Button
+                                icon="sap-icon://add"
+                                tooltip="Add Mission"
+                                press="onAddMissionToGroupement"
+                                visible="{
+                                    parts: [
+                                        { path: 'ui>/editable' },
+                                        { path: 'utilities>isNode' },
+                                        { path: 'utilities>Regroupement' }
+                                    ],
+                                    formatter: '.isGroupementAddVisible'
+                                }"
+                                type="Accept"
+                                class="sapUiSmallMarginEnd"
+                            />
+
+                            <Button
+                                icon="sap-icon://add"
+                                tooltip="Add Groupement"
+                                press="onAddGroupement"
+                                visible="{
+                                    parts: [
+                                        {path: 'ui>/editable'},
+                                        {path: 'utilities>isNode'},
+                                        {path: 'utilities>Regroupement'}
+                                    ],
+                                    formatter: '.isFGAAddVisible'
+                                }"
+                                type="Accept"
+                                class="sapUiSmallMarginEnd"
+                            />
+                            <!-- Delete Button (visible for mission items) -->
+                            <Button
+                                icon="sap-icon://decline"
+                                tooltip="Delete Mission"
+                                press="onDeleteMission"
+                                visible="{= ${ui>/editable} &amp;&amp; !${utilities>isNode}}"
+                                type="Reject"
+                            />
+                        </HBox>
                     </table:template>
                 </table:Column>
             </table:columns>
         </table:TreeTable>
 
-        <Toolbar>
+        <!--Toolbar>
             <ToolbarSpacer />
             <Button
                 icon="sap-icon://add"
@@ -109,6 +144,6 @@
                 visible="{ui>/editable}"
                 press="onAddMission"
             />
-        </Toolbar>
+        </Toolbar-->
     </Panel>
 </core:FragmentDefinition>
