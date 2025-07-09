@@ -49,7 +49,7 @@ sap.ui.define(
             _setTabsVisible() {
                 const isCreateMode = this.getView().getModel("ui").getProperty("/createMode");
                 Constant.headerSectionToBeHiddenMapping.map(section => this.getView().byId(section).setVisible(!isCreateMode));
-                //this.getView().byId("AfterFacet::ZC_FGASet::Missions::Section").setVisible(false);
+                this.getView().byId("AfterFacet::ZC_FGASet::Missions::Section").setVisible(false);
             },
 
             _setFieldVisible() {
@@ -165,8 +165,7 @@ sap.ui.define(
 
 
                 //if missions -- clean this !
-                if (sFragmentName === "missions") 
-                {
+                if (sFragmentName === "missions") {
                     try {
                         const oFragment = await sap.ui.core.Fragment.load({
                             name: "com.avv.ingerop.ingeropfga.ext.view.tab.detail." + sFragmentName,
@@ -186,7 +185,7 @@ sap.ui.define(
 
                     try {
                         const oFragment = await sap.ui.core.Fragment.load({
-                            name: "com.avv.ingerop.ingeropfga.ext.view.tab.DetailsTab" ,
+                            name: "com.avv.ingerop.ingeropfga.ext.view.tab.DetailsTab",
                             id: sViewId,
                             controller: this
                         });
@@ -388,6 +387,7 @@ sap.ui.define(
                         fgaGroups[mission.BusinessNo] = {
                             name: mission.BusinessNo,
                             isNode: true,
+                            isL0: true,
                             children: {}
                         };
                     }
@@ -397,6 +397,7 @@ sap.ui.define(
                         fgaGroups[mission.BusinessNo].children[mission.Regroupement] = {
                             name: mission.Regroupement,
                             isNode: true,
+                            isL0: false,
                             children: []
                         };
                     }
@@ -415,50 +416,100 @@ sap.ui.define(
                 this.getView().getModel("utilities").setProperty("/missionsHierarchy", treeData);
             },
 
-            isGroupementAddVisible: function (editable, isNode, regroupement) {
-                return editable === true && isNode === true && regroupement === true;
+            isGroupementAddVisible: function (editable, isNode, isL0) {
+                return editable === true && isNode === true && isL0 === false;
             },
-            isFGAAddVisible: function (editable, isNode, regroupement) {
-                return editable === true && isNode === true && !regroupement;
+            isFGAAddVisible: function (editable, isNode, isL0) {
+                return editable === true && isNode === true && isL0 === true;
             },
             isDeleteVisible: function (editable, isNode) {
                 return editable === true && isNode !== true;
             },
 
-            onAddGroupement: function(oEvent) {
+            onAddGroupement: function (oEvent) {
                 // Get the FGA (BusinessNo) node
                 var oContext = oEvent.getSource().getBindingContext("utilities");
                 var oFGANode = oContext.getObject();
-                
-                // Show dialog to get new groupement name
-                sap.m.prompt("Enter new groupement name", {
+
+                // Create dialog
+                var oExistingInput = sap.ui.getCore().byId("groupementInput");
+                if (oExistingInput) {
+                    oExistingInput.destroy();
+                }
+                var oDialog = new sap.m.Dialog({
                     title: "Add Groupement",
-                    onClose: function(sValue) {
-                        if (sValue) {
-                            // Create new groupement node
-                            var oNewGroupement = {
-                                name: sValue,
-                                isNode: true,
-                                Regroupement: sValue, // Set the Regroupement value
-                                children: []
-                            };
-                            
-                            // Add to the FGA node's children
-                            oFGANode.children.push(oNewGroupement);
-                            
-                            // Update the model
-                            var oUtilitiesModel = this.getView().getModel("utilities");
-                            oUtilitiesModel.setProperty("/missionsHierarchy", oUtilitiesModel.getProperty("/missionsHierarchy"));
-                        }
-                    }.bind(this)
+                    content: [
+                        new sap.m.VBox({
+                            items: [
+                                new sap.m.Label({
+                                    text: "Enter new groupement name",
+                                    labelFor: "groupementInput"
+                                }),
+                                new sap.m.Input({
+                                    id: "groupementInput",
+                                    placeholder: "Groupement name",
+                                    width: "100%",
+                                    liveChange: function (oEvent) {
+                                        var sValue = oEvent.getSource().getValue();
+                                        oAddButton.setEnabled(!!sValue.trim());
+                                    }
+                                })
+                            ]
+                        })
+                    ],
+                    buttons: [
+                        new sap.m.Button({
+                            text: "Add",
+                            type: "Accept",
+                            icon: "sap-icon://add",
+                            enabled: false,
+                            press: function () {
+                                var sValue = sap.ui.getCore().byId("groupementInput").getValue();
+                                oDialog.close();
+
+                                if (sValue) {
+                                    // Create new groupement  
+                                    var oNewGroupement = {
+                                        name: sValue,
+                                        isNode: true,
+                                        isL0: false,
+                                        Regroupement: sValue,
+                                        children: [],
+                                        BusinessNo: oFGANode.BusinessNo
+                                    };
+
+                                    // Add to the FGA node's children
+                                    oFGANode.children.push(oNewGroupement);
+
+                                    // Update the model
+                                    var oUtilitiesModel = this.getView().getModel("utilities");
+                                    oUtilitiesModel.updateBindings();
+
+                                    var oTreeTable = this.byId("missionsTreeTable");
+                                    oTreeTable.expand(oContext.getPath());
+                                }
+                            }.bind(this)
+                        }),
+                        new sap.m.Button({
+                            text: "Cancel",
+                            type: "Reject",
+                            press: function () {
+                                oDialog.close();
+                            }
+                        })
+                    ]
                 });
+
+                var oAddButton = oDialog.getButtons()[0];
+                oDialog.open();
+                sap.ui.getCore().byId("groupementInput").focus();
             },
-            
-            onAddMissionToGroupement: function(oEvent) {
+
+            onAddMissionToGroupement: function (oEvent) {
                 // Get the groupement node
                 var oContext = oEvent.getSource().getBindingContext("utilities");
                 var oGroupementNode = oContext.getObject();
-                
+
                 // Create new mission with default values
                 var oNewMission = {
                     BusinessNo: oGroupementNode.name, // Or get from parent if stored differently
@@ -469,14 +520,14 @@ sap.ui.define(
                     EndDate: null,
                     isNode: false
                 };
-                
+
                 // Add to the groupement's children
                 oGroupementNode.children.push(oNewMission);
-                
+
                 // Update the model
                 var oUtilitiesModel = this.getView().getModel("utilities");
                 oUtilitiesModel.setProperty("/missionsHierarchy", oUtilitiesModel.getProperty("/missionsHierarchy"));
-                
+
                 // Optional: Scroll to the new mission
                 this.getView().byId("missionsTreeTable").getBinding("rows").refresh();
             },

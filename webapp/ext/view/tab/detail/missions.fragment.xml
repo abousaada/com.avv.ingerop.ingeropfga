@@ -99,7 +99,7 @@
                                     parts: [
                                         { path: 'ui>/editable' },
                                         { path: 'utilities>isNode' },
-                                        { path: 'utilities>Regroupement' }
+                                        { path: 'utilities>isL0' }
                                     ],
                                     formatter: '.isGroupementAddVisible'
                                 }"
@@ -115,7 +115,7 @@
                                     parts: [
                                         {path: 'ui>/editable'},
                                         {path: 'utilities>isNode'},
-                                        {path: 'utilities>Regroupement'}
+                                        { path: 'utilities>isL0' }
                                     ],
                                     formatter: '.isFGAAddVisible'
                                 }"
