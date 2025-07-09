@@ -150,15 +150,15 @@ sap.ui.define([
         },
         //All header fields
         headerFieldsList: {
-            "Identification": ["BusinessNo", "BusinessName", "CDG", "UFOName", "Activity", "Soufam", "Type", "Rgfact", "PROJM", "Project_lib", "Site", "International"],
-            "Facturation": ["Modalr", "Modalf", "Avance", "plateformDemat", "Chorus", "Rtgart", "VAT", "Currency", "contactFacture", "mailFacture", "libelleFacture", "adresseFacture", "paysFacture"],
-            "Client": ["NClient", "CustomerName", "Scclt", "Interlocuteur", "Fonction", "Telephone", "Email", "isFrance", "Siret", "otherIdentification"],
-            "Garantie": ["CautGA", "Assurance"],
+            "Identification": ["BusinessNo", "Type", "BusinessName", "UFOName", "CDG", "CompanyCode", "Activity", "Soufam", "PROJM", "Site", "International", "Rgfact"],
+            "Facturation": ["Modalr", "Avance", "plateformDemat", "Chorus", "Rtgart", "VAT", "Currency", "Reflet", "CurrencyHedging", "exchangeRateHedging"],
+            "Client": ["NClient", "CustomerName", "Scclt", "Siret", "Country"],
+            "Garantie": ["Assurance"],
             "Contrat": ["Mission", "GroupM", "Mandata", "membreGroupement", "projetAgora", "voletEcologie", "Business", "eligibleCir", "projetCup"],
             "Prix": ["Mtctr", "nonAcquis", "Paring", "depenseCommercial"],
             "Travaux": ["Mttrvx", "Ingtrvx"],
             "Info": ["Period"],
-            "Duree": ["StartDate", "EndDate"],
+            "Duree": ["StartDate", "EndDate", "NbOfMonth", "RemainingMonth"],
             "Qualite": ["UrlCup"],
         },
 

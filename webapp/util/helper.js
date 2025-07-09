@@ -44,6 +44,9 @@ sap.ui.define([
 
   return {
     extractPlainData: _extract,
+    pipe: function (...fns) {
+      return (x, ...args) => fns.reduce((v, f) => f(v, ...args), x);
+    },
     validMessage: function(message, oView, onClose){
       return MessageBox.success(message, {
 				actions: [MessageBox.Action.CLOSE],

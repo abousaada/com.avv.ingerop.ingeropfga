@@ -183,11 +183,10 @@ sap.ui.define([
             },
 
             setYearByPeriod(period) {
-                this.setPeriod(period);
-
                 // Extract year from sPeriod (MMYYYY format)
                 var sYear = period.substring(2);
                 this.setYear(sYear);
+                this.setPeriod(period);
             },
 
             getFormattedMissions() {
