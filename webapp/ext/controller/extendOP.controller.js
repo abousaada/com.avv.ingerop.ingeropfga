@@ -142,7 +142,7 @@ sap.ui.define(
                 const sCountry = e.context.getProperty("CompanyCountry");
 
                 if (sCountry === "FR") {
-                    this._loadFragment("missions");
+                    this._loadFragment("Missions");
                 } else {
                     this._loadFragment("hoai");
                 }
@@ -165,7 +165,7 @@ sap.ui.define(
 
 
                 //if missions -- clean this !
-                if (sFragmentName === "missions") {
+                if (sFragmentName === "Missions") {
                     try {
                         const oFragment = await sap.ui.core.Fragment.load({
                             name: "com.avv.ingerop.ingeropfga.ext.view.tab.detail." + sFragmentName,
@@ -528,10 +528,66 @@ sap.ui.define(
                 var oUtilitiesModel = this.getView().getModel("utilities");
                 oUtilitiesModel.setProperty("/missionsHierarchy", oUtilitiesModel.getProperty("/missionsHierarchy"));
 
-                // Optional: Scroll to the new mission
                 this.getView().byId("missionsTreeTable").getBinding("rows").refresh();
             },
 
+            onDeleteMission: function(oEvent) {
+                var oRowContext = oEvent.getSource().getBindingContext("utilities");
+                if (!oRowContext) {
+                    sap.m.MessageToast.show("Error: Could not find mission to delete");
+                    return;
+                }
+            
+                var oUtilitiesModel = this.getView().getModel("utilities");
+                var oMissionToDelete = oRowContext.getObject();
+            
+                // 1. Delete
+                var aMissions = oUtilitiesModel.getProperty("/missions");
+                var iIndex = aMissions.findIndex(function(mission) {
+                    return mission.MissionId === oMissionToDelete.MissionId && 
+                           mission.BusinessNo === oMissionToDelete.BusinessNo;
+                });
+                
+                if (iIndex !== -1) {
+                    aMissions.splice(iIndex, 1);
+                    oUtilitiesModel.setProperty("/missions", aMissions);
+                }
+            
+                // 2. Delete from hierarchical missionsHierarchy
+                var aMissionsHierarchy = oUtilitiesModel.getProperty("/missionsHierarchy");
+                
+                var bDeleted = this._deleteFromHierarchy(aMissionsHierarchy, oMissionToDelete);
+                
+                if (bDeleted) {
+                    // Update TreeTable
+                    oUtilitiesModel.setProperty("/missionsHierarchy", aMissionsHierarchy);
+                    oUtilitiesModel.updateBindings(true);
+                } else {
+                    sap.m.MessageToast.show("Warning: Mission not found in hierarchy");
+                }
+            },
+            
+            _deleteFromHierarchy: function(aNodes, oMissionToDelete) {
+                for (var i = 0; i < aNodes.length; i++) {
+                    var oNode = aNodes[i];
+                    
+                    // If this is a mission node (not a groupement) <--ABO to manage
+                    if (!oNode.isNode && 
+                        oNode.MissionId === oMissionToDelete.MissionId && 
+                        oNode.BusinessNo === oMissionToDelete.BusinessNo) {
+                        aNodes.splice(i, 1);
+                        return true;
+                    }
+                    
+                    // Generic case
+                    if (oNode.children && oNode.children.length > 0) {
+                        if (this._deleteFromHierarchy(oNode.children, oMissionToDelete)) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            },
 
             formatMonthLabel: function (sMonth, sYear) {
                 // console.log("Formatter appelé avec :", sMonth, sYear);

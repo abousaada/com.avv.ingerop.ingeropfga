@@ -70,6 +70,7 @@ sap.ui.define([
                 this.getView().getModel("utilities").setProperty("/missions", aMissions);
             }
         }
+       
         
        
     });
