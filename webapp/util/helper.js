@@ -1,6 +1,8 @@
 sap.ui.define([
   "sap/m/MessageBox",
-], function (MessageBox) {
+  "./constant",
+  "./param"
+], function (MessageBox, Constant, Params) {
   "use strict";
 
   function _extract(obj) {
@@ -42,10 +44,25 @@ sap.ui.define([
     return cleanObj;
   }
 
+  function _getConstantMode(mode){
+    return mode ? "create": "modify";
+  }
+
   return {
     extractPlainData: _extract,
+    getConstantMode: _getConstantMode,
+
     pipe: function (...fns) {
       return (x, ...args) => fns.reduce((v, f) => f(v, ...args), x);
+    },
+    getObjectPageSectionVisibilityMap: function(mode){
+      return Params.headerSectionToBeHiddenMapping[_getConstantMode(mode)]?.sections;
+    },
+    getHeaderFieldVisibilityMap:function(mode){
+      return Params.headerFieldToBeHiddenMapping[_getConstantMode(mode)];
+    },
+    getHeaderFieldUnabledMap:function(mode){
+      return Params.headerFieldToBeUnableMapping[_getConstantMode(mode)];
     },
     validMessage: function(message, oView, onClose){
       return MessageBox.success(message, {

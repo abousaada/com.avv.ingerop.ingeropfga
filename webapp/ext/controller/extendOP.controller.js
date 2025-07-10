@@ -48,16 +48,61 @@ sap.ui.define(
 
             _setTabsVisible() {
                 const isCreateMode = this.getView().getModel("ui").getProperty("/createMode");
-                Constant.headerSectionToBeHiddenMapping.map(section => this.getView().byId(section).setVisible(!isCreateMode));
+                Constant.headerSectionList.map(section => {
+                    this.getView().byId(section)?.setVisible(!Helper.getObjectPageSectionVisibilityMap(isCreateMode).includes(section));
+                });
             },
 
             _setFieldVisible(){
                 const isCreateMode = this.getView().getModel("ui").getProperty("/createMode");
-                Constant.headerFieldToBeHiddenMapping.map(({identifiant, field}) => this.getView().byId(Helper.headerFieldIdBySectionAndFieldName(identifiant, field)).setVisible(isCreateMode))
+                Object.entries(Constant.headerFieldsList).map(([identifiant, champs]) => {
+                    champs.map(champ => {
+                        this._getField(identifiant, champ)?.setVisible(
+                            !Helper.getHeaderFieldVisibilityMap(isCreateMode)[identifiant].includes(champ)
+                        );
+                    });
+                });
+            },
+
+            _setFieldEnabled(){
+                const isCreateMode = this.getView().getModel("ui").getProperty("/createMode");
+                Object.entries(Constant.headerFieldsList).map(([identifiant, champs]) => {
+                    champs.map(champ => {
+                        this._getField(identifiant, champ)?.setEditable(
+                            !Helper.getHeaderFieldUnabledMap(isCreateMode)[identifiant].includes(champ)
+                        );
+                    });
+                });
+            },
+
+            _getField(identifiant, champ){
+                return this.getView().byId(Helper.headerFieldIdBySectionAndFieldName(identifiant, champ));
             },
 
             _attachChangeEventOnFields(){
                 this.getView().byId(Helper.headerFieldIdBySectionAndFieldName("Identification", "Type")).attachChange(this.onTypeChange.bind(this));
+                this.getView().byId(Helper.headerFieldIdBySectionAndFieldName("Travaux", "Mttrvx")).attachChange(this.onCalcTauxTravaux.bind(this));
+                this.getView().byId(Helper.headerFieldIdBySectionAndFieldName("Prix", "Mtctr")).attachChange(this.onCalcTauxTravaux.bind(this));
+                this.getView().byId(Helper.headerFieldIdBySectionAndFieldName("Identification", "Activity")).attachChange(this.onActivityChange.bind(this));
+            },
+            
+            onActivityChange(oEvent){
+                this._getField("Identification", "Soufam").setValue(null);
+            },
+
+            onCalcTauxTravaux(oEvent){
+                const { Mttrvx , Mtctr} = this.getView().getBindingContext().getObject();
+                if( Mttrvx == undefined || Mtctr == undefined 
+                    || Mttrvx == null || Mtctr == null 
+                    || Mttrvx == 0 || Mtctr == 0)
+                { 
+                    this._getField("Travaux", "Ingtrvx").setValue("0");
+                    return;
+                }
+                const ing = parseFloat(Mtctr);
+                const trav = parseFloat(Mttrvx);
+                const diff = ing/trav;
+                this._getField("Travaux", "Ingtrvx").setValue(diff.toString());
             },
 
             onTypeChange(event){
@@ -68,14 +113,12 @@ sap.ui.define(
             _setMandatoryFieldByType(type){
                 const headerFieldMandatory = Constant.headerFieldMandatoryByType[type];
                 if(headerFieldMandatory){
-                    Object.entries(Constant.headerFieldsList).map(([identifiant, champs]) => {
-                        champs.map(champ => {
-                            if(headerFieldMandatory[identifiant]?.includes(champ)){
-                                this.getView().byId(Helper.headerFieldIdBySectionAndFieldName(identifiant, champ)).setMandatory(true);
-                            }else{
-                                this.getView().byId(Helper.headerFieldIdBySectionAndFieldName(identifiant, champ)).setMandatory(false);
-                            }
-                        });
+                    Object.entries(Constant.headerFieldsList)
+                          .map(([identifiant, champs]) => {
+                            champs.map(champ => {
+                                const isMandatory = (headerFieldMandatory[identifiant] || []).includes(champ);
+                                this._getField(identifiant, champ).setMandatory(isMandatory);
+                            });
                     });
                 }
             },
@@ -113,6 +156,7 @@ sap.ui.define(
                 this._setTabsVisible();
                 this._setFieldVisible();
                 this._attachChangeEventOnFields();
+                this._setFieldEnabled();
                 
                 //if create
                 if (bCreateMode) { utilitiesModel.reInit(); return }
