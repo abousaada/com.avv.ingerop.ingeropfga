@@ -16,7 +16,8 @@ sap.ui.define(
         "com/avv/ingerop/ingeropfga/util/helper",
         "sap/ui/generic/app/navigation/service/SelectionVariant",
         "sap/ui/generic/app/navigation/service/NavigationHandler",
-        "com/avv/ingerop/ingeropfga/util/constant"
+        "com/avv/ingerop/ingeropfga/util/constant",
+        "com/avv/ingerop/ingeropfga/util/param",
     ],
     function (
         ControllerExtension,
@@ -35,7 +36,8 @@ sap.ui.define(
         Helper,
         SelectionVariant,
         NavigationHandler,
-        Constant
+        Constant,
+        Params
     ) {
         "use strict";
 
@@ -111,7 +113,7 @@ sap.ui.define(
             },
 
             _setMandatoryFieldByType(type) {
-                const headerFieldMandatory = Constant.headerFieldMandatoryByType[type];
+                const headerFieldMandatory = Params.headerFieldMandatoryByType[type];
                 if(headerFieldMandatory){
                     Object.entries(Constant.headerFieldsList)
                           .map(([identifiant, champs]) => {

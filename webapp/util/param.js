@@ -3,27 +3,39 @@ sap.ui.define([
     "use strict";
 
     return {
+        headerFieldChangeEventMapping: {
+            "Identification": ["Type", "Activity"],
+            "Facturation": [],
+            "Client": [],
+            "Garantie": [],
+            "Contrat": [],
+            "Prix": ["Mtctr"],
+            "Travaux": ["Mttrvx"],
+            "Info": [],
+            "Duree": ["NbOfMonth", "RemainingMonth"],
+            "Qualite": []
+        },
         headerFieldToBeHiddenMapping:
         {
             "create": {
-                "Identification": ["Site", "International"],
-                "Facturation": ["plateformDemat", "Modalf"],
-                "Client": ["Siret"],
-                "Garantie": [],
-                "Contrat": ["membreGroupement", "projetAgora", "voletEcologie", "Business", "eligibleCir", "projetCup"],
-                "Prix": ["nonAcquis", "depenseCommercial"],
-                "Travaux": [],
-                "Info": [],
-                "Duree": [],
-                "Qualite": []
-            },
-            "modify": {
                 "Identification": [],
                 "Facturation": [],
                 "Client": [],
                 "Garantie": [],
                 "Contrat": [],
                 "Prix": [],
+                "Travaux": [],
+                "Info": [],
+                "Duree": [],
+                "Qualite": []
+            },
+            "modify": {
+                "Identification": ["Site", "International"],
+                "Facturation": ["plateformDemat", "Modalf", "Rtgart","Reflet", "CurrencyHedging"],
+                "Client": ["Siret", "Country"],
+                "Garantie": [],
+                "Contrat": ["membreGroupement", "projetAgora", "voletEcologie", "Business", "eligibleCir", "projetCup"],
+                "Prix": ["nonAcquis", "depenseCommercial"],
                 "Travaux": [],
                 "Info": [],
                 "Duree": [],
@@ -56,7 +68,6 @@ sap.ui.define([
                 "Qualite": []
             },
         },
-        //only for creation, hide listed sections
         headerSectionToBeHiddenMapping: {
             "create": {
                 "sections": [
@@ -72,7 +83,6 @@ sap.ui.define([
                 ]
             }
         },
-
         //set mandatory field by affaire type
         headerFieldMandatoryByType: {
             "PO": {
