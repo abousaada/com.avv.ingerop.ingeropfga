@@ -1,154 +1,173 @@
-
 <mvc:View
-  controllerName="com.avv.ingerop.ingeropfga.ext.controller.Mission"
-  xmlns:mvc="sap.ui.core.mvc"
-  xmlns="sap.m"
-  xmlns:core="sap.ui.core"
-  xmlns:table="sap.ui.table"
-  xmlns:l="sap.ui.layout"
-  xmlns:f="sap.ui.layout.form">
-  
-  <Panel headerText="Missions" expandable="true" expanded="true">
-    <table:Table
-      id="missionsTable"
-      rows="{path: 'utilities>/missions', templateShareable: false}"
-      selectionMode="None"
-      ariaLabelledBy="title">
-      <!-- visible="{= !${ui>/createMode}}" -->
-      <table:columns>
-        <!-- Codification (auto-generated) -->
-        <table:Column width="12rem">
-          <Label text="Codification"/>
-          <table:template>
-            <Text text="{utilities>BusinessNo} - {utilities>MissionId}"/>
-          </table:template>
-        </table:Column>
-        
-        <!-- Mission Type -->
-        <table:Column width="8rem">
-          <Label text="Mission"/>
-          <table:template>
-            <ComboBox
-              selectedKey="{utilities>MissionCode}"
-              items="{
-                path: 'utilities>/missionTypes',
-                templateShareable: false
-              }"
-              editable="{ui>/editable}"
-              width="100%">
-              <core:Item key="{utilities>code}" text="{utilities>description}"/>
-            </ComboBox>
-          </table:template>
-        </table:Column>
-        
-        <!-- Start Date -->
-        <table:Column width="10rem">
-          <Label text="Date début"/>
-          <table:template>
-            <DatePicker
-              value="{path: 'utilities>StartDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd' }}"
-              displayFormat="short"
-              editable="{ui>/editable}"
-              width="100%"/>
-          </table:template>
-        </table:Column>
-        
-        <!-- End Date -->
-        <table:Column width="10rem">
-          <Label text="Date fin"/>
-          <table:template>
-            <DatePicker
-              value="{path: 'utilities>EndDate', 
-              type: 'sap.ui.model.type.Date', 
-              formatOptions: { pattern: 'yyyy-MM-dd' }}"
-              displayFormat="short"
-              editable="{ui>/editable}"
-              width="100%"/>
-          </table:template>
-        </table:Column>
-        
-        <!-- Budget Recette Externe -->
-        <table:Column width="10rem">
-          <Label text="Budget recette externe"/>
-          <table:template>
-           <!-- path: 'utilities>externalRevenue',  -->
-            <Input
-              value="{
-                parts: ['utilities>ExternalRevenue', '€'],
-                type: 'sap.ui.model.type.Currency', 
-                formatOptions: { decimals: 2, showMeasure: false }
-              }"
-              description="€"
-              editable="{ui>/editable}"
-              width="100%"/>
-          </table:template>
-        </table:Column>
-        
-        <!-- Budget Main d'œuvre -->
-        <table:Column width="10rem">
-          <Label text="Budget main d'œuvre"/>
-          <table:template>
-            <Input
-              value="{
-                parts: ['utilities>LaborBudget', '€'],
-                type: 'sap.ui.model.type.Currency', 
-                formatOptions: { decimals: 2 , showMeasure: false}
-                }"
-              description="€"
-              editable="{ui>/editable}"
-              width="100%"/>
-          </table:template>
-        </table:Column>
-        
-        <table:Column width="4rem" visible = "{ui>/editable}">
-          <Label text=""/>
-          <table:template>
-            <Button 
-              icon="sap-icon://decline" 
-              tooltip="Delete Mission"
-              press="onDeleteMission"
-              visible="{ui>/editable}"
-              type="Reject"/>
-          </table:template>
-        </table:Column>
+    controllerName="com.avv.ingerop.ingeropfga.ext.controller.Mission"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:table="sap.ui.table"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+>
+    <Panel
+        headerText="Missions"
+        expandable="true"
+        expanded="true"
+    >
+        <table:Table
+            id="missionsTable1"
+            rows="{path: 'utilities>/missions', templateShareable: false}"
+            selectionMode="None"
+            ariaLabelledBy="title"
+        >
+            <!-- visible="{= !${ui>/createMode}}" -->
+            <table:columns>
+                <!-- Codification (auto-generated) -->
+                <table:Column width="12rem">
+                    <Label text="Codification" />
+                    <table:template>
+                        <Text
+                            text="{utilities>BusinessNo} - {utilities>MissionId}"
+                        />
+                    </table:template>
+                </table:Column>
 
-        <!-- Sous-traitance -->
-        <!-- <table:Column width="10rem">
-          <Label text="Sous-traitance"/>
-          <table:template>
-            <Input
-              value="{
-                parts: ['utilities>Subcontracting', '€'],
-                type: 'sap.ui.model.type.Currency', 
-                formatOptions: { decimals: 2, showMeasure: false }}"
-              description="€"
-              width="100%"/>
-          </table:template>
-        </table:Column> -->
-        
-        <!-- Autres charges -->
-        <!-- <table:Column width="10rem">
-          <Label text="Autres charges"/>
-          <table:template>
-            <Input
-              value="{
-                parts: ['utilities>OtherCosts', '€'],
-                type: 'sap.ui.model.type.Currency', 
-                formatOptions: { decimals: 2, showMeasure: false }}"
-              description="€"
-              width="100%"/>
-          </table:template>
-        </table:Column> -->
-      </table:columns>
-    </table:Table>
-    
-    <Toolbar>
-      <ToolbarSpacer/>
-      <Button
-        icon="sap-icon://add"
-        text="Ajouter une mission"
-        visible="{ui>/editable}"
-        press="onAddMission"/>
-    </Toolbar>
-  </Panel>
+                <!-- Mission Type -->
+                <table:Column width="8rem">
+                    <Label text="Mission" />
+                    <table:template>
+                        <ComboBox
+                            selectedKey="{utilities>MissionCode}"
+                            items="{
+                                                                                                                                                                                                                                path: 'utilities>/missionTypes',
+                                                                                                                                                                                                                                                templateShareable: false
+                                                                                                                                                                                                                                                              }"
+                            editable="{ui>/editable}"
+                            width="100%"
+                        >
+                            <core:Item
+                                key="{utilities>code}"
+                                text="{utilities>description}"
+                            />
+                        </ComboBox>
+                    </table:template>
+                </table:Column>
+
+                <!-- Start Date -->
+                <table:Column width="10rem">
+                    <Label text="Date début" />
+                    <table:template>
+                        <DatePicker
+                            value="{path: 'utilities>StartDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd' }}"
+                            displayFormat="short"
+                            editable="{ui>/editable}"
+                            width="100%"
+                        />
+                    </table:template>
+                </table:Column>
+
+                <!-- End Date -->
+                <table:Column width="10rem">
+                    <Label text="Date fin" />
+                    <table:template>
+                        <DatePicker
+                            value="{path: 'utilities>EndDate', 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            type: 'sap.ui.model.type.Date', 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          formatOptions: { pattern: 'yyyy-MM-dd' }}"
+                            displayFormat="short"
+                            editable="{ui>/editable}"
+                            width="100%"
+                        />
+                    </table:template>
+                </table:Column>
+
+                <!-- Budget Recette Externe -->
+                <table:Column width="10rem">
+                    <Label text="Budget recette externe" />
+                    <table:template>
+                        <!-- path: 'utilities>externalRevenue',  -->
+                        <Input
+                            value="{
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       parts: ['utilities>ExternalRevenue', '€'],
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       type: 'sap.ui.model.type.Currency', 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       formatOptions: { decimals: 2, showMeasure: false }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     }"
+                            description="€"
+                            editable="{ui>/editable}"
+                            width="100%"
+                        />
+                    </table:template>
+                </table:Column>
+
+                <!-- Budget Main d'œuvre -->
+                <table:Column width="10rem">
+                    <Label text="Budget main d'œuvre" />
+                    <table:template>
+                        <Input
+                            value="{
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       parts: ['utilities>LaborBudget', '€'],
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       type: 'sap.ui.model.type.Currency', 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       formatOptions: { decimals: 2 , showMeasure: false}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       }"
+                            description="€"
+                            editable="{ui>/editable}"
+                            width="100%"
+                        />
+                    </table:template>
+                </table:Column>
+
+                <table:Column
+                    width="4rem"
+                    visible="{ui>/editable}"
+                >
+                    <Label text="" />
+                    <table:template>
+                        <Button
+                            icon="sap-icon://decline"
+                            tooltip="Delete Mission"
+                            press="onDeleteMission"
+                            visible="{ui>/editable}"
+                            type="Reject"
+                        />
+                    </table:template>
+                </table:Column>
+
+                <!-- Sous-traitance -->
+                <!-- <table:Column width="10rem">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     <Label text="Sous-traitance"/>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               <table:template>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           <Input
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         value="{
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         parts: ['utilities>Subcontracting', '€'],
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         type: 'sap.ui.model.type.Currency', 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         formatOptions: { decimals: 2, showMeasure: false }}"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       description="€"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     width="100%"/>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               </table:template>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       </table:Column> -->
+
+                <!-- Autres charges -->
+                <!-- <table:Column width="10rem">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         <Label text="Autres charges"/>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   <table:template>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               <Input
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             value="{
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             parts: ['utilities>OtherCosts', '€'],
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             type: 'sap.ui.model.type.Currency', 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             formatOptions: { decimals: 2, showMeasure: false }}"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           description="€"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         width="100%"/>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   </table:template>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           </table:Column> -->
+            </table:columns>
+        </table:Table>
+
+        <Toolbar>
+            <ToolbarSpacer />
+            <Button
+                icon="sap-icon://add"
+                text="Ajouter une mission"
+                visible="{ui>/editable}"
+                press="onAddMission"
+            />
+        </Toolbar>
+    </Panel>
 </mvc:View>

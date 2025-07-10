@@ -9,12 +9,12 @@
 
         <SplitApp id="splitApp">
                 <detailPages>
-                    <Page id="detailPage2" title="Details">
+                    <!--Page id="detailPage2" title="Details">
                         <content>
                             <core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.detail.DetailPageFragment" type="XML"/>
                         </content>
         
-                    </Page>
+                    </Page-->
                     <Page id="detailPage" title="Details">
                         <content>
                             <core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.hoai.HoaiPageFragment" type="XML"/>
