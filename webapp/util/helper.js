@@ -77,6 +77,15 @@ sap.ui.define([
     headerFieldIdBySectionAndFieldName: function(identifiant, champ){
       if(!identifiant || !champ){ return ;}
       return `com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--com.sap.vocabularies.UI.v1.FieldGroup::${identifiant}::${champ}::Field`;
+    },
+    diffEnMois: function(date1, date2) {
+      const d1 = new Date(date1);
+      const d2 = new Date(date2);
+    
+      const anneeDiff = d2.getFullYear() - d1.getFullYear();
+      const moisDiff = d2.getMonth() - d1.getMonth();
+    
+      return anneeDiff * 12 + moisDiff;
     }
   };
 });

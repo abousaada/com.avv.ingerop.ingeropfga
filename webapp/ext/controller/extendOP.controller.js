@@ -82,14 +82,65 @@ sap.ui.define(
             },
 
             _attachChangeEventOnFields() {
-                this.getView().byId(Helper.headerFieldIdBySectionAndFieldName("Identification", "Type")).attachChange(this.onTypeChange.bind(this));
-                this.getView().byId(Helper.headerFieldIdBySectionAndFieldName("Travaux", "Mttrvx")).attachChange(this.onCalcTauxTravaux.bind(this));
-                this.getView().byId(Helper.headerFieldIdBySectionAndFieldName("Prix", "Mtctr")).attachChange(this.onCalcTauxTravaux.bind(this));
-                this.getView().byId(Helper.headerFieldIdBySectionAndFieldName("Identification", "Activity")).attachChange(this.onActivityChange.bind(this));
+                const changeActions = [{
+                    identification : "Identification",
+                    champ: "Type",
+                    action: "onTypeChange"
+                },{
+                    identification : "Travaux",
+                    champ: "Mttrvx",
+                    action: "onCalcTauxTravaux"
+                },{
+                    identification : "Prix",
+                    champ: "Mtctr",
+                    action: "onCalcTauxTravaux"
+                },{
+                    identification : "Identification",
+                    champ: "Activity",
+                    action: "onActivityChange"
+                },{
+                    identification : "Duree",
+                    champ: "StartDate",
+                    action: "onDateChange"
+                },{
+                    identification : "Duree",
+                    champ: "EndDate",
+                    action: "onDateChange"
+                }];
+
+                changeActions.map(({identification, champ, action}) => {
+                    this.getView().byId(Helper.headerFieldIdBySectionAndFieldName(identification, champ)).attachChange(this[action].bind(this));
+                
+                })
+                // this.getView().byId(Helper.headerFieldIdBySectionAndFieldName("Identification", "Type")).attachChange(this.onTypeChange.bind(this));
+                // this.getView().byId(Helper.headerFieldIdBySectionAndFieldName("Travaux", "Mttrvx")).attachChange(this.onCalcTauxTravaux.bind(this));
+                // this.getView().byId(Helper.headerFieldIdBySectionAndFieldName("Prix", "Mtctr")).attachChange(this.onCalcTauxTravaux.bind(this));
+                // this.getView().byId(Helper.headerFieldIdBySectionAndFieldName("Identification", "Activity")).attachChange(this.onActivityChange.bind(this));
+                // this.getView().byId(Helper.headerFieldIdBySectionAndFieldName("Duree", "StartDate")).attachChange(this.onDateChange.bind(this));
+                // this.getView().byId(Helper.headerFieldIdBySectionAndFieldName("Duree", "EndDate")).attachChange(this.onDateChange.bind(this));
             },
             
             onActivityChange(oEvent){
                 this._getField("Identification", "Soufam").setValue(null);
+            },
+
+            onDateChange(oEvent){
+                const { StartDate , EndDate} = this.getView().getBindingContext().getObject();
+
+                if(EndDate){
+                    const diffFromNow = Helper.diffEnMois(new Date(), EndDate);
+                    this._getField("Duree", "RemainingMonth").setValue(diffFromNow);
+                }else{
+                    this._getField("Duree", "RemainingMonth").setValue(null);
+                }
+
+                if(StartDate && EndDate){
+                    const diff = Helper.diffEnMois(StartDate, EndDate);
+                    this._getField("Duree", "NbOfMonth").setValue(diff);
+                }else{
+                    this._getField("Duree", "NbOfMonth").setValue(null);
+                }
+                
             },
 
             onCalcTauxTravaux(oEvent){
