@@ -51,19 +51,23 @@ sap.ui.define([
 
             // Call this when saving the main entity to process all missions
             validDataBeforeSave: function () {
-                var aMissions = this.getMissions();
+                return this.validMissions() && this.validFGAHeaderFields();
+            },
 
-                // Validate missions
-                if (!Filter.validateMissions(aMissions)) {
+            // Validate missions
+            validMissions(){
+                var aMissions = this.getMissions();
+                if (!Filter.validateMissions(aMissions)) { 
                     return false;
                 }
-
                 return true;
             },
 
-            async deepCreateFGA(data) {
-                try {
-                    // const data = {
+            validFGAHeaderFields(){
+
+            },
+
+            // const data = {
                     //     "BusinessName": "Nom de l'affaire : text XP",
                     //     "CompanyCode": "9000",
                     //     "PROFITCENTER": "MEDNBTS000",
@@ -91,6 +95,9 @@ sap.ui.define([
                     //         }
                     //     ]
                     // };
+
+            async deepCreateFGA(data) {
+                try {
                     const createdFGA = await this.create("/ZC_FGASet", data);
                     console.log(createdFGA);
                     return createdFGA;
@@ -124,22 +131,25 @@ sap.ui.define([
 
             async deepUpdatedFGA(data) {
                 try {
-                    const businessNo = this.getBusinessNo();
-                    const period = this.getPeriod();
-                    const urlBusinessNo = encodeURIComponent(businessNo);
-                    const urlPeriod = encodeURIComponent(period);
-
                     const createdFGA = await this.create("/ZC_FGASet", data);
                     console.log(createdFGA);
                     return createdFGA;
-
-
                 } catch (error) {
                     console.error('Error in deepUpdatedFGA:', error);
                     throw error;
                 }
             },
 
+            async deepUpsertFGA(data){
+                try {
+                    const createdFGA = await this.create("/ZC_FGASet", data);
+                    console.log(createdFGA);
+                    return createdFGA;
+                } catch (error) {
+                    console.error('Error in deepUpdatedFGA:', error);
+                    throw error;
+                }
+            },
 
             async getBEMissions() {
                 try {

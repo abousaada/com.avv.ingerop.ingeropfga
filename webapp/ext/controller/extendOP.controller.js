@@ -66,7 +66,7 @@ sap.ui.define(
                 });
             },
 
-            _setFieldEnabled(){
+            _setFieldEnabled() {
                 const isCreateMode = this.getView().getModel("ui").getProperty("/createMode");
                 Object.entries(Constant.headerFieldsList).map(([identifiant, champs]) => {
                     champs.map(champ => {
@@ -77,84 +77,80 @@ sap.ui.define(
                 });
             },
 
-            _getField(identifiant, champ){
+            _setDefaultMandatory(){
+                this._getField("Identification", "Type").setMandatory(true);
+            },
+
+            _getField(identifiant, champ) {
                 return this.getView().byId(Helper.headerFieldIdBySectionAndFieldName(identifiant, champ));
             },
 
             _attachChangeEventOnFields() {
                 const changeActions = [{
-                    identification : "Identification",
+                    identification: "Identification",
                     champ: "Type",
                     action: "onTypeChange"
-                },{
-                    identification : "Travaux",
+                }, {
+                    identification: "Travaux",
                     champ: "Mttrvx",
                     action: "onCalcTauxTravaux"
-                },{
-                    identification : "Prix",
+                }, {
+                    identification: "Prix",
                     champ: "Mtctr",
                     action: "onCalcTauxTravaux"
-                },{
-                    identification : "Identification",
+                }, {
+                    identification: "Identification",
                     champ: "Activity",
                     action: "onActivityChange"
-                },{
-                    identification : "Duree",
+                }, {
+                    identification: "Duree",
                     champ: "StartDate",
                     action: "onDateChange"
-                },{
-                    identification : "Duree",
+                }, {
+                    identification: "Duree",
                     champ: "EndDate",
                     action: "onDateChange"
                 }];
 
-                changeActions.map(({identification, champ, action}) => {
+                changeActions.map(({ identification, champ, action }) => {
                     this.getView().byId(Helper.headerFieldIdBySectionAndFieldName(identification, champ)).attachChange(this[action].bind(this));
-                
                 })
-                // this.getView().byId(Helper.headerFieldIdBySectionAndFieldName("Identification", "Type")).attachChange(this.onTypeChange.bind(this));
-                // this.getView().byId(Helper.headerFieldIdBySectionAndFieldName("Travaux", "Mttrvx")).attachChange(this.onCalcTauxTravaux.bind(this));
-                // this.getView().byId(Helper.headerFieldIdBySectionAndFieldName("Prix", "Mtctr")).attachChange(this.onCalcTauxTravaux.bind(this));
-                // this.getView().byId(Helper.headerFieldIdBySectionAndFieldName("Identification", "Activity")).attachChange(this.onActivityChange.bind(this));
-                // this.getView().byId(Helper.headerFieldIdBySectionAndFieldName("Duree", "StartDate")).attachChange(this.onDateChange.bind(this));
-                // this.getView().byId(Helper.headerFieldIdBySectionAndFieldName("Duree", "EndDate")).attachChange(this.onDateChange.bind(this));
             },
-            
-            onActivityChange(oEvent){
+
+            onActivityChange(oEvent) {
                 this._getField("Identification", "Soufam").setValue(null);
             },
 
-            onDateChange(oEvent){
-                const { StartDate , EndDate} = this.getView().getBindingContext().getObject();
+            onDateChange(oEvent) {
+                const { StartDate, EndDate } = this.getView().getBindingContext().getObject();
 
-                if(EndDate){
+                if (EndDate) {
                     const diffFromNow = Helper.diffEnMois(new Date(), EndDate);
                     this._getField("Duree", "RemainingMonth").setValue(diffFromNow);
-                }else{
+                } else {
                     this._getField("Duree", "RemainingMonth").setValue(null);
                 }
 
-                if(StartDate && EndDate){
+                if (StartDate && EndDate) {
                     const diff = Helper.diffEnMois(StartDate, EndDate);
                     this._getField("Duree", "NbOfMonth").setValue(diff);
-                }else{
+                } else {
                     this._getField("Duree", "NbOfMonth").setValue(null);
                 }
-                
+
             },
 
-            onCalcTauxTravaux(oEvent){
-                const { Mttrvx , Mtctr} = this.getView().getBindingContext().getObject();
-                if( Mttrvx == undefined || Mtctr == undefined 
-                    || Mttrvx == null || Mtctr == null 
-                    || Mttrvx == 0 || Mtctr == 0)
-                { 
+            onCalcTauxTravaux(oEvent) {
+                const { Mttrvx, Mtctr } = this.getView().getBindingContext().getObject();
+                if (Mttrvx == undefined || Mtctr == undefined
+                    || Mttrvx == null || Mtctr == null
+                    || Mttrvx == 0 || Mtctr == 0) {
                     this._getField("Travaux", "Ingtrvx").setValue("0");
                     return;
                 }
                 const ing = parseFloat(Mtctr);
                 const trav = parseFloat(Mttrvx);
-                const diff = ing/trav;
+                const diff = ing / trav;
                 this._getField("Travaux", "Ingtrvx").setValue(diff.toString());
             },
 
@@ -165,14 +161,14 @@ sap.ui.define(
 
             _setMandatoryFieldByType(type) {
                 const headerFieldMandatory = Params.headerFieldMandatoryByType[type];
-                if(headerFieldMandatory){
+                if (headerFieldMandatory) {
                     Object.entries(Constant.headerFieldsList)
-                          .map(([identifiant, champs]) => {
+                        .map(([identifiant, champs]) => {
                             champs.map(champ => {
                                 const isMandatory = (headerFieldMandatory[identifiant] || []).includes(champ);
                                 this._getField(identifiant, champ).setMandatory(isMandatory);
                             });
-                    });
+                        });
                 }
             },
 
@@ -210,7 +206,9 @@ sap.ui.define(
                 this._setFieldVisible();
                 this._attachChangeEventOnFields();
                 this._setFieldEnabled();
+                this._setDefaultMandatory();
                 
+
                 //1. if create
                 if (bCreateMode) { utilitiesModel.reInit(); return }
 
@@ -434,43 +432,55 @@ sap.ui.define(
                             throw new Error("Impossible d'accéder au contexte.");
                         }
 
-                        const isCreationMode = oView.getModel("ui").getProperty("/createMode");
-
-                        if (isCreationMode) {
-                            return new Promise(async (resolve, reject) => {
-                                const formattedMissions = utilitiesModel.getFormattedMissions();
-                                const oPayload = Helper.extractPlainData({ ...oContext.getObject(), "to_Missions": formattedMissions });
-                                const createdFGA = await utilitiesModel.deepCreateFGA(oPayload);
-                                if (createdFGA) {
-                                    Helper.validMessage("FGA created: " + createdFGA.BusinessNo, this.getView());
-                                }
-                                reject();
-                            });
-                        } else {
-                            return new Promise(async (resolve, reject) => {
-                                const formattedMissions = utilitiesModel.getFormattedMissions();
-                                const oPayload = Helper.extractPlainData({ ...oContext.getObject(), "to_Missions": formattedMissions });
-                                const updatedFGA = await utilitiesModel.deepUpdatedFGA(oPayload);
-                                if (updatedFGA) {
-                                    Helper.validMessage("FGA updated: " + updatedFGA.BusinessNo, this.getView());
-                                }
-                                reject();
-                            });
+                        if (!this.getModel("utilities").validDataBeforeSave()) {
+                            MessageBox.error("Veuillez Vérifier tous les champs");
+                            return new Promise().reject();
                         }
+
+                        return new Promise(async (resolve, reject) => {
+                            const formattedMissions = utilitiesModel.getFormattedMissions();
+                            const oPayload = Helper.extractPlainData({ ...oContext.getObject(), "to_Missions": formattedMissions });
+                            const updatedFGA = await utilitiesModel.deepUpsertFGA(oPayload);
+                            if (updatedFGA) {
+                                Helper.validMessage("FGA updated: " + updatedFGA.BusinessNo, this.getView());
+                            }
+                            reject();
+                        });
+
+                        // const isCreationMode = oView.getModel("ui").getProperty("/createMode");
+
+                        // if (isCreationMode) {
+                        //     return new Promise(async (resolve, reject) => {
+                        //         const formattedMissions = utilitiesModel.getFormattedMissions();
+                        //         const oPayload = Helper.extractPlainData({ ...oContext.getObject(), "to_Missions": formattedMissions });
+                        //         const createdFGA = await utilitiesModel.deepCreateFGA(oPayload);
+                        //         if (createdFGA) {
+                        //             Helper.validMessage("FGA created: " + createdFGA.BusinessNo, this.getView());
+                        //         }
+                        //         reject();
+                        //     });
+                        // } else {
+                        // return new Promise(async (resolve, reject) => {
+                        //     const formattedMissions = utilitiesModel.getFormattedMissions();
+                        //     const oPayload = Helper.extractPlainData({ ...oContext.getObject(), "to_Missions": formattedMissions });
+                        //     const updatedFGA = await utilitiesModel.deepUpdatedFGA(oPayload);
+                        //     if (updatedFGA) {
+                        //         Helper.validMessage("FGA updated: " + updatedFGA.BusinessNo, this.getView());
+                        //     }
+                        //     reject();
+                        // });
+                        // }
                     } catch (error) {
                         // sap.m.MessageToast.show("FGA create fail");
                         Helper.errorMessage("FGA create fail");
                         console.log(error);
                     }
                 },
-
-
             },
 
             routing: {
 
             },
-
 
             prepareMissionsTreeData: function () {
                 var missions = this.getView().getModel("utilities").getProperty("/missions");
@@ -627,33 +637,33 @@ sap.ui.define(
                 this.getView().byId("missionsTreeTable").getBinding("rows").refresh();
             },
 
-            onDeleteMission: function(oEvent) {
+            onDeleteMission: function (oEvent) {
                 var oRowContext = oEvent.getSource().getBindingContext("utilities");
                 if (!oRowContext) {
                     sap.m.MessageToast.show("Error: Could not find mission to delete");
                     return;
                 }
-            
+
                 var oUtilitiesModel = this.getView().getModel("utilities");
                 var oMissionToDelete = oRowContext.getObject();
-            
+
                 // 1. Delete
                 var aMissions = oUtilitiesModel.getProperty("/missions");
-                var iIndex = aMissions.findIndex(function(mission) {
-                    return mission.MissionId === oMissionToDelete.MissionId && 
-                           mission.BusinessNo === oMissionToDelete.BusinessNo;
+                var iIndex = aMissions.findIndex(function (mission) {
+                    return mission.MissionId === oMissionToDelete.MissionId &&
+                        mission.BusinessNo === oMissionToDelete.BusinessNo;
                 });
-                
+
                 if (iIndex !== -1) {
                     aMissions.splice(iIndex, 1);
                     oUtilitiesModel.setProperty("/missions", aMissions);
                 }
-            
+
                 // 2. Delete from hierarchical missionsHierarchy
                 var aMissionsHierarchy = oUtilitiesModel.getProperty("/missionsHierarchy");
-                
+
                 var bDeleted = this._deleteFromHierarchy(aMissionsHierarchy, oMissionToDelete);
-                
+
                 if (bDeleted) {
                     // Update TreeTable
                     oUtilitiesModel.setProperty("/missionsHierarchy", aMissionsHierarchy);
@@ -662,19 +672,19 @@ sap.ui.define(
                     sap.m.MessageToast.show("Warning: Mission not found in hierarchy");
                 }
             },
-            
-            _deleteFromHierarchy: function(aNodes, oMissionToDelete) {
+
+            _deleteFromHierarchy: function (aNodes, oMissionToDelete) {
                 for (var i = 0; i < aNodes.length; i++) {
                     var oNode = aNodes[i];
-                    
+
                     // If this is a mission node (not a groupement) <--ABO to manage
-                    if (!oNode.isNode && 
-                        oNode.MissionId === oMissionToDelete.MissionId && 
+                    if (!oNode.isNode &&
+                        oNode.MissionId === oMissionToDelete.MissionId &&
                         oNode.BusinessNo === oMissionToDelete.BusinessNo) {
                         aNodes.splice(i, 1);
                         return true;
                     }
-                    
+
                     // Generic case
                     if (oNode.children && oNode.children.length > 0) {
                         if (this._deleteFromHierarchy(oNode.children, oMissionToDelete)) {

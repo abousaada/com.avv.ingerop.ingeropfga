@@ -14,8 +14,8 @@ sap.ui.define([
         },
         //All header fields
         headerFieldsList: {
-            "Identification": ["BusinessNo", "Type", "BusinessName", "UFOName", "CDG", "CompanyCode", "Activity", "Soufam", "PROJM", "Site", "International", "Rgfact"],
-            "Facturation": ["Modalr", "Avance", "plateformDemat", "Chorus", "Rtgart", "VAT", "Currency", "Reflet", "CurrencyHedging", "exchangeRateHedging"],
+            "Identification": ["BusinessNo", "Type", "BusinessName", "BusinessStatus","UFOName", "CDG", "CompanyCode", "Activity", "Soufam", "PROJM", "Site", "International", "Rgfact"],
+            "Facturation": ["Modalr", "Avance", "plateformDemat", "Rtgart", "VAT", "Currency", "Reflet", "CurrencyHedging"],
             "Client": ["NClient", "CustomerName", "Scclt", "Siret", "Country"],
             "Garantie": ["Assurance"],
             "Contrat": ["Mission", "GroupM", "Mandata", "membreGroupement", "projetAgora", "voletEcologie", "Business", "eligibleCir", "projetCup"],
