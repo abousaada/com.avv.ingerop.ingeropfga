@@ -462,6 +462,9 @@
             <Annotations Target="ZFGA_SRV.ZC_FGA_PREVISIONSType/p_period">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGA_PxAutreType/Regroupement">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_FGA_PxAutreType">
                 <Annotation Term="UI.LineItem">
                     <Collection>

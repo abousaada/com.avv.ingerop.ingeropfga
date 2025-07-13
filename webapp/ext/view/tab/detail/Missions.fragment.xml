@@ -15,7 +15,8 @@
             rows="{
                 path: 'utilities>/missionsHierarchy',
                 parameters: {
-                    arrayNames: ['children']
+                    arrayNames: ['children'],
+                    numberOfExpandedLevels: 3
                 }
             }"
             selectionMode="None"

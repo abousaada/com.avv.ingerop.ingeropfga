@@ -270,12 +270,15 @@ sap.ui.define(
 
                     //Prepare tree for missions
                     this.prepareMissionsTreeData();
+
+                    //Prepare tree for Budget PX
+                    this.preparPxAutresTreeData();
                 }
-                else {
+                else { 
 
                     try {
                         const oFragment = await sap.ui.core.Fragment.load({
-                            name: "com.avv.ingerop.ingeropfga.ext.view.tab.DetailsTab",
+                            name: "com.avv.ingerop.ingeropfga.ext.view.tab.DetailsTab", //change to Hoai tab
                             id: sViewId,
                             controller: this
                         });
@@ -478,8 +481,9 @@ sap.ui.define(
 
             },
 
-            prepareMissionsTreeData: function () {
+            /*prepareMissionsTreeData: function () {
                 var missions = this.getView().getModel("utilities").getProperty("/missions");
+                var pxAutre = this.getView().getModel("utilities").getProperty("/pxAutre");
                 var treeData = [];
 
                 // Group by FGA (BusinessNo)
@@ -506,9 +510,9 @@ sap.ui.define(
 
                     // Add mission
                     fgaGroups[mission.BusinessNo].children[mission.Regroupement].children.push(mission);
+                    
                 });
 
-                // Convert to array structure
                 for (var fga in fgaGroups) {
                     var fgaNode = fgaGroups[fga];
                     fgaNode.children = Object.values(fgaNode.children);
@@ -516,6 +520,57 @@ sap.ui.define(
                 }
 
                 this.getView().getModel("utilities").setProperty("/missionsHierarchy", treeData);
+            },*/
+
+            prepareMissionsTreeData: function () {
+                var missions = this.getView().getModel("utilities").getProperty("/missions");
+                var pxAutres = this.getView().getModel("utilities").getProperty("/pxAutres");
+                
+                // Create tree builder function
+                var buildTree = function(items) {
+                    var treeData = [];
+                    var fgaGroups = {};
+                    
+                    if (!items) return treeData;
+                    
+                    items.forEach(function(item) {
+                        if (!fgaGroups[item.BusinessNo]) {
+                            fgaGroups[item.BusinessNo] = {
+                                name: item.BusinessNo,
+                                isNode: true,
+                                isL0: true,
+                                children: {}
+                            };
+                        }
+            
+                        if (!fgaGroups[item.BusinessNo].children[item.Regroupement]) {
+                            fgaGroups[item.BusinessNo].children[item.Regroupement] = {
+                                name: item.Regroupement,
+                                isNode: true,
+                                isL0: false,
+                                children: []
+                            };
+                        }
+            
+                        fgaGroups[item.BusinessNo].children[item.Regroupement].children.push(item);
+                    });
+            
+                    // Convert children objects to arrays
+                    for (var fga in fgaGroups) {
+                        fgaGroups[fga].children = Object.values(fgaGroups[fga].children);
+                        treeData.push(fgaGroups[fga]);
+                    }
+                    
+                    return treeData;
+                };
+            
+                // Build trees 
+                var missionsTreeData = buildTree(missions);
+                var pxAutresTreeData = buildTree(pxAutres);
+            
+                // Set tree
+                this.getView().getModel("utilities").setProperty("/missionsHierarchy", missionsTreeData);
+                this.getView().getModel("utilities").setProperty("/PxAutreHierarchy", pxAutresTreeData);
             },
 
             isGroupementAddVisible: function (editable, isNode, isL0) {

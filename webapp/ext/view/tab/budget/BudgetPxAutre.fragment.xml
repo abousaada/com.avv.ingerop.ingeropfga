@@ -1,0 +1,303 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:table="sap.ui.table"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+>
+    <Panel
+        headerText="BudgetPxAutre"
+        expandable="true"
+        expanded="true"
+    >
+        <table:TreeTable
+            id="BudgetPxAutreTreeTable"
+            rows="{
+                path: 'utilities>/PxAutreHierarchy',
+                parameters: {
+                    arrayNames: ['children'],
+                    numberOfExpandedLevels: 3
+                }
+            }"
+            selectionMode="None"
+            ariaLabelledBy="title"
+            enableColumnReordering="false"  
+        >
+            <table:columns>
+                <!-- Hierarchy Column -->
+                <table:Column width="20rem">
+                    <Label text="Hierarchy" />
+                    <table:template>
+                        <Text
+                            text="{= ${utilities>isNode} ? ${utilities>name} : ${utilities>BusinessNo} + ' - ' + ${utilities>MissionId}}"
+                        />
+                    </table:template>
+                </table:Column>
+
+                <!-- Mission Type Column -->
+                <table:Column width="8rem">
+                    <Label text="Mission" />
+                    <table:template>
+                        <ComboBox
+                            selectedKey="{utilities>MissionCode}"
+                            items="{
+                                path: 'utilities>/missionTypes',
+                                templateShareable: false
+                            }"
+                            editable="false"
+                            width="100%"
+                            visible="{= !${utilities>isNode}}"
+                        >
+                            <core:Item
+                                key="{utilities>code}"
+                                text="{utilities>description}"
+                            />
+                        </ComboBox>
+                    </table:template>
+                </table:Column>
+
+                <!-- Start Date Column -->
+                <table:Column width="10rem">
+                    <Label text="Date début" />
+                    <table:template>
+                        <DatePicker
+                            value="{path: 'utilities>StartDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd' }}"
+                            displayFormat="short"
+                            editable="false"
+                            width="100%"
+                            visible="{= !${utilities>isNode}}"
+                        />
+                    </table:template>
+                </table:Column>
+
+                <!-- End Date Column -->
+                <table:Column width="10rem">
+                    <Label text="Date fin" />
+                    <table:template>
+                        <DatePicker
+                            value="{path: 'utilities>EndDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd' }}"
+                            displayFormat="short"
+                            editable="false"
+                            width="100%"
+                            visible="{= !${utilities>isNode}}"
+                        />
+                    </table:template>
+                </table:Column>
+                
+                <!-- Budget Items Columns -->
+                <table:Column width="8rem">
+                    <Label text="Voyage déplacement" />
+                    <table:template>
+                        <Input value="{utilities>VoyageDeplacement}" 
+                               editable="{ui>/editable}"
+                               visible="{= !${utilities>isNode}}"/>
+                    </table:template>
+                </table:Column>
+                
+                <table:Column width="8rem">
+                    <Label text="Autres Frais" />
+                    <table:template>
+                        <Input value="{utilities>AutresFrais}" 
+                               editable="{ui>/editable}"
+                               visible="{= !${utilities>isNode}}"/>
+                    </table:template>
+                </table:Column>
+                
+                <table:Column width="8rem">
+                    <Label text="Créances douteuses" />
+                    <table:template>
+                        <Input value="{utilities>CreancesDouteuses}" 
+                               editable="{ui>/editable}"
+                               visible="{= !${utilities>isNode}}"/>
+                    </table:template>
+                </table:Column>
+                
+                <table:Column width="8rem">
+                    <Label text="Etudes travaux" />
+                    <table:template>
+                        <Input value="{utilities>EtudesTravaux}" 
+                               editable="{ui>/editable}"
+                               visible="{= !${utilities>isNode}}"/>
+                    </table:template>
+                </table:Column>
+                
+                <table:Column width="8rem">
+                    <Label text="Sinistre contentieux" />
+                    <table:template>
+                        <Input value="{utilities>SinistreContentieux}" 
+                               editable="{ui>/editable}"
+                               visible="{= !${utilities>isNode}}"/>
+                    </table:template>
+                </table:Column>
+                
+                <table:Column width="8rem">
+                    <Label text="Aléas divers" />
+                    <table:template>
+                        <Input value="{utilities>AleasDivers}" 
+                               editable="{ui>/editable}"
+                               visible="{= !${utilities>isNode}}"/>
+                    </table:template>
+                </table:Column>
+                
+                <table:Column width="8rem">
+                    <Label text="Fin d'affaire" />
+                    <table:template>
+                        <Input value="{utilities>FinAffaire}" 
+                               editable="{ui>/editable}"
+                               visible="{= !${utilities>isNode}}"/>
+                    </table:template>
+                </table:Column>
+                
+                <!-- Cumulative Values Columns -->
+                <table:Column width="8rem">
+                    <Label text="Cumul Voyage" />
+                    <table:template>
+                        <Text text="{utilities>CumulVoyageDeplacement}" />
+                    </table:template>
+                </table:Column>
+                
+                <table:Column width="8rem">
+                    <Label text="Cumul Autres Frais" />
+                    <table:template>
+                        <Text text="{utilities>CumulAutresFrais}" />
+                    </table:template>
+                </table:Column>
+                
+                <table:Column width="8rem">
+                    <Label text="Cumul Créances" />
+                    <table:template>
+                        <Text text="{utilities>CumulCreancesDouteuses}" />
+                    </table:template>
+                </table:Column>
+                
+                <table:Column width="8rem">
+                    <Label text="Cumul Etudes" />
+                    <table:template>
+                        <Text text="{utilities>CumulEtudesTravaux}" />
+                    </table:template>
+                </table:Column>
+                
+                <table:Column width="8rem">
+                    <Label text="Cumul Sinistre" />
+                    <table:template>
+                        <Text text="{utilities>CumulSinistreContentieux}" />
+                    </table:template>
+                </table:Column>
+                
+                <table:Column width="8rem">
+                    <Label text="Cumul Aléas" />
+                    <table:template>
+                        <Text text="{utilities>CumulAleasDivers}" />
+                    </table:template>
+                </table:Column>
+                
+                <table:Column width="8rem">
+                    <Label text="Cumul Fin Affaire" />
+                    <table:template>
+                        <Text text="{utilities>CumulFinAffaire}" />
+                    </table:template>
+                </table:Column>
+                
+                <!-- Percentage Values Columns -->
+                <table:Column width="8rem">
+                    <Label text="% Voyage" />
+                    <table:template>
+                        <Text text="{utilities>PctVoyageDeplacement} %" />
+                    </table:template>
+                </table:Column>
+                
+                <table:Column width="8rem">
+                    <Label text="% Autres Frais" />
+                    <table:template>
+                        <Text text="{utilities>PctAutresFrais} %" />
+                    </table:template>
+                </table:Column>
+                
+                <table:Column width="8rem">
+                    <Label text="% Créances" />
+                    <table:template>
+                        <Text text="{utilities>PctCreancesDouteuses} %" />
+                    </table:template>
+                </table:Column>
+                
+                <table:Column width="8rem">
+                    <Label text="% Etudes" />
+                    <table:template>
+                        <Text text="{utilities>PctEtudesTravaux} %" />
+                    </table:template>
+                </table:Column>
+                
+                <table:Column width="8rem">
+                    <Label text="% Sinistre" />
+                    <table:template>
+                        <Text text="{utilities>PctSinistreContentieux} %" />
+                    </table:template>
+                </table:Column>
+                
+                <table:Column width="8rem">
+                    <Label text="% Aléas" />
+                    <table:template>
+                        <Text text="{utilities>PctAleasDivers} %" />
+                    </table:template>
+                </table:Column>
+                
+                <table:Column width="8rem">
+                    <Label text="% Fin Affaire" />
+                    <table:template>
+                        <Text text="{utilities>PctFinAffaire} %" />
+                    </table:template>
+                </table:Column>
+                
+                <!-- RAD Values Columns -->
+                <table:Column width="8rem">
+                    <Label text="RAD Voyage" />
+                    <table:template>
+                        <Text text="{utilities>RadVoyageDeplacement}" />
+                    </table:template>
+                </table:Column>
+                
+                <table:Column width="8rem">
+                    <Label text="RAD Autres Frais" />
+                    <table:template>
+                        <Text text="{utilities>RadAutresFrais}" />
+                    </table:template>
+                </table:Column>
+                
+                <table:Column width="8rem">
+                    <Label text="RAD Créances" />
+                    <table:template>
+                        <Text text="{utilities>RadCreancesDouteuses}" />
+                    </table:template>
+                </table:Column>
+                
+                <table:Column width="8rem">
+                    <Label text="RAD Etudes" />
+                    <table:template>
+                        <Text text="{utilities>RadEtudesTravaux}" />
+                    </table:template>
+                </table:Column>
+                
+                <table:Column width="8rem">
+                    <Label text="RAD Sinistre" />
+                    <table:template>
+                        <Text text="{utilities>RadSinistreContentieux}" />
+                    </table:template>
+                </table:Column>
+                
+                <table:Column width="8rem">
+                    <Label text="RAD Aléas" />
+                    <table:template>
+                        <Text text="{utilities>RadAleasDivers}" />
+                    </table:template>
+                </table:Column>
+                
+                <table:Column width="8rem">
+                    <Label text="RAD Fin Affaire" />
+                    <table:template>
+                        <Text text="{utilities>RadFinAffaire}" />
+                    </table:template>
+                </table:Column>
+            </table:columns>
+        </table:TreeTable>
+    </Panel>
+</core:FragmentDefinition>

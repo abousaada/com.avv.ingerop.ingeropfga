@@ -390,6 +390,7 @@
                 <Property Name="RadSinistreContentieux" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
                 <Property Name="RadAleasDivers" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
                 <Property Name="RadFinAffaire" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
+                <Property Name="Regroupement" Type="Edm.String" MaxLength="40" sap:label="Regroupement mission"/>
             </EntityType>
             <EntityType Name="ZI_FGA_ACTIVITY_VHType" sap:label="Aide à la recherche Activity" sap:value-list="true" sap:content-version="1">
                 <Key>
