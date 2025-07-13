@@ -174,28 +174,24 @@ sap.ui.define(
 
             async _getTabsData() {
                 const utilitiesModel = this.getInterface().getModel("utilities");
-                const [missions, previsions, recaps, opport] = await Promise.all([
+                const [missions, previsions, recaps, opport, pxAutres] = await Promise.all([
                     utilitiesModel.getBEMissions(),
                     utilitiesModel.getBEPrevisions(),
                     utilitiesModel.getBERecaps(),
-                    utilitiesModel.getBEOpport()
+                    utilitiesModel.getBEOpport(),
+
+                    //Bugets PX
+                    //utilitiesModel.getBEPxAutres()
                 ]);
 
                 utilitiesModel.setMissions(missions || []);
                 utilitiesModel.setRecaps(recaps || []);
                 utilitiesModel.setPrevisions(previsions || []);
                 utilitiesModel.setOpport(opport || []);
+                
+                //Bugets PX
+                //utilitiesModel.setPxAutres(pxAutres || []);
 
-                //à enlever une fois les corrections effectués dans les view XML
-                var oPrevisionsModel = this.getView().getModel("synthesis") || new sap.ui.model.json.JSONModel({ results: [] });
-                oPrevisionsModel.setProperty("/results", previsions || []);
-                this.getView().setModel(oPrevisionsModel, "synthesis");
-                oPrevisionsModel.refresh(true);
-
-                var oRecapModel = this.getView().getModel("recap") || new sap.ui.model.json.JSONModel({ results: [] });
-                oRecapModel.setProperty("/results", recaps || []);
-                this.getView().setModel(oRecapModel, "recap");
-                oRecapModel.refresh(true);
             },
 
             _onObjectExtMatched: async function (e) {
@@ -615,6 +611,28 @@ sap.ui.define(
                 // Get the groupement node
                 var oContext = oEvent.getSource().getBindingContext("utilities");
                 var oGroupementNode = oContext.getObject();
+
+                // ABO : This code needs refactoring
+                const oldMissions = this.getView().getModel("utilities").getMissions();
+                const BusinessNo = this.getView().getModel("utilities").getBusinessNo().slice(0, -2); 
+                const maxMission = oldMissions 
+                    .filter(mission => mission.BusinessNo === BusinessNo)
+                    .reduce((max, current) => {
+                        const currentMatch = current.MissionId.match(/-(\d+)$/);
+                        const currentNum = currentMatch ? parseInt(currentMatch[1]) : 0;
+
+                        const maxMatch = max.MissionId?.match(/-(\d+)$/);
+                        const maxNum = maxMatch ? parseInt(maxMatch[1]) : 0;
+
+                        return currentNum > maxNum ? current : max;
+                    }, { MissionId: `${BusinessNo}-000` });
+
+                const match = maxMission.MissionId.match(/-(\d+)$/);
+                const currentMax = match ? parseInt(match[1]) : 0;
+                const nextNum = currentMax + 1;
+                const paddedNum = String(nextNum).padStart(3, '0'); // add zeros "005"
+                const MissionId = `${BusinessNo}-${paddedNum}`; // "MEDXXXXXX000000069-005"
+                //End this code needs refactoring
 
                 // Create new mission with default values
                 var oNewMission = {
