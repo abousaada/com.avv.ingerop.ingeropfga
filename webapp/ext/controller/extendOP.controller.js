@@ -181,7 +181,7 @@ sap.ui.define(
                     utilitiesModel.getBEOpport(),
 
                     //Bugets PX
-                    //utilitiesModel.getBEPxAutres()
+                    utilitiesModel.getBEPxAutres()
                 ]);
 
                 utilitiesModel.setMissions(missions || []);
@@ -190,7 +190,7 @@ sap.ui.define(
                 utilitiesModel.setOpport(opport || []);
                 
                 //Bugets PX
-                //utilitiesModel.setPxAutres(pxAutres || []);
+                utilitiesModel.setPxAutres(pxAutres || []);
 
             },
 
