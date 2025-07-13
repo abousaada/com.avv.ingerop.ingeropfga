@@ -481,47 +481,6 @@ sap.ui.define(
 
             },
 
-            /*prepareMissionsTreeData: function () {
-                var missions = this.getView().getModel("utilities").getProperty("/missions");
-                var pxAutre = this.getView().getModel("utilities").getProperty("/pxAutre");
-                var treeData = [];
-
-                // Group by FGA (BusinessNo)
-                var fgaGroups = {};
-                missions.forEach(function (mission) {
-                    if (!fgaGroups[mission.BusinessNo]) {
-                        fgaGroups[mission.BusinessNo] = {
-                            name: mission.BusinessNo,
-                            isNode: true,
-                            isL0: true,
-                            children: {}
-                        };
-                    }
-
-                    // Group by Regroupement within each FGA
-                    if (!fgaGroups[mission.BusinessNo].children[mission.Regroupement]) {
-                        fgaGroups[mission.BusinessNo].children[mission.Regroupement] = {
-                            name: mission.Regroupement,
-                            isNode: true,
-                            isL0: false,
-                            children: []
-                        };
-                    }
-
-                    // Add mission
-                    fgaGroups[mission.BusinessNo].children[mission.Regroupement].children.push(mission);
-                    
-                });
-
-                for (var fga in fgaGroups) {
-                    var fgaNode = fgaGroups[fga];
-                    fgaNode.children = Object.values(fgaNode.children);
-                    treeData.push(fgaNode);
-                }
-
-                this.getView().getModel("utilities").setProperty("/missionsHierarchy", treeData);
-            },*/
-
             prepareMissionsTreeData: function () {
                 var missions = this.getView().getModel("utilities").getProperty("/missions");
                 var pxAutres = this.getView().getModel("utilities").getProperty("/pxAutres");
