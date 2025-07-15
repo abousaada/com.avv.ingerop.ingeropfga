@@ -19,6 +19,7 @@ sap.ui.define(
         "com/avv/ingerop/ingeropfga/util/constant",
         "com/avv/ingerop/ingeropfga/util/param",
         "com/avv/ingerop/ingeropfga/util/formatter",
+        "com/avv/ingerop/ingeropfga/ext/controller/BudgetPxAutre"
     ],
     function (
         ControllerExtension,
@@ -39,7 +40,8 @@ sap.ui.define(
         NavigationHandler,
         Constant,
         Params,
-        Formatter
+        Formatter,
+        BudgetPxAutre
     ) {
         "use strict";
 
@@ -191,7 +193,7 @@ sap.ui.define(
                 utilitiesModel.setRecaps(recaps || []);
                 utilitiesModel.setPrevisions(previsions || []);
                 utilitiesModel.setOpport(opport || []);
-                
+
                 //Bugets PX
                 utilitiesModel.setPxAutres(pxAutres || []);
 
@@ -206,6 +208,7 @@ sap.ui.define(
                 this._attachChangeEventOnFields();
                 this._setFieldEnabled();
                 this._setDefaultMandatory();
+
 
                 //1. if create
                 if (bCreateMode) { utilitiesModel.reInit(); return }
@@ -271,12 +274,11 @@ sap.ui.define(
                     }
 
                     //Prepare tree for missions
-                    this.prepareMissionsTreeData();
+                    this.prepareBudgetTreeData();
+                    this.preparePxAutreTreeData();
 
-                    //Prepare tree for Budget PX
-                    this.preparPxAutresTreeData();
                 }
-                else { 
+                else {
 
                     try {
                         const oFragment = await sap.ui.core.Fragment.load({
@@ -390,6 +392,10 @@ sap.ui.define(
 
                     this._getExtensionAPI().attachPageDataLoaded(this._onObjectExtMatched.bind(this));
 
+                    this._budgetPxAutre = new BudgetPxAutre();
+                    this._budgetPxAutre.oView = this.getView();
+
+                    /*
                     // Bind the onItemPress function to the controller context
                     this.onItemPress = this.onItemPress.bind(this);
                     this.onCalculate = this.onCalculate.bind(this);
@@ -410,6 +416,7 @@ sap.ui.define(
 
                     this._setInputState();
 
+                    }*/
                 },
 
                 // Called before the table is rebound (can be used to adjust binding parameters)
@@ -497,10 +504,9 @@ sap.ui.define(
 
             },
 
-            prepareMissionsTreeData: function () {
+            prepareBudgetTreeData: function () {
                 var missions = this.getView().getModel("utilities").getProperty("/missions");
-                var pxAutres = this.getView().getModel("utilities").getProperty("/pxAutres");
-                
+         
                 // Create tree builder function
                 var buildTree = function(items) {
                     var treeData = [];
@@ -541,12 +547,25 @@ sap.ui.define(
             
                 // Build trees 
                 var missionsTreeData = buildTree(missions);
-                var pxAutresTreeData = buildTree(pxAutres);
             
                 // Set tree
                 this.getView().getModel("utilities").setProperty("/missionsHierarchy", missionsTreeData);
-                this.getView().getModel("utilities").setProperty("/PxAutreHierarchy", pxAutresTreeData);
             },
+            
+
+            preparePxAutreTreeData: function () {
+                this._budgetPxAutre.preparePxAutreTreeData();
+            },
+
+            onPxAutreSubmit: function(oEvent) {
+                if (!this._budgetPxAutre) {
+                    this._budgetPxAutre = new BudgetPxAutre();
+                    this._budgetPxAutre.oView = this.oView;
+                }
+                this._budgetPxAutre.onSubmit(oEvent);
+            },
+
+            
 
             isGroupementAddVisible: function (editable, isNode, isL0) {
                 return editable === true && isNode === true && isL0 === false;
@@ -644,8 +663,8 @@ sap.ui.define(
 
                 // ABO : This code needs refactoring
                 const oldMissions = this.getView().getModel("utilities").getMissions();
-                const BusinessNo = this.getView().getModel("utilities").getBusinessNo().slice(0, -2); 
-                const maxMission = oldMissions 
+                const BusinessNo = this.getView().getModel("utilities").getBusinessNo().slice(0, -2);
+                const maxMission = oldMissions
                     .filter(mission => mission.BusinessNo === BusinessNo)
                     .reduce((max, current) => {
                         const currentMatch = current.MissionId.match(/-(\d+)$/);

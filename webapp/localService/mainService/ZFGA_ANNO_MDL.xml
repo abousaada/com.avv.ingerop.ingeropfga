@@ -465,21 +465,6 @@
             <Annotations Target="ZFGA_SRV.ZC_FGA_PxAutreType/Regroupement">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
-            <Annotations Target="ZFGA_SRV.ZC_FGA_PxAutreType">
-                <Annotation Term="UI.LineItem">
-                    <Collection>
-                        <Record Type="UI.DataField">
-                            <PropertyValue Property="Value" Path="MissionCode"/>
-                        </Record>
-                        <Record Type="UI.DataField">
-                            <PropertyValue Property="Value" Path="StartDate"/>
-                        </Record>
-                        <Record Type="UI.DataField">
-                            <PropertyValue Property="Value" Path="EndDate"/>
-                        </Record>
-                    </Collection>
-                </Annotation>
-            </Annotations>
             <Annotations Target="ZFGA_SRV.ZI_FGA_ACTIVITY_VHType/Spras">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>

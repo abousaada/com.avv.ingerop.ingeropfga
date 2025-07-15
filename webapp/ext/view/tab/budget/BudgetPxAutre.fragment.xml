@@ -13,7 +13,7 @@
         <table:TreeTable
             id="BudgetPxAutreTreeTable"
             rows="{
-                path: 'utilities>/PxAutreHierarchy',
+                path: 'utilities>/PxAutreHierarchyWithTotals',
                 parameters: {
                     arrayNames: ['children'],
                     numberOfExpandedLevels: 3
@@ -25,62 +25,80 @@
         >
             <table:columns>
                 <!-- Hierarchy Column -->
-                <table:Column width="20rem">
-                    <Label text="Hierarchy" />
+                <table:Column width="17rem">
+                    <Label text="Hierarchy/Mission" />
                     <table:template>
                         <Text
-                            text="{= ${utilities>isNode} ? ${utilities>name} : ${utilities>BusinessNo} + ' - ' + ${utilities>MissionId}}"
+                            text="{= ${utilities>isTotalRow} ? ${utilities>name} : 
+                                 ${utilities>isNode} ? ${utilities>name} : 
+                                 ${utilities>MissionId}}"
                         />
                     </table:template>
                 </table:Column>
-
-                <!-- Mission Column -->
-                <table:Column width="8rem">
-                    <Label text="Mission" />
+                
+                <!-- Libelle Column -->
+                <table:Column width="5rem">
+                    <Label text="Libellé" />
                     <table:template>
-                        <Text
-                            text="{
-                            path: 'utilities>MissionCode',
-                            formatter: '.formatMissionDescription'
-                        }"
-                            visible="{= !${utilities>isNode}}"
-                        />
+                        <HBox>
+                            <Text
+                                text="{utilities>Libelle}"
+                                visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
+                            />
+                        </HBox>
+                    </table:template>
+                </table:Column>
+
+                <!-- Statut Column -->
+                <table:Column width="5rem">
+                    <Label text="Statut" />
+                    <table:template>
+                        <HBox>
+                            <Text
+                                text="{utilities>Statut}"
+                                visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
+                            />
+                        </HBox>
                     </table:template>
                 </table:Column>
 
                 <!-- Start Date Column -->
-                <table:Column width="10rem">
+                <table:Column width="6rem">
                     <Label text="Date début" />
                     <table:template>
-                        <Text
-                            text="{
-                            path: 'utilities>StartDate',
-                            type: 'sap.ui.model.type.Date',
-                            formatOptions: { 
-                                style: 'short',
-                                strictParsing: true
-                            }
-                        }"
-                            visible="{= !${utilities>isNode}}"
-                        />
+                        <HBox>
+                            <Text
+                                text="{
+                                    path: 'utilities>StartDate',
+                                    type: 'sap.ui.model.type.Date',
+                                    formatOptions: { 
+                                        style: 'short',
+                                        strictParsing: true
+                                    }
+                                }"
+                                visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
+                            />
+                        </HBox>
                     </table:template>
                 </table:Column>
 
                 <!-- End Date Column -->
-                <table:Column width="10rem">
+                <table:Column width="6rem">
                     <Label text="Date fin" />
                     <table:template>
-                        <Text
-                            text="{
-                            path: 'utilities>EndDate',
-                            type: 'sap.ui.model.type.Date',
-                            formatOptions: { 
-                                style: 'short',
-                                strictParsing: true
-                            }
-                        }"
-                            visible="{= !${utilities>isNode}}"
-                        />
+                        <HBox>
+                            <Text
+                                text="{
+                                    path: 'utilities>EndDate',
+                                    type: 'sap.ui.model.type.Date',
+                                    formatOptions: { 
+                                        style: 'short',
+                                        strictParsing: true
+                                    }
+                                }"
+                                visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
+                            />
+                        </HBox>
                     </table:template>
                 </table:Column>
 
@@ -88,227 +106,116 @@
                 <table:Column width="8rem">
                     <Label text="Voyage déplacement" />
                     <table:template>
-                        <Input
-                            value="{utilities>VoyageDeplacement}"
-                            editable="{ui>/editable}"
-                            visible="{= !${utilities>isNode}}"
-                        />
+                        <HBox>
+                            <Input
+                                value="{utilities>VoyageDeplacement}"
+                                editable="{ui>/editable}"
+                                visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
+                                liveChange=".onLiveChange"
+                                submit=".onPxAutreSubmit"
+                            />
+                            <Text
+                                text="{utilities>VoyageDeplacement}"
+                                visible="{= ${utilities>isTotalRow}}"
+                            />
+                        </HBox>
                     </table:template>
                 </table:Column>
 
                 <table:Column width="8rem">
                     <Label text="Autres Frais" />
                     <table:template>
-                        <Input
-                            value="{utilities>AutresFrais}"
-                            editable="{ui>/editable}"
-                            visible="{= !${utilities>isNode}}"
-                        />
+                        <HBox>
+                            <Input
+                                value="{utilities>AutresFrais}"
+                                editable="{ui>/editable}"
+                                visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
+                            />
+                            <Text
+                                text="{utilities>AutresFrais}"
+                                visible="{= ${utilities>isTotalRow}}"
+                            />
+                        </HBox>
                     </table:template>
                 </table:Column>
 
                 <table:Column width="8rem">
                     <Label text="Créances douteuses" />
                     <table:template>
-                        <Input
-                            value="{utilities>CreancesDouteuses}"
-                            editable="{ui>/editable}"
-                            visible="{= !${utilities>isNode}}"
-                        />
+                        <HBox>
+                            <Input
+                                value="{utilities>CreancesDouteuses}"
+                                editable="{ui>/editable}"
+                                visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
+                            />
+                            <Text
+                                text="{utilities>CreancesDouteuses}"
+                                visible="{= ${utilities>isTotalRow}}"
+                            />
+                        </HBox>
                     </table:template>
                 </table:Column>
 
                 <table:Column width="8rem">
                     <Label text="Etudes travaux" />
                     <table:template>
-                        <Input
-                            value="{utilities>EtudesTravaux}"
-                            editable="{ui>/editable}"
-                            visible="{= !${utilities>isNode}}"
-                        />
+                        <HBox>
+                            <Input
+                                value="{utilities>EtudesTravaux}"
+                                editable="{ui>/editable}"
+                                visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
+                            />
+                            <Text
+                                text="{utilities>EtudesTravaux}"
+                                visible="{= ${utilities>isTotalRow}}"
+                            />
+                        </HBox>
                     </table:template>
                 </table:Column>
 
                 <table:Column width="8rem">
                     <Label text="Sinistre contentieux" />
                     <table:template>
-                        <Input
-                            value="{utilities>SinistreContentieux}"
-                            editable="{ui>/editable}"
-                            visible="{= !${utilities>isNode}}"
-                        />
+                        <HBox>
+                            <Input
+                                value="{utilities>SinistreContentieux}"
+                                editable="{ui>/editable}"
+                                visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
+                            />
+                            <Text
+                                text="{utilities>SinistreContentieux}"
+                                visible="{= ${utilities>isTotalRow}}"
+                            />
+                        </HBox>
                     </table:template>
                 </table:Column>
 
                 <table:Column width="8rem">
                     <Label text="Aléas divers" />
                     <table:template>
-                        <Input
-                            value="{utilities>AleasDivers}"
-                            editable="{ui>/editable}"
-                            visible="{= !${utilities>isNode}}"
-                        />
+                        <HBox>
+                            <Input
+                                value="{utilities>AleasDivers}"
+                                editable="{ui>/editable}"
+                                visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
+                            />
+                            <Text
+                                text="{utilities>AleasDivers}"
+                                visible="{= ${utilities>isTotalRow}}"
+                            />
+                        </HBox>
                     </table:template>
                 </table:Column>
 
                 <table:Column width="8rem">
                     <Label text="Fin d'affaire" />
                     <table:template>
-                        <Input
-                            value="{utilities>FinAffaire}"
-                            editable="{ui>/editable}"
-                            visible="{= !${utilities>isNode}}"
-                        />
-                    </table:template>
-                </table:Column>
-
-                <!-- Cumulative Values Columns -->
-                <table:Column width="8rem">
-                    <Label text="Cumul Voyage" />
-                    <table:template>
-                        <Text text="{utilities>CumulVoyageDeplacement}" />
-                    </table:template>
-                </table:Column>
-
-                <table:Column width="8rem">
-                    <Label text="Cumul Autres Frais" />
-                    <table:template>
-                        <Text text="{utilities>CumulAutresFrais}" />
-                    </table:template>
-                </table:Column>
-
-                <table:Column width="8rem">
-                    <Label text="Cumul Créances" />
-                    <table:template>
-                        <Text text="{utilities>CumulCreancesDouteuses}" />
-                    </table:template>
-                </table:Column>
-
-                <table:Column width="8rem">
-                    <Label text="Cumul Etudes" />
-                    <table:template>
-                        <Text text="{utilities>CumulEtudesTravaux}" />
-                    </table:template>
-                </table:Column>
-
-                <table:Column width="8rem">
-                    <Label text="Cumul Sinistre" />
-                    <table:template>
-                        <Text text="{utilities>CumulSinistreContentieux}" />
-                    </table:template>
-                </table:Column>
-
-                <table:Column width="8rem">
-                    <Label text="Cumul Aléas" />
-                    <table:template>
-                        <Text text="{utilities>CumulAleasDivers}" />
-                    </table:template>
-                </table:Column>
-
-                <table:Column width="8rem">
-                    <Label text="Cumul Fin Affaire" />
-                    <table:template>
-                        <Text text="{utilities>CumulFinAffaire}" />
-                    </table:template>
-                </table:Column>
-
-                <!-- Percentage Values Columns -->
-                <table:Column width="8rem">
-                    <Label text="% Voyage" />
-                    <table:template>
-                        <Text text="{utilities>PctVoyageDeplacement} %" />
-                    </table:template>
-                </table:Column>
-
-                <table:Column width="8rem">
-                    <Label text="% Autres Frais" />
-                    <table:template>
-                        <Text text="{utilities>PctAutresFrais} %" />
-                    </table:template>
-                </table:Column>
-
-                <table:Column width="8rem">
-                    <Label text="% Créances" />
-                    <table:template>
-                        <Text text="{utilities>PctCreancesDouteuses} %" />
-                    </table:template>
-                </table:Column>
-
-                <table:Column width="8rem">
-                    <Label text="% Etudes" />
-                    <table:template>
-                        <Text text="{utilities>PctEtudesTravaux} %" />
-                    </table:template>
-                </table:Column>
-
-                <table:Column width="8rem">
-                    <Label text="% Sinistre" />
-                    <table:template>
-                        <Text text="{utilities>PctSinistreContentieux} %" />
-                    </table:template>
-                </table:Column>
-
-                <table:Column width="8rem">
-                    <Label text="% Aléas" />
-                    <table:template>
-                        <Text text="{utilities>PctAleasDivers} %" />
-                    </table:template>
-                </table:Column>
-
-                <table:Column width="8rem">
-                    <Label text="% Fin Affaire" />
-                    <table:template>
-                        <Text text="{utilities>PctFinAffaire} %" />
-                    </table:template>
-                </table:Column>
-
-                <!-- RAD Values Columns -->
-                <table:Column width="8rem">
-                    <Label text="RAD Voyage" />
-                    <table:template>
-                        <Text text="{utilities>RadVoyageDeplacement}" />
-                    </table:template>
-                </table:Column>
-
-                <table:Column width="8rem">
-                    <Label text="RAD Autres Frais" />
-                    <table:template>
-                        <Text text="{utilities>RadAutresFrais}" />
-                    </table:template>
-                </table:Column>
-
-                <table:Column width="8rem">
-                    <Label text="RAD Créances" />
-                    <table:template>
-                        <Text text="{utilities>RadCreancesDouteuses}" />
-                    </table:template>
-                </table:Column>
-
-                <table:Column width="8rem">
-                    <Label text="RAD Etudes" />
-                    <table:template>
-                        <Text text="{utilities>RadEtudesTravaux}" />
-                    </table:template>
-                </table:Column>
-
-                <table:Column width="8rem">
-                    <Label text="RAD Sinistre" />
-                    <table:template>
-                        <Text text="{utilities>RadSinistreContentieux}" />
-                    </table:template>
-                </table:Column>
-
-                <table:Column width="8rem">
-                    <Label text="RAD Aléas" />
-                    <table:template>
-                        <Text text="{utilities>RadAleasDivers}" />
-                    </table:template>
-                </table:Column>
-
-                <table:Column width="8rem">
-                    <Label text="RAD Fin Affaire" />
-                    <table:template>
-                        <Text text="{utilities>RadFinAffaire}" />
+                        <HBox>
+                            <Text
+                                text="{utilities>FinAffaire}"
+                                visible="true"
+                            />
+                        </HBox>
                     </table:template>
                 </table:Column>
             </table:columns>
