@@ -18,6 +18,7 @@ sap.ui.define(
         "sap/ui/generic/app/navigation/service/NavigationHandler",
         "com/avv/ingerop/ingeropfga/util/constant",
         "com/avv/ingerop/ingeropfga/util/param",
+        "com/avv/ingerop/ingeropfga/util/formatter",
     ],
     function (
         ControllerExtension,
@@ -37,13 +38,14 @@ sap.ui.define(
         SelectionVariant,
         NavigationHandler,
         Constant,
-        Params
+        Params,
+        Formatter
     ) {
         "use strict";
 
         return ControllerExtension.extend("com.avv.ingerop.ingeropfga.ext.controller.extendOP", {
             // Override or add custom methods here
-
+            Formatter: Formatter,
             _getExtensionAPI: function () {
                 return this.getInterface().getView().getController().extensionAPI;
             },
@@ -86,35 +88,21 @@ sap.ui.define(
             },
 
             _attachChangeEventOnFields() {
-                const changeActions = [{
-                    identification: "Identification",
-                    champ: "Type",
-                    action: "onTypeChange"
-                }, {
-                    identification: "Travaux",
-                    champ: "Mttrvx",
-                    action: "onCalcTauxTravaux"
-                }, {
-                    identification: "Prix",
-                    champ: "Mtctr",
-                    action: "onCalcTauxTravaux"
-                }, {
-                    identification: "Identification",
-                    champ: "Activity",
-                    action: "onActivityChange"
-                }, {
-                    identification: "Duree",
-                    champ: "StartDate",
-                    action: "onDateChange"
-                }, {
-                    identification: "Duree",
-                    champ: "EndDate",
-                    action: "onDateChange"
-                }];
-
-                changeActions.map(({ identification, champ, action }) => {
+                Params.changeEventActions.map(({ identification, champ, action }) => {
                     this.getView().byId(Helper.headerFieldIdBySectionAndFieldName(identification, champ)).attachChange(this[action].bind(this));
-                })
+                });
+            },
+
+            _setInputState(){
+                Object.entries(Constant.headerFieldsList).map(([identifiant, champs]) => {
+                    champs.map(champ => {
+                        const field = this._getField(identifiant, champ);
+                        field?.bindProperty("valueState", {
+                            path: champ,
+                            formatter: Formatter.validMandatoryField(field)
+                        });
+                    });
+                });
             },
 
             onNavBack() {
@@ -419,6 +407,9 @@ sap.ui.define(
                     if (oTable) {
                         oTable.addStyleClass("small-text");
                     }
+
+                    this._setInputState();
+
                 },
 
                 // Called before the table is rebound (can be used to adjust binding parameters)

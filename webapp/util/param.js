@@ -3,6 +3,31 @@ sap.ui.define([
     "use strict";
 
     return {
+        changeEventActions: [{
+            identification: "Identification",
+            champ: "Type",
+            action: "onTypeChange"
+        }, {
+            identification: "Travaux",
+            champ: "Mttrvx",
+            action: "onCalcTauxTravaux"
+        }, {
+            identification: "Prix",
+            champ: "Mtctr",
+            action: "onCalcTauxTravaux"
+        }, {
+            identification: "Identification",
+            champ: "Activity",
+            action: "onActivityChange"
+        }, {
+            identification: "Duree",
+            champ: "StartDate",
+            action: "onDateChange"
+        }, {
+            identification: "Duree",
+            champ: "EndDate",
+            action: "onDateChange"
+        }],
         headerFieldChangeEventMapping: {
             "Identification": ["Type", "Activity"],
             "Facturation": [],
