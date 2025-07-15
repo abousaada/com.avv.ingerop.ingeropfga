@@ -23,7 +23,7 @@
                 <Label text="" />
                 <table:Table
                     id="idRecapTable"
-                    rows="{recap>/results}"
+                    rows="{utilities>/recaps}"
                     class="syntheseTab"
                     selectionMode="None"
                 >
@@ -31,24 +31,24 @@
                         <table:Column>
                             <Label text="{i18n>recap.ID}" />
                             <table:template>
-                                <Text text="{recap>row_description}" />
+                                <Text text="{utilities>row_description}" />
                             </table:template>
                         </table:Column>
                         <!--table:Column>
                         <Label text="Budget Initial"/>
                         <table:template>
-                            <Text text="{recap>budget_initial}" />
-                            <!- -ObjectStatus class="custObjStatus" state="{= parseFloat(${recap>P0}) &lt; 0 ? 'Error': 'None'}" text="{ 'parts':[{ path: 'recap>P0' }, {path: 'recap>Type'}], formatter: '.formatRecap' }" /
+                            <Text text="{utilities>budget_initial}" />
+                            <!- -ObjectStatus class="custObjStatus" state="{= parseFloat(${utilities>P0}) &lt; 0 ? 'Error': 'None'}" text="{ 'parts':[{ path: 'utilities>P0' }, {path: 'utilities>Type'}], formatter: '.formatRecap' }" /
                         </table:template>
                     </table:Column-->
                         <table:Column>
                             <Label text="Budget Objectif" />
                             <table:template>
-                                <!--Text text="{recap>budget_objectif}" /-->
+                                <!--Text text="{utilities>budget_objectif}" /-->
                                 <Text text="{
                                     parts: [
-                                        {path: 'recap>budget_objectif'},
-                                        {path: 'recap>row_type'}
+                                        {path: 'utilities>budget_objectif'},
+                                        {path: 'utilities>row_type'}
                                     ],
                                     formatter: '.formatPercentage'
                                 }" />
@@ -57,11 +57,11 @@
                         <table:Column>
                             <Label text="Ecart objectif" />
                             <table:template>
-                                <!--Text text="{recap>ecart_objectif}" /-->
+                                <!--Text text="{utilities>ecart_objectif}" /-->
                                 <Text text="{
                                     parts: [
-                                        {path: 'recap>ecart_objectif'},
-                                        {path: 'recap>row_type'}
+                                        {path: 'utilities>ecart_objectif'},
+                                        {path: 'utilities>row_type'}
                                     ],
                                     formatter: '.formatPercentage'
                                 }" />
@@ -70,11 +70,11 @@
                         <table:Column>
                             <Label text="Cumul N-1" />
                             <table:template>
-                                <!--Text text="{recap>cumul_n1}" /-->
+                                <!--Text text="{utilities>cumul_n1}" /-->
                                 <Text text="{
                                     parts: [
-                                        {path: 'recap>cumul_n1'},
-                                        {path: 'recap>row_type'}
+                                        {path: 'utilities>cumul_n1'},
+                                        {path: 'utilities>row_type'}
                                     ],
                                     formatter: '.formatPercentage'
                                 }" />
@@ -83,11 +83,11 @@
                         <table:Column>
                             <Label text="Cumul à ce jour" />
                             <table:template>
-                                <!--Text text="{recap>cumul_ce_jour}" /-->
+                                <!--Text text="{utilities>cumul_ce_jour}" /-->
                                 <Text text="{
                                     parts: [
-                                        {path: 'recap>cumul_ce_jour'},
-                                        {path: 'recap>row_type'}
+                                        {path: 'utilities>cumul_ce_jour'},
+                                        {path: 'utilities>row_type'}
                                     ],
                                     formatter: '.formatPercentage'
                                 }" />
@@ -96,11 +96,11 @@
                         <table:Column>
                             <Label text="Année en cours" />
                             <table:template>
-                                <!--Text text="{recap>annee_en_cours}" /-->
+                                <!--Text text="{utilities>annee_en_cours}" /-->
                                 <Text text="{
                                     parts: [
-                                        {path: 'recap>annee_en_cours'},
-                                        {path: 'recap>row_type'}
+                                        {path: 'utilities>annee_en_cours'},
+                                        {path: 'utilities>row_type'}
                                     ],
                                     formatter: '.formatPercentage'
                                 }" />
@@ -109,11 +109,11 @@
                         <table:Column>
                             <Label text="Mois M" />
                             <table:template>
-                                <!--Text text="{recap>mois_m}" /-->
+                                <!--Text text="{utilities>mois_m}" /-->
                                 <Text text="{
                                     parts: [
-                                        {path: 'recap>mois_m'},
-                                        {path: 'recap>row_type'}
+                                        {path: 'utilities>mois_m'},
+                                        {path: 'utilities>row_type'}
                                     ],
                                     formatter: '.formatPercentage'
                                 }" />
@@ -122,11 +122,11 @@
                         <table:Column>
                             <Label text="Reste à Venir" />
                             <table:template>
-                                <!--Text text="{recap>reste_a_venir}" /-->
+                                <!--Text text="{utilities>reste_a_venir}" /-->
                                 <Text text="{
                                     parts: [
-                                        {path: 'recap>reste_a_venir'},
-                                        {path: 'recap>row_type'}
+                                        {path: 'utilities>reste_a_venir'},
+                                        {path: 'utilities>row_type'}
                                     ],
                                     formatter: '.formatPercentage'
                                 }" />
@@ -135,11 +135,11 @@
                         <table:Column>
                             <Label text="Budget actif" />
                             <table:template>
-                                <!--Text text="{recap>budget_actif}" /-->
+                                <!--Text text="{utilities>budget_actif}" /-->
                                 <Text text="{
                                     parts: [
-                                        {path: 'recap>budget_actif'},
-                                        {path: 'recap>row_type'}
+                                        {path: 'utilities>budget_actif'},
+                                        {path: 'utilities>row_type'}
                                     ],
                                     formatter: '.formatPercentage'
                                 }" />
@@ -148,11 +148,11 @@
                         <table:Column>
                             <Label text="Budget actif M-1" />
                             <table:template>
-                                <!--Text text="{recap>budget_actif_m1}" /-->
+                                <!--Text text="{utilities>budget_actif_m1}" /-->
                                 <Text text="{
                                     parts: [
-                                        {path: 'recap>budget_actif_m1'},
-                                        {path: 'recap>row_type'}
+                                        {path: 'utilities>budget_actif_m1'},
+                                        {path: 'utilities>row_type'}
                                     ],
                                     formatter: '.formatPercentage'
                                 }" />
@@ -161,11 +161,11 @@
                         <table:Column>
                             <Label text="Ecart" />
                             <table:template>
-                                <!--Text text="{recap>ecart}" /-->
+                                <!--Text text="{utilities>ecart}" /-->
                                 <Text text="{
                                     parts: [
-                                        {path: 'recap>ecart'},
-                                        {path: 'recap>row_type'}
+                                        {path: 'utilities>ecart'},
+                                        {path: 'utilities>row_type'}
                                     ],
                                     formatter: '.formatPercentage'
                                 }" />
@@ -174,11 +174,11 @@
                         <table:Column>
                             <Label text="Budget N-1" />
                             <table:template>
-                                <!--Text text="{recap>budget_n1}" /-->
+                                <!--Text text="{utilities>budget_n1}" /-->
                                 <Text text="{
                                     parts: [
-                                        {path: 'recap>budget_n1'},
-                                        {path: 'recap>row_type'}
+                                        {path: 'utilities>budget_n1'},
+                                        {path: 'utilities>row_type'}
                                     ],
                                     formatter: '.formatPercentage'
                                 }" />
@@ -187,31 +187,31 @@
                         <!--table:Column>
                         <Label text="{i18n>recap.CumulN}"/>
                         <table:template>
-                            <ObjectStatus class="custObjStatus" state="{= parseFloat(${recap>CumulN}) &lt; 0 ? 'Error': 'None'}" text="{ 'parts':[{ path: 'recap>CumulN' }, {path: 'recap>Type'}], formatter: '.formatRecap' }" />
+                            <ObjectStatus class="custObjStatus" state="{= parseFloat(${utilities>CumulN}) &lt; 0 ? 'Error': 'None'}" text="{ 'parts':[{ path: 'utilities>CumulN' }, {path: 'utilities>Type'}], formatter: '.formatRecap' }" />
                         </table:template>
                     </table:Column>
                     <table:Column>
                         <Label text="{i18n>recap.YearN}"/>
                         <table:template>
-                            <ObjectStatus class="custObjStatus" state="{= parseFloat(${recap>YearN}) &lt; 0 ? 'Error': 'None'}" text="{ 'parts':[{ path: 'recap>YearN' }, {path: 'recap>Type'}], formatter: '.formatRecap' }" />
+                            <ObjectStatus class="custObjStatus" state="{= parseFloat(${utilities>YearN}) &lt; 0 ? 'Error': 'None'}" text="{ 'parts':[{ path: 'utilities>YearN' }, {path: 'utilities>Type'}], formatter: '.formatRecap' }" />
                         </table:template>
                     </table:Column>
                     <table:Column>
                         <Label text="{i18n>recap.MonthM}"/>
                         <table:template>
-                            <ObjectStatus class="custObjStatus" state="{= parseFloat(${recap>MonthM}) &lt; 0 ? 'Error': 'None'}" text="{ 'parts':[{ path: 'recap>MonthM' }, {path: 'recap>Type'}], formatter: '.formatRecap' }" />
+                            <ObjectStatus class="custObjStatus" state="{= parseFloat(${utilities>MonthM}) &lt; 0 ? 'Error': 'None'}" text="{ 'parts':[{ path: 'utilities>MonthM' }, {path: 'utilities>Type'}], formatter: '.formatRecap' }" />
                         </table:template>
                     </table:Column>
                     <table:Column>
                         <Label text="{i18n>recap.YetToCome}"/>
                         <table:template>
-                            <ObjectStatus class="custObjStatus" state="{= parseFloat(${recap>YetToCome}) &lt; 0 ? 'Error': 'None'}" text="{ 'parts':[{ path: 'recap>YetToCome' }, {path: 'recap>Type'}], formatter: '.formatRecap' }" />
+                            <ObjectStatus class="custObjStatus" state="{= parseFloat(${utilities>YetToCome}) &lt; 0 ? 'Error': 'None'}" text="{ 'parts':[{ path: 'utilities>YetToCome' }, {path: 'utilities>Type'}], formatter: '.formatRecap' }" />
                         </table:template>
                     </table:Column>
                     <table:Column>
                         <Label text="{i18n>recap.Forecast}"/>
                         <table:template>
-                            <ObjectStatus class="custObjStatus" state="{= parseFloat(${recap>Forecast}) &lt; 0 ? 'Error': 'None'}" text="{ 'parts':[{ path: 'recap>Forecast' }, {path: 'recap>Type'}], formatter: '.formatRecap' }" />
+                            <ObjectStatus class="custObjStatus" state="{= parseFloat(${utilities>Forecast}) &lt; 0 ? 'Error': 'None'}" text="{ 'parts':[{ path: 'utilities>Forecast' }, {path: 'utilities>Type'}], formatter: '.formatRecap' }" />
                         </table:template>
                     </table:Column-->
                     </table:columns>

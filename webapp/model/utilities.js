@@ -167,6 +167,22 @@ sap.ui.define([
                 }
             },
 
+            async getBEPxAutres() {
+                try {
+                    const businessNo = this.getBusinessNo();
+                    const period = this.getPeriod();
+                    const urlBusinessNo = encodeURIComponent(businessNo).slice(0, -2);
+                    const urlPeriod = encodeURIComponent(period);
+
+                    const sPath = `/ZC_FGASet(BusinessNo='${urlBusinessNo}',p_period='${urlPeriod}')/to_BudgetPxAutre`;
+                    console.log(`retrieve Budget Px Autre with period: ${period} and BusinessNo: ${businessNo}`);
+                    const pxAutres = await this.read(sPath);
+                    return pxAutres?.results || [];
+                } catch (error) {
+                    console.log(error);
+                }
+            },
+
             async getBEPrevisions() {
                 try {
                     const businessNo = this.getBusinessNo();

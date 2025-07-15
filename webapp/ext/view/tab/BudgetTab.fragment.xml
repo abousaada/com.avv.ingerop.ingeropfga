@@ -16,8 +16,11 @@
             <IconTabFilter key="SCIncomeTab" text="{i18n>synt.tab.budget.subcontract}">
                 <core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.budget.SCIncome" type="XML" />
             </IconTabFilter>
-            <IconTabFilter key="OtherIncomeTab" text="{i18n>synt.tab.budget.other}">
+            <!--IconTabFilter key="OtherIncomeTab" text="{i18n>synt.tab.budget.other}">
                 <core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.budget.OtherIncome" type="XML" />
+            </IconTabFilter-->
+            <IconTabFilter key="OtherIncomeTab" text="{i18n>synt.tab.budget.other}">
+                <core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.budget.BudgetPxAutre" type="XML" />
             </IconTabFilter>
         </items>
     </IconTabBar>

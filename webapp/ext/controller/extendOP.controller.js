@@ -189,28 +189,24 @@ sap.ui.define(
 
             async _getTabsData() {
                 const utilitiesModel = this.getInterface().getModel("utilities");
-                const [missions, previsions, recaps, opport] = await Promise.all([
+                const [missions, previsions, recaps, opport, pxAutres] = await Promise.all([
                     utilitiesModel.getBEMissions(),
                     utilitiesModel.getBEPrevisions(),
                     utilitiesModel.getBERecaps(),
-                    utilitiesModel.getBEOpport()
+                    utilitiesModel.getBEOpport(),
+
+                    //Bugets PX
+                    utilitiesModel.getBEPxAutres()
                 ]);
 
                 utilitiesModel.setMissions(missions || []);
                 utilitiesModel.setRecaps(recaps || []);
                 utilitiesModel.setPrevisions(previsions || []);
                 utilitiesModel.setOpport(opport || []);
+                
+                //Bugets PX
+                utilitiesModel.setPxAutres(pxAutres || []);
 
-                //à enlever une fois les corrections effectués dans les view XML
-                var oPrevisionsModel = this.getView().getModel("synthesis") || new sap.ui.model.json.JSONModel({ results: [] });
-                oPrevisionsModel.setProperty("/results", previsions || []);
-                this.getView().setModel(oPrevisionsModel, "synthesis");
-                oPrevisionsModel.refresh(true);
-
-                var oRecapModel = this.getView().getModel("recap") || new sap.ui.model.json.JSONModel({ results: [] });
-                oRecapModel.setProperty("/results", recaps || []);
-                this.getView().setModel(oRecapModel, "recap");
-                oRecapModel.refresh(true);
             },
 
             _onObjectExtMatched: async function (e) {
@@ -288,12 +284,15 @@ sap.ui.define(
 
                     //Prepare tree for missions
                     this.prepareMissionsTreeData();
+
+                    //Prepare tree for Budget PX
+                    this.preparPxAutresTreeData();
                 }
-                else {
+                else { 
 
                     try {
                         const oFragment = await sap.ui.core.Fragment.load({
-                            name: "com.avv.ingerop.ingeropfga.ext.view.tab.DetailsTab",
+                            name: "com.avv.ingerop.ingeropfga.ext.view.tab.DetailsTab", //change to Hoai tab
                             id: sViewId,
                             controller: this
                         });
@@ -509,42 +508,53 @@ sap.ui.define(
 
             prepareMissionsTreeData: function () {
                 var missions = this.getView().getModel("utilities").getProperty("/missions");
-                var treeData = [];
-
-                // Group by FGA (BusinessNo)
-                var fgaGroups = {};
-                missions.forEach(function (mission) {
-                    if (!fgaGroups[mission.BusinessNo]) {
-                        fgaGroups[mission.BusinessNo] = {
-                            name: mission.BusinessNo,
-                            isNode: true,
-                            isL0: true,
-                            children: {}
-                        };
+                var pxAutres = this.getView().getModel("utilities").getProperty("/pxAutres");
+                
+                // Create tree builder function
+                var buildTree = function(items) {
+                    var treeData = [];
+                    var fgaGroups = {};
+                    
+                    if (!items) return treeData;
+                    
+                    items.forEach(function(item) {
+                        if (!fgaGroups[item.BusinessNo]) {
+                            fgaGroups[item.BusinessNo] = {
+                                name: item.BusinessNo,
+                                isNode: true,
+                                isL0: true,
+                                children: {}
+                            };
+                        }
+            
+                        if (!fgaGroups[item.BusinessNo].children[item.Regroupement]) {
+                            fgaGroups[item.BusinessNo].children[item.Regroupement] = {
+                                name: item.Regroupement,
+                                isNode: true,
+                                isL0: false,
+                                children: []
+                            };
+                        }
+            
+                        fgaGroups[item.BusinessNo].children[item.Regroupement].children.push(item);
+                    });
+            
+                    // Convert children objects to arrays
+                    for (var fga in fgaGroups) {
+                        fgaGroups[fga].children = Object.values(fgaGroups[fga].children);
+                        treeData.push(fgaGroups[fga]);
                     }
-
-                    // Group by Regroupement within each FGA
-                    if (!fgaGroups[mission.BusinessNo].children[mission.Regroupement]) {
-                        fgaGroups[mission.BusinessNo].children[mission.Regroupement] = {
-                            name: mission.Regroupement,
-                            isNode: true,
-                            isL0: false,
-                            children: []
-                        };
-                    }
-
-                    // Add mission
-                    fgaGroups[mission.BusinessNo].children[mission.Regroupement].children.push(mission);
-                });
-
-                // Convert to array structure
-                for (var fga in fgaGroups) {
-                    var fgaNode = fgaGroups[fga];
-                    fgaNode.children = Object.values(fgaNode.children);
-                    treeData.push(fgaNode);
-                }
-
-                this.getView().getModel("utilities").setProperty("/missionsHierarchy", treeData);
+                    
+                    return treeData;
+                };
+            
+                // Build trees 
+                var missionsTreeData = buildTree(missions);
+                var pxAutresTreeData = buildTree(pxAutres);
+            
+                // Set tree
+                this.getView().getModel("utilities").setProperty("/missionsHierarchy", missionsTreeData);
+                this.getView().getModel("utilities").setProperty("/PxAutreHierarchy", pxAutresTreeData);
             },
 
             isGroupementAddVisible: function (editable, isNode, isL0) {
@@ -640,6 +650,28 @@ sap.ui.define(
                 // Get the groupement node
                 var oContext = oEvent.getSource().getBindingContext("utilities");
                 var oGroupementNode = oContext.getObject();
+
+                // ABO : This code needs refactoring
+                const oldMissions = this.getView().getModel("utilities").getMissions();
+                const BusinessNo = this.getView().getModel("utilities").getBusinessNo().slice(0, -2); 
+                const maxMission = oldMissions 
+                    .filter(mission => mission.BusinessNo === BusinessNo)
+                    .reduce((max, current) => {
+                        const currentMatch = current.MissionId.match(/-(\d+)$/);
+                        const currentNum = currentMatch ? parseInt(currentMatch[1]) : 0;
+
+                        const maxMatch = max.MissionId?.match(/-(\d+)$/);
+                        const maxNum = maxMatch ? parseInt(maxMatch[1]) : 0;
+
+                        return currentNum > maxNum ? current : max;
+                    }, { MissionId: `${BusinessNo}-000` });
+
+                const match = maxMission.MissionId.match(/-(\d+)$/);
+                const currentMax = match ? parseInt(match[1]) : 0;
+                const nextNum = currentMax + 1;
+                const paddedNum = String(nextNum).padStart(3, '0'); // add zeros "005"
+                const MissionId = `${BusinessNo}-${paddedNum}`; // "MEDXXXXXX000000069-005"
+                //End this code needs refactoring
 
                 // Create new mission with default values
                 var oNewMission = {
