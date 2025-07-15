@@ -64,7 +64,7 @@ sap.ui.define([
             },
 
             validFGAHeaderFields(){
-
+                return true;
             },
 
             // const data = {

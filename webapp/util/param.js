@@ -18,7 +18,7 @@ sap.ui.define([
         headerFieldToBeHiddenMapping:
         {
             "create": {
-                "Identification": ["BusinessStatus"],
+                "Identification": ["BusinessNo", "BusinessStatus"],
                 "Facturation": [],
                 "Client": [],
                 "Garantie": [],

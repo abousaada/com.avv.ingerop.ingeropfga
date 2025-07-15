@@ -77,7 +77,7 @@ sap.ui.define(
                 });
             },
 
-            _setDefaultMandatory(){
+            _setDefaultMandatory() {
                 this._getField("Identification", "Type").setMandatory(true);
             },
 
@@ -115,6 +115,21 @@ sap.ui.define(
                 changeActions.map(({ identification, champ, action }) => {
                     this.getView().byId(Helper.headerFieldIdBySectionAndFieldName(identification, champ)).attachChange(this[action].bind(this));
                 })
+            },
+
+            onNavBack() {
+                var oHistory = sap.ui.core.routing.History.getInstance();
+                var sPreviousHash = oHistory.getPreviousHash();
+
+                if (sPreviousHash !== undefined) {
+                    // Si une page précédente existe dans l'historique
+                    window.history.go(-1);
+                } else {
+                    // Sinon, on navigue manuellement vers la page d’accueil ou ListReport
+                    window.location.hash = "";
+                    // const oNavController = this._getExtensionAPI().getNavigationController();
+                    // oNavController.navigateInternal( "ZC_FGASet", {replaceInHistory: true} );
+                }
             },
 
             onActivityChange(oEvent) {
@@ -207,7 +222,6 @@ sap.ui.define(
                 this._attachChangeEventOnFields();
                 this._setFieldEnabled();
                 this._setDefaultMandatory();
-                
 
                 //1. if create
                 if (bCreateMode) { utilitiesModel.reInit(); return }
@@ -428,22 +442,33 @@ sap.ui.define(
                         const oContext = oView.getBindingContext();
 
                         if (!oContext) {
-                            MessageBox.error("Aucun contexte lié à la vue !");
+                            sap.m.MessageBox.error("Aucun contexte lié à la vue !");
                             throw new Error("Impossible d'accéder au contexte.");
                         }
 
                         if (!this.getModel("utilities").validDataBeforeSave()) {
-                            MessageBox.error("Veuillez Vérifier tous les champs");
-                            return new Promise().reject();
+                            sap.m.MessageBox.error("Veuillez Vérifier tous les champs");
+                            return new Promise((resolve, reject) => {
+                                reject();
+                            });
                         }
 
                         return new Promise(async (resolve, reject) => {
                             const formattedMissions = utilitiesModel.getFormattedMissions();
                             const oPayload = Helper.extractPlainData({ ...oContext.getObject(), "to_Missions": formattedMissions });
-                            const updatedFGA = await utilitiesModel.deepUpsertFGA(oPayload);
-                            if (updatedFGA) {
-                                Helper.validMessage("FGA updated: " + updatedFGA.BusinessNo, this.getView());
+                            
+                            try {
+                                const updatedFGA = await utilitiesModel.deepUpsertFGA(oPayload);
+                                if (updatedFGA) {
+                                    Helper.validMessage("FGA updated: " + updatedFGA.BusinessNo, this.getView(), this.onNavBack.bind(this));
+                                }
+                                
+                            } catch (error) {
+                                Helper.errorMessage("FGA create fail");
+                                console.log(error);
+                                reject();
                             }
+                            
                             reject();
                         });
 
