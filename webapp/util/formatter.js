@@ -10,10 +10,6 @@ sap.ui.define([
             };
         },
 
-        
-		formatMonthLabel: function (sMonth, sYear) {
-			return sMonth + "/" + sYear;
-		},
 
     };
 });
