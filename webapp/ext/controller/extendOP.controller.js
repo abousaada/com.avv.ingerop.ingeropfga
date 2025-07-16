@@ -275,7 +275,7 @@ sap.ui.define(
                     return ;
                 }
                 Helper.getFieldMandatoryByType(type).map(({identifier, field, mandatory}) => {
-                    this._getField(identifier, field).setMandatory(mandatory);
+                    this._getField(identifier, field)?.setMandatory(mandatory);
                 });
             },
 
