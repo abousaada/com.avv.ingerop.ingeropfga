@@ -19,6 +19,7 @@ sap.ui.define(
         "com/avv/ingerop/ingeropfga/util/constant",
         "com/avv/ingerop/ingeropfga/util/param",
         "com/avv/ingerop/ingeropfga/util/formatter",
+        "com/avv/ingerop/ingeropfga/ext/controller/Missions",
         "com/avv/ingerop/ingeropfga/ext/controller/BudgetPxAutre"
     ],
     function (
@@ -41,13 +42,123 @@ sap.ui.define(
         Constant,
         Params,
         Formatter,
+        Missions,
         BudgetPxAutre
     ) {
         "use strict";
 
         return ControllerExtension.extend("com.avv.ingerop.ingeropfga.ext.controller.extendOP", {
             // Override or add custom methods here
-            Formatter: Formatter,
+
+            
+            // this section allows to extend lifecycle hooks or hooks provided by Fiori elements
+            override: {
+                /**
+                * Called when a controller is instantiated and its View controls (if available) are already created.
+                * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time       initialization.
+                * @memberOf sap.fe.cap.customer.ext.controller.PassengerOPExtend
+                */
+
+                onInit: async function () {
+
+                    this._getExtensionAPI().attachPageDataLoaded(this._onObjectExtMatched.bind(this));
+
+                    // Initializes the Create Missions tab
+                    this._missionsTab = new Missions();
+                    this._missionsTab.oView = this.getView();
+
+                    // Initializes the Budget Px Autre Tab
+                    this._budgetPxAutre = new BudgetPxAutre();
+                    this._budgetPxAutre.oView = this.getView();
+
+                },
+
+                // Called before the table is rebound (can be used to adjust binding parameters)
+                onBeforeRebindTableExtension: function (oEvent) {
+                    console.log("onBeforeRebindTableExtension called", oEvent);
+
+                },
+
+                // Called when the list navigation is triggered
+                onListNavigationExtension: function (oEvent) {
+                    console.log("onListNavigationExtension called", oEvent);
+                },
+
+                beforeSaveExtension() {
+                    try {
+                        const utilitiesModel = this.getModel("utilities");
+
+                        // Accès au contexte via la vue
+                        const oView = this.base.getView();
+                        const oContext = oView.getBindingContext();
+
+                        if (!oContext) {
+                            sap.m.MessageBox.error("Aucun contexte lié à la vue !");
+                            throw new Error("Impossible d'accéder au contexte.");
+                        }
+
+                        if (!this.getModel("utilities").validDataBeforeSave()) {
+                            sap.m.MessageBox.error("Veuillez Vérifier tous les champs");
+                            return new Promise((resolve, reject) => {
+                                reject();
+                            });
+                        }
+
+                        return new Promise(async (resolve, reject) => {
+                            const formattedMissions = utilitiesModel.getFormattedMissions();
+                            const oPayload = Helper.extractPlainData({ ...oContext.getObject(), "to_Missions": formattedMissions });
+
+                            try {
+                                const updatedFGA = await utilitiesModel.deepUpsertFGA(oPayload);
+                                if (updatedFGA) {
+                                    Helper.validMessage("FGA updated: " + updatedFGA.BusinessNo, this.getView(), this.onNavBack.bind(this));
+                                }
+
+                            } catch (error) {
+                                Helper.errorMessage("FGA create fail");
+                                console.log(error);
+                                reject();
+                            }
+
+                            reject();
+                        });
+
+                        // const isCreationMode = oView.getModel("ui").getProperty("/createMode");
+
+                        // if (isCreationMode) {
+                        //     return new Promise(async (resolve, reject) => {
+                        //         const formattedMissions = utilitiesModel.getFormattedMissions();
+                        //         const oPayload = Helper.extractPlainData({ ...oContext.getObject(), "to_Missions": formattedMissions });
+                        //         const createdFGA = await utilitiesModel.deepCreateFGA(oPayload);
+                        //         if (createdFGA) {
+                        //             Helper.validMessage("FGA created: " + createdFGA.BusinessNo, this.getView());
+                        //         }
+                        //         reject();
+                        //     });
+                        // } else {
+                        // return new Promise(async (resolve, reject) => {
+                        //     const formattedMissions = utilitiesModel.getFormattedMissions();
+                        //     const oPayload = Helper.extractPlainData({ ...oContext.getObject(), "to_Missions": formattedMissions });
+                        //     const updatedFGA = await utilitiesModel.deepUpdatedFGA(oPayload);
+                        //     if (updatedFGA) {
+                        //         Helper.validMessage("FGA updated: " + updatedFGA.BusinessNo, this.getView());
+                        //     }
+                        //     reject();
+                        // });
+                        // }
+                    } catch (error) {
+                        // sap.m.MessageToast.show("FGA create fail");
+                        Helper.errorMessage("FGA create fail");
+                        console.log(error);
+                    }
+                },
+            },
+
+            routing: {
+
+            },
+
+            //Formatter: Formatter,
             _getExtensionAPI: function () {
                 return this.getInterface().getView().getController().extensionAPI;
             },
@@ -95,7 +206,7 @@ sap.ui.define(
                 });
             },
 
-            _setInputState(){
+            _setInputState() {
                 Object.entries(Constant.headerFieldsList).map(([identifiant, champs]) => {
                     champs.map(champ => {
                         const field = this._getField(identifiant, champ);
@@ -244,7 +355,7 @@ sap.ui.define(
 
             },
 
-            //_loadFragment: function (sFragmentName) {
+            
             _loadFragment: async function (sFragmentName) {
                 var sViewId = this.getView().getId();
                 var oContainer = sap.ui.getCore().byId(
@@ -274,7 +385,7 @@ sap.ui.define(
                     }
 
                     //Prepare tree for missions
-                    this.prepareBudgetTreeData();
+                    this.prepareMissionsTreeData();
                     this.preparePxAutreTreeData();
 
                 }
@@ -300,264 +411,56 @@ sap.ui.define(
                 console.logs(event);
             },
 
-            // this section allows to extend lifecycle hooks or hooks provided by Fiori elements
-            override: {
-                /**
-                * Called when a controller is instantiated and its View controls (if available) are already created.
-                * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time       initialization.
-                * @memberOf sap.fe.cap.customer.ext.controller.PassengerOPExtend
-                */
 
-                onInit: async function () {
+            // ==============================================
+            // Handle Details TAB - Missions Tree Section
+            // Handles preparation and submissions of Missions 
+            // Tree
+            // ==============================================
 
-                    // call the base component's init function
-                    //UIComponent.prototype.init.apply(this, arguments);
-
-                    /*var oDataModel = new sap.ui.model.odata.v2.ODataModel("/sap/opu/odata/sap/ZFGA_SRV");
-                    var sPath = sap.ui.require.toUrl("com/avv/ingerop/ingeropfga/model/mock/");
-
-                    var oRafListModel = new JSONModel();
-                    oRafListModel.loadData(sPath + "rafList.json", null, false);
-                    this.getView().setModel(oRafListModel, "rafList");
-
-                    var olistModel = new JSONModel();
-                    olistModel.loadData(sPath + "list.json", null, false);
-                    this.getView().setModel(olistModel, "list");
-
-                    var olistLineModel = new JSONModel();
-                    olistLineModel.loadData(sPath + "listLine.json", null, false);
-                    this.getView().setModel(olistLineModel, "listLine");
-
-                    var oProfileModel = new JSONModel();
-                    oProfileModel.loadData(sPath + "profile.json", null, false);
-                    this.getView().setModel(oProfileModel, "profile");
-
-                    var oMoProfileModel = new JSONModel();
-                    oMoProfileModel.loadData(sPath + "moProfile.json", null, false);
-                    this.getView().setModel(oMoProfileModel, "moProfile");
-
-
-                    var oScProfileModel = new JSONModel();
-                    oScProfileModel.loadData(sPath + "scProfile.json", null, false);
-                    this.getView().setModel(oScProfileModel, "scProfile");
-
-                    var oStProfileModel = new JSONModel();
-                    oStProfileModel.loadData(sPath + "stProfile.json", null, false);
-                    this.getView().setModel(oStProfileModel, "stProfile");
-
-                    var oPrevProfileModel = new JSONModel();
-                    oPrevProfileModel.loadData(sPath + "prevProfile.json", null, false);
-                    this.getView().setModel(oPrevProfileModel, "prevProfile");*/
-
-
-                    /*var oBudgetModel = new JSONModel();
-                    oBudgetModel.loadData(sPath + "budget.json", null, false);
-
-                    var oBindingContext = this.getView().getBindingContext();
-                    if (oBindingContext) {
-                        var sBusinessNo = oBindingContext.getProperty("BusinessNo");
-
-                        var oBudgetModel = new JSONModel();
-                        if (sBusinessNo === "CC526901") { //Hoai
-                            oBudgetModel.loadData(sPath + "budgetHoai.json", null, false);
-                        } else {
-                            oBudgetModel.loadData(sPath + "budget.json", null, false);
-                        }
-                    }*/
-
-                    /*this.getView().setModel(oBudgetModel, "budget");
-
-                    var oRbaEvolModel = new JSONModel();
-                    oRbaEvolModel.loadData(sPath + "rbaEvol.json", null, false);
-                    this.getView().setModel(oRbaEvolModel, "rbaEvol");
-
-                    var oZone = new JSONModel();
-                    oZone.loadData(sPath + "Zone.json", null, false);
-                    this.getView().setModel(oZone, "zone");
-
-                    var oTarif = new JSONModel();
-                    oTarif.loadData(sPath + "Tarif.json", null, false);
-                    this.getView().setModel(oTarif, "tarif");
-
-                    var oLaw = new JSONModel();
-                    oLaw.loadData(sPath + "Law.json", null, false);
-                    this.getView().setModel(oLaw, "law");
-
-                    var oFormData = new JSONModel();
-                    oFormData.loadData(sPath + "FormData.json", null, false);
-                    this.getView().setModel(oFormData, "FormData");*/
-
-
-                    //this.onObjectMatched(this);
-
-                    this._getExtensionAPI().attachPageDataLoaded(this._onObjectExtMatched.bind(this));
-
-                    this._budgetPxAutre = new BudgetPxAutre();
-                    this._budgetPxAutre.oView = this.getView();
-
-                    /*
-                    // Bind the onItemPress function to the controller context
-                    this.onItemPress = this.onItemPress.bind(this);
-                    this.onCalculate = this.onCalculate.bind(this);
-                    this.onAddHOAIItems = this.onAddHOAIItems.bind(this);
-                    this.formatMonthLabel = this.formatMonthLabel.bind(this);
-
-
-                    // Attach event handler to the list
-                    var oList = this.byId("budgetTree");
-                    if (oList) {
-                        oList.attachItemPress(this.onItemPress);
-                    }
-
-                    var oTable = this.getView().byId("STIncomeTab");
-                    if (oTable) {
-                        oTable.addStyleClass("small-text");
-                    }
-
-                    this._setInputState();
-
-                    }*/
-                },
-
-                // Called before the table is rebound (can be used to adjust binding parameters)
-                onBeforeRebindTableExtension: function (oEvent) {
-                    console.log("onBeforeRebindTableExtension called", oEvent);
-
-                },
-
-                // Called when the list navigation is triggered
-                onListNavigationExtension: function (oEvent) {
-                    console.log("onListNavigationExtension called", oEvent);
-                },
-
-                beforeSaveExtension() {
-                    try {
-                        const utilitiesModel = this.getModel("utilities");
-
-                        // Accès au contexte via la vue
-                        const oView = this.base.getView();
-                        const oContext = oView.getBindingContext();
-
-                        if (!oContext) {
-                            sap.m.MessageBox.error("Aucun contexte lié à la vue !");
-                            throw new Error("Impossible d'accéder au contexte.");
-                        }
-
-                        if (!this.getModel("utilities").validDataBeforeSave()) {
-                            sap.m.MessageBox.error("Veuillez Vérifier tous les champs");
-                            return new Promise((resolve, reject) => {
-                                reject();
-                            });
-                        }
-
-                        return new Promise(async (resolve, reject) => {
-                            const formattedMissions = utilitiesModel.getFormattedMissions();
-                            const oPayload = Helper.extractPlainData({ ...oContext.getObject(), "to_Missions": formattedMissions });
-                            
-                            try {
-                                const updatedFGA = await utilitiesModel.deepUpsertFGA(oPayload);
-                                if (updatedFGA) {
-                                    Helper.validMessage("FGA updated: " + updatedFGA.BusinessNo, this.getView(), this.onNavBack.bind(this));
-                                }
-                                
-                            } catch (error) {
-                                Helper.errorMessage("FGA create fail");
-                                console.log(error);
-                                reject();
-                            }
-                            
-                            reject();
-                        });
-
-                        // const isCreationMode = oView.getModel("ui").getProperty("/createMode");
-
-                        // if (isCreationMode) {
-                        //     return new Promise(async (resolve, reject) => {
-                        //         const formattedMissions = utilitiesModel.getFormattedMissions();
-                        //         const oPayload = Helper.extractPlainData({ ...oContext.getObject(), "to_Missions": formattedMissions });
-                        //         const createdFGA = await utilitiesModel.deepCreateFGA(oPayload);
-                        //         if (createdFGA) {
-                        //             Helper.validMessage("FGA created: " + createdFGA.BusinessNo, this.getView());
-                        //         }
-                        //         reject();
-                        //     });
-                        // } else {
-                        // return new Promise(async (resolve, reject) => {
-                        //     const formattedMissions = utilitiesModel.getFormattedMissions();
-                        //     const oPayload = Helper.extractPlainData({ ...oContext.getObject(), "to_Missions": formattedMissions });
-                        //     const updatedFGA = await utilitiesModel.deepUpdatedFGA(oPayload);
-                        //     if (updatedFGA) {
-                        //         Helper.validMessage("FGA updated: " + updatedFGA.BusinessNo, this.getView());
-                        //     }
-                        //     reject();
-                        // });
-                        // }
-                    } catch (error) {
-                        // sap.m.MessageToast.show("FGA create fail");
-                        Helper.errorMessage("FGA create fail");
-                        console.log(error);
-                    }
-                },
+            prepareMissionsTreeData: function () {
+                this._missionsTab.prepareMissionsTreeData();
             },
 
-            routing: {
-
+            isGroupementAddVisible: function (editable, isNode, isL0) {
+                return this._missionsTab.isGroupementAddVisible(editable, isNode, isL0);
+            },
+            isFGAAddVisible: function (editable, isNode, isL0) {
+                return this._missionsTab.isFGAAddVisible(editable, isNode, isL0);
+            },
+            isDeleteVisible: function (editable, isNode) {
+                return this._missionsTab.isDeleteVisible(editable, isNode);
             },
 
-            prepareBudgetTreeData: function () {
-                var missions = this.getView().getModel("utilities").getProperty("/missions");
-         
-                // Create tree builder function
-                var buildTree = function(items) {
-                    var treeData = [];
-                    var fgaGroups = {};
-                    
-                    if (!items) return treeData;
-                    
-                    items.forEach(function(item) {
-                        if (!fgaGroups[item.BusinessNo]) {
-                            fgaGroups[item.BusinessNo] = {
-                                name: item.BusinessNo,
-                                isNode: true,
-                                isL0: true,
-                                children: {}
-                            };
-                        }
-            
-                        if (!fgaGroups[item.BusinessNo].children[item.Regroupement]) {
-                            fgaGroups[item.BusinessNo].children[item.Regroupement] = {
-                                name: item.Regroupement,
-                                isNode: true,
-                                isL0: false,
-                                children: []
-                            };
-                        }
-            
-                        fgaGroups[item.BusinessNo].children[item.Regroupement].children.push(item);
-                    });
-            
-                    // Convert children objects to arrays
-                    for (var fga in fgaGroups) {
-                        fgaGroups[fga].children = Object.values(fgaGroups[fga].children);
-                        treeData.push(fgaGroups[fga]);
-                    }
-                    
-                    return treeData;
-                };
-            
-                // Build trees 
-                var missionsTreeData = buildTree(missions);
-            
-                // Set tree
-                this.getView().getModel("utilities").setProperty("/missionsHierarchy", missionsTreeData);
+            onAddGroupement: function (oEvent) {
+                this._missionsTab.onAddGroupement(oEvent);
             },
-            
 
+            onAddMissionToGroupement: function (oEvent) {
+                this._missionsTab.onAddMissionToGroupement(oEvent);
+            },
+
+            onDeleteMission: function (oEvent) {
+                this._missionsTab.onDeleteMission(oEvent);
+            },
+
+            _deleteFromHierarchy: function (aNodes, oMissionToDelete) {
+                this._missionsTab._deleteFromHierarchy(aNodes, oMissionToDelete);
+            },
+
+
+            // ==============================================
+            // Handle Budget Px TAB - Budget Px Autres Section
+            // Handles preparation and submition budget items 
+            // in the mission  process
+            // ==============================================
+
+            // Delegates submit logic to specialized handler : Budget Px Autres
             preparePxAutreTreeData: function () {
                 this._budgetPxAutre.preparePxAutreTreeData();
             },
 
-            onPxAutreSubmit: function(oEvent) {
+            onPxAutreSubmit: function (oEvent) {
                 if (!this._budgetPxAutre) {
                     this._budgetPxAutre = new BudgetPxAutre();
                     this._budgetPxAutre.oView = this.oView;
@@ -567,203 +470,10 @@ sap.ui.define(
 
             
 
-            isGroupementAddVisible: function (editable, isNode, isL0) {
-                return editable === true && isNode === true && isL0 === false;
-            },
-            isFGAAddVisible: function (editable, isNode, isL0) {
-                return editable === true && isNode === true && isL0 === true;
-            },
-            isDeleteVisible: function (editable, isNode) {
-                return editable === true && isNode !== true;
-            },
 
-            onAddGroupement: function (oEvent) {
-                // Get the FGA (BusinessNo) node
-                var oContext = oEvent.getSource().getBindingContext("utilities");
-                var oFGANode = oContext.getObject();
-
-                // Create dialog
-                var oExistingInput = sap.ui.getCore().byId("groupementInput");
-                if (oExistingInput) {
-                    oExistingInput.destroy();
-                }
-                var oDialog = new sap.m.Dialog({
-                    title: "Add Groupement",
-                    content: [
-                        new sap.m.VBox({
-                            items: [
-                                new sap.m.Label({
-                                    text: "Enter new groupement name",
-                                    labelFor: "groupementInput"
-                                }),
-                                new sap.m.Input({
-                                    id: "groupementInput",
-                                    placeholder: "Groupement name",
-                                    width: "100%",
-                                    liveChange: function (oEvent) {
-                                        var sValue = oEvent.getSource().getValue();
-                                        oAddButton.setEnabled(!!sValue.trim());
-                                    }
-                                })
-                            ]
-                        })
-                    ],
-                    buttons: [
-                        new sap.m.Button({
-                            text: "Add",
-                            type: "Accept",
-                            icon: "sap-icon://add",
-                            enabled: false,
-                            press: function () {
-                                var sValue = sap.ui.getCore().byId("groupementInput").getValue();
-                                oDialog.close();
-
-                                if (sValue) {
-                                    // Create new groupement  
-                                    var oNewGroupement = {
-                                        name: sValue,
-                                        isNode: true,
-                                        isL0: false,
-                                        Regroupement: sValue,
-                                        children: [],
-                                        BusinessNo: oFGANode.BusinessNo
-                                    };
-
-                                    // Add to the FGA node's children
-                                    oFGANode.children.push(oNewGroupement);
-
-                                    // Update the model
-                                    var oUtilitiesModel = this.getView().getModel("utilities");
-                                    oUtilitiesModel.updateBindings();
-
-                                    var oTreeTable = this.byId("missionsTreeTable");
-                                    oTreeTable.expand(oContext.getPath());
-                                }
-                            }.bind(this)
-                        }),
-                        new sap.m.Button({
-                            text: "Cancel",
-                            type: "Reject",
-                            press: function () {
-                                oDialog.close();
-                            }
-                        })
-                    ]
-                });
-
-                var oAddButton = oDialog.getButtons()[0];
-                oDialog.open();
-                sap.ui.getCore().byId("groupementInput").focus();
-            },
-
-            onAddMissionToGroupement: function (oEvent) {
-                // Get the groupement node
-                var oContext = oEvent.getSource().getBindingContext("utilities");
-                var oGroupementNode = oContext.getObject();
-
-                // ABO : This code needs refactoring
-                const oldMissions = this.getView().getModel("utilities").getMissions();
-                const BusinessNo = this.getView().getModel("utilities").getBusinessNo().slice(0, -2);
-                const maxMission = oldMissions
-                    .filter(mission => mission.BusinessNo === BusinessNo)
-                    .reduce((max, current) => {
-                        const currentMatch = current.MissionId.match(/-(\d+)$/);
-                        const currentNum = currentMatch ? parseInt(currentMatch[1]) : 0;
-
-                        const maxMatch = max.MissionId?.match(/-(\d+)$/);
-                        const maxNum = maxMatch ? parseInt(maxMatch[1]) : 0;
-
-                        return currentNum > maxNum ? current : max;
-                    }, { MissionId: `${BusinessNo}-000` });
-
-                const match = maxMission.MissionId.match(/-(\d+)$/);
-                const currentMax = match ? parseInt(match[1]) : 0;
-                const nextNum = currentMax + 1;
-                const paddedNum = String(nextNum).padStart(3, '0'); // add zeros "005"
-                const MissionId = `${BusinessNo}-${paddedNum}`; // "MEDXXXXXX000000069-005"
-                //End this code needs refactoring
-
-                // Create new mission with default values
-                var oNewMission = {
-                    BusinessNo: oGroupementNode.name, // Or get from parent if stored differently
-                    Regroupement: oGroupementNode.Regroupement,
-                    MissionId: "NEW_MISSION_" + new Date().getTime(),
-                    MissionCode: "",
-                    StartDate: null,
-                    EndDate: null,
-                    isNode: false
-                };
-
-                // Add to the groupement's children
-                oGroupementNode.children.push(oNewMission);
-
-                // Update the model
-                var oUtilitiesModel = this.getView().getModel("utilities");
-                oUtilitiesModel.setProperty("/missionsHierarchy", oUtilitiesModel.getProperty("/missionsHierarchy"));
-
-                this.getView().byId("missionsTreeTable").getBinding("rows").refresh();
-            },
-
-            onDeleteMission: function (oEvent) {
-                var oRowContext = oEvent.getSource().getBindingContext("utilities");
-                if (!oRowContext) {
-                    sap.m.MessageToast.show("Error: Could not find mission to delete");
-                    return;
-                }
-
-                var oUtilitiesModel = this.getView().getModel("utilities");
-                var oMissionToDelete = oRowContext.getObject();
-
-                // 1. Delete
-                var aMissions = oUtilitiesModel.getProperty("/missions");
-                var iIndex = aMissions.findIndex(function (mission) {
-                    return mission.MissionId === oMissionToDelete.MissionId &&
-                        mission.BusinessNo === oMissionToDelete.BusinessNo;
-                });
-
-                if (iIndex !== -1) {
-                    aMissions.splice(iIndex, 1);
-                    oUtilitiesModel.setProperty("/missions", aMissions);
-                }
-
-                // 2. Delete from hierarchical missionsHierarchy
-                var aMissionsHierarchy = oUtilitiesModel.getProperty("/missionsHierarchy");
-
-                var bDeleted = this._deleteFromHierarchy(aMissionsHierarchy, oMissionToDelete);
-
-                if (bDeleted) {
-                    // Update TreeTable
-                    oUtilitiesModel.setProperty("/missionsHierarchy", aMissionsHierarchy);
-                    oUtilitiesModel.updateBindings(true);
-                } else {
-                    sap.m.MessageToast.show("Warning: Mission not found in hierarchy");
-                }
-            },
-
-            _deleteFromHierarchy: function (aNodes, oMissionToDelete) {
-                for (var i = 0; i < aNodes.length; i++) {
-                    var oNode = aNodes[i];
-
-                    // If this is a mission node (not a groupement) <--ABO to manage
-                    if (!oNode.isNode &&
-                        oNode.MissionId === oMissionToDelete.MissionId &&
-                        oNode.BusinessNo === oMissionToDelete.BusinessNo) {
-                        aNodes.splice(i, 1);
-                        return true;
-                    }
-
-                    // Generic case
-                    if (oNode.children && oNode.children.length > 0) {
-                        if (this._deleteFromHierarchy(oNode.children, oMissionToDelete)) {
-                            return true;
-                        }
-                    }
-                }
-                return false;
-            },
+            //////////////////////////////////////////////
 
             formatMonthLabel: function (sMonth, sYear) {
-                // console.log("Formatter appelé avec :", sMonth, sYear);
                 return sMonth + "/" + sYear;
             },
 
@@ -810,34 +520,7 @@ sap.ui.define(
                 }
             },
 
-            /*onObjectMatched: function (oThis) {
-                //var oArgument = oEvent.getParameter("arguments");
-                //var sId = oArgument.id;
-
-                var oTextControl = this.base.byId("com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGA--com.sap.vocabularies.UI.v1.FieldGroup::General::BusinessNo::Field");
-                if (oTextControl) {
-                    var sValue = oTextControl.getValue();
-                    console.log("BusinessNo from control:", sValue);
-                }
-                var sId = 'CC526901'
-
-                this.setAppVersion();
-
-                this.getView().getModel("rafList").setProperty("/results/0/Mission", sId);
-
-                this._buildListLineData(sId);
-
-                //this._addSynthesisStyle();
-
-                this._buildMoProfile();
-                this._buildScProfile();
-                this._buildStProfile();
-                this._buildPrevProfile();
-
-                this._calculAll();
-
-            },*/
-
+            
             onRowsUpdatedSyntTab: function () {
                 //this._addSynthesisStyle();
             },
