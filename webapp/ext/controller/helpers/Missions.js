@@ -39,10 +39,7 @@ sap.ui.define([
         //
         //	}
 
-        onInit: function () {
-            var oMissionModel = this.getOwnerComponent().getModel("utilities");
-            this.getView().setModel(oMissionModel, "utilities");
-        },
+        
 
         /*onAddMission: function () {
             this.getView().getModel("utilities").addMissionNewLine();
