@@ -6,7 +6,7 @@ sap.ui.define([
     return Controller.extend("com.avv.ingerop.ingeropfga.ext.controller.BudgetPxAutre", {
 
 
-        onPressMonthLink: function (oEvent) {
+        onPressMonthLink: function (oEvent, oView) {
             var oLink = oEvent.getSource();
 
             // Get all custom data items from the link
@@ -29,7 +29,7 @@ sap.ui.define([
             console.log("Clicked month field:", sMonthField);
 
             // Call for navigation
-            this.monthLinkNavigation(oEvent, sMonthField, sYearField);
+            this.monthLinkNavigation(oEvent, sMonthField, sYearField, oView);
 
 
         },
@@ -68,10 +68,10 @@ sap.ui.define([
                 console.log(`Navigating for month ${month}/${year} (${firstDay} to ${lastDay})`);
 
                 // 4. Get missions
-                const utilitiesModel = this.oView.getModel("utilities");
+                //const utilitiesModel = this.oView.getModel("utilities");
                 let missions = [];
                 try {
-                    missions = await utilitiesModel.getBEMissions();
+                    missions = oLink.getModel('utilities').getMissions(); 
 
                 } catch (error) {
                     console.error("Failed to fetch missions:", error);

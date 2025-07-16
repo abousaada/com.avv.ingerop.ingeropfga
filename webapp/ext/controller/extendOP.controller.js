@@ -17,9 +17,9 @@ sap.ui.define(
         "sap/ui/generic/app/navigation/service/SelectionVariant",
         "sap/ui/generic/app/navigation/service/NavigationHandler",
         "com/avv/ingerop/ingeropfga/util/formatter",
-        "com/avv/ingerop/ingeropfga/ext/controller/Missions",
-        "com/avv/ingerop/ingeropfga/ext/controller/BudgetPxAutre",
-        "com/avv/ingerop/ingeropfga/ext/controller/Synthese"
+        "com/avv/ingerop/ingeropfga/ext/controller/Helpers/Missions",
+        "com/avv/ingerop/ingeropfga/ext/controller/Helpers/BudgetPxAutre",
+        "com/avv/ingerop/ingeropfga/ext/controller/Helpers/Synthese"
     ],
     function (
         ControllerExtension,
@@ -68,7 +68,7 @@ sap.ui.define(
                     // Initializes the Synthese tab
                     this._SyntheseTab = new Synthese();
                     this._SyntheseTab.oView = this.getView();
-                    this.onPressMonthLink = this.onPressMonthLink.bind(this);
+                    //this.onPressMonthLink = this.onPressMonthLink.bind(this);
 
 
                     // Initializes the Budget Px Autre Tab
@@ -408,10 +408,11 @@ sap.ui.define(
             // ==============================================
 
             onPressMonthLink: function (oEvent) {
+
                 if (!this._SyntheseTab) {
                     this._SyntheseTab = new Synthese();
-                }
 
+                }
                 this._SyntheseTab.onPressMonthLink(oEvent);
             },
 
@@ -506,6 +507,7 @@ sap.ui.define(
             // Parce and clean !!!!
             // ==============================================
 
+ 
             _logAllControlIds: function (oControl) {
                 if (oControl) {
                     console.log(oControl.getId()); // Log the control's ID
@@ -1764,47 +1766,10 @@ sap.ui.define(
 
             },
 
-            fnToFixedAmounts: function (value, dp) { //Set value to fixed amount
+            /*fnToFixedAmounts: function (value, dp) { //Set value to fixed amount
                 return +parseFloat(value).toFixed(dp);
             },
 
-
-
-            /*createTreeItem: function(sId, oContext) {
-                var oModel = this.getView().getModel("budget");
-                var oData = oContext.getObject();
-                
-                // Create the content based on the level
-                var oContent;
-                if (oData.level === 0) {
-                    // First level - use Link
-                    oContent = new sap.m.Link({
-                        text: "{budget>Mission}",
-                        press: this.onMissionLinkPress.bind(this),
-                        wrapping: true
-                    });
-                } else {
-                    // Other levels - use Text
-                    oContent = new sap.m.Text({
-                        text: "{budget>Mission}",
-                        wrapping: true
-                    });
-                }
-                
-                // Create the TreeItem with the appropriate content
-                var oTreeItem = new sap.m.TreeItem(sId, {
-                    type: "Active",
-                    content: oContent
-                });
-                
-                // Bind the item's context
-                oTreeItem.bindObject({
-                    path: oContext.getPath(),
-                    model: "budget"
-                });
-                
-                return oTreeItem;
-            },*/
 
             createTreeItem: function (sId, oContext) {
                 var oData = oContext.getObject();
@@ -1869,7 +1834,7 @@ sap.ui.define(
             },
 
 
-            /*HOAI*/
+            /*HOAI* /
 
             afterScroll: function () {
                 jQuery.sap.delayedCall(100, null, function () {
@@ -1938,7 +1903,7 @@ sap.ui.define(
                 var oSettings = oView.getModel("settings");
 
                 /*this.getModel("settings").setProperty("/showResult", true);
-                this.getModel("settings").setProperty("/showForm", false);*/
+                this.getModel("settings").setProperty("/showForm", false);* /
 
                 oView.getModel("settings").setProperty("/showResult", true);
                 oView.getModel("settings").setProperty("/showForm", false);
@@ -2264,7 +2229,7 @@ sap.ui.define(
     
             getResourceBundle: function() {
                 return this.getOwnerComponent().getModel("i18n").getResourceBundle();
-            },*/
+            },* /
 
             computSeuilDansTableauReference: function (zoneTarifaire, coutEligible, article, tauxHonoraire, tarifByCost) {
             },
@@ -2394,7 +2359,7 @@ sap.ui.define(
 
             onTabSelect: function (oEvent) {
 
-            },
+            },*/
 
             
         });
