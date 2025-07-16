@@ -16,10 +16,11 @@ sap.ui.define(
         "com/avv/ingerop/ingeropfga/util/helper",
         "sap/ui/generic/app/navigation/service/SelectionVariant",
         "sap/ui/generic/app/navigation/service/NavigationHandler",
+        "com/avv/ingerop/ingeropfga/util/constant",
+        "com/avv/ingerop/ingeropfga/util/param",
         "com/avv/ingerop/ingeropfga/util/formatter",
         "com/avv/ingerop/ingeropfga/ext/controller/Missions",
-        "com/avv/ingerop/ingeropfga/ext/controller/BudgetPxAutre",
-        "com/avv/ingerop/ingeropfga/ext/controller/Synthese"
+        "com/avv/ingerop/ingeropfga/ext/controller/BudgetPxAutre"
     ],
     function (
         ControllerExtension,
@@ -38,17 +39,18 @@ sap.ui.define(
         Helper,
         SelectionVariant,
         NavigationHandler,
+        Constant,
+        Params,
         Formatter,
         Missions,
-        BudgetPxAutre,
-        Synthese
+        BudgetPxAutre
     ) {
         "use strict";
 
         return ControllerExtension.extend("com.avv.ingerop.ingeropfga.ext.controller.extendOP", {
             // Override or add custom methods here
 
-
+            
             // this section allows to extend lifecycle hooks or hooks provided by Fiori elements
             override: {
                 /**
@@ -65,16 +67,9 @@ sap.ui.define(
                     this._missionsTab = new Missions();
                     this._missionsTab.oView = this.getView();
 
-                    // Initializes the Synthese tab
-                    this._SyntheseTab = new Synthese();
-                    this._SyntheseTab.oView = this.getView();
-                    this.onPressMonthLink = this.onPressMonthLink.bind(this);
-
-
                     // Initializes the Budget Px Autre Tab
                     this._budgetPxAutre = new BudgetPxAutre();
                     this._budgetPxAutre.oView = this.getView();
-
 
                 },
 
@@ -163,34 +158,38 @@ sap.ui.define(
 
             },
 
-
+            //Formatter: Formatter,
             _getExtensionAPI: function () {
                 return this.getInterface().getView().getController().extensionAPI;
             },
 
             _setTabsVisible() {
                 const isCreateMode = this.getView().getModel("ui").getProperty("/createMode");
-                Helper.getTabVisibilityByMode(isCreateMode).map(({ key, visible }) => {
-                    this.getView().byId(key)?.setVisible(visible)
+                Constant.headerSectionList.map(section => {
+                    this.getView().byId(section)?.setVisible(!Helper.getObjectPageSectionVisibilityMap(isCreateMode).includes(section));
                 });
             },
 
             _setFieldVisible() {
                 const isCreateMode = this.getView().getModel("ui").getProperty("/createMode");
-                Helper.getFieldVisibilityByMode(isCreateMode).map(
-                    ({ idntifier, field, visible }) => {
-                        this._getField(idntifier, field)?.setVisible(visible);
-                    }
-                );
+                Object.entries(Constant.headerFieldsList).map(([identifiant, champs]) => {
+                    champs.map(champ => {
+                        this._getField(identifiant, champ)?.setVisible(
+                            !Helper.getHeaderFieldVisibilityMap(isCreateMode)[identifiant].includes(champ)
+                        );
+                    });
+                });
             },
 
             _setFieldEnabled() {
                 const isCreateMode = this.getView().getModel("ui").getProperty("/createMode");
-                Helper.getFieldEnabledByMode(isCreateMode).map(
-                    ({ identifier, field, enabled }) => {
-                        this._getField(identifier, field)?.setEditable(enabled);
-                    }
-                );
+                Object.entries(Constant.headerFieldsList).map(([identifiant, champs]) => {
+                    champs.map(champ => {
+                        this._getField(identifiant, champ)?.setEditable(
+                            !Helper.getHeaderFieldUnabledMap(isCreateMode)[identifiant].includes(champ)
+                        );
+                    });
+                });
             },
 
             _setDefaultMandatory() {
@@ -202,17 +201,19 @@ sap.ui.define(
             },
 
             _attachChangeEventOnFields() {
-                Helper.getFieldActionList().map(({ identifier, field, action }) => {
-                    this.getView().byId(Helper.headerFieldIdBySectionAndFieldName(identifier, field)).attachChange(this[action].bind(this));
+                Params.changeEventActions.map(({ identification, champ, action }) => {
+                    this.getView().byId(Helper.headerFieldIdBySectionAndFieldName(identification, champ)).attachChange(this[action].bind(this));
                 });
             },
 
             _setInputState() {
-                Helper.getHeaderFieldList().map(({ identifier, field }) => {
-                    const champ = this._getField(identifier, field);
-                    champ?.bindProperty("valueState", {
-                        path: field,
-                        formatter: Formatter.validMandatoryField(champ)
+                Object.entries(Constant.headerFieldsList).map(([identifiant, champs]) => {
+                    champs.map(champ => {
+                        const field = this._getField(identifiant, champ);
+                        field?.bindProperty("valueState", {
+                            path: champ,
+                            formatter: Formatter.validMandatoryField(field)
+                        });
                     });
                 });
             },
@@ -238,17 +239,24 @@ sap.ui.define(
 
             onDateChange(oEvent) {
                 const { StartDate, EndDate } = this.getView().getBindingContext().getObject();
-                let diffFromNow = null, diff = null;
 
-                if (EndDate) { diffFromNow = Helper.diffEnMois(new Date(), EndDate); }
-                this._getField("Duree", "RemainingMonth").setValue(diffFromNow);
+                if (EndDate) {
+                    const diffFromNow = Helper.diffEnMois(new Date(), EndDate);
+                    this._getField("Duree", "RemainingMonth").setValue(diffFromNow);
+                } else {
+                    this._getField("Duree", "RemainingMonth").setValue(null);
+                }
 
-                if (StartDate && EndDate) { diff = Helper.diffEnMois(StartDate, EndDate); }
-                this._getField("Duree", "NbOfMonth").setValue(diff);
+                if (StartDate && EndDate) {
+                    const diff = Helper.diffEnMois(StartDate, EndDate);
+                    this._getField("Duree", "NbOfMonth").setValue(diff);
+                } else {
+                    this._getField("Duree", "NbOfMonth").setValue(null);
+                }
+
             },
 
             onCalcTauxTravaux(oEvent) {
-                //need refactoring
                 const { Mttrvx, Mtctr } = this.getView().getBindingContext().getObject();
                 if (Mttrvx == undefined || Mtctr == undefined
                     || Mttrvx == null || Mtctr == null
@@ -268,15 +276,16 @@ sap.ui.define(
             },
 
             _setMandatoryFieldByType(type) {
-                if(!type){
-                    Helper.getDefaultFieldMandatory().map(({identifier, field, mandatory}) => {
-                        this._getField(identifier, field)?.setMandatory(mandatory);
-                    });
-                    return ;
+                const headerFieldMandatory = Params.headerFieldMandatoryByType[type];
+                if (headerFieldMandatory) {
+                    Object.entries(Constant.headerFieldsList)
+                        .map(([identifiant, champs]) => {
+                            champs.map(champ => {
+                                const isMandatory = (headerFieldMandatory[identifiant] || []).includes(champ);
+                                this._getField(identifiant, champ).setMandatory(isMandatory);
+                            });
+                        });
                 }
-                Helper.getFieldMandatoryByType(type).map(({identifier, field, mandatory}) => {
-                    this._getField(identifier, field).setMandatory(mandatory);
-                });
             },
 
             async _getTabsData() {
@@ -309,9 +318,7 @@ sap.ui.define(
                 this._setFieldVisible();
                 this._attachChangeEventOnFields();
                 this._setFieldEnabled();
-
-                const type = e.context.getProperty("Type");
-                this._setMandatoryFieldByType(type)
+                this._setDefaultMandatory();
 
 
                 //1. if create
@@ -348,7 +355,7 @@ sap.ui.define(
 
             },
 
-
+            
             _loadFragment: async function (sFragmentName) {
                 var sViewId = this.getView().getId();
                 var oContainer = sap.ui.getCore().byId(
@@ -361,6 +368,7 @@ sap.ui.define(
 
                 // Clear any existing content
                 oContainer.destroyItems();
+
 
                 //if missions -- clean this !
                 if (sFragmentName === "Missions") {
@@ -379,6 +387,7 @@ sap.ui.define(
                     //Prepare tree for missions
                     this.prepareMissionsTreeData();
                     this.preparePxAutreTreeData();
+
                 }
                 else {
 
@@ -402,27 +411,6 @@ sap.ui.define(
                 console.logs(event);
             },
 
-            // ==============================================
-            // Handle Synthese TAB 
-            // Handles preparation and drilldowns 
-            // ==============================================
-
-            onPressMonthLink: function (oEvent) {
-                if (!this._SyntheseTab) {
-                    this._SyntheseTab = new Synthese();
-                }
-
-                this._SyntheseTab.onPressMonthLink(oEvent);
-            },
-
-            monthLinkNavigation: async function (oEvent, sMonthValue, sYearValue) {
-                this._SyntheseTab.monthLinkNavigation(oEvent, sMonthValue, sYearValue);
-            },
-
-            // Helper function to get last day of month
-            getLastDayOfMonth: function (year, month) {
-                this._SyntheseTab.getLastDayOfMonth(year, month);
-            },
 
             // ==============================================
             // Handle Details TAB - Missions Tree Section
@@ -480,31 +468,14 @@ sap.ui.define(
                 this._budgetPxAutre.onSubmit(oEvent);
             },
 
+            
 
-            // ==============================================
-            //Move to formatter !!!!
-            // ==============================================
+
+            //////////////////////////////////////////////
 
             formatMonthLabel: function (sMonth, sYear) {
                 return sMonth + "/" + sYear;
             },
-
-            formatPercentage: function (value, row_type) {
-                if (value == null) return "";
-
-                // Check if this should be a percentage value
-                if (row_type === "RBAPCT" || row_type === "AVANCE") {
-                    const formattedValue = parseFloat(value).toFixed(2);
-                    return `${formattedValue}%`;
-                }
-
-                return value.toString();
-            },
-
-
-            // ==============================================
-            // Parce and clean !!!!
-            // ==============================================
 
             _logAllControlIds: function (oControl) {
                 if (oControl) {
@@ -549,7 +520,7 @@ sap.ui.define(
                 }
             },
 
-
+            
             onRowsUpdatedSyntTab: function () {
                 //this._addSynthesisStyle();
             },
@@ -2394,8 +2365,236 @@ sap.ui.define(
 
             onTabSelect: function (oEvent) {
 
+                /*this.oView.byId("detailsTab--detailPage").setVisible(false);
+
+                var iSelectedIndex = oEvent.getParameter("selectedKey"); // Returns tab index (0-based)
+
+                if (iSelectedIndex.includes("detailsTabFilter")) { // Assuming DetailsTab is the 2nd tab (index 1)
+                    this.onDetailsTabPress();
+                }*/
             },
 
-            
+            onDetailsTabPress: function () {
+                var oBindingContext = this.oView.getBindingContext();
+                if (oBindingContext) {
+                    var sBusinessNo = oBindingContext.getProperty("BusinessNo");
+
+                    var sPath = sap.ui.require.toUrl("com/avv/ingerop/ingeropfga/model/mock/");
+
+                    var oBudgetModel = new JSONModel();
+                    if (sBusinessNo === "CC526901") { //Hoai
+                        oBudgetModel.loadData(sPath + "budgetHoai.json", null, false);
+                        this.onAddHOAIItems();
+                    } else {
+                        oBudgetModel.loadData(sPath + "budget.json", null, false);
+                    }
+
+                    this.oView.setModel(oBudgetModel, "budget");
+
+                    var sId = "budgetTree";
+                    var oNode = oBindingContext.getObject();
+
+                    var oTreeItem = this.oView.byId("budgetTree");
+                    if (oTreeItem === 'undefined ') {
+                        oTreeItem = new sap.m.StandardTreeItem(sId, {
+                            title: oNode.Mission,
+                            type: "Active"
+                        });
+                    }
+
+                    if (oNode.children && oNode.children.length > 0) {
+                        oTreeItem.bindItems({
+                            path: "children",
+                            template: new sap.m.StandardTreeItem({
+                                title: "{budget>Mission}"
+                            })
+                        });
+                    }
+
+                    console.log("BusinessNo (onDetailsTabPress):", sBusinessNo);
+                }
+            },
+
+
+            formatPercentage: function (value, row_type) {
+                if (value == null) return "";
+
+                // Check if this should be a percentage value
+                if (row_type === "RBAPCT" || row_type === "AVANCE") {
+                    const formattedValue = parseFloat(value).toFixed(2);
+                    return `${formattedValue}%`;
+                }
+
+                return value.toString();
+            },
+
+            onPressMonthLink: function (oEvent) {
+                var oLink = oEvent.getSource();
+
+                // Get all custom data items from the link
+                var aCustomData = oLink.getCustomData();
+                var oCustomValues = {};
+
+                // Convert custom data array to key-value pairs
+                aCustomData.forEach(function (oCustomData) {
+                    oCustomValues[oCustomData.getKey()] = oCustomData.getValue();
+                });
+
+                var sMonthField = oCustomValues.monthField;
+                var sYearField = oCustomValues.yearField;
+
+                /*var oRowContext = oLink.getBindingContext("synthesis");
+                var oRowData = oRowContext.getObject();
+                var fMonthValue = oRowData[sMonthField];*/
+
+                // Display to ckeck
+                console.log("Clicked month field:", sMonthField);
+
+                // Call for navigation
+                this.monthLinkNavigation(oEvent, sMonthField, sYearField);
+
+
+            },
+
+            monthLinkNavigation: async function (oEvent, sMonthValue, sYearValue) {
+
+                try {
+
+                    const oLink = oEvent.getSource();
+                    /*const oRowContext = oLink.getBindingContext("synthesis");
+                    const oRowData = oRowContext.getObject();*/
+
+                    // 2. Get GL Accounts
+                    const oContext = oLink.getBindingContext("utilities");
+                    const oData = oContext.getObject();
+                    const rawGLAccounts = oData.GLAccounts;
+
+                    const glAccounts = rawGLAccounts
+                        ? rawGLAccounts.split(";").map(a => a.trim()).filter(a => a.length > 0)
+                        : [];
+
+                    if (glAccounts.length === 0) {
+                        sap.m.MessageToast.show("GLAccount non disponible.");
+                        return;
+                    }
+
+                    // 3. Get Date range
+                    const year = sYearValue;
+                    const month = sMonthValue;
+
+                    // Calculate first and last day of the month
+                    const firstDay = `${year}${month}01`;
+                    const lastDay = this.getLastDayOfMonth(year, month);
+                    const formattedFirstDay = `${firstDay.substring(0, 4)}-${firstDay.substring(4, 6)}-${firstDay.substring(6, 8)}`;
+
+                    console.log(`Navigating for month ${month}/${year} (${firstDay} to ${lastDay})`);
+
+                    // 4. Get missions
+                    const utilitiesModel = this.oView.getModel("utilities");
+                    let missions = [];
+                    try {
+                        missions = await utilitiesModel.getBEMissions();
+
+                    } catch (error) {
+                        console.error("Failed to fetch missions:", error);
+                        throw error;
+                    }
+
+                    const wbsElements = [oData.business_no];
+                    if (missions && missions.length > 0) {
+                        // Add missions to the WBS elements array
+                        wbsElements.push(...missions.map(mission => mission.MissionId));
+                    }
+
+                    // 5. Create navigation
+                    const oComponent = sap.ui.core.Component.getOwnerComponentFor(this.oView);
+                    const oAppStateService = sap.ushell.Container.getService("AppState");
+                    const oSelectionVariant = new sap.ui.generic.app.navigation.service.SelectionVariant();
+
+                    const oAppState = await oAppStateService.createEmptyAppState(oComponent);
+                    oAppState.setData(oSelectionVariant.toJSONString());
+                    await oAppState.save();
+
+                    const sAppStateKey = oAppState.getKey();
+                    const oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
+
+                    /*const sUrl = oCrossAppNavigator.toExternal({
+                        target: {
+                            semanticObject: "GLAccount",
+                            action: "displayGLLineItemReportingView"
+                        },
+                        params: {
+                            PostingDate: `GE${firstDay}&LE${lastDay}`,
+                            GLAccount: ["0041000001"],
+                            WBSElementExternalID: ["PROJET CAS TEST1"],
+                            P_DisplayCurrency: "EUR",
+                            P_ExchangeRateType: "M",
+                            P_ExchangeRateDate: "2019-01-01"
+                        }
+                    });
+                    // Ouverture dans une nouvelle fenêtre
+                    window.open(sUrl, "_blank");
+                    */
+
+                    // Construct the URL parameters
+                    var params
+
+                    if (sMonthValue === 'N1' || sMonthValue === 'N0') {
+                        params = {
+                            FiscalYear: `${sYearValue}`,
+                            //FiscalPeriod: `${sYearValue}0${month}`,
+                            GLAccount: glAccounts,
+                            WBSElementExternalID: wbsElements //[oData.business_no],
+                        };
+                    } else {
+                        params = {
+                            FiscalYearPeriod: `${sYearValue}0${month}`,
+                            //FiscalPeriod: `${sYearValue}0${month}`,
+                            GLAccount: glAccounts,
+                            WBSElementExternalID: wbsElements
+                        };
+                    }
+
+
+                    // Convert params to URL string
+                    const sParams = Object.entries(params)
+                        .map(([key, value]) => {
+                            if (Array.isArray(value)) {
+                                return value.map(v => `${key}=${encodeURIComponent(v)}`).join('&');
+                            }
+                            return `${key}=${encodeURIComponent(value)}`;
+                        })
+                        .join('&');
+
+                    // Get the base URL for the target app
+                    const sHash = oCrossAppNavigator.hrefForExternal({
+                        target: {
+                            semanticObject: "GLAccount",
+                            action: "displayGLLineItemReportingView"
+                        }
+                    });
+
+                    // Get the FLP base URL
+                    const sBaseUrl = window.location.origin + window.location.pathname;
+
+                    // Construct the full URL
+                    const sUrl = `${sBaseUrl}#${sHash}&${sParams}`;
+
+                    // Open in new window
+                    window.open(sUrl, "_blank", "noopener,noreferrer");
+
+                } catch (err) {
+                    console.error("Error during navigation:", err);
+                }
+            },
+
+            // Helper function to get last day of month
+            getLastDayOfMonth: function (year, month) {
+                // Note: month is 1-12 (not 0-11 like in JS Date)
+                const lastDay = new Date(year, month, 0).getDate();
+                return `${year}${month.padStart(2, '0')}${lastDay.toString().padStart(2, '0')}`;
+            },
+
+
         });
     });

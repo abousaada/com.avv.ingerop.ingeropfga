@@ -98,6 +98,7 @@
                                 press="onAddMissionToGroupement"
                                 visible="{
                                     parts: [
+                                    
                                         { path: 'ui>/editable' },
                                         { path: 'utilities>isNode' },
                                         { path: 'utilities>isL0' }
