@@ -17,9 +17,9 @@ sap.ui.define(
         "sap/ui/generic/app/navigation/service/SelectionVariant",
         "sap/ui/generic/app/navigation/service/NavigationHandler",
         "com/avv/ingerop/ingeropfga/util/formatter",
-        "com/avv/ingerop/ingeropfga/ext/controller/Helpers/Missions",
-        "com/avv/ingerop/ingeropfga/ext/controller/Helpers/BudgetPxAutre",
-        "com/avv/ingerop/ingeropfga/ext/controller/Helpers/Synthese"
+        "com/avv/ingerop/ingeropfga/ext/controller/helpers/Missions",
+        "com/avv/ingerop/ingeropfga/ext/controller/helpers/BudgetPxAutre",
+        "com/avv/ingerop/ingeropfga/ext/controller/helpers/Synthese"
     ],
     function (
         ControllerExtension,
