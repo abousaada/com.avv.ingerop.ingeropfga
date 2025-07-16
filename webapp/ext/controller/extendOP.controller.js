@@ -2776,14 +2776,16 @@ sap.ui.define(
             monthLinkNavigation: async function (oEvent, sMonthValue, sYearValue) {
 
                 try {
+
                     const oLink = oEvent.getSource();
-                    const oRowContext = oLink.getBindingContext("synthesis");
-                    const oRowData = oRowContext.getObject();
+                    /*const oRowContext = oLink.getBindingContext("synthesis");
+                    const oRowData = oRowContext.getObject();*/
 
                     // 2. Get GL Accounts
-                    const oContext = oLink.getBindingContext("synthesis");
+                    const oContext = oLink.getBindingContext("utilities");
                     const oData = oContext.getObject();
                     const rawGLAccounts = oData.GLAccounts;
+
                     const glAccounts = rawGLAccounts
                         ? rawGLAccounts.split(";").map(a => a.trim()).filter(a => a.length > 0)
                         : [];
