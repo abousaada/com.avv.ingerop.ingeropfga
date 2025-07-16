@@ -55,14 +55,41 @@ sap.ui.define([
     pipe: function (...fns) {
       return (x, ...args) => fns.reduce((v, f) => f(v, ...args), x);
     },
-    getObjectPageSectionVisibilityMap: function(mode){
-      return Params.headerSectionToBeHiddenMapping[_getConstantMode(mode)]?.sections;
+    getTabVisibilityByMode:function(mode){
+      return Object.entries(Params.headerSectionList).map(([section, sectionData]) => {
+        return {key: sectionData.key, visible: sectionData.visible[_getConstantMode(mode)]};
+      });
     },
-    getHeaderFieldVisibilityMap:function(mode){
-      return Params.headerFieldToBeHiddenMapping[_getConstantMode(mode)];
+    getFieldVisibilityByMode:function(mode){
+      return Object.entries(Params.headerFieldsList).map(([field, {identifier, visible}]) => {
+        return {identifier, field, visible: visible[_getConstantMode(mode)]};
+      });
     },
-    getHeaderFieldUnabledMap:function(mode){
-      return Params.headerFieldToBeUnableMapping[_getConstantMode(mode)];
+    getFieldEnabledByMode:function(mode){
+      return Object.entries(Params.headerFieldsList).map(([field, {identifier, enabled}]) => {
+        return {identifier, field, enabled: enabled[_getConstantMode(mode)]};
+      });
+    },
+    getFieldMandatoryByType(type){
+      return Object.entries(Params.headerFieldsList).map(([field, {identifier, mandatory}]) => {
+        return {identifier, field, mandatory: mandatory.type.includes(type)};
+      });
+    },
+    getDefaultFieldMandatory(){
+      return Object.entries(Params.headerFieldsList)
+      .map(([field, {identifier, mandatory}]) => {
+        return {identifier, field, mandatory: mandatory.default};
+      });
+    },
+    getHeaderFieldList(){
+      return Object.entries(Params.headerFieldsList).map(([field, {identifier}]) => {
+        return {identifier, field};
+      });
+    },
+    getFieldActionList(){
+      return Object.entries(Params.headerFieldsList)
+                    .filter(([field, {action}]) => { return action != null; })
+                    .map(([field, {identifier, action}]) => { return {identifier, field, action}; });
     },
     validMessage: function(message, oView, onClose){
       return MessageBox.success(message, {

@@ -16,8 +16,6 @@ sap.ui.define(
         "com/avv/ingerop/ingeropfga/util/helper",
         "sap/ui/generic/app/navigation/service/SelectionVariant",
         "sap/ui/generic/app/navigation/service/NavigationHandler",
-        "com/avv/ingerop/ingeropfga/util/constant",
-        "com/avv/ingerop/ingeropfga/util/param",
         "com/avv/ingerop/ingeropfga/util/formatter",
     ],
     function (
@@ -37,8 +35,6 @@ sap.ui.define(
         Helper,
         SelectionVariant,
         NavigationHandler,
-        Constant,
-        Params,
         Formatter
     ) {
         "use strict";
@@ -52,31 +48,27 @@ sap.ui.define(
 
             _setTabsVisible() {
                 const isCreateMode = this.getView().getModel("ui").getProperty("/createMode");
-                Constant.headerSectionList.map(section => {
-                    this.getView().byId(section)?.setVisible(!Helper.getObjectPageSectionVisibilityMap(isCreateMode).includes(section));
+                Helper.getTabVisibilityByMode(isCreateMode).map(({ key, visible }) => {
+                    this.getView().byId(key)?.setVisible(visible)
                 });
             },
 
             _setFieldVisible() {
                 const isCreateMode = this.getView().getModel("ui").getProperty("/createMode");
-                Object.entries(Constant.headerFieldsList).map(([identifiant, champs]) => {
-                    champs.map(champ => {
-                        this._getField(identifiant, champ)?.setVisible(
-                            !Helper.getHeaderFieldVisibilityMap(isCreateMode)[identifiant].includes(champ)
-                        );
-                    });
-                });
+                Helper.getFieldVisibilityByMode(isCreateMode).map(
+                    ({ idntifier, field, visible }) => {
+                        this._getField(idntifier, field)?.setVisible(visible);
+                    }
+                );
             },
 
             _setFieldEnabled() {
                 const isCreateMode = this.getView().getModel("ui").getProperty("/createMode");
-                Object.entries(Constant.headerFieldsList).map(([identifiant, champs]) => {
-                    champs.map(champ => {
-                        this._getField(identifiant, champ)?.setEditable(
-                            !Helper.getHeaderFieldUnabledMap(isCreateMode)[identifiant].includes(champ)
-                        );
-                    });
-                });
+                Helper.getFieldEnabledByMode(isCreateMode).map(
+                    ({ identifier, field, enabled }) => {
+                        this._getField(identifier, field)?.setEditable(enabled);
+                    }
+                );
             },
 
             _setDefaultMandatory() {
@@ -88,19 +80,17 @@ sap.ui.define(
             },
 
             _attachChangeEventOnFields() {
-                Params.changeEventActions.map(({ identification, champ, action }) => {
-                    this.getView().byId(Helper.headerFieldIdBySectionAndFieldName(identification, champ)).attachChange(this[action].bind(this));
+                Helper.getFieldActionList().map(({ identifier, field, action }) => {
+                    this.getView().byId(Helper.headerFieldIdBySectionAndFieldName(identifier, field)).attachChange(this[action].bind(this));
                 });
             },
 
-            _setInputState(){
-                Object.entries(Constant.headerFieldsList).map(([identifiant, champs]) => {
-                    champs.map(champ => {
-                        const field = this._getField(identifiant, champ);
-                        field?.bindProperty("valueState", {
-                            path: champ,
-                            formatter: Formatter.validMandatoryField(field)
-                        });
+            _setInputState() {
+                Helper.getHeaderFieldList().map(({ identifier, field }) => {
+                    const champ = this._getField(identifier, field);
+                    champ?.bindProperty("valueState", {
+                        path: field,
+                        formatter: Formatter.validMandatoryField(champ)
                     });
                 });
             },
@@ -126,24 +116,17 @@ sap.ui.define(
 
             onDateChange(oEvent) {
                 const { StartDate, EndDate } = this.getView().getBindingContext().getObject();
+                let diffFromNow = null, diff = null;
 
-                if (EndDate) {
-                    const diffFromNow = Helper.diffEnMois(new Date(), EndDate);
-                    this._getField("Duree", "RemainingMonth").setValue(diffFromNow);
-                } else {
-                    this._getField("Duree", "RemainingMonth").setValue(null);
-                }
+                if (EndDate) { diffFromNow = Helper.diffEnMois(new Date(), EndDate); }
+                this._getField("Duree", "RemainingMonth").setValue(diffFromNow);
 
-                if (StartDate && EndDate) {
-                    const diff = Helper.diffEnMois(StartDate, EndDate);
-                    this._getField("Duree", "NbOfMonth").setValue(diff);
-                } else {
-                    this._getField("Duree", "NbOfMonth").setValue(null);
-                }
-
+                if (StartDate && EndDate) { diff = Helper.diffEnMois(StartDate, EndDate); }
+                this._getField("Duree", "NbOfMonth").setValue(diff);
             },
 
             onCalcTauxTravaux(oEvent) {
+                //need refactoring
                 const { Mttrvx, Mtctr } = this.getView().getBindingContext().getObject();
                 if (Mttrvx == undefined || Mtctr == undefined
                     || Mttrvx == null || Mtctr == null
@@ -163,16 +146,15 @@ sap.ui.define(
             },
 
             _setMandatoryFieldByType(type) {
-                const headerFieldMandatory = Params.headerFieldMandatoryByType[type];
-                if (headerFieldMandatory) {
-                    Object.entries(Constant.headerFieldsList)
-                        .map(([identifiant, champs]) => {
-                            champs.map(champ => {
-                                const isMandatory = (headerFieldMandatory[identifiant] || []).includes(champ);
-                                this._getField(identifiant, champ).setMandatory(isMandatory);
-                            });
-                        });
+                if(!type){
+                    Helper.getDefaultFieldMandatory().map(({identifier, field, mandatory}) => {
+                        this._getField(identifier, field)?.setMandatory(mandatory);
+                    });
+                    return ;
                 }
+                Helper.getFieldMandatoryByType(type).map(({identifier, field, mandatory}) => {
+                    this._getField(identifier, field).setMandatory(mandatory);
+                });
             },
 
             async _getTabsData() {
@@ -191,7 +173,7 @@ sap.ui.define(
                 utilitiesModel.setRecaps(recaps || []);
                 utilitiesModel.setPrevisions(previsions || []);
                 utilitiesModel.setOpport(opport || []);
-                
+
                 //Bugets PX
                 utilitiesModel.setPxAutres(pxAutres || []);
 
@@ -205,7 +187,9 @@ sap.ui.define(
                 this._setFieldVisible();
                 this._attachChangeEventOnFields();
                 this._setFieldEnabled();
-                this._setDefaultMandatory();
+
+                const type = e.context.getProperty("Type");
+                this._setMandatoryFieldByType(type)
 
                 //1. if create
                 if (bCreateMode) { utilitiesModel.reInit(); return }
@@ -274,9 +258,9 @@ sap.ui.define(
                     this.prepareMissionsTreeData();
 
                     //Prepare tree for Budget PX
-                    this.preparPxAutresTreeData();
+                    // this.preparPxAutresTreeData();
                 }
-                else { 
+                else {
 
                     try {
                         const oFragment = await sap.ui.core.Fragment.load({
@@ -446,19 +430,19 @@ sap.ui.define(
                         return new Promise(async (resolve, reject) => {
                             const formattedMissions = utilitiesModel.getFormattedMissions();
                             const oPayload = Helper.extractPlainData({ ...oContext.getObject(), "to_Missions": formattedMissions });
-                            
+
                             try {
                                 const updatedFGA = await utilitiesModel.deepUpsertFGA(oPayload);
                                 if (updatedFGA) {
                                     Helper.validMessage("FGA updated: " + updatedFGA.BusinessNo, this.getView(), this.onNavBack.bind(this));
                                 }
-                                
+
                             } catch (error) {
                                 Helper.errorMessage("FGA create fail");
                                 console.log(error);
                                 reject();
                             }
-                            
+
                             reject();
                         });
 
@@ -500,15 +484,15 @@ sap.ui.define(
             prepareMissionsTreeData: function () {
                 var missions = this.getView().getModel("utilities").getProperty("/missions");
                 var pxAutres = this.getView().getModel("utilities").getProperty("/pxAutres");
-                
+
                 // Create tree builder function
-                var buildTree = function(items) {
+                var buildTree = function (items) {
                     var treeData = [];
                     var fgaGroups = {};
-                    
+
                     if (!items) return treeData;
-                    
-                    items.forEach(function(item) {
+
+                    items.forEach(function (item) {
                         if (!fgaGroups[item.BusinessNo]) {
                             fgaGroups[item.BusinessNo] = {
                                 name: item.BusinessNo,
@@ -517,7 +501,7 @@ sap.ui.define(
                                 children: {}
                             };
                         }
-            
+
                         if (!fgaGroups[item.BusinessNo].children[item.Regroupement]) {
                             fgaGroups[item.BusinessNo].children[item.Regroupement] = {
                                 name: item.Regroupement,
@@ -526,23 +510,23 @@ sap.ui.define(
                                 children: []
                             };
                         }
-            
+
                         fgaGroups[item.BusinessNo].children[item.Regroupement].children.push(item);
                     });
-            
+
                     // Convert children objects to arrays
                     for (var fga in fgaGroups) {
                         fgaGroups[fga].children = Object.values(fgaGroups[fga].children);
                         treeData.push(fgaGroups[fga]);
                     }
-                    
+
                     return treeData;
                 };
-            
+
                 // Build trees 
                 var missionsTreeData = buildTree(missions);
                 var pxAutresTreeData = buildTree(pxAutres);
-            
+
                 // Set tree
                 this.getView().getModel("utilities").setProperty("/missionsHierarchy", missionsTreeData);
                 this.getView().getModel("utilities").setProperty("/PxAutreHierarchy", pxAutresTreeData);
@@ -644,8 +628,8 @@ sap.ui.define(
 
                 // ABO : This code needs refactoring
                 const oldMissions = this.getView().getModel("utilities").getMissions();
-                const BusinessNo = this.getView().getModel("utilities").getBusinessNo().slice(0, -2); 
-                const maxMission = oldMissions 
+                const BusinessNo = this.getView().getModel("utilities").getBusinessNo().slice(0, -2);
+                const maxMission = oldMissions
                     .filter(mission => mission.BusinessNo === BusinessNo)
                     .reduce((max, current) => {
                         const currentMatch = current.MissionId.match(/-(\d+)$/);
