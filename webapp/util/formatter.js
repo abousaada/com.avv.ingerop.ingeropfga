@@ -8,7 +8,12 @@ sap.ui.define([
                 const isMandatory = field.getMandatory();
                 return isMandatory && !value ? "Error" : "None";
             };
-        }
+        },
+
+        
+		formatMonthLabel: function (sMonth, sYear) {
+			return sMonth + "/" + sYear;
+		},
 
     };
 });

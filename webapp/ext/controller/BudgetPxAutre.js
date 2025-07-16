@@ -92,7 +92,7 @@ sap.ui.define([
                 }, 50);
             } catch (error) {
                 console.error("Update failed:", error);
-                this.oView.setBusy(false);
+                //this.oView.setBusy(false);
             }
 
             //this.oView.setBusy(false);
