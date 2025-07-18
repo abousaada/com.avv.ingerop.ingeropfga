@@ -30,11 +30,11 @@ sap.ui.define([
                         const currentMatch = current.MissionId.match(/-(\d+)$/);
                         const currentNum = currentMatch ? parseInt(currentMatch[1]) : 0;
 
-                        const maxMatch = max.MissionId?.match(/-(\d+)$/); 
+                        const maxMatch = max.MissionId?.match(/-(\d+)$/);
                         const maxNum = maxMatch ? parseInt(maxMatch[1]) : 0;
 
                         return currentNum > maxNum ? current : max;
-                    }, { MissionId: `${BusinessNo}-000` }); 
+                    }, { MissionId: `${BusinessNo}-000` });
 
                 const match = maxMission.MissionId.match(/-(\d+)$/);
                 const currentMax = match ? parseInt(match[1]) : 0;
@@ -51,50 +51,51 @@ sap.ui.define([
 
             // Call this when saving the main entity to process all missions
             validDataBeforeSave: function () {
-                return this.validMissions() && this.validFGAHeaderFields();
+                //return this.validMissions() && this.validFGAHeaderFields();
+                return this.validFGAHeaderFields();
             },
 
             // Validate missions
-            validMissions(){
+            validMissions() {
                 var aMissions = this.getMissions();
-                if (!Filter.validateMissions(aMissions)) { 
+                if (!Filter.validateMissions(aMissions)) {
                     return false;
                 }
                 return true;
             },
 
-            validFGAHeaderFields(){
+            validFGAHeaderFields() {
                 return true;
             },
 
             // const data = {
-                    //     "BusinessName": "Nom de l'affaire : text XP",
-                    //     "CompanyCode": "9000",
-                    //     "PROFITCENTER": "MEDNBTS000",
-                    //     "Mission": "05",
-                    //     "StartDate": new Date("2025-01-01"),
-                    //     "EndDate": new Date("2025-02-28"),
-                    //     "to_Missions": [
-                    //         {
-                    //             "MissionId": "001",
-                    //             // "BusinessNo": "AFFAIRE123",
-                    //             "MissionCode": "AVP",
-                    //             "StartDate": new Date("2025-01-01"),
-                    //             "EndDate": new Date("2025-01-30"),
-                    //             "ExternalRevenue": "100000.00",
-                    //             "LaborBudget": "50000.00"
-                    //         },
-                    //         {
-                    //             "MissionId": "002",
-                    //             // "BusinessNo": "AFFAIRE123",
-                    //             "MissionCode": "PRO",
-                    //             "StartDate": new Date("2025-01-01"),
-                    //             "EndDate": new Date("2025-01-30"),
-                    //             "ExternalRevenue": "150000.00",
-                    //             "LaborBudget": "75000.00"
-                    //         }
-                    //     ]
-                    // };
+            //     "BusinessName": "Nom de l'affaire : text XP",
+            //     "CompanyCode": "9000",
+            //     "PROFITCENTER": "MEDNBTS000",
+            //     "Mission": "05",
+            //     "StartDate": new Date("2025-01-01"),
+            //     "EndDate": new Date("2025-02-28"),
+            //     "to_Missions": [
+            //         {
+            //             "MissionId": "001",
+            //             // "BusinessNo": "AFFAIRE123",
+            //             "MissionCode": "AVP",
+            //             "StartDate": new Date("2025-01-01"),
+            //             "EndDate": new Date("2025-01-30"),
+            //             "ExternalRevenue": "100000.00",
+            //             "LaborBudget": "50000.00"
+            //         },
+            //         {
+            //             "MissionId": "002",
+            //             // "BusinessNo": "AFFAIRE123",
+            //             "MissionCode": "PRO",
+            //             "StartDate": new Date("2025-01-01"),
+            //             "EndDate": new Date("2025-01-30"),
+            //             "ExternalRevenue": "150000.00",
+            //             "LaborBudget": "75000.00"
+            //         }
+            //     ]
+            // };
 
             async deepCreateFGA(data) {
                 try {
@@ -140,9 +141,21 @@ sap.ui.define([
                 }
             },
 
-            async deepUpsertFGA(data){
+            async deepUpsertFGA(data) {
                 try {
-                    const createdFGA = await this.create("/ZC_FGASet", data);
+                    const dataToSend = { ...data };
+                    delete dataToSend.isTotalRow;
+
+                    // Also check nested arrays
+                    if (dataToSend.to_BudgetPxAutre) {
+                        dataToSend.to_BudgetPxAutre = dataToSend.to_BudgetPxAutre.map(item => {
+                            const newItem = { ...item };
+                            delete newItem.isTotalRow;
+                            return newItem;
+                        });
+                    }
+
+                    const createdFGA = await this.create("/ZC_FGASet", dataToSend);
                     console.log(createdFGA);
                     return createdFGA;
                 } catch (error) {
@@ -241,6 +254,11 @@ sap.ui.define([
                     mission.LaborBudget = parseFloat(mission.LaborBudget).toFixed(2).toString();
                     return mission;
                 });
+            },
+
+
+            getFormattedPxAutre() {
+                return this.getPxAutres();
             }
 
         });
