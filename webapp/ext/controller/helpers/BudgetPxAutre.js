@@ -180,12 +180,12 @@ sap.ui.define([
                         if (!item.isTotalRow) {
 
                             item.FinAffaire = (Number(item.VoyageDeplacement) || 0) +
-                                 (Number(item.AutresFrais) || 0) +
-                                 (Number(item.CreancesDouteuses) || 0) +
-                                 (Number(item.EtudesTravaux) || 0) +
-                                 (Number(item.SinistreContentieux) || 0) +
-                                 (Number(item.AleasDivers) || 0);
-                                 
+                                (Number(item.AutresFrais) || 0) +
+                                (Number(item.CreancesDouteuses) || 0) +
+                                (Number(item.EtudesTravaux) || 0) +
+                                (Number(item.SinistreContentieux) || 0) +
+                                (Number(item.AleasDivers) || 0);
+
                             regroupement.totals.VoyageDeplacement += Number(item.VoyageDeplacement) || 0;
                             regroupement.totals.AutresFrais += Number(item.AutresFrais) || 0;
                             regroupement.totals.CreancesDouteuses += Number(item.CreancesDouteuses) || 0;
@@ -305,7 +305,7 @@ sap.ui.define([
                     // Read GlAccounts from entity
                     totals.cumule.GLAccountVoyageDeplacement = node.GLAccountVoyageDeplacement;
                     totals.cumule.GLAccountAutresFrais = node.GLAccountAutresFrais;
-                    totals.cumule.GLAccountCreancesDouteuses =node.GLAccountCreancesDouteuses;
+                    totals.cumule.GLAccountCreancesDouteuses = node.GLAccountCreancesDouteuses;
                     totals.cumule.GLAccountEtudesTravaux = node.GLAccountEtudesTravaux;
                     totals.cumule.GLAccountSinistreContentieux = node.GLAccountSinistreContentieux;
                     totals.cumule.GLAccountAleasDivers = node.GLAccountAleasDivers;
@@ -381,11 +381,11 @@ sap.ui.define([
 
             var oItem = oEvent.getSource().getBindingContext("utilities").getObject();
             var sColumnId = oEvent.getSource().data("columnId"); // from BudgetPx view
-            
+
             // Determine which GLAccount to show based on the clicked column
             var sGLAccount = "";
-            
-            switch(sColumnId) {
+
+            switch (sColumnId) {
                 case "VoyageDeplacement":
                     sGLAccount = oItem.GLAccountVoyageDeplacement;
                     break;
@@ -410,7 +410,7 @@ sap.ui.define([
                 default:
                     sGLAccount = "GL Account not set";
             }
-            
+
             //sap.m.MessageToast.show("GLAccount: " + sGLAccount);
 
 
@@ -423,7 +423,7 @@ sap.ui.define([
                 // 2. Get GL Accounts
                 const oContext = oLink.getBindingContext("utilities");
                 const oData = oContext.getObject();
-                
+
 
                 const glAccounts = sGLAccount
                     ? sGLAccount.split(";").map(a => a.trim()).filter(a => a.length > 0)
@@ -455,7 +455,7 @@ sap.ui.define([
                 }
 
                 // 5. Create navigation
-                const oComponent = sap.ui.core.Component.getOwnerComponentFor(this.oView);
+                /*const oComponent = sap.ui.core.Component.getOwnerComponentFor(this.oView);
                 const oAppStateService = sap.ushell.Container.getService("AppState");
                 const oSelectionVariant = new sap.ui.generic.app.navigation.service.SelectionVariant();
 
@@ -463,43 +463,68 @@ sap.ui.define([
                 oAppState.setData(oSelectionVariant.toJSONString());
                 await oAppState.save();
 
-                const sAppStateKey = oAppState.getKey();
+                const sAppStateKey = oAppState.getKey();*/
                 const oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
 
                 // Construct the URL parameters
+                /*var params = {
+                    FiscalYearPeriod: `${year}0${month}`,
+                    GLAccount: glAccounts,
+                    WBSElementExternalID: wbsElements
+                };*/
+
                 var params = {
                     FiscalYearPeriod: `${year}0${month}`,
                     GLAccount: glAccounts,
                     WBSElementExternalID: wbsElements
                 };
 
-
-                // Convert params to URL string
-                const sParams = Object.entries(params)
-                    .map(([key, value]) => {
-                        if (Array.isArray(value)) {
-                            return value.map(v => `${key}=${encodeURIComponent(v)}`).join('&');
-                        }
-                        return `${key}=${encodeURIComponent(value)}`;
-                    })
-                    .join('&');
-
                 // Get the base URL for the target app
                 const sHash = oCrossAppNavigator.hrefForExternal({
                     target: {
                         semanticObject: "GLAccount",
                         action: "displayGLLineItemReportingView"
-                    }
+                    },
+                    params: Object.fromEntries(
+                        Object.entries(params).map(([key, value]) => {
+                            if (Array.isArray(value)) {
+                                return [key, value.map(v => encodeURIComponent(v))];
+                            }
+                            return [key, encodeURIComponent(value)];
+                        })
+                    )
                 });
 
-                // Get the FLP base URL
-                const sBaseUrl = window.location.origin + window.location.pathname;
-
-                // Construct the full URL
-                const sUrl = `${sBaseUrl}#${sHash}&${sParams}`;
-
                 // Open in new window
-                window.open(sUrl, "_blank", "noopener,noreferrer");
+                window.open(sHash, "_blank", "noopener,noreferrer");
+
+                /*
+                        // Convert params to URL string
+                        const sParams = Object.entries(params)
+                            .map(([key, value]) => {
+                                if (Array.isArray(value)) {
+                                    return value.map(v => `${key}=${encodeURIComponent(v)}`).join('&');
+                                }
+                                return `${key}=${encodeURIComponent(value)}`;
+                            })
+                            .join('&');
+        
+                        // Get the base URL for the target app
+                        const sHash = oCrossAppNavigator.hrefForExternal({
+                            target: {
+                                semanticObject: "GLAccount",
+                                action: "displayGLLineItemReportingView"
+                            }
+                        });
+        
+                        // Get the FLP base URL
+                        const sBaseUrl = window.location.origin + window.location.pathname;
+        
+                        // Construct the full URL
+                        const sUrl = `${sBaseUrl}#${sHash}&${sParams}`;
+        
+                        // Open in new window
+                        window.open(sUrl, "_blank", "noopener,noreferrer");*/
 
             } catch (err) {
                 console.error("Error during navigation:", err);

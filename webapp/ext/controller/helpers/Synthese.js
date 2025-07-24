@@ -83,7 +83,7 @@ sap.ui.define([
                 }
 
                 // 5. Create navigation
-                const oComponent = sap.ui.core.Component.getOwnerComponentFor(this.oView);
+                /*const oComponent = sap.ui.core.Component.getOwnerComponentFor(this.oView);
                 const oAppStateService = sap.ushell.Container.getService("AppState");
                 const oSelectionVariant = new sap.ui.generic.app.navigation.service.SelectionVariant();
 
@@ -91,7 +91,7 @@ sap.ui.define([
                 oAppState.setData(oSelectionVariant.toJSONString());
                 await oAppState.save();
 
-                const sAppStateKey = oAppState.getKey();
+                const sAppStateKey = oAppState.getKey();*/
                 const oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
 
                 /*const sUrl = oCrossAppNavigator.toExternal({
