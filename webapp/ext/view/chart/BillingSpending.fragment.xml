@@ -38,13 +38,13 @@
                 }">
 
                 <viz:dataset>
-                    <viz.data:FlattenedDataset data="{chart2>/results}">
+                    <viz.data:FlattenedDataset data="{utilities>/chartsAdditionalData}">
                         <viz.data:dimensions>
-                            <viz.data:DimensionDefinition name="Période" value="{chart2>Periode}" />
+                            <viz.data:DimensionDefinition name="Période" value="{utilities>Periode}" />
                         </viz.data:dimensions>
                         <viz.data:measures>
-                            <viz.data:MeasureDefinition name="Facturation" value="{chart2>Facturation}" />
-                            <viz.data:MeasureDefinition name="Dépense" value="{chart2>Depense}" />
+                            <viz.data:MeasureDefinition name="Facturation" value="{utilities>Facturation}" />
+                            <viz.data:MeasureDefinition name="Dépense" value="{utilities>Depense}" />
                         </viz.data:measures>
                     </viz.data:FlattenedDataset>
                 </viz:dataset>

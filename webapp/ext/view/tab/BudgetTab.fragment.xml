@@ -4,10 +4,12 @@
 	xmlns:f="sap.ui.layout.form">
     <IconTabBar id="budgetItb" class="custItb" >
         <items>
-            <IconTabFilter key="STIncomeTab" text="{i18n>synt.tab.budget.st}">
-                <core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.budget.STIncome" type="XML" />
+
+            <IconTabFilter key="STIncomeTab" text="{i18n>synt.tab.budget.subcontract}">
+                <core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.budget.BudgetPxSubContracting" type="XML" />
             </IconTabFilter>
-            <IconTabFilter key="INVIncomeTab" text="{i18n>synt.tab.budget.invoice}" >
+            
+            <!--IconTabFilter key="INVIncomeTab" text="{i18n>synt.tab.budget.invoice}" >
                 <core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.budget.INVIncome" type="XML" />
             </IconTabFilter>
             <IconTabFilter key="MOIncomeTab" text="{i18n>synt.tab.budget.mo}">
@@ -15,9 +17,12 @@
             </IconTabFilter>
             <IconTabFilter key="SCIncomeTab" text="{i18n>synt.tab.budget.subcontract}">
                 <core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.budget.SCIncome" type="XML" />
-            </IconTabFilter>
-            <IconTabFilter key="OtherIncomeTab" text="{i18n>synt.tab.budget.other}">
+            </IconTabFilter-->
+            <!--IconTabFilter key="OtherIncomeTab" text="{i18n>synt.tab.budget.other}">
                 <core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.budget.OtherIncome" type="XML" />
+            </IconTabFilter-->
+            <IconTabFilter key="OtherIncomeTab" text="{i18n>synt.tab.budget.other}">
+                <core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.budget.BudgetPxAutre" type="XML" />
             </IconTabFilter>
         </items>
     </IconTabBar>

@@ -20,17 +20,17 @@
                 }"
                 height='100%' width="100%" vizType="100_stacked_bar" class="sapUiSmallMargin">
                 <viz:dataset>
-                    <viz.data:FlattenedDataset data="{chart>/results}">
+                    <viz.data:FlattenedDataset data="{utilities>/charts}">
                     <!-- <viz.data:FlattenedDataset id="idChartAvancement"> -->
                         <viz.data:dimensions>
                              <viz.data:DimensionDefinition name="Categorie"
-                                value="{chart>Categorie}" />
+                                value="{utilities>Categorie}" />
                             <viz.data:DimensionDefinition name="Type"
-                                value="{chart>Type}" />
+                                value="{utilities>Type}" />
                         </viz.data:dimensions>
                         <viz.data:measures>
                             <viz.data:MeasureDefinition name="Valeur"
-                                value="{chart>Valeur}" />
+                                value="{utilities>Valeur}" />
                         </viz.data:measures>
                     </viz.data:FlattenedDataset>
                 </viz:dataset>

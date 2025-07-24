@@ -9,7 +9,7 @@
         id="synthesisTab"
         visibleRowCount="22"
         rowsUpdated="onRowsUpdatedSyntTab"
-        rows="{path:'synthesis>/results', templateShareable: false}"
+        rows="{path:'utilities>/previsions', templateShareable: false}"
         class="syntheseTab sapUiSmallMargin"
         selectionMode="None"
     >
@@ -17,20 +17,20 @@
             <table:Column width="18rem">
                 <Label text="{i18n>synt.desc}" />
                 <table:template>
-                    <Text text="{synthesis>description}" />
+                    <Text text="{utilities>description}" />
                 </table:template>
             </table:Column>
             <!--table:Column >
                 <Label text="{i18n>synt.initBudget}" />
                 <table:template>
-                    <ObjectStatus class="custObjStatus" text="{path: 'synthesis>InitBudget', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>InitBudget}) &lt; 0 ? 'Error': 'None'}" />
+                    <ObjectStatus class="custObjStatus" text="{path: 'utilities>InitBudget', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${utilities>InitBudget}) &lt; 0 ? 'Error': 'None'}" />
                 </table:template>
             </table:Column-->
             <table:Column>
                 <Label text="{i18n>synt.cumulN-1}" />
                 <table:template>
                     <Link
-                        text="{path: 'synthesis>cumul_n1', formatter: '.formatNumbToNoDecimal'}"
+                        text="{path: 'utilities>cumul_n1', formatter: '.formatNumbToNoDecimal'}"
                         press=".onPressMonthLink"
                     >
                         <customData>
@@ -63,9 +63,9 @@
                     }"
                 />
                 <table:template>
-                    <!--ObjectStatus class="custObjStatus" text="{path: 'synthesis>month01', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${synthesis>month01}) &lt; 0 ? 'Error': 'None'}" /-->
+                    <!--ObjectStatus class="custObjStatus" text="{path: 'utilities>month01', formatter:'.formatNumbToNoDecimal'}" state="{= parseFloat(${utilities>month01}) &lt; 0 ? 'Error': 'None'}" /-->
                     <Link
-                        text="{path: 'synthesis>month01', formatter: '.formatNumbToNoDecimal'}"
+                        text="{path: 'utilities>month01', formatter: '.formatNumbToNoDecimal'}"
                         press=".onPressMonthLink"
                     >
                         <customData>
@@ -99,7 +99,7 @@
                 />
                 <table:template>
                     <Link
-                        text="{path: 'synthesis>month02', formatter: '.formatNumbToNoDecimal'}"
+                        text="{path: 'utilities>month02', formatter: '.formatNumbToNoDecimal'}"
                         press=".onPressMonthLink"
                     >
                         <customData>
@@ -133,7 +133,7 @@
                 />
                 <table:template>
                     <Link
-                        text="{path: 'synthesis>month03', formatter: '.formatNumbToNoDecimal'}"
+                        text="{path: 'utilities>month03', formatter: '.formatNumbToNoDecimal'}"
                         press=".onPressMonthLink"
                     >
                         <customData>
@@ -167,7 +167,7 @@
                 />
                 <table:template>
                     <Link
-                        text="{path: 'synthesis>month04', formatter: '.formatNumbToNoDecimal'}"
+                        text="{path: 'utilities>month04', formatter: '.formatNumbToNoDecimal'}"
                         press=".onPressMonthLink"
                     >
                         <customData>
@@ -201,7 +201,7 @@
                 />
                 <table:template>
                     <Link
-                        text="{path: 'synthesis>month05', formatter: '.formatNumbToNoDecimal'}"
+                        text="{path: 'utilities>month05', formatter: '.formatNumbToNoDecimal'}"
                         press=".onPressMonthLink"
                     >
                         <customData>
@@ -235,7 +235,7 @@
                 />
                 <table:template>
                     <Link
-                        text="{path: 'synthesis>month06', formatter: '.formatNumbToNoDecimal'}"
+                        text="{path: 'utilities>month06', formatter: '.formatNumbToNoDecimal'}"
                         press=".onPressMonthLink"
                     >
                         <customData>
@@ -269,7 +269,7 @@
                 />
                 <table:template>
                     <Link
-                        text="{path: 'synthesis>month07', formatter: '.formatNumbToNoDecimal'}"
+                        text="{path: 'utilities>month07', formatter: '.formatNumbToNoDecimal'}"
                         press=".onPressMonthLink"
                     >
                         <customData>
@@ -303,7 +303,7 @@
                 />
                 <table:template>
                     <Link
-                        text="{path: 'synthesis>month08', formatter: '.formatNumbToNoDecimal'}"
+                        text="{path: 'utilities>month08', formatter: '.formatNumbToNoDecimal'}"
                         press=".onPressMonthLink"
                     >
                         <customData>
@@ -337,7 +337,7 @@
                 />
                 <table:template>
                     <Link
-                        text="{path: 'synthesis>month09', formatter: '.formatNumbToNoDecimal'}"
+                        text="{path: 'utilities>month09', formatter: '.formatNumbToNoDecimal'}"
                         press=".onPressMonthLink"
                     >
                         <customData>
@@ -371,7 +371,7 @@
                 />
                 <table:template>
                     <Link
-                        text="{path: 'synthesis>month10', formatter: '.formatNumbToNoDecimal'}"
+                        text="{path: 'utilities>month10', formatter: '.formatNumbToNoDecimal'}"
                         press=".onPressMonthLink"
                     >
                         <customData>
@@ -405,7 +405,7 @@
                 />
                 <table:template>
                     <Link
-                        text="{path: 'synthesis>month11', formatter: '.formatNumbToNoDecimal'}"
+                        text="{path: 'utilities>month11', formatter: '.formatNumbToNoDecimal'}"
                         press=".onPressMonthLink"
                     >
                         <customData>
@@ -439,7 +439,7 @@
                 />
                 <table:template>
                     <Link
-                        text="{path: 'synthesis>month12', formatter: '.formatNumbToNoDecimal'}"
+                        text="{path: 'utilities>month12', formatter: '.formatNumbToNoDecimal'}"
                         press=".onPressMonthLink"
                     >
                         <customData>
@@ -467,7 +467,7 @@
                 <Label text="{i18n>synt.AnneeN}" />
                 <table:template>
                     <Link
-                        text="{path: 'synthesis>AnneeN', formatter: '.formatNumbToNoDecimal'}"
+                        text="{path: 'utilities>AnneeN', formatter: '.formatNumbToNoDecimal'}"
                         press=".onPressMonthLink"
                     >
                         <customData>
@@ -495,7 +495,7 @@
                 <Label text="{i18n>synt.CumulN}" />
                 <table:template>
                     <Link
-                        text="{path: 'synthesis>CumulN', formatter: '.formatNumbToNoDecimal'}"
+                        text="{path: 'utilities>CumulN', formatter: '.formatNumbToNoDecimal'}"
                         press=".onPressMonthLink"
                     >
                         <customData>
@@ -524,8 +524,8 @@
                 <table:template>
                     <ObjectStatus
                         class="custObjStatus"
-                        text="{path: 'synthesis>AVenir', formatter:'.formatNumbToNoDecimal'}"
-                        state="{= parseFloat(${synthesis>YetToCome}) &lt; 0 ? 'Error': 'None'}"
+                        text="{path: 'utilities>AVenir', formatter:'.formatNumbToNoDecimal'}"
+                        state="{= parseFloat(${utilities>YetToCome}) &lt; 0 ? 'Error': 'None'}"
                     />
                 </table:template>
             </table:Column>
@@ -534,8 +534,8 @@
                 <table:template>
                     <ObjectStatus
                         class="custObjStatus"
-                        text="{path: 'synthesis>FinAffaire', formatter:'.formatNumbToNoDecimal'}"
-                        state="{= parseFloat(${synthesis>Forecast}) &lt; 0 ? 'Error': 'None'}"
+                        text="{path: 'utilities>FinAffaire', formatter:'.formatNumbToNoDecimal'}"
+                        state="{= parseFloat(${utilities>Forecast}) &lt; 0 ? 'Error': 'None'}"
                     />
                 </table:template>
             </table:Column>
@@ -544,8 +544,8 @@
                 <table:template>
                     <ObjectStatus
                         class="custObjStatus"
-                        text="{path: 'synthesis>HistBudgetObjectif', formatter:'.formatNumbToNoDecimal'}"
-                        state="{= parseFloat(${synthesis>Forecast}) &lt; 0 ? 'Error': 'None'}"
+                        text="{path: 'utilities>HistBudgetObjectif', formatter:'.formatNumbToNoDecimal'}"
+                        state="{= parseFloat(${utilities>Forecast}) &lt; 0 ? 'Error': 'None'}"
                     />
                 </table:template>
             </table:Column-->

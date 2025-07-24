@@ -324,6 +324,7 @@
             "AfterFacet|ZC_FGASet|TableInfo": {
               "className": "sap.ui.core.mvc.View",
               "viewName": "com.avv.ingerop.ingeropfga.ext.view.Tab",
+              "id": "budgets",
               "type": "XML",
               "sap.ui.generic.app": {
                 "title": "Budgets"
