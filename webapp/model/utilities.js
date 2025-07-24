@@ -3,9 +3,10 @@ sap.ui.define([
     "./utilities/initialData",
     "./utilities/formatter",
     "./utilities/filter",
+    "./utilities/subContracting",
     "../util/constant"
 ],
-    function (BaseModel, InitialData, Formatter, Filter, Constant) {
+    function (BaseModel, InitialData, Formatter, Filter, SubContracting, Constant) {
         "use strict";
 
         return BaseModel.extend("com.avv.ingerop.ingeropfga.model.utilities", {
@@ -13,10 +14,45 @@ sap.ui.define([
             init: function (oModel) {
                 this.setData({ ...InitialData });
                 this.initModel(oModel);
+                this.oSubContracting = new SubContracting(this);
             },
 
             reInit() {
                 this.setData({ ...InitialData });
+            },
+
+            buildPxSubContractingTreeData(){
+                const { treeData, treeHeader } = this.oSubContracting.buildTreeData();
+                this.setPxSubContractingHierarchy(treeData);
+                this.setPxSubContractingHeader(treeHeader);
+            },
+
+            async getBEDatas() {
+                try {
+                    const [missions, previsions, recaps, opport, pxAutres, pxSubContracting] = await Promise.all([
+                        this.getBEMissions(),
+                        this.getBEPrevisions(),
+                        this.getBERecaps(),
+                        this.getBEOpport(),
+
+                        //Bugets PX
+                        this.getBEPxAutres(),
+                        this.getBEPxExtSubContracting()
+                    ]);
+
+                    this.setMissions(missions || []);
+                    this.setRecaps(recaps || []);
+                    this.setPrevisions(previsions || []);
+                    this.setOpport(opport || []);
+
+                    //Bugets PX
+                    this.setPxAutres(pxAutres || []);
+
+                    this.setPxSousTraitance(pxSubContracting || []);
+
+                } catch (error) {
+                    console.log(error);
+                }
             },
 
             addMissionNewLine() {
@@ -30,11 +66,11 @@ sap.ui.define([
                         const currentMatch = current.MissionId.match(/-(\d+)$/);
                         const currentNum = currentMatch ? parseInt(currentMatch[1]) : 0;
 
-                        const maxMatch = max.MissionId?.match(/-(\d+)$/); 
+                        const maxMatch = max.MissionId?.match(/-(\d+)$/);
                         const maxNum = maxMatch ? parseInt(maxMatch[1]) : 0;
 
                         return currentNum > maxNum ? current : max;
-                    }, { MissionId: `${BusinessNo}-000` }); 
+                    }, { MissionId: `${BusinessNo}-000` });
 
                 const match = maxMission.MissionId.match(/-(\d+)$/);
                 const currentMax = match ? parseInt(match[1]) : 0;
@@ -55,46 +91,46 @@ sap.ui.define([
             },
 
             // Validate missions
-            validMissions(){
+            validMissions() {
                 var aMissions = this.getMissions();
-                if (!Filter.validateMissions(aMissions)) { 
+                if (!Filter.validateMissions(aMissions)) {
                     return false;
                 }
                 return true;
             },
 
-            validFGAHeaderFields(){
+            validFGAHeaderFields() {
                 return true;
             },
 
             // const data = {
-                    //     "BusinessName": "Nom de l'affaire : text XP",
-                    //     "CompanyCode": "9000",
-                    //     "PROFITCENTER": "MEDNBTS000",
-                    //     "Mission": "05",
-                    //     "StartDate": new Date("2025-01-01"),
-                    //     "EndDate": new Date("2025-02-28"),
-                    //     "to_Missions": [
-                    //         {
-                    //             "MissionId": "001",
-                    //             // "BusinessNo": "AFFAIRE123",
-                    //             "MissionCode": "AVP",
-                    //             "StartDate": new Date("2025-01-01"),
-                    //             "EndDate": new Date("2025-01-30"),
-                    //             "ExternalRevenue": "100000.00",
-                    //             "LaborBudget": "50000.00"
-                    //         },
-                    //         {
-                    //             "MissionId": "002",
-                    //             // "BusinessNo": "AFFAIRE123",
-                    //             "MissionCode": "PRO",
-                    //             "StartDate": new Date("2025-01-01"),
-                    //             "EndDate": new Date("2025-01-30"),
-                    //             "ExternalRevenue": "150000.00",
-                    //             "LaborBudget": "75000.00"
-                    //         }
-                    //     ]
-                    // };
+            //     "BusinessName": "Nom de l'affaire : text XP",
+            //     "CompanyCode": "9000",
+            //     "PROFITCENTER": "MEDNBTS000",
+            //     "Mission": "05",
+            //     "StartDate": new Date("2025-01-01"),
+            //     "EndDate": new Date("2025-02-28"),
+            //     "to_Missions": [
+            //         {
+            //             "MissionId": "001",
+            //             // "BusinessNo": "AFFAIRE123",
+            //             "MissionCode": "AVP",
+            //             "StartDate": new Date("2025-01-01"),
+            //             "EndDate": new Date("2025-01-30"),
+            //             "ExternalRevenue": "100000.00",
+            //             "LaborBudget": "50000.00"
+            //         },
+            //         {
+            //             "MissionId": "002",
+            //             // "BusinessNo": "AFFAIRE123",
+            //             "MissionCode": "PRO",
+            //             "StartDate": new Date("2025-01-01"),
+            //             "EndDate": new Date("2025-01-30"),
+            //             "ExternalRevenue": "150000.00",
+            //             "LaborBudget": "75000.00"
+            //         }
+            //     ]
+            // };
 
             async deepCreateFGA(data) {
                 try {
@@ -106,6 +142,7 @@ sap.ui.define([
                     // Helper.errorMessage("Creation error: " + error?.responseText );
                 }
             },
+
 
             /*async deepUpdatedFGA(data) {
                 const businessNo = this.getBusinessNo();
@@ -140,7 +177,7 @@ sap.ui.define([
                 }
             },
 
-            async deepUpsertFGA(data){
+            async deepUpsertFGA(data) {
                 try {
                     const createdFGA = await this.create("/ZC_FGASet", data);
                     console.log(createdFGA);
@@ -178,6 +215,26 @@ sap.ui.define([
                     console.log(`retrieve Budget Px Autre with period: ${period} and BusinessNo: ${businessNo}`);
                     const pxAutres = await this.read(sPath);
                     return pxAutres?.results || [];
+                } catch (error) {
+                    console.log(error);
+                }
+            },
+
+            async getBEPxExtSubContracting() {
+                try {
+                    const businessNo = this.getBusinessNo();
+                    const period = this.getPeriod();
+                    const urlBusinessNo = encodeURIComponent(businessNo);
+                    const urlPeriod = encodeURIComponent(period);
+                    const sPath = `/ZC_FGASet(BusinessNo='${urlBusinessNo}',p_period='${urlPeriod}')/to_BudgetPxSubContracting`;
+                    console.log(`retrieve previsions with period: ${period} and BusinessNo: ${businessNo}`);
+                    const options = { 
+                        urlParameters: {
+                            "$expand": "to_BudgetPxSubContractor"
+                        }
+                    }
+                    const pxSubContract = await this.read(sPath, options);
+                    return (pxSubContract?.results || []).map(Formatter.formatBudgetSubContracting);
                 } catch (error) {
                     console.log(error);
                 }

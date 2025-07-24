@@ -9,6 +9,16 @@ sap.ui.define([], function() {
         "previsions": [],
         "opport": [],
         "pxAutres": [],
+        "pxSousTraitance":[],
+        "PxAutreHierarchyWithTotals": [],
+        "pxSubContractingHierarchy": [],
+        "pxSubContractingHeader": [
+          /*{
+            subContractorId       : "SubContractor",
+            subContractorName     : "SubContractorName",
+            subContractorPartner  : "SubContractorPartner",
+          }*/
+        ],
         "missionTypes": [
             { code: "AVP", description: "AVP" },
             { code: "PRO", description: "PRO" },

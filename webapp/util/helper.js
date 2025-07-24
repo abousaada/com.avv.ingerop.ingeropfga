@@ -48,16 +48,53 @@ sap.ui.define([
     return mode ? "create": "modify";
   }
 
+  function _buildObjectKeysMapper(mapping) {
+    return function(obj, ...args) {
+      return Object.keys(mapping).reduce(function(res, key) {
+        const keyMapping = mapping[key];
+  
+        if (keyMapping === null) {
+          res[key] = null;
+          return res;
+        }
+  
+        switch (typeof keyMapping) {
+          case 'number':
+          case 'boolean':
+            res[key] = keyMapping;
+            break;
+  
+          case 'string':
+            res[key] = obj[keyMapping];
+            break;
+  
+          case 'function':
+            res[key] = keyMapping(obj, ...args);
+            break;
+  
+          case 'object':
+            res[key] = _buildObjectKeysMapper(keyMapping)(obj, ...args);
+            break;
+  
+          default:
+            throw new Error('Unsupported mapping type for property ' + key);
+        }
+  
+        return res;
+      }, {});
+    };
+  }
+
   return {
     extractPlainData: _extract,
     getConstantMode: _getConstantMode,
-
     pipe: function (...fns) {
       return (x, ...args) => fns.reduce((v, f) => f(v, ...args), x);
     },
+    buildObjectKeysMapper: _buildObjectKeysMapper,
     getTabVisibilityByMode:function(mode){
-      return Object.entries(Params.headerSectionList).map(([section, sectionData]) => {
-        return {key: sectionData.key, visible: sectionData.visible[_getConstantMode(mode)]};
+      return Object.entries(Params.headerSectionList).map(([section, {key, visible}]) => {
+        return {key, visible: visible[_getConstantMode(mode)]};
       });
     },
     getFieldVisibilityByMode:function(mode){
@@ -76,8 +113,7 @@ sap.ui.define([
       });
     },
     getDefaultFieldMandatory(){
-      return Object.entries(Params.headerFieldsList)
-      .map(([field, {identifier, mandatory}]) => {
+      return Object.entries(Params.headerFieldsList).map(([field, {identifier, mandatory}]) => {
         return {identifier, field, mandatory: mandatory.default};
       });
     },

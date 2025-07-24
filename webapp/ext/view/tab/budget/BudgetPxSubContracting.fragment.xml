@@ -1,0 +1,170 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout"
+    xmlns:table="sap.ui.table"
+    xmlns:f="sap.ui.layout.form"
+>
+    <table:TreeTable
+        class="budgetSCExtTab"
+        id="BudgetPxSubContractingTreeTableId"
+        rows="{
+            path: 'utilities>/pxSubContractingHierarchy',
+            parameters: {
+                arrayNames: ['children'],
+                numberOfExpandedLevels: 3
+            }
+        }"
+        selectionMode="None"
+        ariaLabelledBy="title"
+        enableColumnReordering="false"
+    >
+        <table:extension>
+            <Toolbar class="sapMTBHeader-CTX">
+                <ToolbarSpacer />
+                <Button
+                    text="{i18n>btn.openSTProfile}"
+                    icon="sap-icon://add"
+                    press="onBtnOpenSTProfilePress"
+                    type="Emphasized"
+                />
+            </Toolbar>
+        </table:extension>
+        <table:rowSettingsTemplate>
+            <table:RowSettings
+                highlight="{= ${budget>Status} === 'Non acquis' ? 'Error' : 'None'}"
+            />
+        </table:rowSettingsTemplate>
+        <table:columns>
+            <table:Column width="17rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.ext.missionHiearchie}" />
+                </table:multiLabels>
+                <table:template>
+                    <VBox>
+                        <Text text="{utilities>name}" />
+                    </VBox>
+                </table:template>
+            </table:Column>
+
+            <table:Column width="4rem" >
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.ext.missionCode}" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{utilities>code}" />
+                </table:template>
+            </table:Column>
+
+            <table:Column width="5rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.ext.missionLibelle}" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{utilities>libelle}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="4rem" >
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.ext.missionStatus}" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{utilities>status}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="6rem" headerSpan="2,2,2,2,1" >
+                <table:multiLabels>
+                    <Label text="{i18n>budget.ext.supplierName}" class="STheaderLabel" />
+                    <Label text="{i18n>budget.ext.supplierCode}" class="STheaderLabel" />
+                    <Label text="{i18n>budget.ext.supplierType}" class="STheaderLabel" />
+                    <Label text="{i18n>budget.ext.supplierCoef}" class="STheaderLabel" />
+                    <Label text="{i18n>budget.ext.startDate}" />
+                </table:multiLabels>
+                <table:template>
+                    <HBox>
+                        <Text
+                            text="{
+                                path: 'utilities>startDate',
+                                type: 'sap.ui.model.type.Date',
+                                formatOptions: { 
+                                    style: 'short',
+                                    strictParsing: true
+                                }
+                            }"
+                            
+                        />
+                        <!-- visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}" -->
+                    </HBox>
+                </table:template>
+            </table:Column>
+            <table:Column width="6rem" headerSpan="2,2,2,2,1">
+                <table:multiLabels>
+                    <Label text="{i18n>budget.ext.supplierName}" />
+                    <Label text="{i18n>budget.ext.supplierCode}" />
+                    <Label text="{i18n>budget.ext.supplierType}" />
+                    <Label text="{i18n>budget.ext.supplierCoef}" />
+                    <Label text="{i18n>budget.ext.endDate}" />
+                </table:multiLabels>
+                <table:template>
+                    <HBox>
+                        <Text
+                            text="{
+                                path: 'utilities>endDate',
+                                type: 'sap.ui.model.type.Date',
+                                formatOptions: { 
+                                    style: 'short',
+                                    strictParsing: true
+                                }
+                            }"
+                            
+                        />
+                        <!-- visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}" -->
+                    </HBox>
+                </table:template>
+            </table:Column>
+
+            <!-- <core:Fragment id="customBudgetFragmentId" fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.budget.BudgetPxSCCustColumns" type="XML" /> -->
+            
+            <table:Column>
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.ext.affaireHorsFrais}" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{ path: 'utilities>budgetHorsFrais' }" />
+                </table:template>
+            </table:Column>
+            <table:Column>
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.ext.affaireYCFrais}" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{ path: 'utilities>budgetYCFrais' }" />
+                </table:template>
+            </table:Column> 
+        </table:columns>
+    </table:TreeTable>
+</core:FragmentDefinition>

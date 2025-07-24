@@ -1,53 +1,33 @@
 sap.ui.define(
     [
         "sap/ui/core/mvc/ControllerExtension",
-        "sap/ui/model/json/JSONModel",
-        "sap/m/Dialog",
-        "sap/m/library",
-        "sap/m/Text",
-        "sap/m/Button",
-        "sap/m/MessageToast",
-        "sap/ui/core/message/MessageType",
-        "sap/ui/core/mvc/Controller",
-        "com/avv/ingerop/ingeropfga/ext/controller/BaseController",
-        "sap/ui/core/UIComponent",
-        "com/avv/ingerop/ingeropfga/model/models",
-        "sap/ui/model/Filter",
-        "com/avv/ingerop/ingeropfga/util/helper",
-        "sap/ui/generic/app/navigation/service/SelectionVariant",
-        "sap/ui/generic/app/navigation/service/NavigationHandler",
-        "com/avv/ingerop/ingeropfga/util/formatter",
-        "com/avv/ingerop/ingeropfga/ext/controller/helpers/Missions",
-        "com/avv/ingerop/ingeropfga/ext/controller/helpers/BudgetPxAutre",
-        "com/avv/ingerop/ingeropfga/ext/controller/helpers/Synthese"
+        "./BaseController",
+        "../../model/models",
+        "../../util/helper",
+        "../../util/formatter",
+        "./helpers/Missions",
+        "./helpers/ExtendOPUiManage",
+        "./helpers/BudgetPxAutre",
+        "./helpers/BudgetPxSubContracting",
+        "./helpers/Synthese"
     ],
     function (
         ControllerExtension,
-        JSONModel,
-        Dialog,
-        mLibrary,
-        Text,
-        Button,
-        MessageToast,
-        MessageType,
-        Controller,
         BaseController,
-        UIComponent,
         models,
-        Filter,
         Helper,
-        SelectionVariant,
-        NavigationHandler,
         Formatter,
         Missions,
+        ExtendOPUiManage,
         BudgetPxAutre,
+        BudgetPxSubContracting,
         Synthese
     ) {
         "use strict";
 
         return ControllerExtension.extend("com.avv.ingerop.ingeropfga.ext.controller.extendOP", {
+            Formatter: Formatter,
             // Override or add custom methods here
-
 
             // this section allows to extend lifecycle hooks or hooks provided by Fiori elements
             override: {
@@ -70,18 +50,20 @@ sap.ui.define(
                     this._SyntheseTab.oView = this.getView();
                     //this.onPressMonthLink = this.onPressMonthLink.bind(this);
 
-
                     // Initializes the Budget Px Autre Tab
                     this._budgetPxAutre = new BudgetPxAutre();
                     this._budgetPxAutre.oView = this.getView();
 
+                    this._budgetPxSubContracting = new BudgetPxSubContracting();
+                    this._budgetPxSubContracting.oView = this.getView();
 
+                    this._extendOPUiManage = new ExtendOPUiManage();
+                    this._extendOPUiManage.oView = this.getView();
                 },
 
                 // Called before the table is rebound (can be used to adjust binding parameters)
                 onBeforeRebindTableExtension: function (oEvent) {
                     console.log("onBeforeRebindTableExtension called", oEvent);
-
                 },
 
                 // Called when the list navigation is triggered
@@ -120,40 +102,15 @@ sap.ui.define(
                                 }
 
                             } catch (error) {
-                                Helper.errorMessage("FGA create fail");
+                                Helper.errorMessage("FGA updated fail");
                                 console.log(error);
                                 reject();
                             }
 
                             reject();
                         });
-
-                        // const isCreationMode = oView.getModel("ui").getProperty("/createMode");
-
-                        // if (isCreationMode) {
-                        //     return new Promise(async (resolve, reject) => {
-                        //         const formattedMissions = utilitiesModel.getFormattedMissions();
-                        //         const oPayload = Helper.extractPlainData({ ...oContext.getObject(), "to_Missions": formattedMissions });
-                        //         const createdFGA = await utilitiesModel.deepCreateFGA(oPayload);
-                        //         if (createdFGA) {
-                        //             Helper.validMessage("FGA created: " + createdFGA.BusinessNo, this.getView());
-                        //         }
-                        //         reject();
-                        //     });
-                        // } else {
-                        // return new Promise(async (resolve, reject) => {
-                        //     const formattedMissions = utilitiesModel.getFormattedMissions();
-                        //     const oPayload = Helper.extractPlainData({ ...oContext.getObject(), "to_Missions": formattedMissions });
-                        //     const updatedFGA = await utilitiesModel.deepUpdatedFGA(oPayload);
-                        //     if (updatedFGA) {
-                        //         Helper.validMessage("FGA updated: " + updatedFGA.BusinessNo, this.getView());
-                        //     }
-                        //     reject();
-                        // });
-                        // }
                     } catch (error) {
-                        // sap.m.MessageToast.show("FGA create fail");
-                        Helper.errorMessage("FGA create fail");
+                        Helper.errorMessage("FGA updated fail");
                         console.log(error);
                     }
                 },
@@ -163,156 +120,30 @@ sap.ui.define(
 
             },
 
-
             _getExtensionAPI: function () {
                 return this.getInterface().getView().getController().extensionAPI;
-            },
-
-            _setTabsVisible() {
-                const isCreateMode = this.getView().getModel("ui").getProperty("/createMode");
-                Helper.getTabVisibilityByMode(isCreateMode).map(({ key, visible }) => {
-                    this.getView().byId(key)?.setVisible(visible)
-                });
-            },
-
-            _setFieldVisible() {
-                const isCreateMode = this.getView().getModel("ui").getProperty("/createMode");
-                Helper.getFieldVisibilityByMode(isCreateMode).map(
-                    ({ idntifier, field, visible }) => {
-                        this._getField(idntifier, field)?.setVisible(visible);
-                    }
-                );
-            },
-
-            _setFieldEnabled() {
-                const isCreateMode = this.getView().getModel("ui").getProperty("/createMode");
-                Helper.getFieldEnabledByMode(isCreateMode).map(
-                    ({ identifier, field, enabled }) => {
-                        this._getField(identifier, field)?.setEditable(enabled);
-                    }
-                );
-            },
-
-            _setDefaultMandatory() {
-                this._getField("Identification", "Type").setMandatory(true);
-            },
-
-            _getField(identifiant, champ) {
-                return this.getView().byId(Helper.headerFieldIdBySectionAndFieldName(identifiant, champ));
-            },
-
-            _attachChangeEventOnFields() {
-                Helper.getFieldActionList().map(({ identifier, field, action }) => {
-                    this.getView().byId(Helper.headerFieldIdBySectionAndFieldName(identifier, field)).attachChange(this[action].bind(this));
-                });
-            },
-
-            _setInputState() {
-                Helper.getHeaderFieldList().map(({ identifier, field }) => {
-                    const champ = this._getField(identifier, field);
-                    champ?.bindProperty("valueState", {
-                        path: field,
-                        formatter: Formatter.validMandatoryField(champ)
-                    });
-                });
             },
 
             onNavBack() {
                 var oHistory = sap.ui.core.routing.History.getInstance();
                 var sPreviousHash = oHistory.getPreviousHash();
-
-                if (sPreviousHash !== undefined) {
-                    // Si une page précédente existe dans l'historique
-                    window.history.go(-1);
-                } else {
-                    // Sinon, on navigue manuellement vers la page d’accueil ou ListReport
-                    window.location.hash = "";
-                    // const oNavController = this._getExtensionAPI().getNavigationController();
-                    // oNavController.navigateInternal( "ZC_FGASet", {replaceInHistory: true} );
-                }
-            },
-
-            onActivityChange(oEvent) {
-                this._getField("Identification", "Soufam").setValue(null);
-            },
-
-            onDateChange(oEvent) {
-                const { StartDate, EndDate } = this.getView().getBindingContext().getObject();
-                let diffFromNow = null, diff = null;
-
-                if (EndDate) { diffFromNow = Helper.diffEnMois(new Date(), EndDate); }
-                this._getField("Duree", "RemainingMonth").setValue(diffFromNow);
-
-                if (StartDate && EndDate) { diff = Helper.diffEnMois(StartDate, EndDate); }
-                this._getField("Duree", "NbOfMonth").setValue(diff);
-            },
-
-            onCalcTauxTravaux(oEvent) {
-                //need refactoring
-                const { Mttrvx, Mtctr } = this.getView().getBindingContext().getObject();
-                if (Mttrvx == undefined || Mtctr == undefined
-                    || Mttrvx == null || Mtctr == null
-                    || Mttrvx == 0 || Mtctr == 0) {
-                    this._getField("Travaux", "Ingtrvx").setValue("0");
-                    return;
-                }
-                const ing = parseFloat(Mtctr);
-                const trav = parseFloat(Mttrvx);
-                const diff = ing / trav;
-                this._getField("Travaux", "Ingtrvx").setValue(diff.toString());
-            },
-
-            onTypeChange(event) {
-                const newValue = event.getParameter("newValue");
-                this._setMandatoryFieldByType(newValue);
-            },
-
-            _setMandatoryFieldByType(type) {
-                if(!type){
-                    Helper.getDefaultFieldMandatory().map(({identifier, field, mandatory}) => {
-                        this._getField(identifier, field)?.setMandatory(mandatory);
-                    });
-                    return ;
-                }
-                Helper.getFieldMandatoryByType(type).map(({identifier, field, mandatory}) => {
-                    this._getField(identifier, field)?.setMandatory(mandatory);
-                });
+                if (sPreviousHash !== undefined) { window.history.go(-1); } 
+                else { window.location.hash = ""; }
             },
 
             async _getTabsData() {
-                const utilitiesModel = this.getInterface().getModel("utilities");
-                const [missions, previsions, recaps, opport, pxAutres] = await Promise.all([
-                    utilitiesModel.getBEMissions(),
-                    utilitiesModel.getBEPrevisions(),
-                    utilitiesModel.getBERecaps(),
-                    utilitiesModel.getBEOpport(),
-
-                    //Bugets PX
-                    utilitiesModel.getBEPxAutres()
-                ]);
-
-                utilitiesModel.setMissions(missions || []);
-                utilitiesModel.setRecaps(recaps || []);
-                utilitiesModel.setPrevisions(previsions || []);
-                utilitiesModel.setOpport(opport || []);
-
-                //Bugets PX
-                utilitiesModel.setPxAutres(pxAutres || []);
-
+                const data = await this.getInterface().getModel("utilities").getBEDatas();
+                return data;
             },
 
             _onObjectExtMatched: async function (e) {
                 const utilitiesModel = this.getInterface().getModel("utilities");
                 const bCreateMode = this.getView().getModel("ui").getProperty("/createMode");
 
-                this._setTabsVisible();
-                this._setFieldVisible();
-                this._attachChangeEventOnFields();
-                this._setFieldEnabled();
+                this._extendOPUiManage._setOPView();
 
                 const type = e.context.getProperty("Type");
-                this._setMandatoryFieldByType(type)
-
+                this._extendOPUiManage._setMandatoryFieldByType(type);
 
                 //1. if create
                 if (bCreateMode) { utilitiesModel.reInit(); return }
@@ -332,18 +163,19 @@ sap.ui.define(
                 if (sPeriod && sBusinessNo && !bCreateMode) {
                     try {
                         const tabData = await this._getTabsData();
+
+                        //2. Display Different Fragments Based on Company Code Country
+                        const sCountry = e.context.getProperty("CompanyCountry");
+
+                        if (sCountry === "FR") {
+                            this._loadFragment("Missions");
+                        } else {
+                            this._loadFragment("hoai");
+                        }
+
                     } catch (error) {
                         console.logs(error);
                     }
-                }
-
-                //2. Display Different Fragments Based on Company Code Country
-                const sCountry = e.context.getProperty("CompanyCountry");
-
-                if (sCountry === "FR") {
-                    this._loadFragment("Missions");
-                } else {
-                    this._loadFragment("hoai");
                 }
 
             },
@@ -379,6 +211,7 @@ sap.ui.define(
                     //Prepare tree for missions
                     this.prepareMissionsTreeData();
                     this.preparePxAutreTreeData();
+                    this.preparePxSubContractingTreeData();
                 }
                 else {
 
@@ -481,6 +314,15 @@ sap.ui.define(
                 this._budgetPxAutre.onSubmit(oEvent);
             },
 
+            // ===========================================================
+            // Handle Budget Px TAB - Budget Px Sub Contracting Section
+            // Handles preparation and submition budget items 
+            // in the mission  process
+            // ===========================================================
+
+            preparePxSubContractingTreeData: function () {
+                this._budgetPxSubContracting.preparePxSubContractingTreeData();
+            },
 
             // ==============================================
             // Move to formatter !!!!
@@ -545,6 +387,6 @@ sap.ui.define(
             getModel: function (sName) {
                 return this.getView().getModel(sName);
             },
-            
+
         });
     });
