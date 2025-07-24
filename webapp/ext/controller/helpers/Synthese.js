@@ -39,8 +39,6 @@ sap.ui.define([
             try {
 
                 const oLink = oEvent.getSource();
-                /*const oRowContext = oLink.getBindingContext("synthesis");
-                const oRowData = oRowContext.getObject();*/
 
                 // 2. Get GL Accounts
                 const oContext = oLink.getBindingContext("utilities");

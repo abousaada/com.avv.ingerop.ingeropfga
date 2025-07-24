@@ -122,7 +122,15 @@
                                 text="{utilities>VoyageDeplacement}"
                                 visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} === 'Cumule'}"
                                 press=".onCumuleClick"
-                            />
+                            >
+                                <customData>
+                                    <core:CustomData
+                                        key="columnId"
+                                        value="VoyageDeplacement"
+                                        xmlns:core="sap.ui.core"
+                                    />
+                                </customData>
+                            </Link>
                         </HBox>
                     </table:template>
                 </table:Column>
@@ -146,7 +154,15 @@
                                 text="{utilities>AutresFrais}"
                                 visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} === 'Cumule'}"
                                 press=".onCumuleClick"
-                            />
+                            >
+                                <customData>
+                                    <core:CustomData
+                                        key="columnId"
+                                        value="AutresFrais"
+                                        xmlns:core="sap.ui.core"
+                                    />
+                                </customData>
+                            </Link>
                         </HBox>
                     </table:template>
                 </table:Column>
@@ -170,7 +186,15 @@
                                 text="{utilities>CreancesDouteuses}"
                                 visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} === 'Cumule'}"
                                 press=".onCumuleClick"
-                            />
+                            >
+                                <customData>
+                                    <core:CustomData
+                                        key="columnId"
+                                        value="CreancesDouteuses"
+                                        xmlns:core="sap.ui.core"
+                                    />
+                                </customData>
+                            </Link>
                         </HBox>
                     </table:template>
                 </table:Column>
@@ -194,7 +218,15 @@
                                 text="{utilities>EtudesTravaux}"
                                 visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} === 'Cumule'}"
                                 press=".onCumuleClick"
-                            />
+                            >
+                                <customData>
+                                    <core:CustomData
+                                        key="columnId"
+                                        value="EtudesTravaux"
+                                        xmlns:core="sap.ui.core"
+                                    />
+                                </customData>
+                            </Link>
                         </HBox>
                     </table:template>
                 </table:Column>
@@ -218,7 +250,15 @@
                                 text="{utilities>SinistreContentieux}"
                                 visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} === 'Cumule'}"
                                 press=".onCumuleClick"
-                            />
+                            >
+                                <customData>
+                                    <core:CustomData
+                                        key="columnId"
+                                        value="SinistreContentieux"
+                                        xmlns:core="sap.ui.core"
+                                    />
+                                </customData>
+                            </Link>
                         </HBox>
                     </table:template>
                 </table:Column>
@@ -242,7 +282,15 @@
                                 text="{utilities>AleasDivers}"
                                 visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} === 'Cumule'}"
                                 press=".onCumuleClick"
-                            />
+                            >
+                                <customData>
+                                    <core:CustomData
+                                        key="columnId"
+                                        value="AleasDivers"
+                                        xmlns:core="sap.ui.core"
+                                    />
+                                </customData>
+                            </Link>
                         </HBox>
                     </table:template>
                 </table:Column>
@@ -259,7 +307,15 @@
                                 text="{utilities>FinAffaire}"
                                 visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} === 'Cumule'}"
                                 press=".onCumuleClick"
-                            />
+                            >
+                                <customData>
+                                    <core:CustomData
+                                        key="columnId"
+                                        value="FinAffaire"
+                                        xmlns:core="sap.ui.core"
+                                    />
+                                </customData>
+                            </Link>
                         </HBox>
                     </table:template>
                 </table:Column>

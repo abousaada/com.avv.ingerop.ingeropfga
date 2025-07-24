@@ -29,7 +29,7 @@
                     <Label text="Hierarchy" />
                     <table:template>
                         <Text
-                            text="{= ${utilities>isNode} ? ${utilities>name} : ${utilities>BusinessNo} + ' - ' + ${utilities>MissionId}}"
+                            text="{= ${utilities>isNode} ? ${utilities>name} : ${utilities>MissionId}}"
                         />
                     </table:template>
                 </table:Column>

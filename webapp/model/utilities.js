@@ -365,14 +365,25 @@ sap.ui.define([
 
             async deepUpsertFGA(data) {
                 try {
+                    // Clean entity
                     const dataToSend = { ...data };
                     delete dataToSend.isTotalRow;
+                    delete dataToSend.FinAffaire;
+                    delete dataToSend.isNode;
 
-                    // Also check nested arrays
                     if (dataToSend.to_BudgetPxAutre) {
                         dataToSend.to_BudgetPxAutre = dataToSend.to_BudgetPxAutre.map(item => {
                             const newItem = { ...item };
                             delete newItem.isTotalRow;
+                            delete newItem.FinAffaire;
+                            return newItem;
+                        });
+                    }
+
+                    if (dataToSend.to_Missions) {
+                        dataToSend.to_Missions = dataToSend.to_Missions.map(item => {
+                            const newItem = { ...item };
+                            delete newItem.isNode;
                             return newItem;
                         });
                     }
