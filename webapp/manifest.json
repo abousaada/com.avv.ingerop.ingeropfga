@@ -287,6 +287,11 @@
         "type": "sap.ui.model.json.JSONModel",
         "uri": "model/mock/TVAList.json",
         "preload": true
+      },
+      "chart2": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock/chart2.json",
+        "preload": true
       }
     },
     "resources": {

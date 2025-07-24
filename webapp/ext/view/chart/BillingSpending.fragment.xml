@@ -1,0 +1,61 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:viz="sap.viz.ui5.controls"
+    xmlns:layout="sap.ui.layout"
+    xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+    xmlns:viz.data="sap.viz.ui5.data"
+    height="100%">
+
+    <layout:FixFlex minFlexSize="400">
+        <layout:fixContent>
+        </layout:fixContent>
+
+        <layout:flexContent>
+            <viz:VizFrame
+                id="factDepenseChart"
+                uiConfig="{applicationSet:'fiori'}"
+                vizType="column"
+                height="100%"
+                width="100%"
+                class="sapUiSmallMargin"
+                vizProperties="{
+                    plotArea: {
+                        dataLabel: { visible: true }
+                    },
+                    gap: {
+                        categoryGap: 10
+                    },
+                    title: {
+                        visible: true,
+                        text: 'Réalisé Facturation - Dépense 12 derniers mois'
+                    },
+                    valueAxis: {
+                        title: { visible: false }
+                    },
+                    categoryAxis: {
+                        title: { visible: false }
+                    }
+                }">
+
+                <viz:dataset>
+                    <viz.data:FlattenedDataset data="{chart2>/results}">
+                        <viz.data:dimensions>
+                            <viz.data:DimensionDefinition name="Période" value="{chart2>Periode}" />
+                        </viz.data:dimensions>
+                        <viz.data:measures>
+                            <viz.data:MeasureDefinition name="Facturation" value="{chart2>Facturation}" />
+                            <viz.data:MeasureDefinition name="Dépense" value="{chart2>Depense}" />
+                        </viz.data:measures>
+                    </viz.data:FlattenedDataset>
+                </viz:dataset>
+
+                <viz:feeds>
+                    <viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Facturation" />
+                    <viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Dépense" />
+                    <viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Période" />
+                </viz:feeds>
+
+            </viz:VizFrame>
+        </layout:flexContent>
+    </layout:FixFlex>
+</core:FragmentDefinition>

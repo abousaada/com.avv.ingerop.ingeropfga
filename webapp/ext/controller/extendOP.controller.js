@@ -16,7 +16,9 @@ sap.ui.define(
         "com/avv/ingerop/ingeropfga/util/helper",
         "sap/ui/generic/app/navigation/service/SelectionVariant",
         "sap/ui/generic/app/navigation/service/NavigationHandler",
-        "com/avv/ingerop/ingeropfga/util/constant"
+        "com/avv/ingerop/ingeropfga/util/constant",
+        "sap/viz/ui5/data/DimensionDefinition",
+        "sap/viz/ui5/data/MeasureDefinition"
     ],
     function (
         ControllerExtension,
@@ -35,7 +37,9 @@ sap.ui.define(
         Helper,
         SelectionVariant,
         NavigationHandler,
-        Constant
+        Constant,
+        DimensionDefinition,
+        MeasureDefinition
     ) {
         "use strict";
 
@@ -53,7 +57,7 @@ sap.ui.define(
 
             _setFieldVisible(){
                 const isCreateMode = this.getView().getModel("ui").getProperty("/createMode");
-                Constant.headerFieldToBeHiddenMapping.map(({identifiant, field}) => this.getView().byId(Helper.headerFieldIdBySectionAndFieldName(identifiant, field)).setVisible(isCreateMode))
+                Constant.headerFieldToBeHiddenMapping.map(({identifiant, field}) => this.getView().byId(Helper.headerFieldIdBySectionAndFieldName(identifiant, field))?.setVisible(isCreateMode))
             },
 
             _attachChangeEventOnFields(){
@@ -82,17 +86,20 @@ sap.ui.define(
 
             async _getTabsData() {
                 const utilitiesModel = this.getInterface().getModel("utilities");
-                const [missions, previsions, recaps, opport] = await Promise.all([
+                const [missions, previsions, recaps, opport, charts, chartsadddata] = await Promise.all([
                     utilitiesModel.getBEMissions(),
                     utilitiesModel.getBEPrevisions(),
                     utilitiesModel.getBERecaps(),
-                    utilitiesModel.getBEOpport()
+                    utilitiesModel.getBEOpport(),
+                    utilitiesModel.getBECharts(),
+                    utilitiesModel.getBEChartsAdditionalData()
                 ]);
 
                 utilitiesModel.setMissions(missions || []);
                 utilitiesModel.setRecaps(recaps || []);
                 utilitiesModel.setPrevisions(previsions || []);
                 utilitiesModel.setOpport(opport || []);
+                // utilitiesModel.setCharts(charts || []);
 
                 //à enlever une fois les corrections effectués dans les view XML
                 var oPrevisionsModel = this.getView().getModel("synthesis") || new sap.ui.model.json.JSONModel({ results: [] });
@@ -104,6 +111,18 @@ sap.ui.define(
                 oRecapModel.setProperty("/results", recaps || []);
                 this.getView().setModel(oRecapModel, "recap");
                 oRecapModel.refresh(true);
+
+                var oChartModel = this.getView().getModel("chartModel") || new sap.ui.model.json.JSONModel({ results: [] });
+                oChartModel.setProperty("/results", charts || []);
+                this.getView().setModel(oChartModel, "chartModel");
+                oChartModel.refresh(true);
+
+                var oChartAddModel = this.getView().getModel("chartAddData") || new sap.ui.model.json.JSONModel({ results: [] });
+                oChartAddModel.setProperty("/results", chartsadddata || []);
+                this.getView().setModel(oChartAddModel, "chartAddData");
+                oChartAddModel.refresh(true);
+
+                this.onCalculChartsData();
             },
 
             _onObjectExtMatched: async function (e) {
@@ -136,9 +155,187 @@ sap.ui.define(
                         console.logs(error);
                     }
                 }
+
+                this._calculAll();
             },
             _onRouteMatched(event) {
                 console.logs(event);
+            },
+
+            //fonction qui construit le model pour chart
+            onCalculChartsData: function () {
+                // var oModelRecap = this.getView().getModel("recap").getData().results;
+                var aData = [];
+                var aDataChart = [];
+                var oModelSynthesis = this.getView().getModel("synthesis").getData().results;
+                var oModelRecap = this.getView().getModel("recap").getData().results;
+                var oModelChart = this.getView().getModel("chartModel").getData().results;
+                var oModelAdditionnalChart = this.getView().getModel("chartAddData").getData().results;
+
+                // boucle sur model recap
+                for (var i = 0; i < oModelRecap.length; i++) {
+                    //Chiffre d'affaire
+                    if (oModelRecap[i].row_type === "CA") {
+                        var oItem = {
+                            Categorie: oModelRecap[i].row_description,
+                            Type: "Réalisé",
+                            Valeur: oModelRecap[i].cumul_n1
+                        };
+                        aData.push(oItem);
+
+                        oItem = {
+                            Categorie: oModelRecap[i].row_description,
+                            Type: "A venir",
+                            Valeur: oModelRecap[i].reste_a_venir
+                        };
+                        aData.push(oItem);
+                    }
+
+                    if (oModelRecap[i].row_type === "CA") {
+                        var oItem = {
+                            Categorie: oModelRecap[i].row_description,
+                            Type: "Réalisé",
+                            Valeur: oModelRecap[i].cumul_ce_jour
+                        };
+                        aData.push(oItem);
+
+                        oItem = {
+                            Categorie: oModelRecap[i].row_description,
+                            Type: "A venir",
+                            Valeur: oModelRecap[i].reste_a_venir
+                        };
+                        aData.push(oItem);
+                    }
+
+                    if (oModelRecap[i].row_type === "FACT") {
+                        var oItem = {
+                            Categorie: oModelRecap[i].row_description,
+                            Type: "Réalisé",
+                            Valeur: oModelRecap[i].cumul_ce_jour
+                        };
+                        aData.push(oItem);
+
+                        oItem = {
+                            Categorie: oModelRecap[i].row_description,
+                            Type: "A venir",
+                            Valeur: oModelRecap[i].reste_a_venir
+                        };
+                        aData.push(oItem);
+                    }
+
+                    if (oModelRecap[i].row_type === "CHARGE") {
+                        var oItem = {
+                            Categorie: oModelRecap[i].row_description,
+                            Type: "Réalisé",
+                            Valeur: oModelRecap[i].cumul_ce_jour
+                        };
+                        aData.push(oItem);
+
+                        oItem = {
+                            Categorie: oModelRecap[i].row_description,
+                            Type: "A venir",
+                            Valeur: oModelRecap[i].budget_initial
+                        };
+                        aData.push(oItem);
+                    }
+                    
+                    if (oModelRecap[i].row_type === "CHARGE") {
+                        var oItem = {
+                            Categorie: oModelRecap[i].row_description,
+                            Type: "Réalisé",
+                            Valeur: oModelRecap[i].cumul_ce_jour
+                        };
+                        aData.push(oItem);
+
+                        oItem = {
+                            Categorie: oModelRecap[i].row_description,
+                            Type: "A venir",
+                            Valeur: oModelRecap[i].budget_initial
+                        };
+                        aData.push(oItem);
+                    }
+                }
+                
+                //boucle sur model synthesis
+                for(var j = 0; j < oModelSynthesis.length; j++){
+                    // MAIN D'OEUVRE
+                    if (oModelSynthesis[j].line_item === "MAIN_OEUV") {
+                        var oItem = {
+                            Categorie: oModelSynthesis[j].description,
+                            Type: "Réalisé",
+                            Valeur: oModelSynthesis[j].CumulN
+                        };
+                        aData.push(oItem);
+
+                        oItem = {
+                            Categorie: oModelSynthesis[j].description,
+                            Type: "A venir",
+                            Valeur: oModelSynthesis[j].AVenir
+                        };
+                        aData.push(oItem);
+                    }
+                }
+
+                for (var g = 0; g < oModelAdditionnalChart.length; g++){
+                    if (oModelAdditionnalChart[g].line_item === "DELAIS") {
+                        if (oModelAdditionnalChart[g].Type=== "Realised") {
+                            var oItem = {
+                                Categorie: oModelAdditionnalChart[g].description,
+                                Type: "Réalisé",
+                                Valeur: oModelAdditionnalChart[g].Value
+                            };
+                            aData.push(oItem);
+                        }
+                        else {
+                            var oItem = {
+                                Categorie: oModelAdditionnalChart[g].description,
+                                Type: "A venir",
+                                Valeur: oModelAdditionnalChart[g].Value
+                            };
+                            aData.push(oItem);
+                        }
+                    }
+                }
+
+                var oModelData = new sap.ui.model.json.JSONModel({ results: aData });
+                this.getView().setModel(oModelData, "chart");
+
+
+               // 2ème graphique - Facturation et dépenses 12 derniers mois
+                var oRecettes = oModelChart.find(obj => obj.line_item === "RECETTES");
+                var oCharges  = oModelChart.find(obj => obj.line_item === "CHARGES");
+
+                if (oRecettes && oCharges) {
+                    var [endMonth, endYear] = oRecettes.period.split("/").map(Number);
+
+                    // 12 mois glissants jusqu'au mois courant
+                    for (var i = 11; i >= 0; i--) {
+                        // Crée une nouvelle date temporaire à chaque itération
+                        var tmpMonth = endMonth - 1; // JS : janvier = 0
+                        var tmpYear = endYear;
+
+                        // Recul de i mois manuellement
+                        tmpMonth -= i;
+                        if (tmpMonth < 0) {
+                            tmpYear += Math.floor(tmpMonth / 12);
+                            tmpMonth = (tmpMonth % 12 + 12) % 12;
+                        }
+
+                        var mm = String(tmpMonth + 1).padStart(2, "0");
+                        var yyyy = tmpYear;
+                        var label = mm + "/" + yyyy;
+                        var index = String(12 - i + 1).padStart(2, "0"); // Month01 à Month12
+
+                        aDataChart.push({
+                            Periode: label,
+                            Facturation: parseFloat(oRecettes["Month" + index]) || 0,
+                            Depense: parseFloat(oCharges["Month" + index]) || 0
+                        });
+                    }
+                }
+                // Alimente le modèle final pour le graphique
+                var oModelDataChart = new sap.ui.model.json.JSONModel({ results: aDataChart });
+                this.getView().setModel(oModelDataChart, "chart2");
             },
 
             // this section allows to extend lifecycle hooks or hooks provided by Fiori elements
@@ -258,6 +455,174 @@ sap.ui.define(
                     }*/
 
                 },
+                // onBeforeRendering: function() {
+                // onBeforeRendering: function() {
+                //     var oView = this.getView();
+
+                //     // Cherche récursivement la sous-vue "ChartInfos"
+                //     var oChartInfosView = null;
+                //     oView.findAggregatedObjects(true).forEach(function (oControl) {
+                //         if (oControl instanceof sap.ui.core.mvc.XMLView && oControl.getViewName().includes("ChartInfos")) {
+                //             oChartInfosView = oControl;
+                //         }
+                //     });
+
+                //     if (!oChartInfosView) {
+                //         console.error("Vue ChartInfos non trouvée !");
+                //         return;
+                //     }
+                
+                //     // 🔹 Accéder à la Grid 'idGridCharts' dans la vue ChartInfos
+                //     var oGrid = oChartInfosView.byId("idGridCharts");
+                //     if (!oGrid) {
+                //         console.error("Grid 'idGridCharts' non trouvée dans ChartInfos !");
+                //         return;
+                //     }
+                
+                //     // 🔹 Éviter les doublons
+                //     var bFragmentDejaAjoute = oGrid.getContent().some(function (oItem) {
+                //         return oItem.getId().includes("avancementChart");
+                //     });
+                //     if (bFragmentDejaAjoute) {
+                //         console.log("Fragment déjà présent, on n'ajoute pas.");
+                //         return;
+                //     }
+                
+                //     // 🔹 Créer le fragment
+                //     var sFragmentId = oChartInfosView.getId(); // très important : on utilise l'ID de la vue qui contient le fragment
+                //     var oChartAvancement = sap.ui.xmlfragment(
+                //         sFragmentId,
+                //         "com.avv.ingerop.ingeropfga.ext.view.chart.Progress"
+                //     );
+                
+                //     // 🔹 Ajouter le fragment dans la Grid
+                //     oGrid.addContent(oChartAvancement);
+                
+                //     // 🔹 Récupérer le VizFrame
+                //     var oVizFrame = sap.ui.core.Fragment.byId(sFragmentId, "avancementChart");
+                //     if (!oVizFrame) {
+                //         console.error("VizFrame 'avancementChart' non trouvé !");
+                //         return;
+                //     }
+                
+                //     // this.onCalculChartsData(oModelData);
+                //     // 🔹 Données
+                //     var aData = [
+                //         { Categorie: "Cat A", Type: "Type 1", Valeur: 40 },
+                //         { Categorie: "Cat A", Type: "Type 2", Valeur: 20 },
+                //         { Categorie: "Cat B", Type: "Type 1", Valeur: 10 },
+                //         { Categorie: "Cat B", Type: "Type 2", Valeur: 30 }
+                //     ];
+                
+                //     var oModel = new sap.ui.model.json.JSONModel({ results: aData });
+                
+                //     var oDataset = new sap.viz.ui5.data.FlattenedDataset({
+                //         dimensions: [
+                //             new sap.viz.ui5.data.DimensionDefinition({
+                //                 name: "Categorie",
+                //                 value: "{Categorie}"
+                //             }),
+                //             new sap.viz.ui5.data.DimensionDefinition({
+                //                 name: "Type",
+                //                 value: "{Type}"
+                //             })
+                //         ],
+                //         measures: [
+                //             new sap.viz.ui5.data.MeasureDefinition({
+                //                 name: "Valeur",
+                //                 value: "{Valeur}"
+                //             })
+                //         ],
+                //         data: {
+                //             path: "/results"
+                //         }
+                //     });
+                
+                //     oVizFrame.setDataset(oDataset);
+                //     oVizFrame.setModel(oModel);
+                // },
+
+
+                // onAfterRendering: function () {
+                //     // Crée la vue ChartInfos (si elle n'est pas déjà créée)
+                //     var oChartInfos = sap.ui.view({
+                //         id: this.getView().getId() + "--ChartInfos",
+                //         viewName: "com.avv.ingerop.ingeropfga.ext.view.ChartInfos",
+                //         type: sap.ui.core.mvc.ViewType.XML
+                //     });
+                
+                //     // Récupère la VBox chartContainer DANS la vue ChartInfos
+                //     var oGrid = oChartInfos.byId("idGridCharts");
+                //     if (!oGrid) {
+                //         console.error("Grid 'chartContainer' non trouvée dans la vue ChartInfos !");
+                //         return;
+                //     }
+                
+                //     // Crée le fragment Progress (ton graphique)
+                //     var oChartAvancement = sap.ui.xmlfragment(
+                //         this.getView().getId(), 
+                //         "com.avv.ingerop.ingeropfga.ext.view.chart.Progress"
+                //     );
+                
+                //     // Ajoute le fragment dans la VBox chartContainer
+                //     oGrid.addContent(oChartAvancement);
+                
+                //     // Récupère le Panel 'panelContainer' de ta vue principale pour y insérer la vue ChartInfos
+                //     var oFragmentChartInfos = sap.ui.getCore().byId(this.getView().getId() + "--ChartInfos");
+                //     if (!oFragmentChartInfos) {
+                //         console.error("La vue ChartInfos n'est pas encore instanciée ou affichée.");
+                //         return;
+                //     }
+                
+                //     // Récupérer le panelContainer dans ChartInfos
+                //     var oPanel = oFragmentChartInfos.byId("panelContainer");
+                //     if (!oPanel) {
+                //         console.error("Panel 'panelContainer' non trouvé dans ChartInfos");
+                //         return;
+                //     }
+                //     // Vide le panel avant d'ajouter pour éviter doublons
+                //     // oPanel.removeAllContent();
+                
+                //     // Ajoute la vue ChartInfos dans le Panel
+                //     // oPanel.addContent(oChartAvancement);
+                
+                //     // Récupère le VizFrame dans le fragment Progress (qui vient d’être inséré)
+                //     // Note : ici on utilise sap.ui.core.Fragment.byId avec l'id complet + local id du vizFrame
+                //     var sFragmentId = this.getView().getId(); // id prefix utilisé pour le fragment
+                //     var oVizFrame = sap.ui.core.Fragment.byId(sFragmentId, "avancementChart");
+                //     if (!oVizFrame) {
+                //         console.error("VizFrame 'avancementChart' non trouvé dans le fragment Progress !");
+                //         return;
+                //     }
+                
+                //     // Données d'exemple
+                //     var aData = [
+                //         { Categorie: "Cat A", Type: "Type 1", Valeur: 40 },
+                //         { Categorie: "Cat A", Type: "Type 2", Valeur: 20 },
+                //         { Categorie: "Cat B", Type: "Type 1", Valeur: 10 },
+                //         { Categorie: "Cat B", Type: "Type 2", Valeur: 30 }
+                //     ];
+                
+                //     // Création modèle JSON
+                //     var oModel = new sap.ui.model.json.JSONModel({ results: aData });
+                
+                //     var oDataset = new sap.viz.ui5.data.FlattenedDataset({
+                //         dimensions: [
+                //             new DimensionDefinition({ name: "Categorie", value: "{Categorie}" }),
+                //             new DimensionDefinition({ name: "Type", value: "{Type}" })
+                //         ],
+                //         measures: [
+                //             new MeasureDefinition({ name: "Valeur", value: "{Valeur}" })
+                //         ],
+                //         data: {
+                //             path: "/results"
+                //         }
+                //     });
+                
+                //     // Set dataset et modèle au VizFrame
+                //     oVizFrame.setDataset(oDataset);
+                //     oVizFrame.setModel(oModel);
+                // },
 
                 // Called before the table is rebound (can be used to adjust binding parameters)
                 onBeforeRebindTableExtension: function (oEvent) {
@@ -468,7 +833,6 @@ sap.ui.define(
                 this.getModel("settings").setProperty("/displatRafDetail", true);
             },
 
-
             onNavToJournalEntry: function (oEvent) {
                 // const CrossApplicationNavigation =  Container.getServiceAsync("CrossApplicationNavigation");
                 var oCrossAppNav = sap.ushell.Container.getService("CrossApplicationNavigation");
@@ -645,7 +1009,7 @@ sap.ui.define(
             _calculAll: function () {
                 this._calculTotals();
 
-                this._calculChartInfos();
+                // this._calculChartInfos();
 
             },
 
@@ -842,10 +1206,24 @@ sap.ui.define(
                 this.getModel("budget").setProperty("/results", aBudgetLine);
             },
 
-            _calculChartInfos: function () {
-                //this._calculRBAEvol();
-            },
-
+            onOpenGraphFragment: async function () {
+                if (!this._oGraphFragment) {
+                  this._oGraphFragment = await Fragment.load({
+                    name: "com.avv.ingerop.ingeropfga.ext.view.chart.Progress",
+                    id: this.getView().getId(),
+                    controller: this
+                  });
+                  this.getView().addDependent(this._oGraphFragment);
+              
+                  const oVizFrame = Fragment.byId(this.getView().getId(), "Progress");
+                  if (oVizFrame) {
+                    this._initGraph(oVizFrame); // injecte les données nettoyées ici
+                  }
+                }
+              
+                this._oGraphFragment.open(); // ou autre logique d’affichage
+              },
+              
             _calculRBAEvol: function () {
                 var aRBAEvolData = [];
 

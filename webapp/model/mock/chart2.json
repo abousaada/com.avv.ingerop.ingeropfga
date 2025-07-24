@@ -1,0 +1,18 @@
+{
+    "results": [
+      { "Periode": "04/2023", "Facturation": 110, "Depense": 95 },
+      { "Periode": "05/2023", "Facturation": 130, "Depense": 120 },
+      { "Periode": "06/2023", "Facturation": 125, "Depense": 110 },
+      { "Periode": "07/2023", "Facturation": 140, "Depense": 115 },
+      { "Periode": "08/2023", "Facturation": 135, "Depense": 125 },
+      { "Periode": "09/2023", "Facturation": 145, "Depense": 130 },
+      { "Periode": "10/2023", "Facturation": 138, "Depense": 128 },
+      { "Periode": "11/2023", "Facturation": 142, "Depense": 135 },
+      { "Periode": "12/2023", "Facturation": 150, "Depense": 140 },
+      { "Periode": "01/2024", "Facturation": 148, "Depense": 138 },
+      { "Periode": "02/2024", "Facturation": 120, "Depense": 100 },
+      { "Periode": "03/2024", "Facturation": 114, "Depense": 138 },
+      { "Periode": "04/2024", "Facturation": 155, "Depense": 145 }
+    ]
+}
+  

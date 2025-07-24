@@ -182,6 +182,36 @@ sap.ui.define([
                 }
             },
 
+            async getBECharts() {
+                try {
+                    const businessNo = this.getBusinessNo();
+                    const period = this.getPeriod();
+                    const urlBusinessNo = encodeURIComponent(businessNo);
+                    const urlPeriod = encodeURIComponent(period);
+                    const sPath = `/ZC_FGA_CHART(p_businessno='${urlBusinessNo}',p_period='${urlPeriod}')/Set`;
+                    console.log(`retrieve charts data with period: ${period} and BusinessNo: ${businessNo}`);
+                    const charts = await this.read(sPath);
+                    return charts?.results || [];
+                } catch (error) {
+                    console.log(error);
+                }
+            },
+
+            async getBEChartsAdditionalData() {
+                try {
+                    const businessNo = this.getBusinessNo();
+                    const period = this.getPeriod();
+                    const urlBusinessNo = encodeURIComponent(businessNo);
+                    const urlPeriod = encodeURIComponent(period);
+                    const sPath = `/ZC_FGA_CHART_AVANCEMENT(p_businessno='${urlBusinessNo}',p_period='${urlPeriod}')/Set`;
+                    console.log(`retrieve charts additionnal data with period: ${period} and BusinessNo: ${businessNo}`);
+                    const chartsadddata = await this.read(sPath);
+                    return chartsadddata?.results || [];
+                } catch (error) {
+                    console.log(error);
+                }
+            },
+
             setYearByPeriod(period) {
                 this.setPeriod(period);
 

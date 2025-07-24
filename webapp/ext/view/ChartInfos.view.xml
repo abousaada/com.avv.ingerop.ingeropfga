@@ -4,15 +4,14 @@
 	xmlns:layout="sap.ui.layout"
 	xmlns:html="http://www.w3.org/1999/xhtml" controllerName="com.avv.ingerop.ingeropfga.ext.controller.extendOP">
 		
-    <Panel class="sapUiSmallMargin" 
+    <Panel id="panelContainer" class="sapUiSmallMargin"
             expanded="true" expandable="true" 
             headerText="{i18n>synt.tab.graph.title}"
             visible="{= !${ui>/createMode}}">
-        <layout:Grid defaultSpan="L4 M4 S12">
-            <!--core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.chart.RBAEvol" type="XML" /-->
-            <core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.chart.OpportTable" type="XML" />
-            <core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.chart.Progress" type="XML" />
-            <!--core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.chart.MOModelization" type="XML" /-->
+        <layout:Grid defaultSpan="L4 M4 S12" id="idGridCharts">
+                <core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.chart.OpportTable" type="XML" />
+                <core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.chart.Progress" type="XML" />
+                <core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.chart.BillingSpending" type="XML" />
         </layout:Grid >
     </Panel>
 	

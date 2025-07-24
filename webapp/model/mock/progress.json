@@ -2,87 +2,87 @@
     "results": [
     {
     "ID": "CA",
-    "Desc": "Revenue",
+    "Desc": "Chiffre d'affaires",
     "Type": "Actual",
-    "TypeDesc": "Actual",
+    "TypeDesc": "Réalisé",
     "Value": "269300.76897619"
     },
     {
     "ID": "FAC",
-    "Desc": "Billing",
+    "Desc": "Facturation",
     "Type": "Actual",
-    "TypeDesc": "Actual",
+    "TypeDesc": "Réalisé",
     "Value": "768516.01"
     },
     {
     "ID": "CHA",
-    "Desc": "Expenses",
+    "Desc": "Charges",
     "Type": "Actual",
-    "TypeDesc": "Actual",
+    "TypeDesc": "Réalisé",
     "Value": "253070.17"
     },
     {
     "ID": "MO",
-    "Desc": "Labor",
+    "Desc": "Main d'oeuvre",
     "Type": "Actual",
-    "TypeDesc": "Actual",
+    "TypeDesc": "Réalisé",
     "Value": "228964.86"
     },
     {
     "ID": "DELM",
-    "Desc": "Timeframe (Months)",
+    "Desc": "Délais (Mois)",
     "Type": "Actual",
-    "TypeDesc": "Completed",
+    "TypeDesc": "Réalisé",
     "Value": "40"
     },
     {
     "ID": "JH",
-    "Desc": "Man-days",
+    "Desc": "Jours/homme",
     "Type": "Actual",
-    "TypeDesc": "Completed",
+    "TypeDesc": "Réalisé",
     "Value": "369.298161290323"
     },
     {
     "ID": "CA",
-    "Desc": "Turnover",
+    "Desc": "Chiffre d'affaires",
     "Type": "YetToCome",
-    "TypeDesc": "To Come",
+    "TypeDesc": "A venir",
     "Value": "1049415.93102381"
     },
     {
     "ID": "FAC",
-    "Desc": "Billing",
+    "Desc": "Facturation",
     "Type": "YetToCome",
-    "TypeDesc": "To Come",
+    "TypeDesc": "A venir",
     "Value": "550200.69"
     },
     {
     "ID": "CHA",
     "Desc": "Charges",
     "Type": "YetToCome",
-    "TypeDesc": "To Come",
+    "TypeDesc": "A venir",
     "Value": "986168.25"
     },
     {
     "ID": "MO",
-    "Desc": "Labor",
+    "Desc": "Main d'oeuvre",
     "Type": "YetToCome",
-    "TypeDesc": "To Come",
+    "TypeDesc": "A venir",
     "Value": "436988.39"
     },
     {
-    "ID": "DELM",
-    "Desc": "Deadline (Months)",
+    "ID": "JH",
+    "Desc": "Jours/homme",
     "Type": "YetToCome",
-    "TypeDesc": "To Come",
-    "Value": "30"
+    "TypeDesc": "A venir",
+    "Value": "704.819983870968"
     },
     {
-    "ID": "JH",
-    "Desc": "Man-days",
+    "ID": "DELM",
+    "Desc": "Délais (Mois)",
     "Type": "YetToCome",
-    "TypeDesc": "YetToCome",
-    "Value": "704.819983870968"
+    "TypeDesc": "A venir",
+    "Value": "30"
     }
     ]
     }

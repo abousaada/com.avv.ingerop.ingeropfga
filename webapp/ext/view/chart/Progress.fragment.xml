@@ -5,7 +5,7 @@
         <layout:fixContent>
         </layout:fixContent>
         <layout:flexContent>
-            <viz:VizFrame uiConfig="{applicationSet:'fiori'}" vizProperties="{
+            <viz:VizFrame id="avancementChart" uiConfig="{applicationSet:'fiori'}" vizProperties="{
                     plotArea: {
                         dataLabel: {
                             visible: true
@@ -15,21 +15,22 @@
                     },
                     title: {
                         visible: true,
-                        text: 'Advancement'
+                        text: 'Avancement'
                     }
                 }"
-                height='100%' width="100%" vizType='100_stacked_bar'>
+                height='100%' width="100%" vizType="100_stacked_bar" class="sapUiSmallMargin">
                 <viz:dataset>
-                    <viz.data:FlattenedDataset data="{progress>/results}">
+                    <viz.data:FlattenedDataset data="{chart>/results}">
+                    <!-- <viz.data:FlattenedDataset id="idChartAvancement"> -->
                         <viz.data:dimensions>
-                            <viz.data:DimensionDefinition name="Categorie"
-                                value="{progress>Desc}" />
+                             <viz.data:DimensionDefinition name="Categorie"
+                                value="{chart>Categorie}" />
                             <viz.data:DimensionDefinition name="Type"
-                                value="{progress>TypeDesc}" />
+                                value="{chart>Type}" />
                         </viz.data:dimensions>
                         <viz.data:measures>
                             <viz.data:MeasureDefinition name="Valeur"
-                                value="{progress>Value}" />
+                                value="{chart>Valeur}" />
                         </viz.data:measures>
                     </viz.data:FlattenedDataset>
                 </viz:dataset>
