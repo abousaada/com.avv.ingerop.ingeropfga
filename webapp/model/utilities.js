@@ -87,7 +87,8 @@ sap.ui.define([
 
             // Call this when saving the main entity to process all missions
             validDataBeforeSave: function () {
-                return this.validMissions() && this.validFGAHeaderFields();
+                //return this.validMissions() && this.validFGAHeaderFields();
+                return this.validFGAHeaderFields();
             },
 
             // Validate missions
@@ -179,7 +180,19 @@ sap.ui.define([
 
             async deepUpsertFGA(data) {
                 try {
-                    const createdFGA = await this.create("/ZC_FGASet", data);
+                    const dataToSend = { ...data };
+                    delete dataToSend.isTotalRow;
+
+                    // Also check nested arrays
+                    if (dataToSend.to_BudgetPxAutre) {
+                        dataToSend.to_BudgetPxAutre = dataToSend.to_BudgetPxAutre.map(item => {
+                            const newItem = { ...item };
+                            delete newItem.isTotalRow;
+                            return newItem;
+                        });
+                    }
+
+                    const createdFGA = await this.create("/ZC_FGASet", dataToSend);
                     console.log(createdFGA);
                     return createdFGA;
                 } catch (error) {
@@ -298,6 +311,11 @@ sap.ui.define([
                     mission.LaborBudget = parseFloat(mission.LaborBudget).toFixed(2).toString();
                     return mission;
                 });
+            },
+
+
+            getFormattedPxAutre() {
+                return this.getPxAutres();
             }
 
         });

@@ -8,19 +8,19 @@ sap.ui.define([
         // Fragment-specific methods
 
 
-        preparePxAutreTreeData: function() {
+        preparePxAutreTreeData: function () {
             var self = this;
             var pxAutres = this.getView().getModel("utilities").getProperty("/pxAutres");
-        
-            var buildTree = function(items) {
+
+            var buildTree = function (items) {
                 var treeData = [];
                 var fgaGroups = {};
-        
+
                 if (!items) return treeData;
-        
-                items.forEach(function(item) {
+
+                items.forEach(function (item) {
                     item.isTotalRow = false;
-        
+
                     if (!fgaGroups[item.BusinessNo]) {
                         fgaGroups[item.BusinessNo] = {
                             name: item.BusinessNo,
@@ -29,7 +29,7 @@ sap.ui.define([
                             children: {}
                         };
                     }
-        
+
                     if (!fgaGroups[item.BusinessNo].children[item.Regroupement]) {
                         fgaGroups[item.BusinessNo].children[item.Regroupement] = {
                             name: item.Regroupement, // Store the regroupement name here
@@ -47,10 +47,10 @@ sap.ui.define([
                             }
                         };
                     }
-        
+
                     var regroupement = fgaGroups[item.BusinessNo].children[item.Regroupement];
                     regroupement.children.push(item);
-        
+
                     // Accumulate totals for the Regroupement
                     regroupement.totals.VoyageDeplacement += Number(item.VoyageDeplacement) || 0;
                     regroupement.totals.AutresFrais += Number(item.AutresFrais) || 0;
@@ -60,11 +60,11 @@ sap.ui.define([
                     regroupement.totals.AleasDivers += Number(item.AleasDivers) || 0;
                     regroupement.totals.FinAffaire += Number(item.FinAffaire) || 0;
                 });
-        
+
                 // Convert children objects to arrays while preserving names
                 for (var fga in fgaGroups) {
                     var fgaGroup = fgaGroups[fga];
-                    
+
                     // Convert children object to array of regroupements with their names
                     var regroupementArray = [];
                     for (var regroupementKey in fgaGroup.children) {
@@ -77,31 +77,31 @@ sap.ui.define([
                             regroupementArray.push(regroupement);
                         }
                     }
-                    
+
                     fgaGroup.children = regroupementArray;
                     treeData.push(fgaGroup);
                 }
-        
+
                 return treeData;
             };
-        
+
             // Build trees 
             var pxAutresTreeData = buildTree(pxAutres);
-        
+
             // Calculate global totals
             var globalTotals = this.calculateGlobalTotals(pxAutresTreeData);
-        
+
             // Create flat summary rows (level 0)
             var summaryRows = [
                 this.createSummaryRow("Total Acquis", globalTotals.totalAcquis, false),
-                this.createSummaryRow("Cumulé", globalTotals.cumule, false),
+                this.createSummaryRow("Cumule", globalTotals.cumule, false),
                 this.createSummaryRow("Pourcentage", globalTotals.pourcentage, true),
                 this.createSummaryRow("RAD", globalTotals.rad, false)
             ];
-        
+
             // Add summary rows directly to the root array (as level 0 items)
             pxAutresTreeData = pxAutresTreeData.concat(summaryRows);
-        
+
             // Set tree
             this.getView().getModel("utilities").setProperty("/PxAutreHierarchyWithTotals", pxAutresTreeData);
         },
@@ -129,37 +129,35 @@ sap.ui.define([
             //this.oView.setBusy(false);
         },
 
-        updateTotals: function() {
+        updateTotals: function () {
             var oModel = this.oView.getModel("utilities");
             var aData = oModel.getProperty("/PxAutreHierarchyWithTotals");
-        
-            // Filter out all total rows (both global and regroupement)
-            var aTreeData = aData.filter(function(oItem) {
+
+            var aTreeData = aData.filter(function (oItem) {
                 return !oItem.isTotalRow;
             });
-        
-            // Recalculate regroupement totals
-            aTreeData.forEach(function(fgaGroup) {
+
+            aTreeData.forEach(function (fgaGroup) {
 
                 var regroupementEntries = [];
-                
-                // First collect all regroupements with their names
+
                 for (var regroupementKey in fgaGroup.children) {
                     if (fgaGroup.children.hasOwnProperty(regroupementKey)) {
                         var regroupement = fgaGroup.children[regroupementKey];
                         regroupementEntries.push({
-                            name: regroupement.name, // Use the name property we stored during creation
+                            name: regroupement.name,
                             data: regroupement
                         });
                     }
                 }
-                
+
                 // Now process each regroupement
-                fgaGroup.children = regroupementEntries.map(function(entry) {
+                fgaGroup.children = regroupementEntries.map(function (entry) {
                     var regroupement = entry.data;
-                    
+
                     // Reset totals
                     regroupement.totals = {
+                        isNode: false,
                         VoyageDeplacement: 0,
                         AutresFrais: 0,
                         CreancesDouteuses: 0,
@@ -168,9 +166,9 @@ sap.ui.define([
                         AleasDivers: 0,
                         FinAffaire: 0
                     };
-        
+
                     // Recalculate totals
-                    regroupement.children.forEach(function(item) {
+                    regroupement.children.forEach(function (item) {
                         if (!item.isTotalRow) {
                             regroupement.totals.VoyageDeplacement += Number(item.VoyageDeplacement) || 0;
                             regroupement.totals.AutresFrais += Number(item.AutresFrais) || 0;
@@ -181,40 +179,40 @@ sap.ui.define([
                             regroupement.totals.FinAffaire += Number(item.FinAffaire) || 0;
                         }
                     });
-        
+
                     // Update the regroupement total row
-                    var existingTotalIndex = regroupement.children.findIndex(function(child) {
+                    var existingTotalIndex = regroupement.children.findIndex(function (child) {
                         return child.isRegroupementTotal;
                     });
-                    
+
                     var totalRow = this.createRegroupementTotalRow(regroupement.totals, entry.name);
-                    
+
                     if (existingTotalIndex >= 0) {
                         regroupement.children[existingTotalIndex] = totalRow;
                     } else {
                         regroupement.children.push(totalRow);
                     }
-                    
+
                     return regroupement;
                 }.bind(this));
             }.bind(this));
-        
+
             // Calculate new global totals
             var globalTotals = this.calculateGlobalTotals(aTreeData);
-        
+
             // Create new summary rows
             var summaryRows = [
                 this.createSummaryRow("Total Acquis", globalTotals.totalAcquis, false),
-                this.createSummaryRow("Cumulé", globalTotals.cumule, false),
+                this.createSummaryRow("Cumule", globalTotals.cumule, false),
                 this.createSummaryRow("Pourcentage", globalTotals.pourcentage, true),
                 this.createSummaryRow("RAD", globalTotals.rad, false)
             ];
-        
+
             // Update the model
             oModel.setProperty("/PxAutreHierarchyWithTotals", aTreeData.concat(summaryRows));
         },
 
-        createRegroupementTotalRow: function(totals, regroupementName) {
+        createRegroupementTotalRow: function (totals, regroupementName) {
             return {
                 name: "Total " + regroupementName,
                 isTotalRow: true,
@@ -254,15 +252,35 @@ sap.ui.define([
 
             var sumValues = function (node) {
                 if (node.children) {
-                    node.children.forEach(sumValues);
+                    if (node.isNode) {
+                        node.children.forEach(function (child) {
+                            if (!child.isTotalRow && !child.isRegroupementTotal) {
+                                sumValues(child);
+                            }
+                        });
+                    }
                 } else if (!node.isNode) {
                     totals.totalAcquis.VoyageDeplacement += Number(node.VoyageDeplacement) || 0;
-                    totals.totalAcquis.AutresFrais += node.AutresFrais || 0;
-                    // Don't forget to add the other columns
+                    totals.totalAcquis.AutresFrais += Number(node.AutresFrais) || 0;
+                    totals.totalAcquis.CreancesDouteuses += Number(node.CreancesDouteuses) || 0;
+                    totals.totalAcquis.EtudesTravaux += Number(node.EtudesTravaux) || 0;
+                    totals.totalAcquis.SinistreContentieux += Number(node.SinistreContentieux) || 0;
+                    totals.totalAcquis.AleasDivers += Number(node.AleasDivers) || 0;
+                    totals.totalAcquis.FinAffaire += Number(node.FinAffaire) || 0;
+
+                    // Read cumulé from entity
+                    totals.cumule.VoyageDeplacement += Number(node.CumulVoyageDeplacement) || 0;
+                    totals.cumule.AutresFrais += Number(node.CumulAutresFrais) || 0;
+                    totals.cumule.CreancesDouteuses += Number(node.CumulCreancesDouteuses) || 0;
+                    totals.cumule.EtudesTravaux += Number(node.CumulEtudesTravaux) || 0;
+                    totals.cumule.SinistreContentieux += Number(node.CumulSinistreContentieux) || 0;
+                    totals.cumule.AleasDivers += Number(node.CumulAleasDivers) || 0;
+                    totals.cumule.FinAffaire += Number(node.CumulFinAffaire) || 0;
                 }
             };
 
             items.forEach(sumValues);
+
 
             // Calculate percentages
             totals.pourcentage = {
@@ -313,6 +331,21 @@ sap.ui.define([
             return row;
         },
 
+
+
+        onCumuleClick: function (oEvent) {
+            var oItem = oEvent.getSource().getBindingContext("utilities").getObject();
+            var oView = this.getView();
+
+            if (oItem.name === "Cumule") {
+                // Implement what should happen when Cumulé is clicked
+                MessageBox.information("Cumule values: " + JSON.stringify({
+                    VoyageDeplacement: oItem.VoyageDeplacement,
+                    AutresFrais: oItem.AutresFrais,
+                    // Add other properties as needed
+                }));
+            }
+        },
     });
 });
 

@@ -35,7 +35,7 @@
                         />
                     </table:template>
                 </table:Column>
-                
+
                 <!-- Libelle Column -->
                 <table:Column width="5rem">
                     <Label text="Libellé" />
@@ -116,7 +116,12 @@
                             />
                             <Text
                                 text="{utilities>VoyageDeplacement}"
-                                visible="{= ${utilities>isTotalRow}}"
+                                visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} !== 'Cumule'}"
+                            />
+                            <Link
+                                text="{utilities>VoyageDeplacement}"
+                                visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} === 'Cumule'}"
+                                press=".onCumuleClick"
                             />
                         </HBox>
                     </table:template>
@@ -130,10 +135,17 @@
                                 value="{utilities>AutresFrais}"
                                 editable="{ui>/editable}"
                                 visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
+                                liveChange=".onLiveChange"
+                                submit=".onPxAutreSubmit"
                             />
                             <Text
                                 text="{utilities>AutresFrais}"
-                                visible="{= ${utilities>isTotalRow}}"
+                                visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} !== 'Cumule'}"
+                            />
+                            <Link
+                                text="{utilities>AutresFrais}"
+                                visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} === 'Cumule'}"
+                                press=".onCumuleClick"
                             />
                         </HBox>
                     </table:template>
@@ -147,10 +159,17 @@
                                 value="{utilities>CreancesDouteuses}"
                                 editable="{ui>/editable}"
                                 visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
+                                liveChange=".onLiveChange"
+                                submit=".onPxAutreSubmit"
                             />
                             <Text
                                 text="{utilities>CreancesDouteuses}"
-                                visible="{= ${utilities>isTotalRow}}"
+                                visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} !== 'Cumule'}"
+                            />
+                            <Link
+                                text="{utilities>CreancesDouteuses}"
+                                visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} === 'Cumule'}"
+                                press=".onCumuleClick"
                             />
                         </HBox>
                     </table:template>
@@ -164,10 +183,17 @@
                                 value="{utilities>EtudesTravaux}"
                                 editable="{ui>/editable}"
                                 visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
+                                liveChange=".onLiveChange"
+                                submit=".onPxAutreSubmit"
                             />
                             <Text
                                 text="{utilities>EtudesTravaux}"
-                                visible="{= ${utilities>isTotalRow}}"
+                                visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} !== 'Cumule'}"
+                            />
+                            <Link
+                                text="{utilities>EtudesTravaux}"
+                                visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} === 'Cumule'}"
+                                press=".onCumuleClick"
                             />
                         </HBox>
                     </table:template>
@@ -181,10 +207,17 @@
                                 value="{utilities>SinistreContentieux}"
                                 editable="{ui>/editable}"
                                 visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
+                                liveChange=".onLiveChange"
+                                submit=".onPxAutreSubmit"
                             />
                             <Text
                                 text="{utilities>SinistreContentieux}"
-                                visible="{= ${utilities>isTotalRow}}"
+                                visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} !== 'Cumule'}"
+                            />
+                            <Link
+                                text="{utilities>SinistreContentieux}"
+                                visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} === 'Cumule'}"
+                                press=".onCumuleClick"
                             />
                         </HBox>
                     </table:template>
@@ -198,10 +231,17 @@
                                 value="{utilities>AleasDivers}"
                                 editable="{ui>/editable}"
                                 visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
+                                liveChange=".onLiveChange"
+                                submit=".onPxAutreSubmit"
                             />
                             <Text
                                 text="{utilities>AleasDivers}"
-                                visible="{= ${utilities>isTotalRow}}"
+                                visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} !== 'Cumule'}"
+                            />
+                            <Link
+                                text="{utilities>AleasDivers}"
+                                visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} === 'Cumule'}"
+                                press=".onCumuleClick"
                             />
                         </HBox>
                     </table:template>
@@ -213,7 +253,12 @@
                         <HBox>
                             <Text
                                 text="{utilities>FinAffaire}"
-                                visible="true"
+                                visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} !== 'Cumule'}"
+                            />
+                            <Link
+                                text="{utilities>FinAffaire}"
+                                visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} === 'Cumule'}"
+                                press=".onCumuleClick"
                             />
                         </HBox>
                     </table:template>
