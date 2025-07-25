@@ -289,35 +289,6 @@ sap.ui.define([
                 return true;
             },
 
-            // const data = {
-            //     "BusinessName": "Nom de l'affaire : text XP",
-            //     "CompanyCode": "9000",
-            //     "PROFITCENTER": "MEDNBTS000",
-            //     "Mission": "05",
-            //     "StartDate": new Date("2025-01-01"),
-            //     "EndDate": new Date("2025-02-28"),
-            //     "to_Missions": [
-            //         {
-            //             "MissionId": "001",
-            //             // "BusinessNo": "AFFAIRE123",
-            //             "MissionCode": "AVP",
-            //             "StartDate": new Date("2025-01-01"),
-            //             "EndDate": new Date("2025-01-30"),
-            //             "ExternalRevenue": "100000.00",
-            //             "LaborBudget": "50000.00"
-            //         },
-            //         {
-            //             "MissionId": "002",
-            //             // "BusinessNo": "AFFAIRE123",
-            //             "MissionCode": "PRO",
-            //             "StartDate": new Date("2025-01-01"),
-            //             "EndDate": new Date("2025-01-30"),
-            //             "ExternalRevenue": "150000.00",
-            //             "LaborBudget": "75000.00"
-            //         }
-            //     ]
-            // };
-
             async deepCreateFGA(data) {
                 try {
                     const createdFGA = await this.create("/ZC_FGASet", data);
@@ -328,7 +299,6 @@ sap.ui.define([
                     // Helper.errorMessage("Creation error: " + error?.responseText );
                 }
             },
-
 
             /*async deepUpdatedFGA(data) {
                 const businessNo = this.getBusinessNo();
@@ -508,6 +478,26 @@ sap.ui.define([
                     console.log(`retrieve charts additionnal data with period: ${period} and BusinessNo: ${businessNo}`);
                     const chartsadddata = await this.read(sPath);
                     return chartsadddata?.results || [];
+                } catch (error) {
+                    console.log(error);
+                }
+            },
+
+            async getBEClientById(clientNo) {
+                try {
+                    const options = { urlParameters: { clientNo } };
+                    const client = await this.callFunction("/GetClient", options);
+                    return client;
+                } catch (error) {
+                    console.log(error);
+                }
+            },
+
+            async getBESupplierById(supplierNo) {
+                try {
+                    const options = { urlParameters: { supplierNo } };
+                    const supplier = await this.callFunction("/GetSupplier", options);
+                    return supplier;
                 } catch (error) {
                     console.log(error);
                 }

@@ -328,6 +328,15 @@ sap.ui.define(
                 this._budgetPxSubContracting.preparePxSubContractingTreeData();
             },
 
+            onBtnAddSubContractorPress:function(oEvent){
+                if(!this._budgetPxSubContracting){
+                    this._budgetPxSubContracting = new BudgetPxSubContracting();
+                    this._budgetPxSubContracting.oView = this.oView;
+                }
+
+                this._budgetPxSubContracting.addNewContractor();
+            },
+
             // ==============================================
             // Move to formatter !!!!
             // ==============================================

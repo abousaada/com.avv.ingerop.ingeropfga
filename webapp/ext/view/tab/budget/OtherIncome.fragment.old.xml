@@ -3,11 +3,16 @@
     xmlns:l="sap.ui.layout"
     xmlns:table="sap.ui.table"
     xmlns:f="sap.ui.layout.form">
-    <!--table:Table id="OtherIncomeTab" visibleRowCount="26" visibleRowCountMode="Fixed" class="syntheseTab" rows="{budget>/results}" selectionMode="None" rowsUpdated="onRowsUpdatedBudgetTab" -->        
-    <table:TreeTable id="OtherIncomeTab" visibleRowCount="26" visibleRowCountMode="Fixed" class="syntheseTab" 
-                     rows="{path: 'budget>/results', parameters: {arrayNames: ['children']}}" 
-                     selectionMode="None" rowsUpdated="onRowsUpdatedBudgetTab" 
-                     enableGrouping="true" collapseRecursive="false">    
+    <table:TreeTable 
+        id="OtherIncomeTab" 
+        visibleRowCount="26" 
+        visibleRowCountMode="Fixed" 
+        class="syntheseTab" 
+        rows="{path: 'budget>/results', parameters: {arrayNames: ['children']}}" 
+        selectionMode="None" 
+        rowsUpdated="onRowsUpdatedBudgetTab" 
+        enableGrouping="true" 
+        collapseRecursive="false">    
         <table:extension>
             <Toolbar class="sapMTBHeader-CTX">
                 <ToolbarSpacer />

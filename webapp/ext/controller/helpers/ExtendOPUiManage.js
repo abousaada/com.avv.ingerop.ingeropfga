@@ -90,6 +90,21 @@ sap.ui.define([
             this._setMandatoryFieldByType(newValue);
         },
 
+        async onBpChange(oEvent){
+            const newValue = oEvent.getParameter("newValue");
+            if(newValue){
+                const utilities = this.oView.getModel("utilities");
+                const { Name1, Siret, Country } = await utilities.getBEClientById(newValue);
+                this._getField("Client", "CustomerName"  ).setValue(Name1);
+                this._getField("Client", "Siret"         ).setValue(Siret);
+                this._getField("Client", "Country"       ).setValue(Country);
+            }else{
+                this._getField("Client", "CustomerName"  ).setValue(null);
+                this._getField("Client", "Siret"         ).setValue(null);
+                this._getField("Client", "Country"       ).setValue(null);
+            }
+        },
+
         _setMandatoryFieldByType(type) {
             if(!type){
                 Helper.getDefaultFieldMandatory().map(({identifier, field, mandatory}) => {

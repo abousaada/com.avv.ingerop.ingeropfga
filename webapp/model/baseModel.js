@@ -49,6 +49,16 @@ sap.ui.define([
                 );
             },
 
+            async callFunction(entity, options={}){
+                return new Promise((resolve, reject) => 
+                    this.oModel.callFunction(entity, {
+                        ...options,
+                        success:function(odata){ resolve(odata); },
+                        error:function(oError){ reject(oError); }
+                    })
+                );
+            },
+
             async update(entity, data, options={} ) {
                 return new Promise((resolve, reject) => 
                     this.oModel.update(entity, data, {

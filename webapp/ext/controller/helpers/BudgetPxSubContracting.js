@@ -19,20 +19,17 @@ sap.ui.define([
         },
 
         removeDynamicColumns(){
-            const viewId = this.oView.getId();
-            const SubContractingTree = this.oView.byId(viewId + "--budgets--BudgetPxSubContractingTreeTableId");
-            
+            const SubContractingTree = this.oView.byId("com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--budgets--BudgetPxSubContractingTreeTableId");
             var aColumns = SubContractingTree.getColumns();
             for (var i = aColumns.length - 1; i >= 0; i--) {
-                if (aColumns[i].getId().includes("dynamic_")) {
+                if (aColumns[i].data("columnId")?.includes("dynamic_")) {
                     SubContractingTree.removeColumn(aColumns[i]);
                 }
             }
         },
 
         addDynamicColumns(){
-            const viewId = this.oView.getId();
-            const SubContractingTree = this.oView.byId(viewId + "--budgets--BudgetPxSubContractingTreeTableId");
+            const SubContractingTree = this.oView.byId("com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--budgets--BudgetPxSubContractingTreeTableId");
             const aDynamicColumns = this.oView.getModel("utilities").getPxSubContractingHeader();
             
             aDynamicColumns.forEach((oColData, idx) => {
@@ -40,6 +37,7 @@ sap.ui.define([
                 SubContractingTree.insertColumn(oColumn, 6 + idx);
             });
         },
+
         isFiliale(subContractorPartner){
             return subContractorPartner ? "Filiale" : "Externe";
         },
@@ -50,7 +48,6 @@ sap.ui.define([
 
         _createColumn: function(sColumnId, { subContractorName, subContractorId, subContractorPartner, columnId }) {
             return new sap.ui.table.Column({
-                id: sColumnId,
                 multiLabels: [
                     new sap.m.Label({ text: subContractorName }),
                     new sap.m.Input({ value: subContractorId, editable:"{ui>/editable}" }),
@@ -65,7 +62,26 @@ sap.ui.define([
                 // sortProperty: columnId,
                 // filterProperty: columnId,
                 width: "6rem"
-            });
+            }).data("columnId", sColumnId);
+        },
+
+        addNewContractor(){
+            const SubContractingTree = this.oView.byId("com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--budgets--BudgetPxSubContractingTreeTableId");
+            const aColumns = SubContractingTree.getColumns();
+            const oColumn = new sap.ui.table.Column({
+                multiLabels: [
+                    new sap.m.Label(),
+                    new sap.m.Input({ editable:"{ui>/editable}" }),
+                    new sap.m.Label(),
+                    new sap.m.Input({ editable:"{ui>/editable}" }),
+                    new sap.m.Label({ text: "{i18n>budget.ext.budget}" })
+                ],
+                template: new sap.m.Input({
+                    editable:"{= ${ui>/editable} && ${utilities>isBudget} }", 
+                    visible:"{= ${utilities>isBudget} || ${utilities>isTotal} }" }),
+                width: "6rem"
+            }).data("columnId", "dynamic_tmp");
+            SubContractingTree.insertColumn(oColumn, aColumns.length - 2);
         }
 
     });

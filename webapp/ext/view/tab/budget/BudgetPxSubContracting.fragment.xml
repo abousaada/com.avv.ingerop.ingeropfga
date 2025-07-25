@@ -23,9 +23,9 @@
             <Toolbar class="sapMTBHeader-CTX">
                 <ToolbarSpacer />
                 <Button
-                    text="{i18n>btn.openSTProfile}"
+                    text="{i18n>btn.addSubContractor}"
                     icon="sap-icon://add"
-                    press="onBtnOpenSTProfilePress"
+                    press="onBtnAddSubContractorPress"
                     type="Emphasized"
                 />
             </Toolbar>
@@ -139,9 +139,7 @@
                 </table:template>
             </table:Column>
 
-            <!-- <core:Fragment id="customBudgetFragmentId" fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.budget.BudgetPxSCCustColumns" type="XML" /> -->
-            
-            <table:Column>
+            <table:Column width="7rem">
                 <table:multiLabels>
                     <Label text="" />
                     <Label text="" />
@@ -153,7 +151,7 @@
                     <Text text="{ path: 'utilities>budgetHorsFrais' }" />
                 </table:template>
             </table:Column>
-            <table:Column>
+            <table:Column width="7rem">
                 <table:multiLabels>
                     <Label text="" />
                     <Label text="" />

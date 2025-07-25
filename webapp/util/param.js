@@ -159,7 +159,7 @@ sap.ui.define([
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
                 mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF"], default: false, create: true, modify: true },
-                action: null
+                action: "onBpChange"
             },
             CustomerName: {
                 identifier: "Client",
@@ -171,7 +171,7 @@ sap.ui.define([
             Scclt: {
                 identifier: "Client",
                 visible: { create: true, modify: true },
-                enabled: { create: false, modify: false },
+                enabled: { create: true, modify: true },
                 mandatory: { type: [], default: false, create: true, modify: true },
                 action: null
             },
