@@ -7,40 +7,6 @@ sap.ui.define([
 
     return Controller.extend('com.avv.ingerop.ingeropfga.ext.Mission', {
 
-        /**
-         * Called when a controller is instantiated and its View controls (if available) are already created.
-         * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
-         * @memberOf com.avv.ingerop.ingeropfga.ext.Mission
-         */
-        //	onInit: function () {
-        //
-        //	},
-        /**
-         * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
-         * (NOT before the first rendering! onInit() is used for that one!).
-         * @memberOf com.avv.ingerop.ingeropfga.ext.Mission
-         */
-        //	onBeforeRendering: function() {
-        //
-        //	},
-        /**
-         * Called when the View has been rendered (so its HTML is part of the document). Post-rendering manipulations of the HTML could be done here.
-         * This hook is the same one that SAPUI5 controls get after being rendered.
-         * @memberOf com.avv.ingerop.ingeropfga.ext.Mission
-         */
-        //	onAfterRendering: function() {
-        //
-        //	},
-        /**
-         * Called when the Controller is destroyed. Use this one to free resources and finalize activities.
-         * @memberOf com.avv.ingerop.ingeropfga.ext.Mission
-         */
-        //	onExit: function() {
-        //
-        //	}
-
-        
-
         /*onAddMission: function () {
             this.getView().getModel("utilities").addMissionNewLine();
             const oTable = this.byId("missionsTable");
@@ -70,15 +36,15 @@ sap.ui.define([
 
         prepareMissionsTreeData: function () {
             var missions = this.getView().getModel("utilities").getProperty("/missions");
-     
+
             // Create tree builder function
-            var buildTree = function(items) {
+            var buildTree = function (items) {
                 var treeData = [];
                 var fgaGroups = {};
-                
+
                 if (!items) return treeData;
-                
-                items.forEach(function(item) {
+
+                items.forEach(function (item) {
                     if (!fgaGroups[item.BusinessNo]) {
                         fgaGroups[item.BusinessNo] = {
                             name: item.BusinessNo,
@@ -87,7 +53,7 @@ sap.ui.define([
                             children: {}
                         };
                     }
-        
+
                     if (!fgaGroups[item.BusinessNo].children[item.Regroupement]) {
                         fgaGroups[item.BusinessNo].children[item.Regroupement] = {
                             name: item.Regroupement,
@@ -96,26 +62,26 @@ sap.ui.define([
                             children: []
                         };
                     }
-        
+
                     fgaGroups[item.BusinessNo].children[item.Regroupement].children.push(item);
                 });
-        
+
                 // Convert children objects to arrays
                 for (var fga in fgaGroups) {
                     fgaGroups[fga].children = Object.values(fgaGroups[fga].children);
                     treeData.push(fgaGroups[fga]);
                 }
-                
+
                 return treeData;
             };
-        
+
             // Build trees 
             var missionsTreeData = buildTree(missions);
-        
+
             // Set tree
             this.getView().getModel("utilities").setProperty("/missionsHierarchy", missionsTreeData);
         },
-       
+
 
         isGroupementAddVisible: function (editable, isNode, isL0) {
             return editable === true && isNode === true && isL0 === false;
@@ -230,21 +196,29 @@ sap.ui.define([
             const currentMax = match ? parseInt(match[1]) : 0;
             const nextNum = currentMax + 1;
             const paddedNum = String(nextNum).padStart(3, '0'); // add zeros "005"
-            const MissionId = `${BusinessNo}-${paddedNum}`; // "MEDXXXXXX000000069-005"
+            const MissionId = `${BusinessNo}00-${paddedNum}`; // "MEDXXXXXX000000069-005"
             //End this code needs refactoring
 
             // Create new mission with default values
             var oNewMission = {
-                BusinessNo: oGroupementNode.name, // Or get from parent if stored differently
-                Regroupement: oGroupementNode.Regroupement,
-                MissionId: "NEW_MISSION_" + new Date().getTime(),
+                BusinessNo: BusinessNo,
+                Regroupement: oGroupementNode.name,
+                MissionId: MissionId, //"NEW_MISSION_" + new Date().getTime(),
                 MissionCode: "",
                 StartDate: null,
                 EndDate: null,
+                ExternalRevenue: 0,
+                LaborBudget: 0,
                 isNode: false
             };
 
-            // Add to the groupement's children
+            // 1. Add to the 'main' missions list
+            var oUtilitiesModel = this.getView().getModel("utilities");
+            var aMissions = oUtilitiesModel.getProperty("/missions") || [];
+            aMissions.push(oNewMission);
+            oUtilitiesModel.setProperty("/missions", aMissions);
+
+            // 2. Add to the groupement's children
             oGroupementNode.children.push(oNewMission);
 
             // Update the model
@@ -311,7 +285,7 @@ sap.ui.define([
             }
             return false;
         },
-        
-       
+
+
     });
 });

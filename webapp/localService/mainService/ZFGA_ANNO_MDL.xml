@@ -31,6 +31,97 @@
                     <Annotation Term="UI.TextArrangement" EnumMember="UI.TextArrangementType/TextOnly"/>
                 </Annotation>
             </Annotations>
+            <Annotations Target="ZFGA_SRV.I_BusinessPartnerVHType/BusinessPartnerName">
+                <Annotation Term="UI.HiddenFilter"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.I_BusinessPartnerVHType/FormOfAddress">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.I_BusinessPartnerVHType/AuthorizationGroup">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.I_BusinessPartnerVHType/IsBusinessPurposeCompleted">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.I_BusinessPartnerVHType/DataControllerSet">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.I_BusinessPartnerVHType/DataController1">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.I_BusinessPartnerVHType/DataController2">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.I_BusinessPartnerVHType/DataController3">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.I_BusinessPartnerVHType/DataController4">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.I_BusinessPartnerVHType/DataController5">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.I_BusinessPartnerVHType/DataController6">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.I_BusinessPartnerVHType/DataController7">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.I_BusinessPartnerVHType/DataController8">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.I_BusinessPartnerVHType/DataController9">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.I_BusinessPartnerVHType/DataController10">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.I_BusinessPartnerVHType">
+                <Annotation Term="UI.LineItem">
+                    <Collection>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="BusinessPartner"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="FormOfAddressName"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="BusinessPartnerName"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="BusinessPartnerCategory"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="BusinessPartnerIDByExtSystem"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="FirstName"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="LastName"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="OrganizationBPName1"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="GroupBusinessPartnerName1"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="BirthDate"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
             <Annotations Target="ZFGA_SRV.I_FiscalYearVariantType/FiscalYearVariant">
                 <Annotation Term="Common.IsFiscalYearVariant"/>
             </Annotations>
@@ -432,6 +523,12 @@
             <Annotations Target="ZFGA_SRV.ZC_FGA_CHARTType/p_period">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGA_CHART_AVANCEMENTType/p_businessno">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGA_CHART_AVANCEMENTType/p_period">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_FGA_MISSIONType/Regroupement">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
@@ -466,6 +563,27 @@
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_FGA_PREVISIONSType/p_period">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGA_PxAutreType/GLAccountVoyageDeplacement">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGA_PxAutreType/GLAccountAutresFrais">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGA_PxAutreType/GLAccountCreancesDouteuses">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGA_PxAutreType/GLAccountEtudesTravaux">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGA_PxAutreType/GLAccountSinistreContentieux">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGA_PxAutreType/GLAccountAleasDivers">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGA_PxAutreType/GLAccountFinAffaire">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_FGA_PxAutreType/Regroupement">

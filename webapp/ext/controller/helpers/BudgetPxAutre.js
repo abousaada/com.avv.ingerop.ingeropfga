@@ -21,6 +21,14 @@ sap.ui.define([
                 items.forEach(function (item) {
                     item.isTotalRow = false;
 
+                    // Calculate FinAffaire as sum of other columns for each line
+                    item.FinAffaire = (Number(item.VoyageDeplacement) || 0) +
+                        (Number(item.AutresFrais) || 0) +
+                        (Number(item.CreancesDouteuses) || 0) +
+                        (Number(item.EtudesTravaux) || 0) +
+                        (Number(item.SinistreContentieux) || 0) +
+                        (Number(item.AleasDivers) || 0);
+
                     if (!fgaGroups[item.BusinessNo]) {
                         fgaGroups[item.BusinessNo] = {
                             name: item.BusinessNo,
@@ -170,6 +178,14 @@ sap.ui.define([
                     // Recalculate totals
                     regroupement.children.forEach(function (item) {
                         if (!item.isTotalRow) {
+
+                            item.FinAffaire = (Number(item.VoyageDeplacement) || 0) +
+                                (Number(item.AutresFrais) || 0) +
+                                (Number(item.CreancesDouteuses) || 0) +
+                                (Number(item.EtudesTravaux) || 0) +
+                                (Number(item.SinistreContentieux) || 0) +
+                                (Number(item.AleasDivers) || 0);
+
                             regroupement.totals.VoyageDeplacement += Number(item.VoyageDeplacement) || 0;
                             regroupement.totals.AutresFrais += Number(item.AutresFrais) || 0;
                             regroupement.totals.CreancesDouteuses += Number(item.CreancesDouteuses) || 0;
@@ -246,7 +262,16 @@ sap.ui.define([
                     EtudesTravaux: 0,
                     SinistreContentieux: 0,
                     AleasDivers: 0,
-                    FinAffaire: 0
+                    FinAffaire: 0,
+
+                    GLAccountVoyageDeplacement: '',
+                    GLAccountAutresFrais: '',
+                    GLAccountCreancesDouteuses: '',
+                    GLAccountEtudesTravaux: '',
+                    GLAccountSinistreContentieux: '',
+                    GLAccountAleasDivers: '',
+                    GLAccountFinAffaire: ''
+
                 }
             };
 
@@ -276,6 +301,15 @@ sap.ui.define([
                     totals.cumule.SinistreContentieux += Number(node.CumulSinistreContentieux) || 0;
                     totals.cumule.AleasDivers += Number(node.CumulAleasDivers) || 0;
                     totals.cumule.FinAffaire += Number(node.CumulFinAffaire) || 0;
+
+                    // Read GlAccounts from entity
+                    totals.cumule.GLAccountVoyageDeplacement = node.GLAccountVoyageDeplacement;
+                    totals.cumule.GLAccountAutresFrais = node.GLAccountAutresFrais;
+                    totals.cumule.GLAccountCreancesDouteuses = node.GLAccountCreancesDouteuses;
+                    totals.cumule.GLAccountEtudesTravaux = node.GLAccountEtudesTravaux;
+                    totals.cumule.GLAccountSinistreContentieux = node.GLAccountSinistreContentieux;
+                    totals.cumule.GLAccountAleasDivers = node.GLAccountAleasDivers;
+                    totals.cumule.GLAccountFinAffaire = node.GLAccountFinAffaire;
                 }
             };
 
@@ -325,7 +359,15 @@ sap.ui.define([
                 EtudesTravaux: isPercentage ? values.EtudesTravaux.toFixed(2) + "%" : values.EtudesTravaux,
                 SinistreContentieux: isPercentage ? values.SinistreContentieux.toFixed(2) + "%" : values.SinistreContentieux,
                 AleasDivers: isPercentage ? values.AleasDivers.toFixed(2) + "%" : values.AleasDivers,
-                FinAffaire: isPercentage ? values.FinAffaire.toFixed(2) + "%" : values.FinAffaire
+                FinAffaire: isPercentage ? values.FinAffaire.toFixed(2) + "%" : values.FinAffaire,
+
+                GLAccountVoyageDeplacement: values.GLAccountVoyageDeplacement,
+                GLAccountAutresFrais: values.GLAccountAutresFrais,
+                GLAccountCreancesDouteuses: values.GLAccountCreancesDouteuses,
+                GLAccountEtudesTravaux: values.GLAccountEtudesTravaux,
+                GLAccountSinistreContentieux: values.GLAccountSinistreContentieux,
+                GLAccountAleasDivers: values.GLAccountAleasDivers,
+                GLAccountFinAffaire: values.GLAccountFinAffaire,
             };
 
             return row;
@@ -333,17 +375,159 @@ sap.ui.define([
 
 
 
-        onCumuleClick: function (oEvent) {
+        onCumuleClick: async function (oEvent) {
             var oItem = oEvent.getSource().getBindingContext("utilities").getObject();
             var oView = this.getView();
 
-            if (oItem.name === "Cumule") {
-                // Implement what should happen when Cumulé is clicked
-                MessageBox.information("Cumule values: " + JSON.stringify({
-                    VoyageDeplacement: oItem.VoyageDeplacement,
-                    AutresFrais: oItem.AutresFrais,
-                    // Add other properties as needed
-                }));
+            var oItem = oEvent.getSource().getBindingContext("utilities").getObject();
+            var sColumnId = oEvent.getSource().data("columnId"); // from BudgetPx view
+
+            // Determine which GLAccount to show based on the clicked column
+            var sGLAccount = "";
+
+            switch (sColumnId) {
+                case "VoyageDeplacement":
+                    sGLAccount = oItem.GLAccountVoyageDeplacement;
+                    break;
+                case "AutresFrais":
+                    sGLAccount = oItem.GLAccountAutresFrais;
+                    break;
+                case "CreancesDouteuses":
+                    sGLAccount = oItem.GLAccountCreancesDouteuses;
+                    break;
+                case "EtudesTravaux":
+                    sGLAccount = oItem.GLAccountEtudesTravaux;
+                    break;
+                case "SinistreContentieux":
+                    sGLAccount = oItem.GLAccountSinistreContentieux;
+                    break;
+                case "AleasDivers":
+                    sGLAccount = oItem.GLAccountAleasDivers;
+                    break;
+                case "FinAffaire":
+                    sGLAccount = oItem.GLAccountFinAffaire;
+                    break;
+                default:
+                    sGLAccount = "GL Account not set";
+            }
+
+            //sap.m.MessageToast.show("GLAccount: " + sGLAccount);
+
+
+            var period = this.getView().getModel("utilities").getProperty("/period");
+
+            try {
+
+                const oLink = oEvent.getSource();
+
+                // 2. Get GL Accounts
+                const oContext = oLink.getBindingContext("utilities");
+                const oData = oContext.getObject();
+
+
+                const glAccounts = sGLAccount
+                    ? sGLAccount.split(";").map(a => a.trim()).filter(a => a.length > 0)
+                    : [];
+
+                if (glAccounts.length === 0) {
+                    sap.m.MessageToast.show("GLAccount non disponible.");
+                    return;
+                }
+
+                // 3. Get Date range
+                const month = period.substring(0, 2);
+                const year = period.substring(2);
+
+                // 4. Get missions
+                let missions = [];
+                try {
+                    missions = oLink.getModel('utilities').getMissions();
+
+                } catch (error) {
+                    console.error("Failed to fetch missions:", error);
+                    throw error;
+                }
+
+                const wbsElements = [oData.business_no];
+                if (missions && missions.length > 0) {
+                    // Add missions to the WBS elements array
+                    wbsElements.push(...missions.map(mission => mission.MissionId));
+                }
+
+                // 5. Create navigation
+                /*const oComponent = sap.ui.core.Component.getOwnerComponentFor(this.oView);
+                const oAppStateService = sap.ushell.Container.getService("AppState");
+                const oSelectionVariant = new sap.ui.generic.app.navigation.service.SelectionVariant();
+
+                const oAppState = await oAppStateService.createEmptyAppState(oComponent);
+                oAppState.setData(oSelectionVariant.toJSONString());
+                await oAppState.save();
+
+                const sAppStateKey = oAppState.getKey();*/
+                const oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
+
+                // Construct the URL parameters
+                /*var params = {
+                    FiscalYearPeriod: `${year}0${month}`,
+                    GLAccount: glAccounts,
+                    WBSElementExternalID: wbsElements
+                };*/
+
+                var params = {
+                    FiscalYearPeriod: `${year}0${month}`,
+                    GLAccount: glAccounts,
+                    WBSElementExternalID: wbsElements
+                };
+
+                // Get the base URL for the target app
+                const sHash = oCrossAppNavigator.hrefForExternal({
+                    target: {
+                        semanticObject: "GLAccount",
+                        action: "displayGLLineItemReportingView"
+                    },
+                    params: Object.fromEntries(
+                        Object.entries(params).map(([key, value]) => {
+                            if (Array.isArray(value)) {
+                                return [key, value.map(v => encodeURIComponent(v))];
+                            }
+                            return [key, encodeURIComponent(value)];
+                        })
+                    )
+                });
+
+                // Open in new window
+                window.open(sHash, "_blank", "noopener,noreferrer");
+
+                /*
+                        // Convert params to URL string
+                        const sParams = Object.entries(params)
+                            .map(([key, value]) => {
+                                if (Array.isArray(value)) {
+                                    return value.map(v => `${key}=${encodeURIComponent(v)}`).join('&');
+                                }
+                                return `${key}=${encodeURIComponent(value)}`;
+                            })
+                            .join('&');
+        
+                        // Get the base URL for the target app
+                        const sHash = oCrossAppNavigator.hrefForExternal({
+                            target: {
+                                semanticObject: "GLAccount",
+                                action: "displayGLLineItemReportingView"
+                            }
+                        });
+        
+                        // Get the FLP base URL
+                        const sBaseUrl = window.location.origin + window.location.pathname;
+        
+                        // Construct the full URL
+                        const sUrl = `${sBaseUrl}#${sHash}&${sParams}`;
+        
+                        // Open in new window
+                        window.open(sUrl, "_blank", "noopener,noreferrer");*/
+
+            } catch (err) {
+                console.error("Error during navigation:", err);
             }
         },
     });

@@ -317,6 +317,14 @@ sap.ui.define(
                 }
                 this._budgetPxAutre.onSubmit(oEvent);
             },
+            
+            onCumuleClick: function (oEvent) {
+                if (!this._budgetPxAutre) {
+                    this._budgetPxAutre = new BudgetPxAutre();
+                    this._budgetPxAutre.oView = this.oView;
+                }
+                this._budgetPxAutre.onCumuleClick(oEvent);
+            },
 
             // ===========================================================
             // Handle Budget Px TAB - Budget Px Sub Contracting Section
