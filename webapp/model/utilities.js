@@ -494,9 +494,9 @@ sap.ui.define([
                 }
             },
 
-            async getBEClientById(clientNo) {
+            async getBEClientById(ClientNo) {
                 try {
-                    const options = { urlParameters: { clientNo } };
+                    const options = { urlParameters: { ClientNo } };
                     const client = await this.callFunction("/GetClient", options);
                     return client;
                 } catch (error) {
@@ -504,11 +504,11 @@ sap.ui.define([
                 }
             },
 
-            async getBESupplierById(supplierNo) {
+            async getBESupplierById(SupplierNo) {
                 try {
-                    const options = { urlParameters: { supplierNo } };
+                    const options = { urlParameters: { SupplierNo } };
                     const supplier = await this.callFunction("/GetSupplier", options);
-                    return supplier;
+                    return Formatter.formatSupplier(supplier);
                 } catch (error) {
                     console.log(error);
                 }

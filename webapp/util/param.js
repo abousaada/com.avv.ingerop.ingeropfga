@@ -61,6 +61,13 @@ sap.ui.define([
                 mandatory: { type: ["PO", "OI", "RF", "FS", "OF"], default: false, create: true, modify: true },
                 action: "onActivityChange"
             },
+            Branche: {
+                identifier: "Identification",
+                visible: { create: true, modify: false },
+                enabled: { create: true, modify: false },
+                mandatory: { type: [], default: false, create: true, modify: true },
+                action: null
+            },
             Soufam: {
                 identifier: "Identification",
                 visible: { create: true, modify: true },
@@ -87,6 +94,13 @@ sap.ui.define([
                 visible: { create: true, modify: false },
                 enabled: { create: true, modify: true },
                 mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI"], default: false, create: true, modify: true },
+                action: null
+            },
+            AncienNumero: {
+                identifier: "Identification",
+                visible: { create: true, modify: false },
+                enabled: { create: true, modify: false },
+                mandatory: { type: [], default: false, create: true, modify: true },
                 action: null
             },
             Rgfact: {

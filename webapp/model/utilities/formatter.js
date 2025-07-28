@@ -25,7 +25,15 @@ sap.ui.define([
             subContractorPartner  : ({ SubContractorPartner }) => SubContractorPartner ? parseFloat(SubContractorPartner) : SubContractorPartner
           }));
       }
+    }),
+
+    formatSupplier: Helper.buildObjectKeysMapper({
+      subContractorPartner : "CompanyPartner",
+      subContractorName: "Name",
+      subContractorId: "SupplierNo",
     })
+
+
 
   };
 });

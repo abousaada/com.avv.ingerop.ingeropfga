@@ -5,85 +5,234 @@ sap.ui.define([
     "use strict";
 
     return Controller.extend("com.avv.ingerop.ingeropfga.ext.controller.helpers.BudgetPxSubContracting", {
-        preparePxSubContractingTreeData(){
-            this.oView.getModel("utilities").buildPxSubContractingTreeData();
+
+        _CONSTANT_DYNAMIC_PREFIX: "SC_",
+        _CONSTANT_COLUMN_ID: "columnId",
+        _CONSTANT_EXT_CONTRACTOR_TABLE_ID: "com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--budgets--BudgetPxSubContractingTreeTableId",
+        _CONSTANT_SUBCONTRACTOR_ID: "subContractorId",
+        _CONSTANT_SUBCONTRACTOR_PARTNER: "subContractorPartner",
+
+        getUtilitiesModel() {
+            return this.oView.getModel("utilities");
+        },
+
+        preparePxSubContractingTreeData() {
+            this.getUtilitiesModel().buildPxSubContractingTreeData();
             this.buildPxSubContractingTree();
         },
 
-        buildPxSubContractingTree(){
+        buildPxSubContractingTree() {
             this.refreshTableColumns();
         },
-        refreshTableColumns(){
+
+        refreshTableColumns() {
             this.removeDynamicColumns();
             this.addDynamicColumns();
         },
 
-        removeDynamicColumns(){
-            const SubContractingTree = this.oView.byId("com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--budgets--BudgetPxSubContractingTreeTableId");
+        removeDynamicColumns() {
+            const SubContractingTree = this.oView.byId(this._CONSTANT_EXT_CONTRACTOR_TABLE_ID);
             var aColumns = SubContractingTree.getColumns();
             for (var i = aColumns.length - 1; i >= 0; i--) {
-                if (aColumns[i].data("columnId")?.includes("dynamic_")) {
+                if (aColumns[i].data(this._CONSTANT_COLUMN_ID)?.includes(this._CONSTANT_DYNAMIC_PREFIX)) {
                     SubContractingTree.removeColumn(aColumns[i]);
                 }
             }
         },
 
-        addDynamicColumns(){
-            const SubContractingTree = this.oView.byId("com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--budgets--BudgetPxSubContractingTreeTableId");
-            const aDynamicColumns = this.oView.getModel("utilities").getPxSubContractingHeader();
+        onContractorBudgetChange(oEvent) {
+            try {
+                const source = oEvent.getSource();
+                this.reCalcRowTotal(source);
+
+                const { subContractorId } = source.data();
+                this.reCalcColumnTotalById(subContractorId);
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        reCalcRowTotal(source) {
+            const binding = source.getBindingContext("utilities");
+            const bindingObject = binding.getObject();
+            const newRow = this.calcNewTotalFinAffaire(bindingObject);
+            const sPath = binding.getPath();
+            const utilitiesModel = this.getUtilitiesModel();
+            utilitiesModel.setProperty(sPath, { ...newRow });
+        },
+
+        reCalcColumnTotalById(subContractorId) {
+            const columnId = this._CONSTANT_DYNAMIC_PREFIX + subContractorId;
+            const [root]  = this.getUtilitiesModel().getPxSubContractingHierarchy();
+            const groupement = root.children.slice(0, -1);
+            const globalTotal = root.children.at(-1);
+
+            globalTotal[columnId] = 0;
+            globalTotal["budgetHorsFrais"] = 0;
+            globalTotal["budgetYCFrais"] = 0;
             
+            // 1. Recalculer chaque total de groupement
+            for (const group of groupement) {
+                if (!group.isGroupe || !Array.isArray(group.children)) continue;
+
+                const budgets = group.children.slice(0, -1);
+                const totalLine = group.children.at(-1);
+                if (!totalLine) continue;
+
+                // Réinitialisation ciblée
+                totalLine[columnId] = 0;
+                totalLine["budgetHorsFrais"] = 0;
+                totalLine["budgetYCFrais"] = 0;
+
+                for (const child of budgets) {
+                    totalLine[columnId] += child[columnId] || 0;
+                    totalLine["budgetHorsFrais"] += child["budgetHorsFrais"] || 0;
+                    totalLine["budgetYCFrais"] += child["budgetYCFrais"] || 0;
+
+                    globalTotal[columnId] += child[columnId] || 0;
+                    globalTotal["budgetHorsFrais"] += child["budgetHorsFrais"] || 0;
+                    globalTotal["budgetYCFrais"] += child["budgetYCFrais"] || 0;
+                }
+                group.children = [...budgets,totalLine];
+            }
+            root.children = [...groupement, globalTotal];
+
+            this.getUtilitiesModel().setPxSubContractingHierarchy([root]);
+        },
+
+        calcNewTotalFinAffaire(rowData) {
+            const columnHeaders = this.getUtilitiesModel().getPxSubContractingHeader();
+
+            const coefByColumnId = columnHeaders.reduce((map, header) => {
+                map[header.columnId] = this.getCoef(header?.subContractorPartner);
+                return map;
+            }, {});
+
+            const { budgetYCFrais, budgetHorsFrais } = Object.entries(rowData).reduce(
+                (som, [key, value]) => {
+                    if (!key.startsWith(this._CONSTANT_DYNAMIC_PREFIX)) { return som; }
+                    const coef = coefByColumnId[key] ?? 1;
+
+                    return {
+                        budgetHorsFrais: som.budgetHorsFrais + value,
+                        budgetYCFrais: som.budgetYCFrais + value * coef
+                    };
+                },
+                { budgetHorsFrais: 0, budgetYCFrais: 0 }
+            );
+
+            return { ...rowData, budgetHorsFrais, budgetYCFrais }
+        },
+
+        addDynamicColumns() {
+            const SubContractingTree = this.oView.byId(this._CONSTANT_EXT_CONTRACTOR_TABLE_ID);
+            const aDynamicColumns = this.getUtilitiesModel().getPxSubContractingHeader();
+
             aDynamicColumns.forEach((oColData, idx) => {
-                var oColumn = this._createColumn("dynamic_" + oColData.columnId, oColData);
+                var oColumn = this._createColumn(this._CONSTANT_DYNAMIC_PREFIX + oColData.columnId, oColData);
                 SubContractingTree.insertColumn(oColumn, 6 + idx);
             });
         },
 
-        isFiliale(subContractorPartner){
+        isFiliale(subContractorPartner) {
             return subContractorPartner ? "Filiale" : "Externe";
         },
 
-        getCoef(subContractorPartner){
+        getCoef(subContractorPartner) {
             return subContractorPartner ? subContractorPartner : 1;
         },
 
-        _createColumn: function(sColumnId, { subContractorName, subContractorId, subContractorPartner, columnId }) {
+        _createColumn: function (sColumnId, { subContractorName, subContractorId, subContractorPartner, columnId }) {
             return new sap.ui.table.Column({
                 multiLabels: [
                     new sap.m.Label({ text: subContractorName }),
-                    new sap.m.Input({ value: subContractorId, editable:"{ui>/editable}" }),
+                    new sap.m.Input({ value: subContractorId, editable: "{ui>/editable}" }),
                     new sap.m.Label({ text: this.isFiliale(subContractorPartner) }),
-                    new sap.m.Input({ value: this.getCoef(subContractorPartner), editable:"{ui>/editable}" }),
-                    new sap.m.Label({ text: "{i18n>budget.ext.budget}" })
-                ],
-                template: new sap.m.Input({ 
-                    value: `{utilities>${columnId}}`, 
-                    editable:"{= ${ui>/editable} && ${utilities>isBudget} }", 
-                    visible:"{= ${utilities>isBudget} || ${utilities>isTotal} }" }),
-                // sortProperty: columnId,
-                // filterProperty: columnId,
-                width: "6rem"
-            }).data("columnId", sColumnId);
-        },
-
-        addNewContractor(){
-            const SubContractingTree = this.oView.byId("com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--budgets--BudgetPxSubContractingTreeTableId");
-            const aColumns = SubContractingTree.getColumns();
-            const oColumn = new sap.ui.table.Column({
-                multiLabels: [
-                    new sap.m.Label(),
-                    new sap.m.Input({ editable:"{ui>/editable}" }),
-                    new sap.m.Label(),
-                    new sap.m.Input({ editable:"{ui>/editable}" }),
+                    new sap.m.Input({ value: this.getCoef(subContractorPartner), editable: "{ui>/editable}" }),
                     new sap.m.Label({ text: "{i18n>budget.ext.budget}" })
                 ],
                 template: new sap.m.Input({
-                    editable:"{= ${ui>/editable} && ${utilities>isBudget} }", 
-                    visible:"{= ${utilities>isBudget} || ${utilities>isTotal} }" }),
+                    value: {
+                        path: "utilities>" + columnId,
+                        type: new sap.ui.model.type.Float({ minFractionDigits: 2 })
+                    },
+                    editable: "{= ${ui>/editable} && ${utilities>isBudget} }",
+                    visible: "{= ${utilities>isBudget} || ${utilities>isTotal} }",
+                    change: this.onContractorBudgetChange.bind(this)
+                }).data(this._CONSTANT_SUBCONTRACTOR_ID, subContractorId),
                 width: "6rem"
-            }).data("columnId", "dynamic_tmp");
-            SubContractingTree.insertColumn(oColumn, aColumns.length - 2);
-        }
+            }).data(this._CONSTANT_COLUMN_ID, sColumnId);
+        },
 
+        async getNewContractorId() {
+            return new Promise((resolve, reject) => {
+                // ValueHelpDialog
+                var oVHD = new sap.ui.comp.valuehelpdialog.ValueHelpDialog({
+                    supportMultiselect: false,
+                    key: "Supplier",
+                    descriptionKey: "SupplierName",
+                    title: "Select a Supplier",
+                    ok: function (oEvt) {
+                        var aTokens = oEvt.getParameter("tokens");
+                        if (aTokens.length) { resolve(aTokens[0].getKey()); }
+                        oVHD.close();
+                    }.bind(this),
+                    cancel: function () {
+                        reject();
+                        oVHD.close();
+                    }
+                });
+
+                // Table interne
+                const tableBinding = [
+                    { label: "ID", template: "Supplier" },
+                    { label: "Name", template: "SupplierName" }
+                ];
+
+                tableBinding.map(({ label, template }) =>
+                    oVHD.getTable().addColumn(new sap.ui.table.Column({
+                        label: new sap.m.Label({ text: label }),
+                        template: new sap.m.Text({ text: `{${template}}` })
+                    }))
+                );
+                // Binding sur I_SUPPLIER_VH (la ValueHelp CDS)
+                oVHD.getTable().setModel(this.oView.getModel());
+                oVHD.getTable().bindRows("/I_Supplier_VH");
+                oVHD.open();
+            });
+        },
+
+        _addNewSupplierToHeader(newSupplier) {
+            const { columnId } = newSupplier;
+            const oldPxSubContractingHeader = this.getUtilitiesModel().getPxSubContractingHeader();
+            const filterSubContractingHeader = oldPxSubContractingHeader.filter(contractor => contractor.columnId != columnId);
+            this.getUtilitiesModel().setPxSubContractingHeader([...filterSubContractingHeader, newSupplier]);
+        },
+
+        addNewContractorById(supplierData) {
+            const { subContractorId } = supplierData;
+
+            const SubContractingTree = this.oView.byId(this._CONSTANT_EXT_CONTRACTOR_TABLE_ID);
+            const aColumns = SubContractingTree.getColumns();
+
+            const columnId = `${this._CONSTANT_DYNAMIC_PREFIX}${subContractorId}`;
+            const newSupplierData = { ...supplierData, columnId };
+
+            this._addNewSupplierToHeader(newSupplierData);
+            const oColumn = this._createColumn(columnId, newSupplierData);
+            SubContractingTree.insertColumn(oColumn, aColumns.length - 2);
+        },
+
+        async addNewContractor() {
+            try {
+                const newContractor = await this.getNewContractorId();
+                const newSupplierData = await this.getUtilitiesModel().getBESupplierById(newContractor);
+                this.addNewContractorById(newSupplierData);
+                return;
+            } catch (error) {
+                console.log(error);
+            }
+        }
     });
 });
 

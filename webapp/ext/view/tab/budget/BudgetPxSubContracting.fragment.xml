@@ -27,14 +27,15 @@
                     icon="sap-icon://add"
                     press="onBtnAddSubContractorPress"
                     type="Emphasized"
+                    visible="{ui>/editable}"
                 />
             </Toolbar>
         </table:extension>
-        <table:rowSettingsTemplate>
+        <!-- <table:rowSettingsTemplate>
             <table:RowSettings
                 highlight="{= ${budget>Status} === 'Non acquis' ? 'Error' : 'None'}"
             />
-        </table:rowSettingsTemplate>
+        </table:rowSettingsTemplate> -->
         <table:columns>
             <table:Column width="17rem">
                 <table:multiLabels>
