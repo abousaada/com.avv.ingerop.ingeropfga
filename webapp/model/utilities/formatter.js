@@ -16,16 +16,24 @@ sap.ui.define([
       regroupement: "Regroupement",
       startDate: "StartDate",
       status: "Statut",
-      budgetPxSubContrators: ({ to_BudgetPxSubContractor }) => { 
-        return (to_BudgetPxSubContractor?.results || []).map(
-          Helper.buildObjectKeysMapper({
+      // budgetPxSubContrators: ({ to_BudgetPxSubContractor }) => { 
+      //   return (to_BudgetPxSubContractor?.results || []).map(
+      //     Helper.buildObjectKeysMapper({
             subContractorBudget   : ({ Budget }) => Budget ? parseFloat(Budget) : Budget,
             subContractorId       : "SubContractor",
             subContractorName     : "SubContractorName",
             subContractorPartner  : ({ SubContractorPartner }) => SubContractorPartner ? parseFloat(SubContractorPartner) : SubContractorPartner
-          }));
-      }
+          // }));
+      // }
+    }),
+
+    formatSupplier: Helper.buildObjectKeysMapper({
+      subContractorPartner : "CompanyPartner",
+      subContractorName: "Name",
+      subContractorId: "SupplierNo",
     })
+
+
 
   };
 });

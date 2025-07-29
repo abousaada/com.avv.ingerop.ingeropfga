@@ -404,12 +404,7 @@ sap.ui.define([
                     const urlPeriod = encodeURIComponent(period);
                     const sPath = `/ZC_FGASet(BusinessNo='${urlBusinessNo}',p_period='${urlPeriod}')/to_BudgetPxSubContracting`;
                     console.log(`retrieve previsions with period: ${period} and BusinessNo: ${businessNo}`);
-                    const options = { 
-                        urlParameters: {
-                            "$expand": "to_BudgetPxSubContractor"
-                        }
-                    }
-                    const pxSubContract = await this.read(sPath, options);
+                    const pxSubContract = await this.read(sPath);
                     return (pxSubContract?.results || []).map(Formatter.formatBudgetSubContracting);
                 } catch (error) {
                     console.log(error);
@@ -491,9 +486,9 @@ sap.ui.define([
                 }
             },
 
-            async getBEClientById(clientNo) {
+            async getBEClientById(ClientNo) {
                 try {
-                    const options = { urlParameters: { clientNo } };
+                    const options = { urlParameters: { ClientNo } };
                     const client = await this.callFunction("/GetClient", options);
                     return client;
                 } catch (error) {
@@ -501,11 +496,21 @@ sap.ui.define([
                 }
             },
 
-            async getBESupplierById(supplierNo) {
+            async getBESupplierById(SupplierNo) {
                 try {
-                    const options = { urlParameters: { supplierNo } };
+                    const options = { urlParameters: { SupplierNo } };
                     const supplier = await this.callFunction("/GetSupplier", options);
-                    return supplier;
+                    return Formatter.formatSupplier(supplier);
+                } catch (error) {
+                    console.log(error);
+                }
+            },
+
+            async getBECompanyByProfitCenter(ProfitCenterCode){
+                try {
+                    const options = { urlParameters: { ProfitCenterCode } };
+                    const company = await this.callFunction("/GetCompanyCodeByProfitCenter", options);
+                    return company;
                 } catch (error) {
                     console.log(error);
                 }
@@ -529,6 +534,11 @@ sap.ui.define([
 
             getFormattedPxAutre() {
                 return this.getPxAutres();
+            },
+
+            formattedPxSubContractingExt(){
+                // return this.getPxSubContractingHierarchy();
+                return this.getPxSousTraitance();
             }
 
         });

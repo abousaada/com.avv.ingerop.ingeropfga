@@ -94,9 +94,11 @@ sap.ui.define(
                         return new Promise(async (resolve, reject) => {
                             const formattedMissions = utilitiesModel.getFormattedMissions();
                             const formattedPxAutre = utilitiesModel.getFormattedPxAutre();
+                            const formattedPxSubContractingExt = utilitiesModel.formattedPxSubContractingExt();
                             const oPayload = Helper.extractPlainData({ ...oContext.getObject(),
                                  "to_Missions": formattedMissions,
                                  "to_BudgetPxAutre": formattedPxAutre,
+                                //  "to_BudgetPxSubContracting": formattedPxSubContractingExt,
                                 });
 
                             try {
@@ -181,9 +183,7 @@ sap.ui.define(
                         console.logs(error);
                     }
                 }
-
             },
-
 
             _loadFragment: async function (sFragmentName) {
                 var sViewId = this.getView().getId();
@@ -403,7 +403,6 @@ sap.ui.define(
             // ==============================================
             // Move to BaseControler !!!!
             // ==============================================
-
 
             getModel: function (sName) {
                 return this.getView().getModel(sName);

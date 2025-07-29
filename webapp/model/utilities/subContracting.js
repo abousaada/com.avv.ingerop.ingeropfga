@@ -4,150 +4,136 @@ sap.ui.define([], function () {
   return class SubContracting {
     constructor(model) {
       this.oModel = model;
+
+      this._CONSTANT_COLUMN_PREFIXE = "SC_";
     }
 
     buildTreeData() {
       const pxSousTraitance = this.oModel.getPxSousTraitance();
       const treeHeader = {};
+      const treeData = [];
       const root = {
-        children: [],
-        isL0: true,
-        isNode: true,
+        name: this.oModel.getBusinessNo(),
         isBudget: false,
         isTotal: false,
-        name: this.oModel.getBusinessNo()
+        isGroupe: true,
+        children: []
       };
-    
-      if (pxSousTraitance.length === 0) {
-        return { treeData: [root], treeHeader: [] };
+
+      treeData.push(root);
+
+      if (!pxSousTraitance || pxSousTraitance.length === 0) {
+        return { treeData, treeHeader: [] };
       }
-    
+
       const groupementMap = {};
-      const globalTotal = { name: "Total global", isL0: false, isNode: false, isBudget: false, isTotal: true, budgetHorsFrais: 0, budgetYCFrais: 0 };
-    
-      // ✅ Fonction utilitaire pour centraliser la logique d'ajout
-      const addBudgetTo = (target, subContractor) => {
-        const col = "SC" + subContractor.subContractorId;
-        const amount = subContractor.subContractorBudget;
-        const partnerRatio = subContractor.subContractorPartner;
-    
-        target[col] = (target[col] || 0) + amount;
+
+      const globalTotal = {
+        name: "Total global",
+        isGroupe: false,
+        isBudget: false,
+        isTotal: true,
+        budgetHorsFrais: 0,
+        budgetYCFrais: 0
+      };
+
+      const addBudgetTo = (target, { subContractorBudget, subContractorPartner, columnId }) => {
+        const amount = subContractorBudget;
+        const partnerRatio = subContractorPartner;
+
+        target[columnId] = (target[columnId] || 0) + amount;
         target.budgetHorsFrais += amount;
         target.budgetYCFrais += amount * partnerRatio;
       };
-    
-      for (const mission of pxSousTraitance) {
-        const groupId = "GR" + (mission.regroupement ?? "NO_GRP");
-    
+
+      for (const subContract of pxSousTraitance) {
+        
+        const {
+          businessNo, endDate, libelle, code, name, startDate, status,
+          regroupement,
+          subContractorId, subContractorBudget, subContractorPartner 
+        } = subContract;
+
+        const groupId = "GR" + (regroupement ?? "NO_GRP");
+
         // Init groupement
         if (!groupementMap[groupId]) {
           groupementMap[groupId] = {
             children: [],
-            isL0: false,
-            isNode: true,
             isBudget: false,
+            isGroupe: true,
             isTotal: false,
-            name: mission.regroupement || "Sans groupement",
-            total: { name: "Total", isL0: false, isNode: false, isBudget: false, isTotal: true, budgetHorsFrais: 0, budgetYCFrais: 0 }
+            name: regroupement || "Sans groupement",
+            leafMap:{}
           };
         }
-    
+
         const group = groupementMap[groupId];
-        const leaf = {
-          isL0: false,
-          isNode: false,
+        const leafKey = name; // car les feuilles se distinguent par le nom
+        let leaf = group.leafMap[leafKey];
+
+        if (!leaf) {
+          leaf = {
           isBudget: true,
-          ...mission,
+          isGroupe: false,
+          isTotal: false,
+          businessNo, endDate, libelle, code, name, startDate, status,
           budgetHorsFrais: 0,
           budgetYCFrais: 0
         };
-    
-        for (const sub of mission.budgetPxSubContrators) {
-          const columnId = "SC" + sub.subContractorId;
-    
-          // Ajout au header si colonne encore inconnue
-          if (!treeHeader[columnId]) {
-            treeHeader[columnId] = { ...sub, columnId };
-          }
-    
-          // Mise à jour des budgets
-          addBudgetTo(leaf, sub);
-          addBudgetTo(group.total, sub);
-          addBudgetTo(globalTotal, sub);
-        }
-    
+        group.leafMap[leafKey] = leaf;
         group.children.push(leaf);
       }
-    
+
+        const columnId = this._CONSTANT_COLUMN_PREFIXE + subContractorId;
+        const subContractor = {subContractorId, subContractorBudget, subContractorPartner, columnId};
+        if (!treeHeader[columnId]) { 
+          treeHeader[columnId] = { ...subContractor }; 
+        }
+
+        addBudgetTo(leaf, subContractor);
+        
+      }
+
       // Injecter chaque groupement + leur total dans root
       for (const group of Object.values(groupementMap)) {
-        group.children.push(group.total);
+        
+        const totalLine = {
+          name: "Total",
+          isBudget: false,
+          isGroupe: false,
+          isTotal: true,
+          budgetHorsFrais: 0,
+          budgetYCFrais: 0
+        };
+
+        // Accumuler dans le total global
+        for (const child of group.children) {
+          if (child.isBudget) {
+            for (const columnId in child) {
+              if (columnId.startsWith(this._CONSTANT_COLUMN_PREFIXE)) {
+                globalTotal[columnId] = (globalTotal[columnId] || 0) + (child[columnId] || 0);
+                totalLine[columnId] = (totalLine[columnId] || 0) + (child[columnId] || 0);
+              }
+            }
+            globalTotal.budgetHorsFrais += child.budgetHorsFrais || 0;
+            globalTotal.budgetYCFrais += child.budgetYCFrais || 0;
+
+            totalLine.budgetHorsFrais += child.budgetHorsFrais || 0;
+            totalLine.budgetYCFrais += child.budgetYCFrais || 0;
+          }
+        }
+
+        group.children.push(totalLine);
+        delete group.leafMap;
         root.children.push(group);
       }
-    
+
       // Ajouter le total global
       root.children.push(globalTotal);
-    
+
       return { treeData: [root], treeHeader: Object.values(treeHeader) };
     }
-
-
-    // buildTreeData() {
-    //   const pxSousTraitance = this.oModel.getPxSousTraitance();
-    //   let treeHeader = {};
-
-    //   const root = { children: [], isL0: true, isNode: true, name: this.oModel.getBusinessNo() };
-
-    //   if (pxSousTraitance.length === 0) { 
-    //     return { treeData : [root] , treeHeader : Object.values(treeHeader)}; 
-    //   };
-
-    //   const groupement = {};
-
-    //   pxSousTraitance.forEach(mission => {
-    //     const groupementId = "GR" + mission.regroupement;
-
-    //     //et si pas de groupement ??
-    //     if (!groupement[groupementId]) {
-    //       groupement[groupementId] = {
-    //         children: [],
-    //         isL0: false,
-    //         isNode: true,
-    //         name: mission.regroupement
-    //       };
-    //     }
-
-    //     const leaf = { isL0: false, isNode: false, ...mission };
-
-    //     const budgets = mission.budgetPxSubContrators.reduce((acc, item) => {
-    //       acc["SC" + item.subContractorId] = item.subContractorBudget;
-    //       acc["budgetHorsFrais"] += item.subContractorBudget;
-    //       acc["budgetYCFrais"] += item.subContractorBudget * item.subContractorPartner;
-    //       return acc;
-    //     }, {budgetYCFrais : 0, budgetHorsFrais: 0 });
-
-    //     groupement[groupementId].children.push({ ...leaf, ...budgets });
-
-    //     mission.budgetPxSubContrators?.length && mission.budgetPxSubContrators.forEach(
-    //       subContractor => {
-    //         const columnId = "SC" + subContractor.subContractorId;
-    //         if(!treeHeader[columnId]){ treeHeader[columnId] = { ...subContractor, columnId }; }
-    //       }
-    //     );
-    //   });;
-
-    //   Object.entries(groupement).map(([groupementId, groupementVal]) => {
-    //     const totalLigne = groupementVal.children.reduce((acc, item) => {
-
-    //     }, {name: "Total"});
-    //     groupement[groupementId].children.push(totalLigne);
-    //   });
-
-
-    //   root.children.push(...Object.values(groupement));
-
-    //   return { treeData : [root,...totaux] , treeHeader : Object.values(treeHeader) };
-    // }
 
   };
 });

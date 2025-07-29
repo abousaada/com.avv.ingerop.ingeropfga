@@ -29,7 +29,7 @@ sap.ui.define([
             BusinessStatus: {
                 identifier: "Identification",
                 visible: { create: false, modify: true },
-                enabled: { create: true, modify: true },
+                enabled: { create: false, modify: true },
                 mandatory: { type: [], default: false, create: true, modify: true },
                 action: null
             },
@@ -45,7 +45,7 @@ sap.ui.define([
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
                 mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI"], default: false, create: true, modify: true },
-                action: null
+                action: 'onCDGChange'
             },
             CompanyCode: {
                 identifier: "Identification",
@@ -60,6 +60,13 @@ sap.ui.define([
                 enabled: { create: true, modify: true },
                 mandatory: { type: ["PO", "OI", "RF", "FS", "OF"], default: false, create: true, modify: true },
                 action: "onActivityChange"
+            },
+            Branche: {
+                identifier: "Identification",
+                visible: { create: true, modify: false },
+                enabled: { create: true, modify: false },
+                mandatory: { type: [], default: false, create: true, modify: true },
+                action: null
             },
             Soufam: {
                 identifier: "Identification",
@@ -87,6 +94,13 @@ sap.ui.define([
                 visible: { create: true, modify: false },
                 enabled: { create: true, modify: true },
                 mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI"], default: false, create: true, modify: true },
+                action: null
+            },
+            AncienNumero: {
+                identifier: "Identification",
+                visible: { create: true, modify: false },
+                enabled: { create: true, modify: false },
+                mandatory: { type: [], default: false, create: true, modify: true },
                 action: null
             },
             Rgfact: {
@@ -308,8 +322,8 @@ sap.ui.define([
         // "Info"
             Period: {
                 identifier: "Info",
-                visible: { create: true, modify: true },
-                enabled: { create: true, modify: true },
+                visible: { create: false, modify: true },
+                enabled: { create: false, modify: true },
                 mandatory: { type: [], default: false, create: true, modify: true },
                 action: null
             },
