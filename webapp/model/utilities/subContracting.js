@@ -14,9 +14,6 @@ sap.ui.define([], function () {
       const treeData = [];
       const root = {
         name: this.oModel.getBusinessNo(),
-        // isRoot: true,
-        // isNode: false,
-        // isLeaf: false,
         isBudget: false,
         isTotal: false,
         isGroupe: true,
@@ -33,9 +30,6 @@ sap.ui.define([], function () {
 
       const globalTotal = {
         name: "Total global",
-        // isRoot: false,
-        // isNode: false,
-        // isLeaf: true,
         isGroupe: false,
         isBudget: false,
         isTotal: true,
@@ -43,59 +37,62 @@ sap.ui.define([], function () {
         budgetYCFrais: 0
       };
 
-      const addBudgetTo = (target, subContractor) => {
-        const col = this._CONSTANT_COLUMN_PREFIXE + subContractor.subContractorId;
-        const amount = subContractor.subContractorBudget;
-        const partnerRatio = subContractor.subContractorPartner;
+      const addBudgetTo = (target, { subContractorBudget, subContractorPartner, columnId }) => {
+        const amount = subContractorBudget;
+        const partnerRatio = subContractorPartner;
 
-        target[col] = (target[col] || 0) + amount;
+        target[columnId] = (target[columnId] || 0) + amount;
         target.budgetHorsFrais += amount;
         target.budgetYCFrais += amount * partnerRatio;
       };
 
-      for (const mission of pxSousTraitance) {
-        const groupId = "GR" + (mission.regroupement ?? "NO_GRP");
+      for (const subContract of pxSousTraitance) {
+        
+        const {
+          businessNo, endDate, libelle, code, name, startDate, status,
+          regroupement,
+          subContractorId, subContractorBudget, subContractorPartner 
+        } = subContract;
+
+        const groupId = "GR" + (regroupement ?? "NO_GRP");
 
         // Init groupement
         if (!groupementMap[groupId]) {
           groupementMap[groupId] = {
             children: [],
-            // isRoot: false,
-            // isNode: true,
-            // isLeaf: false,
             isBudget: false,
             isGroupe: true,
             isTotal: false,
-            name: mission.regroupement || "Sans groupement",
+            name: regroupement || "Sans groupement",
+            leafMap:{}
           };
         }
 
         const group = groupementMap[groupId];
-        const leaf = {
-          // isRoot: false,
-          // isNode: false,
-          // isLeaf: true,
+        const leafKey = name; // car les feuilles se distinguent par le nom
+        let leaf = group.leafMap[leafKey];
+
+        if (!leaf) {
+          leaf = {
           isBudget: true,
           isGroupe: false,
           isTotal: false,
-          ...mission,
+          businessNo, endDate, libelle, code, name, startDate, status,
           budgetHorsFrais: 0,
           budgetYCFrais: 0
         };
+        group.leafMap[leafKey] = leaf;
+        group.children.push(leaf);
+      }
 
-        for (const sub of mission.budgetPxSubContrators) {
-          const columnId = this._CONSTANT_COLUMN_PREFIXE + sub.subContractorId;
-
-          // Ajout au header si colonne encore inconnue
-          if (!treeHeader[columnId]) {
-            treeHeader[columnId] = { ...sub, columnId };
-          }
-
-          // Mise à jour des budgets
-          addBudgetTo(leaf, sub);
+        const columnId = this._CONSTANT_COLUMN_PREFIXE + subContractorId;
+        const subContractor = {subContractorId, subContractorBudget, subContractorPartner, columnId};
+        if (!treeHeader[columnId]) { 
+          treeHeader[columnId] = { ...subContractor }; 
         }
 
-        group.children.push(leaf);
+        addBudgetTo(leaf, subContractor);
+        
       }
 
       // Injecter chaque groupement + leur total dans root
@@ -103,9 +100,6 @@ sap.ui.define([], function () {
         
         const totalLine = {
           name: "Total",
-          // isRoot: false,
-          // isNode: false,
-          // isLeaf: true,
           isBudget: false,
           isGroupe: false,
           isTotal: true,
@@ -131,7 +125,7 @@ sap.ui.define([], function () {
         }
 
         group.children.push(totalLine);
-
+        delete group.leafMap;
         root.children.push(group);
       }
 

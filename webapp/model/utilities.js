@@ -407,12 +407,7 @@ sap.ui.define([
                     const urlPeriod = encodeURIComponent(period);
                     const sPath = `/ZC_FGASet(BusinessNo='${urlBusinessNo}',p_period='${urlPeriod}')/to_BudgetPxSubContracting`;
                     console.log(`retrieve previsions with period: ${period} and BusinessNo: ${businessNo}`);
-                    const options = { 
-                        urlParameters: {
-                            "$expand": "to_BudgetPxSubContractor"
-                        }
-                    }
-                    const pxSubContract = await this.read(sPath, options);
+                    const pxSubContract = await this.read(sPath);
                     return (pxSubContract?.results || []).map(Formatter.formatBudgetSubContracting);
                 } catch (error) {
                     console.log(error);

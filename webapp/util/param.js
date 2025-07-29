@@ -29,7 +29,7 @@ sap.ui.define([
             BusinessStatus: {
                 identifier: "Identification",
                 visible: { create: false, modify: true },
-                enabled: { create: true, modify: true },
+                enabled: { create: false, modify: true },
                 mandatory: { type: [], default: false, create: true, modify: true },
                 action: null
             },
@@ -322,8 +322,8 @@ sap.ui.define([
         // "Info"
             Period: {
                 identifier: "Info",
-                visible: { create: true, modify: true },
-                enabled: { create: true, modify: true },
+                visible: { create: false, modify: true },
+                enabled: { create: false, modify: true },
                 mandatory: { type: [], default: false, create: true, modify: true },
                 action: null
             },
