@@ -514,6 +514,16 @@ sap.ui.define([
                 }
             },
 
+            async getBECompanyByProfitCenter(ProfitCenterCode){
+                try {
+                    const options = { urlParameters: { ProfitCenterCode } };
+                    const company = await this.callFunction("/GetCompanyCodeByProfitCenter", options);
+                    return company;
+                } catch (error) {
+                    console.log(error);
+                }
+            },
+
             setYearByPeriod(period) {
                 // Extract year from sPeriod (MMYYYY format)
                 var sYear = period.substring(2);
@@ -532,6 +542,11 @@ sap.ui.define([
 
             getFormattedPxAutre() {
                 return this.getPxAutres();
+            },
+
+            formattedPxSubContractingExt(){
+                // return this.getPxSubContractingHierarchy();
+                return this.getPxSousTraitance();
             }
 
         });

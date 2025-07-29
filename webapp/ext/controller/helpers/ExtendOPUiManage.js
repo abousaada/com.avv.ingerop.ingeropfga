@@ -105,6 +105,17 @@ sap.ui.define([
             }
         },
 
+        async onCDGChange(oEvent){
+            const newValue = oEvent.getParameter("newValue");
+            if(newValue){
+                const utilities = this.oView.getModel("utilities");
+                const { CompanyCode , CompanyName } = await utilities.getBECompanyByProfitCenter(newValue);
+                this._getField("Identification", "CompanyCode"  ).setValue(CompanyCode);
+            }else{
+                this._getField("Identification", "CompanyCode"  ).setValue(null);
+            }
+        },
+
         _setMandatoryFieldByType(type) {
             if(!type){
                 Helper.getDefaultFieldMandatory().map(({identifier, field, mandatory}) => {
