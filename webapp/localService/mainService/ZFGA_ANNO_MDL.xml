@@ -202,18 +202,6 @@
                             </PropertyValue>
                         </Record>
                         <Record Type="UI.CollectionFacet">
-                            <PropertyValue Property="Label" String="Missions"/>
-                            <PropertyValue Property="ID" String="Missions"/>
-                            <PropertyValue Property="Facets">
-                                <Collection>
-                                    <Record Type="UI.ReferenceFacet">
-                                        <PropertyValue Property="Label" String="Missions"/>
-                                        <PropertyValue Property="Target" AnnotationPath="@UI.Identification"/>
-                                    </Record>
-                                </Collection>
-                            </PropertyValue>
-                        </Record>
-                        <Record Type="UI.CollectionFacet">
                             <PropertyValue Property="Label" String="Budgets"/>
                             <PropertyValue Property="ID" String="TableInfo"/>
                             <PropertyValue Property="Facets">
