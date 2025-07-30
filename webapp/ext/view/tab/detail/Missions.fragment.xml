@@ -167,7 +167,7 @@
             </table:TreeTable>
 
             <!-- Refresh Toolbar -->
-            <Toolbar
+            <!--Toolbar
                 width="100%"
                 design="Transparent"
             >
@@ -179,7 +179,7 @@
                     type="Emphasized"
                     visible="{ui>/editable}"
                 />
-            </Toolbar>
+            </Toolbar-->
         </content>
     </Panel>
 </core:FragmentDefinition>
