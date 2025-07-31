@@ -22,6 +22,7 @@ sap.ui.define([], function() {
           }*/
         ],
         "missionTypes": [
+            { code: "GEN", description: "GEN" },
             { code: "AVP", description: "AVP" },
             { code: "PRO", description: "PRO" },
             { code: "ACT", description: "ACT" },
