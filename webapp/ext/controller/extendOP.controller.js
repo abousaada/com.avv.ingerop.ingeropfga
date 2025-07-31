@@ -71,6 +71,7 @@ sap.ui.define(
                     console.log("onListNavigationExtension called", oEvent);
                 },
 
+
                 beforeSaveExtension() {
                     try {
                         const utilitiesModel = this.getModel("utilities");
@@ -91,23 +92,26 @@ sap.ui.define(
                             });
                         }
 
+                        this._setBusy(true);
                         return new Promise(async (resolve, reject) => {
                             const formattedMissions = utilitiesModel.getFormattedMissions();
                             const formattedPxAutre = utilitiesModel.getFormattedPxAutre();
-                            // const formattedPxSubContractingExt = utilitiesModel.formattedPxSubContractingExt();
+                            const formattedPxSubContractingExt = utilitiesModel.formattedPxSubContractingExt();
                             const oPayload = Helper.extractPlainData({ ...oContext.getObject(),
                                  "to_Missions": formattedMissions,
                                  "to_BudgetPxAutre": formattedPxAutre,
-                                //  "to_BudgetPxSubContracting": formattedPxSubContractingExt,
+                                 "to_BudgetPxSubContracting": formattedPxSubContractingExt,
                                 });
 
                             try {
                                 const updatedFGA = await utilitiesModel.deepUpsertFGA(oPayload);
+                                this._setBusy(false);
                                 if (updatedFGA) {
                                     Helper.validMessage("FGA updated: " + updatedFGA.BusinessNo, this.getView(), this.onNavBack.bind(this));
                                 }
 
                             } catch (error) {
+                                this._setBusy(true);
                                 Helper.errorMessage("FGA updated fail");
                                 console.log(error);
                                 reject();
@@ -116,6 +120,7 @@ sap.ui.define(
                             reject();
                         });
                     } catch (error) {
+                        this._setBusy(true);
                         Helper.errorMessage("FGA updated fail");
                         console.log(error);
                     }
@@ -140,6 +145,10 @@ sap.ui.define(
             async _getTabsData() {
                 const data = await this.getInterface().getModel("utilities").getBEDatas();
                 return data;
+            },
+
+            _setBusy(busy){
+                this.getInterface().getView().setBusy(busy);
             },
 
             _onObjectExtMatched: async function (e) {

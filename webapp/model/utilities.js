@@ -555,7 +555,9 @@ sap.ui.define([
             },
 
             formattedPxSubContractingExt() {
-                return this.oSubContracting.formattedPxSubContractingExt();
+                return this.oSubContracting
+                           .formattedPxSubContractingExt()
+                           .map(Formatter.reverseFormatBudgetSubContracting);
             }
 
         });

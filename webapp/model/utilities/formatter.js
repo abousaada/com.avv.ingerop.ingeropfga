@@ -7,6 +7,19 @@ sap.ui.define([
     getMissionsNumber: function (missionArraySize) {
       return String(missionArraySize || 1).padStart(3, '0');
     },
+    reverseFormatBudgetSubContracting: Helper.buildObjectKeysMapper({
+      BusinessNo: "businessNo",
+      EndDate: "endDate",
+      MissionCode: "code",
+      MissionId: "name",
+      Regroupement: "regroupement",
+      StartDate: "startDate",
+      Statut: "status",
+      Budget: ({subContractorBudget}) => subContractorBudget?.toString(),
+      SubContractor: "subContractorId",
+      SubContractorName: "subContractorName",
+      SubContractorPartner: "subContractorPartner",
+    }),
     formatBudgetSubContracting: Helper.buildObjectKeysMapper({
       businessNo: "BusinessNo",
       endDate: "EndDate",
@@ -16,24 +29,17 @@ sap.ui.define([
       regroupement: "Regroupement",
       startDate: "StartDate",
       status: "Statut",
-      // budgetPxSubContrators: ({ to_BudgetPxSubContractor }) => { 
-      //   return (to_BudgetPxSubContractor?.results || []).map(
-      //     Helper.buildObjectKeysMapper({
-            subContractorBudget   : ({ Budget }) => Budget ? parseFloat(Budget) : Budget,
-            subContractorId       : "SubContractor",
-            subContractorName     : "SubContractorName",
-            subContractorPartner  : ({ SubContractorPartner }) => SubContractorPartner ? parseFloat(SubContractorPartner) : SubContractorPartner
-          // }));
-      // }
+      subContractorBudget: ({ Budget }) => Budget ? parseFloat(Budget) : Budget,
+      subContractorId: "SubContractor",
+      subContractorName: "SubContractorName",
+      subContractorPartner: ({ SubContractorPartner }) => SubContractorPartner ? parseFloat(SubContractorPartner) : SubContractorPartner
     }),
 
     formatSupplier: Helper.buildObjectKeysMapper({
-      subContractorPartner : "CompanyPartner",
+      subContractorPartner: "CompanyPartner",
       subContractorName: "Name",
       subContractorId: "SupplierNo",
     })
-
-
 
   };
 });

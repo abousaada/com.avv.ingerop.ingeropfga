@@ -47,11 +47,11 @@ sap.ui.define([], function () {
       };
 
       for (const subContract of pxSousTraitance) {
-        
+
         const {
           businessNo, endDate, libelle, code, name, startDate, status,
           regroupement,
-          subContractorId, subContractorBudget, subContractorPartner 
+          subContractorId, subContractorBudget, subContractorPartner
         } = subContract;
 
         const groupId = "GR" + (regroupement ?? "NO_GRP");
@@ -64,7 +64,7 @@ sap.ui.define([], function () {
             isGroupe: true,
             isTotal: false,
             name: regroupement || "Sans groupement",
-            leafMap:{}
+            leafMap: {}
           };
         }
 
@@ -74,30 +74,30 @@ sap.ui.define([], function () {
 
         if (!leaf) {
           leaf = {
-          isBudget: true,
-          isGroupe: false,
-          isTotal: false,
-          businessNo, endDate, libelle, code, name, startDate, status,
-          budgetHorsFrais: 0,
-          budgetYCFrais: 0
-        };
-        group.leafMap[leafKey] = leaf;
-        group.children.push(leaf);
-      }
-
-        const columnId = this._CONSTANT_COLUMN_PREFIXE + subContractorId;
-        const subContractor = {subContractorId, subContractorBudget, subContractorPartner, columnId};
-        if (!treeHeader[columnId]) { 
-          treeHeader[columnId] = { ...subContractor }; 
+            isBudget: true,
+            isGroupe: false,
+            isTotal: false,
+            businessNo, endDate, libelle, code, name, startDate, status,
+            budgetHorsFrais: 0,
+            budgetYCFrais: 0
+          };
+          group.leafMap[leafKey] = leaf;
+          group.children.push(leaf);
         }
 
-        addBudgetTo(leaf, subContractor);
-        
+        if (subContractorId) {
+          const columnId = this._CONSTANT_COLUMN_PREFIXE + subContractorId;
+          const subContractor = { subContractorId, subContractorBudget, subContractorPartner, columnId };
+          if (!treeHeader[columnId]) {
+            treeHeader[columnId] = { ...subContractor };
+          }
+          addBudgetTo(leaf, subContractor);
+        }
       }
 
       // Injecter chaque groupement + leur total dans root
       for (const group of Object.values(groupementMap)) {
-        
+
         const totalLine = {
           name: "Total",
           isBudget: false,
@@ -145,37 +145,37 @@ sap.ui.define([], function () {
       if (!root || !root.children) return [];
 
       for (const group of root.children) {
-          // Ignorer le total global
-          if (group.isTotal) continue;
+        // Ignorer le total global
+        if (group.isTotal) continue;
 
-          const regroupement = group.name;
+        const regroupement = group.name;
 
-          for (const leaf of group.children) {
-              if (!leaf.isBudget) continue; // ignorer totaux intermédiaires
+        for (const leaf of group.children) {
+          if (!leaf.isBudget) continue; // ignorer totaux intermédiaires
 
-              // Pour chaque colonne dynamique (un sous-traitant = une colonne)
-              for (const columnId of Object.keys(leaf)) {
-                  if (!columnId.startsWith(constantPrefix)) continue;
+          // Pour chaque colonne dynamique (un sous-traitant = une colonne)
+          for (const columnId of Object.keys(leaf)) {
+            if (!columnId.startsWith(constantPrefix)) continue;
 
-                  const header = treeHeader.find(h => h.columnId === columnId);
-                  if (!header) continue;
+            const header = treeHeader.find(h => h.columnId === columnId);
+            if (!header) continue;
 
-                  flatData.push({
-                      regroupement,
-                      name: leaf.name,
-                      code: leaf.code,
-                      libelle: leaf.libelle,
-                      startDate: leaf.startDate,
-                      endDate: leaf.endDate,
-                      status: leaf.status,
-                      businessNo: leaf.businessNo,
+            flatData.push({
+              regroupement,
+              name: leaf.name,
+              code: leaf.code,
+              libelle: leaf.libelle,
+              startDate: leaf.startDate,
+              endDate: leaf.endDate,
+              status: leaf.status,
+              businessNo: leaf.businessNo,
 
-                      subContractorId: header.subContractorId,
-                      subContractorBudget: leaf[columnId],
-                      subContractorPartner: header.subContractorPartner
-                  });
-              }
+              subContractorId: header.subContractorId,
+              subContractorBudget: leaf[columnId],
+              subContractorPartner: header.subContractorPartner
+            });
           }
+        }
       }
 
       return flatData;
