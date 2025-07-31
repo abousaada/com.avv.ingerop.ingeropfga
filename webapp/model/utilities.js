@@ -189,6 +189,24 @@ sap.ui.define([
                             aData.push(oItem);
                         }
                     }
+                    if (oModelAdditionnalChart[g].line_item === "JH") {
+                        if (oModelAdditionnalChart[g].Type=== "Realised") {
+                            var oItem = {
+                                Categorie: oModelAdditionnalChart[g].description,
+                                Type: "Réalisé",
+                                Valeur: oModelAdditionnalChart[g].Value
+                            };
+                            aData.push(oItem);
+                        }
+                        else {
+                            var oItem = {
+                                Categorie: oModelAdditionnalChart[g].description,
+                                Type: "A venir",
+                                Valeur: oModelAdditionnalChart[g].Value
+                            };
+                            aData.push(oItem);
+                        }
+                    }
                 }
 
                 // var oModelData = new sap.ui.model.json.JSONModel({ results: aData });
