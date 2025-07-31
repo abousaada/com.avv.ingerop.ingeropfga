@@ -38,8 +38,8 @@ sap.ui.define([
         _setFieldVisible() {
             const isCreateMode = this.oView.getModel("ui").getProperty("/createMode");
             Helper.getFieldVisibilityByMode(isCreateMode).map(
-                ({ idntifier, field, visible }) => {
-                    this._getField(idntifier, field)?.setVisible(visible);
+                ({ identifier, field, visible }) => {
+                    this._getField(identifier, field)?.setVisible(visible);
                 }
             );
         },
