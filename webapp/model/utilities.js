@@ -21,7 +21,7 @@ sap.ui.define([
                 this.setData({ ...InitialData });
             },
 
-            buildPxSubContractingTreeData(){
+            buildPxSubContractingTreeData() {
                 const { treeData, treeHeader } = this.oSubContracting.buildTreeData();
                 this.setPxSubContractingHierarchy(treeData);
                 this.setPxSubContractingHeader(treeHeader);
@@ -53,7 +53,7 @@ sap.ui.define([
                     this.setPxAutres(pxAutres || []);
 
                     this.setPxSousTraitance(pxSubContracting || []);
-                // A REMETTRE PROPRE
+                    // A REMETTRE PROPRE
                     this.onCalculChartsData(previsions, recaps, charts, chartsadddata);
 
                 } catch (error) {
@@ -137,7 +137,7 @@ sap.ui.define([
                         };
                         aData.push(oItem);
                     }
-                    
+
                     if (oModelRecap[i].row_type === "CHARGE") {
                         var oItem = {
                             Categorie: oModelRecap[i].row_description,
@@ -154,9 +154,9 @@ sap.ui.define([
                         aData.push(oItem);
                     }
                 }
-                
+
                 //boucle sur model synthesis
-                for(var j = 0; j < oModelSynthesis.length; j++){
+                for (var j = 0; j < oModelSynthesis.length; j++) {
                     // MAIN D'OEUVRE
                     if (oModelSynthesis[j].line_item === "MAIN_OEUV") {
                         var oItem = {
@@ -175,9 +175,9 @@ sap.ui.define([
                     }
                 }
 
-                for (var g = 0; g < oModelAdditionnalChart.length; g++){
+                for (var g = 0; g < oModelAdditionnalChart.length; g++) {
                     if (oModelAdditionnalChart[g].line_item === "DELAIS") {
-                        if (oModelAdditionnalChart[g].Type=== "Realised") {
+                        if (oModelAdditionnalChart[g].Type === "Realised") {
                             var oItem = {
                                 Categorie: oModelAdditionnalChart[g].description,
                                 Type: "Réalisé",
@@ -201,9 +201,9 @@ sap.ui.define([
                 this.setCharts(aData);
 
 
-               // 2ème graphique - Facturation et dépenses 12 derniers mois
+                // 2ème graphique - Facturation et dépenses 12 derniers mois
                 var oRecettes = oModelChart.find(obj => obj.line_item === "RECETTES");
-                var oCharges  = oModelChart.find(obj => obj.line_item === "CHARGES");
+                var oCharges = oModelChart.find(obj => obj.line_item === "CHARGES");
 
                 if (oRecettes && oCharges) {
                     var [endMonth, endYear] = oRecettes.period.split("/").map(Number);
@@ -509,7 +509,7 @@ sap.ui.define([
                 }
             },
 
-            async getBECompanyByProfitCenter(ProfitCenterCode){
+            async getBECompanyByProfitCenter(ProfitCenterCode) {
                 try {
                     const options = { urlParameters: { ProfitCenterCode } };
                     const company = await this.callFunction("/GetCompanyCodeByProfitCenter", options);
@@ -539,9 +539,8 @@ sap.ui.define([
                 return this.getPxAutres();
             },
 
-            formattedPxSubContractingExt(){
-                // return this.getPxSubContractingHierarchy();
-                return this.getPxSousTraitance();
+            formattedPxSubContractingExt() {
+                return this.oSubContracting.formattedPxSubContractingExt();
             }
 
         });
