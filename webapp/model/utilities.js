@@ -402,7 +402,7 @@ sap.ui.define([
                 try {
                     const businessNo = this.getBusinessNo();
                     const period = this.getPeriod();
-                    const urlBusinessNo = encodeURIComponent(businessNo).slice(0, -2);
+                    const urlBusinessNo = encodeURIComponent(businessNo);
                     const urlPeriod = encodeURIComponent(period);
 
                     const sPath = `/ZC_FGASet(BusinessNo='${urlBusinessNo}',p_period='${urlPeriod}')/to_BudgetPxAutre`;
