@@ -135,5 +135,51 @@ sap.ui.define([], function () {
       return { treeData: [root], treeHeader: Object.values(treeHeader) };
     }
 
+
+    formattedPxSubContractingExt() {
+      const [root] = this.oModel.getPxSubContractingHierarchy(); // = [root]
+      const treeHeader = this.oModel.getPxSubContractingHeader();
+      const constantPrefix = this._CONSTANT_COLUMN_PREFIXE;
+      const flatData = [];
+
+      if (!root || !root.children) return [];
+
+      for (const group of root.children) {
+          // Ignorer le total global
+          if (group.isTotal) continue;
+
+          const regroupement = group.name;
+
+          for (const leaf of group.children) {
+              if (!leaf.isBudget) continue; // ignorer totaux intermédiaires
+
+              // Pour chaque colonne dynamique (un sous-traitant = une colonne)
+              for (const columnId of Object.keys(leaf)) {
+                  if (!columnId.startsWith(constantPrefix)) continue;
+
+                  const header = treeHeader.find(h => h.columnId === columnId);
+                  if (!header) continue;
+
+                  flatData.push({
+                      regroupement,
+                      name: leaf.name,
+                      code: leaf.code,
+                      libelle: leaf.libelle,
+                      startDate: leaf.startDate,
+                      endDate: leaf.endDate,
+                      status: leaf.status,
+                      businessNo: leaf.businessNo,
+
+                      subContractorId: header.subContractorId,
+                      subContractorBudget: leaf[columnId],
+                      subContractorPartner: header.subContractorPartner
+                  });
+              }
+          }
+      }
+
+      return flatData;
+    }
+
   };
 });

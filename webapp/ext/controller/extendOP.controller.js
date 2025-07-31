@@ -94,7 +94,7 @@ sap.ui.define(
                         return new Promise(async (resolve, reject) => {
                             const formattedMissions = utilitiesModel.getFormattedMissions();
                             const formattedPxAutre = utilitiesModel.getFormattedPxAutre();
-                            const formattedPxSubContractingExt = utilitiesModel.formattedPxSubContractingExt();
+                            // const formattedPxSubContractingExt = utilitiesModel.formattedPxSubContractingExt();
                             const oPayload = Helper.extractPlainData({ ...oContext.getObject(),
                                  "to_Missions": formattedMissions,
                                  "to_BudgetPxAutre": formattedPxAutre,
