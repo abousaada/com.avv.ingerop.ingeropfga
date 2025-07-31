@@ -342,14 +342,6 @@
                 "title": "Summary Table"
               }
             },
-            "AfterFacet|ZC_FGASet|Missions": {
-              "className": "sap.ui.core.mvc.View",
-              "viewName": "com.avv.ingerop.ingeropfga.ext.view.Mission",
-              "type": "XML",
-              "sap.ui.generic.app": {
-                "title": "Missions"
-              }
-            },
             "AfterFacet|ZC_FGASet|GeneralInfo|1": {
               "className": "sap.ui.core.mvc.View",
               "viewName": "com.avv.ingerop.ingeropfga.ext.view.ChartInfos",

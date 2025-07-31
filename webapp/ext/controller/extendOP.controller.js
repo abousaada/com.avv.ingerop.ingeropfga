@@ -94,7 +94,7 @@ sap.ui.define(
                         return new Promise(async (resolve, reject) => {
                             const formattedMissions = utilitiesModel.getFormattedMissions();
                             const formattedPxAutre = utilitiesModel.getFormattedPxAutre();
-                            const formattedPxSubContractingExt = utilitiesModel.formattedPxSubContractingExt();
+                            // const formattedPxSubContractingExt = utilitiesModel.formattedPxSubContractingExt();
                             const oPayload = Helper.extractPlainData({ ...oContext.getObject(),
                                  "to_Missions": formattedMissions,
                                  "to_BudgetPxAutre": formattedPxAutre,
@@ -298,7 +298,10 @@ sap.ui.define(
                 this._missionsTab._deleteFromHierarchy(aNodes, oMissionToDelete);
             },
 
-
+            onRefreshTree: function (oEvent) {
+                this._missionsTab.onRefreshTree(oEvent);
+            },
+            
             // ==============================================
             // Handle Budget Px TAB - Budget Px Autres Section
             // Handles preparation and submition budget items 

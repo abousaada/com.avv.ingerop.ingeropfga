@@ -301,21 +301,7 @@
                         <HBox>
                             <Text
                                 text="{utilities>FinAffaire}"
-                                visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} !== 'Cumule'}"
                             />
-                            <Link
-                                text="{utilities>FinAffaire}"
-                                visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} === 'Cumule'}"
-                                press=".onCumuleClick"
-                            >
-                                <customData>
-                                    <core:CustomData
-                                        key="columnId"
-                                        value="FinAffaire"
-                                        xmlns:core="sap.ui.core"
-                                    />
-                                </customData>
-                            </Link>
                         </HBox>
                     </table:template>
                 </table:Column>
