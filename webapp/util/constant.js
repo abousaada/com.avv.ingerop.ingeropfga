@@ -3,6 +3,7 @@ sap.ui.define([
     "use strict";
 
     return {
+        types: ["PO", "OI", "RF", "FG", "FS", "OF", "PI" ],
         defaultMission: {
             MissionsCode: null,
             StartDate: null,

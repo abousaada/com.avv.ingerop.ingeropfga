@@ -3,17 +3,30 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "../../../util/helper",
     "../../../util/formatter"
-], function (Controller, Helper, Formatter ) {
+], function (Controller, Helper, Formatter) {
     "use strict";
 
     return Controller.extend("com.avv.ingerop.ingeropfga.ext.controller.helpers.ExtendOPUiManage", {
-        
-        _setOPView(){
+
+        _setOPView() {
             this._setTabsVisible();
             this._setFieldVisible();
             this._attachChangeEventOnFields();
             this._setFieldEnabled();
+            // this._setFieldDefaultValue();
         },
+
+        // _setFieldDefaultValue(){
+        //     const isCreateMode = this.oView.getModel("ui").getProperty("/createMode");
+        //     Helper.getFieldDefaultValueByMode(isCreateMode).map(
+        //         ({ identifier, field, defaultValue }) => {
+        //             const champ = this._getField(identifier, field);
+        //             if(champ && !champ.getValue() && defaultValue) {
+        //                 champ.setValue(defaultValue);
+        //             }
+        //         });
+        //         this._getField('Facturation', 'Currency').setValue('EUR');   
+        // },
 
         _setTabsVisible() {
             const isCreateMode = this.oView.getModel("ui").getProperty("/createMode");
@@ -33,8 +46,8 @@ sap.ui.define([
 
         _setFieldEnabled() {
             const isCreateMode = this.oView.getModel("ui").getProperty("/createMode");
-            Helper.getFieldEnabledByMode(isCreateMode).map(({ identifier, field, enabled }) => { 
-                this._getField(identifier, field)?.setEditable(enabled); 
+            Helper.getFieldEnabledByMode(isCreateMode).map(({ identifier, field, enabled }) => {
+                this._getField(identifier, field)?.setEditable(enabled);
             });
         },
 
@@ -85,45 +98,53 @@ sap.ui.define([
             this._getField("Travaux", "Ingtrvx").setValue(diff.toString());
         },
 
+        _resetDefaultValueByType(type) {
+            Helper.getDefaultNAValueByType(type).map(
+                ({identifier, field, value}) => this._getField(identifier, field).setValue(value)
+            );
+        },
+
         onTypeChange(event) {
             const newValue = event.getParameter("newValue");
             this._setMandatoryFieldByType(newValue);
+            this._resetDefaultValueByType(newValue);
         },
 
-        async onBpChange(oEvent){
+        async onBpChange(oEvent) {
             const newValue = oEvent.getParameter("newValue");
-            if(newValue){
+            if (newValue) {
                 const utilities = this.oView.getModel("utilities");
                 const { Name1, Siret, Country } = await utilities.getBEClientById(newValue);
-                this._getField("Client", "CustomerName"  ).setValue(Name1);
-                this._getField("Client", "Siret"         ).setValue(Siret);
-                this._getField("Client", "Country"       ).setValue(Country);
-            }else{
-                this._getField("Client", "CustomerName"  ).setValue(null);
-                this._getField("Client", "Siret"         ).setValue(null);
-                this._getField("Client", "Country"       ).setValue(null);
+                this._getField("Client", "CustomerName").setValue(Name1);
+                this._getField("Client", "Siret").setValue(Siret);
+                this._getField("Client", "Country").setValue(Country);
+            } else {
+                this._getField("Client", "CustomerName").setValue(null);
+                this._getField("Client", "Siret").setValue(null);
+                this._getField("Client", "Country").setValue(null);
             }
         },
 
-        async onCDGChange(oEvent){
+        async onCDGChange(oEvent) {
             const newValue = oEvent.getParameter("newValue");
-            if(newValue){
+            if (newValue) {
                 const utilities = this.oView.getModel("utilities");
-                const { CompanyCode , CompanyName } = await utilities.getBECompanyByProfitCenter(newValue);
-                this._getField("Identification", "CompanyCode"  ).setValue(CompanyCode);
-            }else{
-                this._getField("Identification", "CompanyCode"  ).setValue(null);
+                const { CompanyCode, CompanyName } = await utilities.getBECompanyByProfitCenter(newValue);
+                this._getField("Identification", "CompanyCode").setValue(CompanyCode);
+            } else {
+                this._getField("Identification", "CompanyCode").setValue(null);
             }
         },
 
         _setMandatoryFieldByType(type) {
-            if(!type){
-                Helper.getDefaultFieldMandatory().map(({identifier, field, mandatory}) => {
+            const types = Helper.getBusinessTypes();
+            if (!type || !types.includes(type)) {
+                Helper.getDefaultFieldMandatory().map(({ identifier, field, mandatory }) => {
                     this._getField(identifier, field)?.setMandatory(mandatory);
                 });
-                return ;
+                return;
             }
-            Helper.getFieldMandatoryByType(type).map(({identifier, field, mandatory}) => {
+            Helper.getFieldMandatoryByType(type).map(({ identifier, field, mandatory }) => {
                 this._getField(identifier, field)?.setMandatory(mandatory);
             });
         },

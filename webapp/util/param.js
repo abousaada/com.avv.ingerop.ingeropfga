@@ -3,6 +3,35 @@ sap.ui.define([
     "use strict";
 
     return {
+        defaultNA:
+        {
+            "RF":[
+                { identifier: "Garantie", field: "Assurance", value: "NA" }
+            ],
+            "FG":[
+                { identifier: "Identification", field: "Activity", value: "FGE" },
+                { identifier: "Identification", field: "Soufam", value: "" },
+                { identifier: "Garantie", field: "Assurance", value: "NA" },
+                { identifier: "Contrat", field: "Mission", value: "NOTA" },
+            ],
+            "FS":[
+                { identifier: "Identification", field: "Activity", value: "FGE" },
+                { identifier: "Identification", field: "Soufam", value: "NAA" },
+                { identifier: "Garantie", field: "Assurance", value: "NA" },
+                { identifier: "Contrat", field: "Mission", value: "NOTA" },
+            ],
+            "OF":[
+                { identifier: "Garantie", field: "Assurance", value: "NA" },
+                { identifier: "Contrat", field: "Mission", value: "NOTA" },
+            ],
+            "PI":[
+                { identifier: "Identification", field: "Activity", value: "FGE" },
+                { identifier: "Identification", field: "Soufam", value: "NAA" },
+                { identifier: "Garantie", field: "Assurance", value: "NA" },
+                { identifier: "Contrat", field: "Mission", value: "NOTA" },
+            ]
+        }
+        ,
         //All header fields
         headerFieldsList: {
             BusinessNo: {
