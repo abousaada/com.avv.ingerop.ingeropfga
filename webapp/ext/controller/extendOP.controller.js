@@ -298,7 +298,10 @@ sap.ui.define(
                 this._missionsTab._deleteFromHierarchy(aNodes, oMissionToDelete);
             },
 
-
+            onRefreshTree: function (oEvent) {
+                this._missionsTab.onRefreshTree(oEvent);
+            },
+            
             // ==============================================
             // Handle Budget Px TAB - Budget Px Autres Section
             // Handles preparation and submition budget items 

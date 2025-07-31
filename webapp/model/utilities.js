@@ -63,13 +63,8 @@ sap.ui.define([
 
             //fonction qui construit le model pour chart
             onCalculChartsData: function (oModelSynthesis, oModelRecap, oModelChart, oModelAdditionnalChart) {
-                // var oModelRecap = this.getView().getModel("recap").getData().results;
                 var aData = [];
                 var aDataChart = [];
-                // var oModelSynthesis = this.getView().getModel("synthesis").getData().results;
-                // var oModelRecap = this.getView().getModel("recap").getData().results;
-                // var oModelChart = this.getView().getModel("chartModel").getData().results;
-                // var oModelAdditionnalChart = this.getView().getModel("chartAddData").getData().results;
 
                 // boucle sur model recap
                 for (var i = 0; i < oModelRecap.length; i++) {
@@ -78,7 +73,7 @@ sap.ui.define([
                         var oItem = {
                             Categorie: oModelRecap[i].row_description,
                             Type: "Réalisé",
-                            Valeur: oModelRecap[i].cumul_n1
+                            Valeur: oModelRecap[i].cumul_ce_jour
                         };
                         aData.push(oItem);
 
@@ -206,36 +201,38 @@ sap.ui.define([
                 var oCharges = oModelChart.find(obj => obj.line_item === "CHARGES");
 
                 if (oRecettes && oCharges) {
-                    var [endMonth, endYear] = oRecettes.period.split("/").map(Number);
+                    const totalMonths = 12; 
 
-                    // 12 mois glissants jusqu'au mois courant
-                    for (var i = 11; i >= 0; i--) {
-                        // Crée une nouvelle date temporaire à chaque itération
-                        var tmpMonth = endMonth - 1; // JS : janvier = 0
-                        var tmpYear = endYear;
+                    const [endMonth, endYear] = oRecettes.period.split("/").map(Number);
+                    
+                    let startMonth = endMonth;
+                    let startYear = endYear;
 
-                        // Recul de i mois manuellement
-                        tmpMonth -= i;
-                        if (tmpMonth < 0) {
-                            tmpYear += Math.floor(tmpMonth / 12);
-                            tmpMonth = (tmpMonth % 12 + 12) % 12;
+                    var aDataChart = []; 
+
+                    for (let i = 0; i < totalMonths; i++) {
+                        let realMonth = startMonth - i;
+                        let realYear = startYear;
+                        
+                        if (realMonth <= 0) {
+                            realMonth += 12;
+                            realYear -= 1; 
                         }
 
-                        var mm = String(tmpMonth + 1).padStart(2, "0");
-                        var yyyy = tmpYear;
-                        var label = mm + "/" + yyyy;
-                        var index = String(12 - i + 1).padStart(2, "0"); // Month01 à Month12
+                        const label = String(realMonth).padStart(2, "0") + "/" + realYear;
 
-                        aDataChart.push({
-                            Periode: label,
-                            Facturation: parseFloat(oRecettes["Month" + index]) || 0,
-                            Depense: parseFloat(oCharges["Month" + index]) || 0
-                        });
+                        const monthIndex = "Month" + String(i + 1).padStart(2, "0");
+
+                        if (oRecettes[monthIndex] !== undefined && oCharges[monthIndex] !== undefined) {
+                            aDataChart.push({
+                                Periode: label,
+                                Facturation: parseFloat(oRecettes[monthIndex]) || 0,
+                                Depense: parseFloat(oCharges[monthIndex]) || 0
+                            });
+                        }
                     }
+                    aDataChart.reverse();
                 }
-                // Alimente le modèle final pour le graphique
-                // var oModelDataChart = new sap.ui.model.json.JSONModel({ results: aDataChart });
-                // this.getView().setModel(oModelDataChart, "chart2");
                 this.setChartsAdditionalData(aDataChart);
             },
 
