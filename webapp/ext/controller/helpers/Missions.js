@@ -153,24 +153,24 @@ sap.ui.define([
 
             // ABO : This code needs refactoring
             const oldMissions = this.getView().getModel("utilities").getMissions();
-            const BusinessNo = this.getView().getModel("utilities").getBusinessNo().slice(0, -2);
+            const BusinessNo = this.getView().getModel("utilities").getBusinessNo();
             const maxMission = oldMissions
                 .filter(mission => mission.BusinessNo === BusinessNo)
                 .reduce((max, current) => {
-                    const currentMatch = current.MissionId.match(/-(\d+)$/);
+                    const currentMatch = current.MissionId.match(/^.+?(\d{2})$/);
                     const currentNum = currentMatch ? parseInt(currentMatch[1]) : 0;
 
-                    const maxMatch = max.MissionId?.match(/-(\d+)$/);
+                    const maxMatch = max.MissionId?.match(/^.+?(\d{2})$/);
                     const maxNum = maxMatch ? parseInt(maxMatch[1]) : 0;
 
                     return currentNum > maxNum ? current : max;
-                }, { MissionId: `${BusinessNo}-000` });
+                }, { MissionId: `${BusinessNo}00` });
 
-            const match = maxMission.MissionId.match(/-(\d+)$/);
+            const match = maxMission.MissionId.match(/^.+?(\d{2})$/);
             const currentMax = match ? parseInt(match[1]) : 0;
             const nextNum = currentMax + 1;
-            const paddedNum = String(nextNum).padStart(3, '0'); // add zeros "005"
-            const MissionId = `${BusinessNo}00-${paddedNum}`; // "MEDXXXXXX000000069-005"
+            const paddedNum = String(nextNum).padStart(2, '0'); // add zeros "005"
+            const MissionId = `${BusinessNo}${paddedNum}`; // "MEDXXXXXX000000069-005"
             //End this code needs refactoring
 
             // Create new mission with default values
