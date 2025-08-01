@@ -52,6 +52,71 @@ sap.ui.define(
 
             },
 
+            onManageEMXButtonPress: function(oEvent) {
+                if (!this._oMenu) {
+                    this._oMenu = new Menu({
+                        items: [
+                            new MenuItem({
+                                text: "Action 1",
+                                icon: "sap-icon://accept",
+                                press: this._onAction1.bind(this)
+                            }),
+                            new MenuItem({
+                                text: "Action 2",
+                                icon: "sap-icon://decline",
+                                press: this._onAction2.bind(this)
+                            }),
+                            new MenuItem({
+                                text: "Export",
+                                icon: "sap-icon://download",
+                                items: [
+                                    new MenuItem({
+                                        text: "Excel",
+                                        press: this._onExportExcel.bind(this)
+                                    }),
+                                    new MenuItem({
+                                        text: "PDF",
+                                        press: this._onExportPDF.bind(this)
+                                    })
+                                ]
+                            })
+                        ]
+                    });
+                    this.getView().addDependent(this._oMenu);
+                }
+    
+                // Open menu
+                this._oMenu.openBy(oEvent.getSource());
+            },
+    
+            _onAction1: function() {
+                MessageToast.show("Action 1 executed");
+                // Add your logic here
+            },
+    
+            _onAction2: function() {
+                MessageToast.show("Action 2 executed");
+                // Add your logic here
+            },
+    
+            _onExportExcel: function() {
+                var aSelected = this.extensionAPI.getSelectedContexts();
+                MessageToast.show(`Exporting ${aSelected.length} items to Excel`);
+                // Add export logic
+            },
+    
+            _onExportPDF: function() {
+                var aSelected = this.extensionAPI.getSelectedContexts();
+                MessageToast.show(`Exporting ${aSelected.length} items to PDF`);
+                // Add export logic
+            },
+    
+            onManageSTIButtonPress: function() {
+                var oExtensionAPI = this.getExtensionAPI();
+                var aSelected = oExtensionAPI.getSelectedContexts();
+                MessageToast.show("Selected: " + aSelected.length);
+            }
+
 
         });
     });
