@@ -111,7 +111,7 @@ sap.ui.define(
                                 }
 
                             } catch (error) {
-                                this._setBusy(true);
+                                this._setBusy(false);
                                 Helper.errorMessage("FGA updated fail");
                                 console.log(error);
                                 reject();
@@ -120,7 +120,7 @@ sap.ui.define(
                             reject();
                         });
                     } catch (error) {
-                        this._setBusy(true);
+                        this._setBusy(false);
                         Helper.errorMessage("FGA updated fail");
                         console.log(error);
                     }
