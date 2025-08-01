@@ -113,6 +113,14 @@ sap.ui.define([
       return Constant.types;
     },
 
+    getGraphicId: function(){
+      return Params.headerSectionList.graphic.key;
+    },
+
+    getTabId: function(){
+      return Params.headerSectionList.budget.key;
+    },
+
     getDefaultNAValueByType(type){
       return Params.defaultNA[type] || [];
     },

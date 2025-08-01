@@ -38,6 +38,7 @@ sap.ui.define(
                 */
 
                 onInit: async function () {
+                    this._getOwnerComponent().getModel("utilities").setView(this.getView());
 
                     this._getExtensionAPI().attachPageDataLoaded(this._onObjectExtMatched.bind(this));
 
@@ -97,11 +98,12 @@ sap.ui.define(
                             const formattedMissions = utilitiesModel.getFormattedMissions();
                             const formattedPxAutre = utilitiesModel.getFormattedPxAutre();
                             const formattedPxSubContractingExt = utilitiesModel.formattedPxSubContractingExt();
-                            const oPayload = Helper.extractPlainData({ ...oContext.getObject(),
-                                 "to_Missions": formattedMissions,
-                                 "to_BudgetPxAutre": formattedPxAutre,
-                                 "to_BudgetPxSubContracting": formattedPxSubContractingExt,
-                                });
+                            const oPayload = Helper.extractPlainData({ 
+                                ...oContext.getObject(),
+                                "to_Missions": formattedMissions,
+                                "to_BudgetPxAutre": formattedPxAutre,
+                                "to_BudgetPxSubContracting": formattedPxSubContractingExt,
+                            });
 
                             try {
                                 const updatedFGA = await utilitiesModel.deepUpsertFGA(oPayload);
@@ -132,7 +134,15 @@ sap.ui.define(
             },
 
             _getExtensionAPI: function () {
-                return this.getInterface().getView().getController().extensionAPI;
+                return this._getController().extensionAPI;
+            },
+
+            _getController(){
+                return this.getInterface().getView().getController();
+            },
+
+            _getOwnerComponent(){
+                return this._getController().getOwnerComponent();
             },
 
             onNavBack() {
@@ -143,8 +153,12 @@ sap.ui.define(
             },
 
             async _getTabsData() {
-                const data = await this.getInterface().getModel("utilities").getBEDatas();
-                return data;
+                try {
+                    const data = await this.getInterface().getModel("utilities").getBEDatas();
+                    return data;
+                } catch (error) {
+                    console.log(error);
+                }
             },
 
             _setBusy(busy){

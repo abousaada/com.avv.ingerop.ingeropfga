@@ -4,9 +4,10 @@ sap.ui.define([
     "./utilities/formatter",
     "./utilities/filter",
     "./utilities/subContracting",
-    "../util/constant"
+    "../util/constant",
+    "../util/helper",
 ],
-    function (BaseModel, InitialData, Formatter, Filter, SubContracting, Constant) {
+    function (BaseModel, InitialData, Formatter, Filter, SubContracting, Constant, Helper) {
         "use strict";
 
         return BaseModel.extend("com.avv.ingerop.ingeropfga.model.utilities", {
@@ -15,6 +16,10 @@ sap.ui.define([
                 this.setData({ ...InitialData });
                 this.initModel(oModel);
                 this.oSubContracting = new SubContracting(this);
+            },
+
+            setView(oView){
+                this.oView = oView;
             },
 
             reInit() {
@@ -388,18 +393,21 @@ sap.ui.define([
                     const period = this.getPeriod();
                     const urlBusinessNo = encodeURIComponent(businessNo);
                     const urlPeriod = encodeURIComponent(period);
-
+                    this.setTabBusy(true);
                     const sPath = `/ZC_FGASet(BusinessNo='${urlBusinessNo}',p_period='${urlPeriod}')/to_Missions`;
                     console.log(`retrieve missions with period: ${period} and BusinessNo: ${businessNo}`);
                     const missions = await this.read(sPath);
+                    this.setTabBusy(false);
                     return missions?.results || [];
                 } catch (error) {
+                    this.setTabBusy(false);
                     console.log(error);
                 }
             },
 
             async getBEPxAutres() {
                 try {
+                    this.setTabBusy(true);
                     const businessNo = this.getBusinessNo();
                     const period = this.getPeriod();
                     const urlBusinessNo = encodeURIComponent(businessNo);
@@ -408,14 +416,17 @@ sap.ui.define([
                     const sPath = `/ZC_FGASet(BusinessNo='${urlBusinessNo}',p_period='${urlPeriod}')/to_BudgetPxAutre`;
                     console.log(`retrieve Budget Px Autre with period: ${period} and BusinessNo: ${businessNo}`);
                     const pxAutres = await this.read(sPath);
+                    this.setTabBusy(false);
                     return pxAutres?.results || [];
                 } catch (error) {
+                    this.setTabBusy(false);
                     console.log(error);
                 }
             },
 
             async getBEPxExtSubContracting() {
                 try {
+                    this.setTabBusy(true);
                     const businessNo = this.getBusinessNo();
                     const period = this.getPeriod();
                     const urlBusinessNo = encodeURIComponent(businessNo);
@@ -423,8 +434,10 @@ sap.ui.define([
                     const sPath = `/ZC_FGASet(BusinessNo='${urlBusinessNo}',p_period='${urlPeriod}')/to_BudgetPxSubContracting`;
                     console.log(`retrieve previsions with period: ${period} and BusinessNo: ${businessNo}`);
                     const pxSubContract = await this.read(sPath);
+                    this.setTabBusy(false);
                     return (pxSubContract?.results || []).map(Formatter.formatBudgetSubContracting);
                 } catch (error) {
+                    this.setTabBusy(false);
                     console.log(error);
                 }
             },
@@ -476,6 +489,7 @@ sap.ui.define([
 
             async getBECharts() {
                 try {
+                    this.setChartBusy(true);
                     const businessNo = this.getBusinessNo();
                     const period = this.getPeriod();
                     const urlBusinessNo = encodeURIComponent(businessNo);
@@ -483,14 +497,17 @@ sap.ui.define([
                     const sPath = `/ZC_FGA_CHART(p_businessno='${urlBusinessNo}',p_period='${urlPeriod}')/Set`;
                     console.log(`retrieve charts data with period: ${period} and BusinessNo: ${businessNo}`);
                     const charts = await this.read(sPath);
+                    this.setChartBusy(false);
                     return charts?.results || [];
                 } catch (error) {
+                    this.setChartBusy(false);
                     console.log(error);
                 }
             },
 
             async getBEChartsAdditionalData() {
                 try {
+                    this.setChartBusy(true);
                     const businessNo = this.getBusinessNo();
                     const period = this.getPeriod();
                     const urlBusinessNo = encodeURIComponent(businessNo);
@@ -498,8 +515,10 @@ sap.ui.define([
                     const sPath = `/ZC_FGA_CHART_AVANCEMENT(p_businessno='${urlBusinessNo}',p_period='${urlPeriod}')/Set`;
                     console.log(`retrieve charts additionnal data with period: ${period} and BusinessNo: ${businessNo}`);
                     const chartsadddata = await this.read(sPath);
+                    this.setChartBusy(false);
                     return chartsadddata?.results || [];
                 } catch (error) {
+                    this.setChartBusy(false);
                     console.log(error);
                 }
             },
@@ -532,6 +551,16 @@ sap.ui.define([
                 } catch (error) {
                     console.log(error);
                 }
+            },
+
+            setTabBusy(isBusy){
+                const tabId = Helper.getTabId();
+                this.oView.byId(tabId).setBusy(isBusy);
+            },
+
+            setChartBusy(isBusy){
+                const graphId = Helper.getGraphicId();
+                this.oView.byId(graphId).setBusy(isBusy);
             },
 
             setYearByPeriod(period) {
