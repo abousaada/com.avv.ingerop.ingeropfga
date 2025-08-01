@@ -64,8 +64,11 @@ sap.ui.define([
         reCalcColumnTotalById(subContractorId) {
             const columnId = this._CONSTANT_DYNAMIC_PREFIX + subContractorId;
             const [root]  = this.getUtilitiesModel().getPxSubContractingHierarchy();
-            const groupement = root.children.slice(0, -1);
-            const globalTotal = root.children.at(-1);
+            const groupement = root.children.slice(0, -4);
+            const globalTotal = root.children.at(-4);
+            const cumulTotal = root.children.at(-3);
+            const percentTotal = root.children.at(-2);
+            const radTotal = root.children.at(-1);
 
             globalTotal[columnId] = 0;
             globalTotal["budgetHorsFrais"] = 0;
@@ -95,7 +98,20 @@ sap.ui.define([
                 }
                 group.children = [...budgets,totalLine];
             }
-            root.children = [...groupement, globalTotal];
+
+            cumulTotal[columnId]            = globalTotal[columnId] * 0.1;
+            cumulTotal["budgetHorsFrais"]   = globalTotal["budgetHorsFrais"] * 0.1;
+            cumulTotal["budgetYCFrais"]     = globalTotal["budgetYCFrais"] * 0.1;
+
+            percentTotal[columnId]          = globalTotal[columnId] > 0 ? ( cumulTotal[columnId] / globalTotal[columnId] ) : 0 ;
+            percentTotal["budgetHorsFrais"] = globalTotal["budgetHorsFrais"] > 0 ? ( cumulTotal["budgetHorsFrais"] / globalTotal["budgetHorsFrais"] ) : 0;
+            percentTotal["budgetYCFrais"]   = globalTotal["budgetYCFrais"] > 0 ? ( cumulTotal["budgetYCFrais"] / globalTotal["budgetYCFrais"] ) : 0;
+
+            radTotal[columnId]          = globalTotal[columnId] - cumulTotal[columnId];
+            radTotal["budgetHorsFrais"] = globalTotal["budgetHorsFrais"] - cumulTotal["budgetHorsFrais"];
+            radTotal["budgetYCFrais"]   = globalTotal["budgetYCFrais"] - cumulTotal["budgetYCFrais"];
+
+            root.children = [...groupement, globalTotal, cumulTotal, percentTotal, radTotal];
 
             this.getUtilitiesModel().setPxSubContractingHierarchy([root]);
         },

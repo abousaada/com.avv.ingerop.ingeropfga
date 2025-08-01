@@ -132,6 +132,22 @@ sap.ui.define([], function () {
       // Ajouter le total global
       root.children.push(globalTotal);
 
+      const cumulTotal = {...globalTotal , name: "Cumul"};
+      const percentTotal = {...globalTotal , name: "Pourcentage"};
+      const RADTotal = {...globalTotal , name: "RAD"};
+
+      Object.entries(globalTotal).map(([key, value]) => {
+        if(key.startsWith(this._CONSTANT_COLUMN_PREFIXE)){
+          cumulTotal[key] = value - value * 0.1;
+          value > 0 ? percentTotal[key] = value : percentTotal[key] = 0 ;
+          RADTotal[key] = value - cumulTotal[key];
+        }
+      });
+
+      root.children.push(cumulTotal);
+      root.children.push(percentTotal);
+      root.children.push(RADTotal);
+
       return { treeData: [root], treeHeader: Object.values(treeHeader) };
     }
 
