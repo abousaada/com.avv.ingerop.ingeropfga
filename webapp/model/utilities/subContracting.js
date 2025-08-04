@@ -103,6 +103,7 @@ sap.ui.define([], function () {
           isBudget: false,
           isGroupe: false,
           isTotal: true,
+          isPercent: false,
           budgetHorsFrais: 0,
           budgetYCFrais: 0
         };
@@ -132,9 +133,27 @@ sap.ui.define([], function () {
       // Ajouter le total global
       root.children.push(globalTotal);
 
-      const cumulTotal = {...globalTotal , name: "Cumul"};
-      const percentTotal = {...globalTotal , name: "Pourcentage"};
-      const RADTotal = {...globalTotal , name: "RAD"};
+      const cumulTotal = {
+        ...globalTotal , 
+        name: "Cumul", 
+        budgetHorsFrais: globalTotal.budgetHorsFrais - globalTotal.budgetHorsFrais * 0.1, 
+        budgetYCFrais: globalTotal.budgetYCFrais - globalTotal.budgetYCFrais * 0.1
+      };
+
+      const percentTotal = {
+        ...globalTotal , 
+        name: "Pourcentage", 
+        isPercent: true,
+        budgetHorsFrais: globalTotal.budgetHorsFrais > 0 ? (cumulTotal.budgetHorsFrais / globalTotal.budgetHorsFrais ) : 0, 
+        budgetYCFrais: globalTotal.budgetYCFrais > 0 ? (cumulTotal.budgetYCFrais / globalTotal.budgetYCFrais ) : 0
+      };
+
+      const RADTotal = {
+        ...globalTotal , 
+        name: "RAD",
+        budgetHorsFrais: globalTotal.budgetHorsFrais - cumulTotal.budgetHorsFrais, 
+        budgetYCFrais: globalTotal.budgetYCFrais - cumulTotal.budgetYCFrais
+      };
 
       Object.entries(globalTotal).map(([key, value]) => {
         if(key.startsWith(this._CONSTANT_COLUMN_PREFIXE)){

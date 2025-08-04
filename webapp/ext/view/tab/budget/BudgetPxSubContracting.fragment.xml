@@ -149,7 +149,15 @@
                     <Label text="{i18n>budget.ext.affaireHorsFrais}" />
                 </table:multiLabels>
                 <table:template>
-                    <Text text="{ path: 'utilities>budgetHorsFrais' }" />
+                    <Text   
+                        text="{ 
+                            parts: [
+                                { path: 'utilities>budgetHorsFrais' },
+                                { path: 'utilities>isPercent' }
+                            ], 
+                            formatter:'.Formatter.formatTotal' 
+                        }" 
+                    />
                 </table:template>
             </table:Column>
             <table:Column width="7rem">
@@ -161,7 +169,15 @@
                     <Label text="{i18n>budget.ext.affaireYCFrais}" />
                 </table:multiLabels>
                 <table:template>
-                    <Text text="{ path: 'utilities>budgetYCFrais' }" />
+                    <Text 
+                        text="{ 
+                            parts: [
+                                { path: 'utilities>budgetYCFrais' },
+                                { path: 'utilities>isPercent' }
+                            ], 
+                            formatter:'.Formatter.formatTotal' 
+                        }" 
+                    />
                 </table:template>
             </table:Column> 
         </table:columns>

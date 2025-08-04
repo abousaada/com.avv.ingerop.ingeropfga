@@ -191,15 +191,31 @@ sap.ui.define([
                     }).data(this._CONSTANT_COLUMN_ID, sColumnId),
                     new sap.m.Label({ text: "{i18n>budget.ext.budget}" })
                 ],
-                template: new sap.m.Input({
-                    value: {
-                        path: "utilities>" + columnId,
-                        type: new sap.ui.model.type.Float({ minFractionDigits: 2 })
-                    },
-                    editable: "{= ${ui>/editable} && ${utilities>isBudget} }",
-                    visible: "{= ${utilities>isBudget} || ${utilities>isTotal} }",
-                    change: this.onContractorBudgetChange.bind(this)
-                }).data(this._CONSTANT_COLUMN_ID, sColumnId),
+                template: new sap.m.HBox({
+                    items: [
+                        new sap.m.Text({
+                            text: {
+                                parts: [
+                                    { path: "utilities>" + columnId },
+                                    { path: "utilities>isPercent" }
+                                ],
+                                formatter: function(total, percent) {
+                                    return percent ? total + "%": total;
+                                }
+                            },
+                            visible: "{= !!${utilities>isTotal} }"
+                        }),
+                        new sap.m.Input({
+                            value: {
+                                path: "utilities>" + columnId,
+                                type: new sap.ui.model.type.Float({ minFractionDigits: 2 })
+                            },
+                            editable: "{= ${ui>/editable} && ${utilities>isBudget} }",
+                            visible: "{= !!${utilities>isBudget} }",
+                            change: this.onContractorBudgetChange.bind(this)
+                        }).data(this._CONSTANT_COLUMN_ID, sColumnId)
+                    ]
+                }),
                 width: "6rem"
             }).data(this._CONSTANT_COLUMN_ID, sColumnId);
         },

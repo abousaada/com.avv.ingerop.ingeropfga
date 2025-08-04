@@ -9,7 +9,8 @@ sap.ui.define([
                 return isMandatory && !value ? "Error" : "None";
             };
         },
-
-
+        formatTotal: function(total, percent){
+			return percent ? total + "%": total;
+		},
     };
 });

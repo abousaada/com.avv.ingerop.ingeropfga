@@ -19,6 +19,11 @@ sap.ui.define([], function () {
 		formatValueToFloat: function (sPercent) {
 			return parseFloat(sPercent);
 		},
+		
+		formatTotal: function(total, percent){
+			return percent ? total + "%": total;
+		},
+
 		formatValueToFloatPercentage: function (sPercent) {
 			if (sPercent) {
 				if (isNaN(sPercent)) {
