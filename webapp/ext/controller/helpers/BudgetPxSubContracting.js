@@ -42,11 +42,8 @@ sap.ui.define([
 
         onContractorBudgetChange(oEvent) {
             try {
-                const source = oEvent.getSource();
-                this.reCalcRowTotal(source);
-
-                const { subContractorId } = source.data();
-                this.reCalcColumnTotalById(subContractorId);
+                const { columnId } = oEvent.getSource().data();
+                this.reCalcColumnTotalById(columnId);
             } catch (error) {
                 console.log(error);
             }
@@ -61,8 +58,8 @@ sap.ui.define([
             utilitiesModel.setProperty(sPath, { ...newRow });
         },
 
-        reCalcColumnTotalById(subContractorId) {
-            const columnId = this._CONSTANT_DYNAMIC_PREFIX + subContractorId;
+        reCalcColumnTotalById(columnId) {
+            // const columnId = this._CONSTANT_DYNAMIC_PREFIX + subContractorId;
             const [root]  = this.getUtilitiesModel().getPxSubContractingHierarchy();
             const groupement = root.children.slice(0, -4);
             const globalTotal = root.children.at(-4);
@@ -78,7 +75,8 @@ sap.ui.define([
             for (const group of groupement) {
                 if (!group.isGroupe || !Array.isArray(group.children)) continue;
 
-                const budgets = group.children.slice(0, -1);
+                const oldBudgets = group.children.slice(0, -1);
+                const newBudgets = oldBudgets.map(budget => this.calcNewTotalFinAffaire(budget));
                 const totalLine = group.children.at(-1);
                 if (!totalLine) continue;
 
@@ -87,7 +85,7 @@ sap.ui.define([
                 totalLine["budgetHorsFrais"] = 0;
                 totalLine["budgetYCFrais"] = 0;
 
-                for (const child of budgets) {
+                for (const child of newBudgets) {
                     totalLine[columnId] += child[columnId] || 0;
                     totalLine["budgetHorsFrais"] += child["budgetHorsFrais"] || 0;
                     totalLine["budgetYCFrais"] += child["budgetYCFrais"] || 0;
@@ -96,7 +94,7 @@ sap.ui.define([
                     globalTotal["budgetHorsFrais"] += child["budgetHorsFrais"] || 0;
                     globalTotal["budgetYCFrais"] += child["budgetYCFrais"] || 0;
                 }
-                group.children = [...budgets,totalLine];
+                group.children = [...newBudgets, totalLine];
             }
 
             cumulTotal[columnId]            = globalTotal[columnId] * 0.1;
@@ -120,7 +118,7 @@ sap.ui.define([
             const columnHeaders = this.getUtilitiesModel().getPxSubContractingHeader();
 
             const coefByColumnId = columnHeaders.reduce((map, header) => {
-                map[header.columnId] = this.getCoef(header?.subContractorPartner);
+                map[header.columnId] = header.subContractorCoef;
                 return map;
             }, {});
 
@@ -145,7 +143,7 @@ sap.ui.define([
             const aDynamicColumns = this.getUtilitiesModel().getPxSubContractingHeader();
 
             aDynamicColumns.forEach((oColData, idx) => {
-                var oColumn = this._createColumn(this._CONSTANT_DYNAMIC_PREFIX + oColData.columnId, oColData);
+                var oColumn = this._createColumn(oColData.columnId, oColData);
                 SubContractingTree.insertColumn(oColumn, 6 + idx);
             });
         },
@@ -158,13 +156,39 @@ sap.ui.define([
             return subContractorPartner ? subContractorPartner : 1;
         },
 
-        _createColumn: function (sColumnId, { subContractorName, subContractorId, subContractorPartner, columnId }) {
+        isFloat(input){
+            const normalized = input.trim().replace(',', '.');
+            // Regex : entier ou float avec max 2 décimales
+            const regex = /^-?\d+(\.\d{1,2})?$/;
+            return regex.test(normalized);
+        },
+
+        onCoefChange(oEvent){
+            const newValue = oEvent.getParameter("newValue");
+            if(this.isFloat(newValue)){
+                const subContractorCoef = Number.parseFloat(newValue);
+                const columnHeader = this.getUtilitiesModel().getPxSubContractingHeader();
+                const { columnId } = oEvent.getSource().data();
+                const newHeader = columnHeader.map(h => {
+                    if(h.columnId === columnId){ return {...h, subContractorCoef }; }
+                    return h;
+                });
+                this.getUtilitiesModel().setPxSubContractingHeader(newHeader);
+                this.reCalcColumnTotalById(columnId);
+            }
+        },
+
+        _createColumn: function (sColumnId, { subContractorName, subContractorId, subContractorCoef, subContractorPartner, columnId }) {
             return new sap.ui.table.Column({
                 multiLabels: [
                     new sap.m.Label({ text: subContractorName }),
                     new sap.m.Input({ value: subContractorId, editable: "{ui>/editable}" }),
                     new sap.m.Label({ text: this.isFiliale(subContractorPartner) }),
-                    new sap.m.Input({ value: this.getCoef(subContractorPartner), editable: "{ui>/editable}" }),
+                    new sap.m.Input({ 
+                        value: subContractorCoef, 
+                        editable: "{ui>/editable}" ,
+                        change: this.onCoefChange.bind(this)
+                    }).data(this._CONSTANT_COLUMN_ID, sColumnId),
                     new sap.m.Label({ text: "{i18n>budget.ext.budget}" })
                 ],
                 template: new sap.m.Input({
@@ -175,7 +199,7 @@ sap.ui.define([
                     editable: "{= ${ui>/editable} && ${utilities>isBudget} }",
                     visible: "{= ${utilities>isBudget} || ${utilities>isTotal} }",
                     change: this.onContractorBudgetChange.bind(this)
-                }).data(this._CONSTANT_SUBCONTRACTOR_ID, subContractorId),
+                }).data(this._CONSTANT_COLUMN_ID, sColumnId),
                 width: "6rem"
             }).data(this._CONSTANT_COLUMN_ID, sColumnId);
         },

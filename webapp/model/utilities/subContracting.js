@@ -37,9 +37,9 @@ sap.ui.define([], function () {
         budgetYCFrais: 0
       };
 
-      const addBudgetTo = (target, { subContractorBudget, subContractorPartner, columnId }) => {
+      const addBudgetTo = (target, { subContractorBudget, subContractorCoef, columnId }) => {
         const amount = subContractorBudget;
-        const partnerRatio = subContractorPartner;
+        const partnerRatio = subContractorCoef;
 
         target[columnId] = (target[columnId] || 0) + amount;
         target.budgetHorsFrais += amount;
@@ -51,7 +51,7 @@ sap.ui.define([], function () {
         const {
           businessNo, endDate, libelle, code, name, startDate, status,
           regroupement,
-          subContractorId, subContractorBudget, subContractorPartner, subContractorName
+          subContractorId, subContractorBudget, subContractorCoef, subContractorName
         } = subContract;
 
         const groupId = "GR" + (regroupement ?? "NO_GRP");
@@ -87,7 +87,7 @@ sap.ui.define([], function () {
 
         if (subContractorId) {
           const columnId = this._CONSTANT_COLUMN_PREFIXE + subContractorId;
-          const subContractor = { subContractorName, subContractorId, subContractorBudget, subContractorPartner, columnId };
+          const subContractor = { subContractorName, subContractorId, subContractorBudget, subContractorCoef, columnId };
           if (!treeHeader[columnId]) {
             treeHeader[columnId] = { ...subContractor };
           }
@@ -139,7 +139,7 @@ sap.ui.define([], function () {
       Object.entries(globalTotal).map(([key, value]) => {
         if(key.startsWith(this._CONSTANT_COLUMN_PREFIXE)){
           cumulTotal[key] = value - value * 0.1;
-          value > 0 ? percentTotal[key] = value : percentTotal[key] = 0 ;
+          value > 0 ? ( percentTotal[key] = cumulTotal[key] / value ) : percentTotal[key] = 0 ;
           RADTotal[key] = value - cumulTotal[key];
         }
       });
@@ -188,7 +188,8 @@ sap.ui.define([], function () {
 
               subContractorId: header.subContractorId,
               subContractorBudget: leaf[columnId],
-              subContractorPartner: header.subContractorPartner
+              subContractorPartner: header.subContractorPartner,
+              subContractorCoef: header.subContractorCoef,
             });
           }
         }
