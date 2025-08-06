@@ -97,9 +97,10 @@ sap.ui.define([
                 group.children = [...newBudgets, totalLine];
             }
 
-            cumulTotal[columnId]            = globalTotal[columnId] * 0.1;
-            cumulTotal["budgetHorsFrais"]   = globalTotal["budgetHorsFrais"] * 0.1;
-            cumulTotal["budgetYCFrais"]     = globalTotal["budgetYCFrais"] * 0.1;
+            // cumulTotal[columnId]            = globalTotal[columnId] * 0.1;
+            // cumulTotal["budgetHorsFrais"]   = globalTotal["budgetHorsFrais"] * 0.1;
+            // cumulTotal["budgetYCFrais"]     = globalTotal["budgetYCFrais"] * 0.1;
+            cumulTotal = this.calcNewTotalFinAffaire(cumulTotal);
 
             percentTotal[columnId]          = globalTotal[columnId] > 0 ? ( cumulTotal[columnId] / globalTotal[columnId] ) : 0 ;
             percentTotal["budgetHorsFrais"] = globalTotal["budgetHorsFrais"] > 0 ? ( cumulTotal["budgetHorsFrais"] / globalTotal["budgetHorsFrais"] ) : 0;

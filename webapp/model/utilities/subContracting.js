@@ -51,7 +51,7 @@ sap.ui.define([], function () {
         const {
           businessNo, endDate, libelle, code, name, startDate, status,
           regroupement,
-          subContractorId, subContractorBudget, subContractorCoef, subContractorName
+          subContractorId, subContractorBudget, subContractorCoef, subContractorName, subContractorCumul
         } = subContract;
 
         const groupId = "GR" + (regroupement ?? "NO_GRP");
@@ -87,7 +87,7 @@ sap.ui.define([], function () {
 
         if (subContractorId) {
           const columnId = this._CONSTANT_COLUMN_PREFIXE + subContractorId;
-          const subContractor = { subContractorName, subContractorId, subContractorBudget, subContractorCoef, columnId };
+          const subContractor = { subContractorCumul, subContractorName, subContractorId, subContractorBudget, subContractorCoef, columnId };
           if (!treeHeader[columnId]) {
             treeHeader[columnId] = { ...subContractor };
           }
@@ -136,33 +136,43 @@ sap.ui.define([], function () {
       const cumulTotal = {
         ...globalTotal , 
         name: "Cumul", 
-        budgetHorsFrais: globalTotal.budgetHorsFrais - globalTotal.budgetHorsFrais * 0.1, 
-        budgetYCFrais: globalTotal.budgetYCFrais - globalTotal.budgetYCFrais * 0.1
+        budgetHorsFrais: 0 , 
+        budgetYCFrais: 0
       };
 
       const percentTotal = {
         ...globalTotal , 
         name: "Pourcentage", 
         isPercent: true,
-        budgetHorsFrais: globalTotal.budgetHorsFrais > 0 ? (cumulTotal.budgetHorsFrais / globalTotal.budgetHorsFrais ) : 0, 
-        budgetYCFrais: globalTotal.budgetYCFrais > 0 ? (cumulTotal.budgetYCFrais / globalTotal.budgetYCFrais ) : 0
+        budgetHorsFrais: 0, 
+        budgetYCFrais: 0
       };
 
       const RADTotal = {
         ...globalTotal , 
         name: "RAD",
-        budgetHorsFrais: globalTotal.budgetHorsFrais - cumulTotal.budgetHorsFrais, 
-        budgetYCFrais: globalTotal.budgetYCFrais - cumulTotal.budgetYCFrais
+        budgetHorsFrais: 0, 
+        budgetYCFrais: 0
       };
 
       Object.entries(globalTotal).map(([key, value]) => {
         if(key.startsWith(this._CONSTANT_COLUMN_PREFIXE)){
-          cumulTotal[key] = value - value * 0.1;
+
+          cumulTotal[key] = treeHeader[key]?.subContractorCumul || 0;
+          cumulTotal.budgetHorsFrais += cumulTotal[key];
+          cumulTotal.budgetYCFrais += cumulTotal[key] * ( treeHeader[key]?.subContractorCoef || 1 );
+
           value > 0 ? ( percentTotal[key] = cumulTotal[key] / value ) : percentTotal[key] = 0 ;
           RADTotal[key] = value - cumulTotal[key];
         }
       });
 
+      percentTotal.budgetHorsFrais  = globalTotal.budgetHorsFrais > 0 ? (cumulTotal.budgetHorsFrais / globalTotal.budgetHorsFrais ) : 0, 
+      percentTotal.budgetYCFrais    = globalTotal.budgetYCFrais > 0 ? (cumulTotal.budgetYCFrais / globalTotal.budgetYCFrais ) : 0
+      
+      RADTotal.budgetHorsFrais= globalTotal.budgetHorsFrais - cumulTotal.budgetHorsFrais, 
+      RADTotal.budgetYCFrais= globalTotal.budgetYCFrais - cumulTotal.budgetYCFrais
+      
       root.children.push(cumulTotal);
       root.children.push(percentTotal);
       root.children.push(RADTotal);

@@ -20,6 +20,7 @@ sap.ui.define([
       SubContractorName: "subContractorName",
       SubContractorPartner: "subContractorPartner",
       SubContractorCoef : ({subContractorCoef}) => subContractorCoef?.toString(),
+      Cumul: ({subContractorCumul}) => subContractorCumul?.toString(),
     }),
     formatBudgetSubContracting: Helper.buildObjectKeysMapper({
       businessNo: "BusinessNo",
@@ -34,8 +35,8 @@ sap.ui.define([
       subContractorId: "SubContractor",
       subContractorName: "SubContractorName",
       subContractorCoef : ({ SubContractorCoef }) => Number.parseFloat(SubContractorCoef) ? SubContractorCoef : 1,
-      subContractorPartner: "SubContractorPartner"
-
+      subContractorPartner: "SubContractorPartner",
+      subContractorCumul: ({ Cumul }) => Number.parseFloat(Cumul),
     }),
 
     formatSupplier: Helper.buildObjectKeysMapper({
