@@ -313,19 +313,17 @@
               "ZC_FGASet": {
                 "EntitySet": "ZC_FGASet",
                 "Actions": {
-                  "customAction1": {
-                    "id": "manageSTIButton",
+                  "onSTIPress": {
+                    "id": "onSTIPressButton",
                     "text": "Manage STI",
-                    "press": "onManageSTIButtonPress",
-                    "requiresSelection": false,
-                    "icon": "sap-icon://action"
+                    "press": "onSTIPress",
+                    "requiresSelection": false
                   },
-                  "customAction2": {
-                    "id": "manageEMXButton",
+                  "onEMXPress": {
+                    "id": "onEMXPressButton",
                     "text": "Manage EMX",
-                    "press": "onManageEMXButtonPress",
-                    "requiresSelection": true,
-                    "icon": "sap-icon://action"
+                    "press": "onEMXPress",
+                    "requiresSelection": false
                   }
                 }
               }
@@ -408,7 +406,8 @@
               }
             },
             "tableSettings": {
-              "type": "AnalyticalTable"
+              "type": "AnalyticalTable",
+              "multiSelect": true
             },
             "dataLoadSettings": {
               "loadDataOnAppLaunch": "always"
