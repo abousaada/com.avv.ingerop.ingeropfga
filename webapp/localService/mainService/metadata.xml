@@ -436,6 +436,7 @@
                 <Property Name="LaborBudget" Type="Edm.Decimal" Precision="14" Scale="3" sap:label=""/>
                 <Property Name="Regroupement" Type="Edm.String" MaxLength="40" sap:label="Regroupement mission"/>
                 <Property Name="statutmission" Type="Edm.String" MaxLength="1" sap:label="Statut mission"/>
+                <Property Name="description" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label=""/>
             </EntityType>
             <EntityType Name="zc_fga_opportType" sap:content-version="1">
                 <Key>

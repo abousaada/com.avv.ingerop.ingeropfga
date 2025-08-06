@@ -588,6 +588,9 @@
             <Annotations Target="ZFGA_SRV.ZC_FGA_MISSIONType/statutmission">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGA_MISSIONType/description">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_FGA_MISSIONType">
                 <Annotation Term="UI.LineItem">
                     <Collection>

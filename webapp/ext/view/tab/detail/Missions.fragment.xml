@@ -49,6 +49,19 @@
                         </table:template>
                     </table:Column>
 
+                    <!-- Description Column -->
+                    <table:Column width="10rem">
+                        <Label text="Description" />
+                        <table:template>
+                            <Input
+                                value="{utilities>description}"
+                                editable="{ui>/editable}"
+                                width="100%"
+                                visible="{= !${utilities>isNode}}"
+                            />
+                        </table:template>
+                    </table:Column>
+
                     <!-- Regroupement Column -->
                     <table:Column width="10rem">
                         <Label text="Regroupement" />
