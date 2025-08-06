@@ -21,6 +21,7 @@ sap.ui.define([], function() {
             subContractorPartner  : "SubContractorPartner",
           }*/
         ],
+        "Notes": '',
         "missionTypes": [
             { code: "AVP", description: "AVP" },
             { code: "PRO", description: "PRO" },

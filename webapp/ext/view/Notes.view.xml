@@ -1,0 +1,15 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
+	xmlns:html="http://www.w3.org/1999/xhtml" controllerName="com.avv.ingerop.ingeropfga.ext.controller.extendOP">
+	
+	<Label text="{i18n>Notes_title}" />
+	<VBox>
+		<TextArea id="DescriptionTextArea" 
+				value="{utilities>/Notes}"
+				width="100%" 
+				growing="true" 
+				liveChange=".onLiveChangeNotes"
+				editable="{ui>/editable}"/>
+	</VBox>
+
+	
+</mvc:View>

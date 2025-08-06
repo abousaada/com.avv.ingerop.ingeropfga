@@ -290,14 +290,16 @@ sap.ui.define(
 
             async _getTabsData() {
                 const utilitiesModel = this.getInterface().getModel("utilities");
-                const [missions, previsions, recaps, opport, pxAutres] = await Promise.all([
+                const [missions, previsions, recaps, opport, pxAutres, notes] = await Promise.all([
                     utilitiesModel.getBEMissions(),
                     utilitiesModel.getBEPrevisions(),
                     utilitiesModel.getBERecaps(),
                     utilitiesModel.getBEOpport(),
 
                     //Bugets PX
-                    utilitiesModel.getBEPxAutres()
+                    utilitiesModel.getBEPxAutres(),
+                    //Notes
+                    utilitiesModel.getNotes()
                 ]);
 
                 utilitiesModel.setMissions(missions || []);
@@ -307,6 +309,9 @@ sap.ui.define(
 
                 //Bugets PX
                 utilitiesModel.setPxAutres(pxAutres || []);
+
+                //Notes
+                utilitiesModel.setNotes(notes);
 
             },
 

@@ -344,6 +344,14 @@
             },
             "AfterFacet|ZC_FGASet|GeneralInfo|1": {
               "className": "sap.ui.core.mvc.View",
+              "viewName": "com.avv.ingerop.ingeropfga.ext.view.Notes",
+              "type": "XML",
+              "sap.ui.generic.app": {
+                "title": "Notes"
+              }
+            },
+            "BeforeFacet|ZC_FGASet|TableInfo": {
+              "className": "sap.ui.core.mvc.View",
               "viewName": "com.avv.ingerop.ingeropfga.ext.view.ChartInfos",
               "type": "XML",
               "sap.ui.generic.app": {

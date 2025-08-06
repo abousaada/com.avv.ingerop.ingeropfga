@@ -29,7 +29,7 @@ sap.ui.define([
 
             async getBEDatas() {
                 try {
-                    const [missions, previsions, recaps, opport, charts, chartsadddata, pxAutres, pxSubContracting] = await Promise.all([
+                    const [missions, previsions, recaps, opport, charts, chartsadddata, pxAutres, pxSubContracting, notes] = await Promise.all([
                         this.getBEMissions(),
                         this.getBEPrevisions(),
                         this.getBERecaps(),
@@ -39,7 +39,10 @@ sap.ui.define([
 
                         //Bugets PX
                         this.getBEPxAutres(),
-                        this.getBEPxExtSubContracting()
+                        this.getBEPxExtSubContracting(),
+
+                        //Notes
+                        this.getBENotes()
                     ]);
 
                     this.setMissions(missions || []);
@@ -48,13 +51,15 @@ sap.ui.define([
                     this.setOpport(opport || []);
                     this.setCharts(charts || []);
                     this.setChartsAdditionalData(chartsadddata || []);
-
+                 
                     //Bugets PX
                     this.setPxAutres(pxAutres || []);
 
                     this.setPxSousTraitance(pxSubContracting || []);
                 // A REMETTRE PROPRE
                     this.onCalculChartsData(previsions, recaps, charts, chartsadddata);
+                //Notes
+                    this.setNotes(notes);
 
                 } catch (error) {
                     console.log(error);
@@ -511,6 +516,21 @@ sap.ui.define([
                     const options = { urlParameters: { ProfitCenterCode } };
                     const company = await this.callFunction("/GetCompanyCodeByProfitCenter", options);
                     return company;
+                } catch (error) {
+                    console.log(error);
+                }
+            },
+            //Notes
+            async getBENotes() {
+                try {     
+                     const businessNo = this.getBusinessNo();
+                     const period = this.getPeriod();
+                     const urlBusinessNo = encodeURIComponent(businessNo);
+                     const urlPeriod = encodeURIComponent(period);
+                     const sPath = `/ZC_FGASet(BusinessNo='${urlBusinessNo}',p_period='${urlPeriod}')/Notes`;
+                     const notes = await this.read(sPath);
+                     return notes.Notes;
+                    
                 } catch (error) {
                     console.log(error);
                 }

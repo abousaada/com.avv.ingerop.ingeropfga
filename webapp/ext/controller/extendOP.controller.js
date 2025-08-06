@@ -407,6 +407,13 @@ sap.ui.define(
             getModel: function (sName) {
                 return this.getView().getModel(sName);
             },
+            onLiveChangeNotes: function(oEvent) {
+                var sValue = oEvent.getParameter("value");
+                var oSource = oEvent.getSource();
+                var oContext = oSource.getBindingContext();
+            
+                oContext.getModel().setProperty(oContext.getPath() + "/Notes", sValue);
+            }
 
         });
     });
