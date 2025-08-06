@@ -3,7 +3,7 @@
 	
 	<Label text="{i18n>Notes_title}" />
 	<VBox>
-		<TextArea id="DescriptionTextArea" 
+		<TextArea id="_DescriptionTextArea" 
 				value="{utilities>/Notes}"
 				width="100%" 
 				growing="true" 
