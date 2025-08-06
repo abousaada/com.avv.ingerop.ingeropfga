@@ -5,8 +5,22 @@ sap.ui.define([
   return {
     // Generate mission number (001, 002, etc.)
     getMissionsNumber: function (missionArraySize) {
-      return String(missionArraySize || 1).padStart(3, '0');
+      return String(missionArraySize || 1).padStart(2, '0');
     },
+    reverseFormatBudgetSubContracting: Helper.buildObjectKeysMapper({
+      BusinessNo: "businessNo",
+      EndDate: "endDate",
+      MissionCode: "code",
+      MissionId: "name",
+      Regroupement: "regroupement",
+      StartDate: "startDate",
+      Statut: "status",
+      Budget: ({subContractorBudget}) => subContractorBudget?.toString(),
+      SubContractor: "subContractorId",
+      SubContractorName: "subContractorName",
+      SubContractorPartner: "subContractorPartner",
+      SubContractorCoef : ({subContractorCoef}) => subContractorCoef?.toString(),
+    }),
     formatBudgetSubContracting: Helper.buildObjectKeysMapper({
       businessNo: "BusinessNo",
       endDate: "EndDate",
@@ -16,24 +30,21 @@ sap.ui.define([
       regroupement: "Regroupement",
       startDate: "StartDate",
       status: "Statut",
-      // budgetPxSubContrators: ({ to_BudgetPxSubContractor }) => { 
-      //   return (to_BudgetPxSubContractor?.results || []).map(
-      //     Helper.buildObjectKeysMapper({
-            subContractorBudget   : ({ Budget }) => Budget ? parseFloat(Budget) : Budget,
-            subContractorId       : "SubContractor",
-            subContractorName     : "SubContractorName",
-            subContractorPartner  : ({ SubContractorPartner }) => SubContractorPartner ? parseFloat(SubContractorPartner) : SubContractorPartner
-          // }));
-      // }
+      subContractorBudget: ({ Budget }) => Budget ? parseFloat(Budget) : Budget,
+      subContractorId: "SubContractor",
+      subContractorName: "SubContractorName",
+      subContractorCoef : ({ SubContractorCoef }) => Number.parseFloat(SubContractorCoef) ? SubContractorCoef : 1,
+      subContractorPartner: "SubContractorPartner"
+
     }),
 
     formatSupplier: Helper.buildObjectKeysMapper({
-      subContractorPartner : "CompanyPartner",
+      subContractorPartner: "CompanyPartner",
       subContractorName: "Name",
       subContractorId: "SupplierNo",
+      subContractorCoef : ({ SubContractorCoef }) => Number.parseFloat(SubContractorCoef) ? SubContractorCoef : 1,
+      subContractorPartner: "SubContractorPartner"
     })
-
-
 
   };
 });

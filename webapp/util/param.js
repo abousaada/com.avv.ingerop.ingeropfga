@@ -3,10 +3,40 @@ sap.ui.define([
     "use strict";
 
     return {
+        defaultNA:
+        {
+            "RF":[
+                { identifier: "Garantie", field: "Assurance", value: "NA" }
+            ],
+            "FG":[
+                { identifier: "Identification", field: "Activity", value: "FGE" },
+                { identifier: "Identification", field: "Soufam", value: "" },
+                { identifier: "Garantie", field: "Assurance", value: "NA" },
+                { identifier: "Contrat", field: "Mission", value: "NOTA" },
+            ],
+            "FS":[
+                { identifier: "Identification", field: "Activity", value: "FGE" },
+                { identifier: "Identification", field: "Soufam", value: "NAA" },
+                { identifier: "Garantie", field: "Assurance", value: "NA" },
+                { identifier: "Contrat", field: "Mission", value: "NOTA" },
+            ],
+            "OF":[
+                { identifier: "Garantie", field: "Assurance", value: "NA" },
+                { identifier: "Contrat", field: "Mission", value: "NOTA" },
+            ],
+            "PI":[
+                { identifier: "Identification", field: "Activity", value: "FGE" },
+                { identifier: "Identification", field: "Soufam", value: "NAA" },
+                { identifier: "Garantie", field: "Assurance", value: "NA" },
+                { identifier: "Contrat", field: "Mission", value: "NOTA" },
+            ]
+        }
+        ,
         //All header fields
         headerFieldsList: {
             BusinessNo: {
                 identifier: "Identification",
+                defaultValue: { create: null, modify: null },
                 visible: { create: false, modify: true },
                 enabled: { create: true, modify: true },
                 mandatory: { type: [], default: false, create: true, modify: true },
@@ -14,6 +44,7 @@ sap.ui.define([
             },
             Type: {
                 identifier: "Identification",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
                 mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI"], default: true, create: true, modify: true },
@@ -21,6 +52,7 @@ sap.ui.define([
             },
             BusinessName: {
                 identifier: "Identification",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
                 mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI"], default: false, create: true, modify: true },
@@ -28,13 +60,15 @@ sap.ui.define([
             },
             BusinessStatus: {
                 identifier: "Identification",
+                defaultValue: { create: null, modify: null },
                 visible: { create: false, modify: true },
-                enabled: { create: false, modify: true },
+                enabled: { create: false, modify: false },
                 mandatory: { type: [], default: false, create: true, modify: true },
                 action: null
             },
             UFOName: {
                 identifier: "Identification",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
                 mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI"], default: false, create: true, modify: true },
@@ -42,6 +76,7 @@ sap.ui.define([
             },
             CDG: {
                 identifier: "Identification",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
                 mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI"], default: false, create: true, modify: true },
@@ -49,6 +84,7 @@ sap.ui.define([
             },
             CompanyCode: {
                 identifier: "Identification",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: false, modify: false },
                 mandatory: { type: [], default: false, create: true, modify: true },
@@ -56,27 +92,31 @@ sap.ui.define([
             },
             Activity: {
                 identifier: "Identification",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
-                mandatory: { type: ["PO", "OI", "RF", "FS", "OF"], default: false, create: true, modify: true },
+                mandatory: { type: ["PO", "OI", "RF", "OF"], default: false, create: true, modify: true },
                 action: "onActivityChange"
             },
             Branche: {
                 identifier: "Identification",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: false },
-                enabled: { create: true, modify: false },
+                enabled: { create: true, modify: true },
                 mandatory: { type: [], default: false, create: true, modify: true },
                 action: null
             },
             Soufam: {
                 identifier: "Identification",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
-                mandatory: { type: ["PO", "OI", "RF", "FS", "OF"], default: false, create: true, modify: true },
+                mandatory: { type: ["PO", "OI", "RF", "OF"], default: false, create: true, modify: true },
                 action: null
             },
             PROJM: {
                 identifier: "Identification",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
                 mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI"], default: false, create: true, modify: true },
@@ -84,6 +124,7 @@ sap.ui.define([
             },
             Site: {
                 identifier: "Identification",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: false },
                 enabled: { create: true, modify: true },
                 mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI"], default: false, create: true, modify: true },
@@ -91,6 +132,7 @@ sap.ui.define([
             },
             International: {
                 identifier: "Identification",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: false },
                 enabled: { create: true, modify: true },
                 mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI"], default: false, create: true, modify: true },
@@ -98,6 +140,7 @@ sap.ui.define([
             },
             AncienNumero: {
                 identifier: "Identification",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: false },
                 enabled: { create: true, modify: false },
                 mandatory: { type: [], default: false, create: true, modify: true },
@@ -105,7 +148,16 @@ sap.ui.define([
             },
             Rgfact: {
                 identifier: "Identification",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
+                enabled: { create: true, modify: true },
+                mandatory: { type: [], default: false, create: true, modify: true },
+                action: null
+            },
+            Reflet: {
+                identifier: "Identification",
+                defaultValue: { create: null, modify: null },
+                visible: { create: true, modify: false },
                 enabled: { create: true, modify: true },
                 mandatory: { type: [], default: false, create: true, modify: true },
                 action: null
@@ -113,34 +165,39 @@ sap.ui.define([
         // "Facturation"
             Modalr: {
                 identifier: "Facturation",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
-                mandatory: { type: ["PO", "OI"], default: false, create: true, modify: true },
+                mandatory: { type: [], default: false, create: true, modify: true },
                 action: null
             },
             Avance: {
                 identifier: "Facturation",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
-                mandatory: { type: ["PO", "OI"], default: false, create: true, modify: true },
+                mandatory: { type: [], default: false, create: true, modify: true },
                 action: null
             },
             plateformDemat: {
                 identifier: "Facturation",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: false },
                 enabled: { create: true, modify: true },
-                mandatory: { type: ["PO", "OI"], default: false, create: true, modify: true },
+                mandatory: { type: [], default: false, create: true, modify: true },
                 action: null
             },
             Rtgart: {
                 identifier: "Facturation",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: false },
                 enabled: { create: true, modify: true },
-                mandatory: { type: ["PO", "OI"], default: false, create: true, modify: true },
+                mandatory: { type: [], default: false, create: true, modify: true },
                 action: null
             },
             VAT: {
                 identifier: "Facturation",
+                defaultValue: { create: 20, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
                 mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI"], default: false, create: true, modify: true },
@@ -148,20 +205,16 @@ sap.ui.define([
             },
             Currency: {
                 identifier: "Facturation",
+                defaultValue: { create: "EUR", modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
                 mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI"], default: false, create: true, modify: true },
                 action: null
             },
-            Reflet: {
-                identifier: "Facturation",
-                visible: { create: true, modify: false },
-                enabled: { create: true, modify: true },
-                mandatory: { type: ["RF", "FG", "FS", "OF"], default: false, create: true, modify: true },
-                action: null
-            },
+            
             CurrencyHedging: {
                 identifier: "Facturation",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: false },
                 enabled: { create: true, modify: true },
                 mandatory: { type: [], default: false, create: true, modify: true },
@@ -170,6 +223,7 @@ sap.ui.define([
         // "Client"
             NClient: {
                 identifier: "Client",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
                 mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF"], default: false, create: true, modify: true },
@@ -177,6 +231,7 @@ sap.ui.define([
             },
             CustomerName: {
                 identifier: "Client",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: false, modify: false },
                 mandatory: { type: [], default: false, create: true, modify: true },
@@ -184,13 +239,15 @@ sap.ui.define([
             },
             Scclt: {
                 identifier: "Client",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
-                mandatory: { type: [], default: false, create: true, modify: true },
+                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI"], default: false, create: true, modify: true },
                 action: null
             },
             Siret: {
                 identifier: "Client",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: false },
                 enabled: { create: false, modify: false },
                 mandatory: { type: [], default: false, create: true, modify: true },
@@ -198,6 +255,7 @@ sap.ui.define([
             },
             Country: {
                 identifier: "Client",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: false },
                 enabled: { create: false, modify: false },
                 mandatory: { type: [], default: false, create: true, modify: true },
@@ -206,6 +264,7 @@ sap.ui.define([
         // "Garantie"
             Assurance: {
                 identifier: "Garantie",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
                 mandatory: { type: ["PO", "OI"], default: false, create: true, modify: true },
@@ -214,20 +273,23 @@ sap.ui.define([
         // "Contrat"
             Mission: {
                 identifier: "Contrat",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
-                mandatory: { type: ["PO", "OI", "RF", "FS", "OF"], default: false, create: true, modify: true },
+                mandatory: { type: ["PO", "OI", "RF"], default: false, create: true, modify: true },
                 action: null
             },
             GroupM: {
                 identifier: "Contrat",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
-                mandatory: { type: ["PO", "OI"], default: false, create: true, modify: true },
+                mandatory: { type: [], default: false, create: true, modify: true },
                 action: null
             },
             Mandata: {
                 identifier: "Contrat",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
                 mandatory: { type: [], default: false, create: true, modify: true },
@@ -235,6 +297,7 @@ sap.ui.define([
             },
             membreGroupement: {
                 identifier: "Contrat",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: false },
                 enabled: { create: true, modify: true },
                 mandatory: { type: [], default: false, create: true, modify: true },
@@ -242,6 +305,7 @@ sap.ui.define([
             },
             projetAgora: {
                 identifier: "Contrat",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
                 mandatory: { type: [], default: false, create: true, modify: true },
@@ -249,6 +313,7 @@ sap.ui.define([
             },
             voletEcologie: {
                 identifier: "Contrat",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
                 mandatory: { type: [], default: false, create: true, modify: true },
@@ -256,6 +321,7 @@ sap.ui.define([
             },
             Business: {
                 identifier: "Contrat",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: false },
                 enabled: { create: true, modify: true },
                 mandatory: { type: [], default: false, create: true, modify: true },
@@ -263,6 +329,7 @@ sap.ui.define([
             },
             eligibleCir: {
                 identifier: "Contrat",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: false },
                 enabled: { create: true, modify: true },
                 mandatory: { type: ["PO", "OI"], default: false, create: true, modify: true },
@@ -270,6 +337,7 @@ sap.ui.define([
             },
             projetCup: {
                 identifier: "Contrat",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
                 mandatory: { type: [], default: false, create: true, modify: true },
@@ -278,6 +346,7 @@ sap.ui.define([
         // "Prix"
             Mtctr: {
                 identifier: "Prix",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
                 mandatory: { type: [], default: false, create: true, modify: true },
@@ -285,6 +354,7 @@ sap.ui.define([
             },
             nonAcquis: {
                 identifier: "Prix",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: false },
                 enabled: { create: true, modify: true },
                 mandatory: { type: [], default: false, create: true, modify: true },
@@ -292,6 +362,7 @@ sap.ui.define([
             },
             Paring: {
                 identifier: "Prix",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
                 mandatory: { type: [], default: false, create: true, modify: true },
@@ -299,6 +370,7 @@ sap.ui.define([
             },
             depenseCommercial: {
                 identifier: "Prix",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: false },
                 enabled: { create: true, modify: true },
                 mandatory: { type: [], default: false, create: true, modify: true },
@@ -307,6 +379,7 @@ sap.ui.define([
         // "Travaux"
             Mttrvx: {
                 identifier: "Travaux",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
                 mandatory: { type: [], default: false, create: true, modify: true },
@@ -314,6 +387,7 @@ sap.ui.define([
             },
             Ingtrvx: {
                 identifier: "Travaux",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: false, modify: false },
                 mandatory: { type: [], default: false, create: true, modify: true },
@@ -322,6 +396,7 @@ sap.ui.define([
         // "Info"
             Period: {
                 identifier: "Info",
+                defaultValue: { create: null, modify: null },
                 visible: { create: false, modify: true },
                 enabled: { create: false, modify: true },
                 mandatory: { type: [], default: false, create: true, modify: true },
@@ -330,6 +405,7 @@ sap.ui.define([
         // "Duree"
             StartDate: {
                 identifier: "Duree",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
                 mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI"], default: false, create: true, modify: true },
@@ -337,6 +413,7 @@ sap.ui.define([
             },
             EndDate: {
                 identifier: "Duree",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
                 mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI"], default: false, create: true, modify: true },
@@ -344,6 +421,7 @@ sap.ui.define([
             },
             NbOfMonth: {
                 identifier: "Duree",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: false, modify: false },
                 mandatory: { type: [], default: false, create: true, modify: true },
@@ -351,6 +429,7 @@ sap.ui.define([
             },
             RemainingMonth: {
                 identifier: "Duree",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: false, modify: false },
                 mandatory: { type: [], default: false, create: true, modify: true },
@@ -359,6 +438,7 @@ sap.ui.define([
         // "Qualite"
             UrlCup: {
                 identifier: "Qualite",
+                defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
                 mandatory: { type: [], default: false, create: true, modify: true },
@@ -367,6 +447,13 @@ sap.ui.define([
         },
         //All Section except header fields Section
         headerSectionList: {
+            info: {
+                key: "com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--com.sap.vocabularies.UI.v1.FieldGroup::Info::FormGroup",
+                visible: {
+                    create: false,
+                    modify: true
+                }
+            },
             summary: { 
                 key: "AfterFacet::ZC_FGASet::GeneralInfo::Section",
                 visible: {

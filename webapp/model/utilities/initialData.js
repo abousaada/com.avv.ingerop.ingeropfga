@@ -23,12 +23,17 @@ sap.ui.define([], function() {
         ],
         "Notes": '',
         "missionTypes": [
+            { code: "GEN", description: "GEN" },
             { code: "AVP", description: "AVP" },
             { code: "PRO", description: "PRO" },
             { code: "ACT", description: "ACT" },
             { code: "DCE", description: "DCE" },
             { code: "EXE", description: "EXE" }
-            // Add other mission types as needed
+        ],
+        "missionStatus": [
+          { code: "A", description: "Acquis" },
+          { code: "N", description: "Non Acquis" },
+          { code: "R", description: "Réclamé" }
         ]
       };
   });

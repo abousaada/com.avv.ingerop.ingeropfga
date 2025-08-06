@@ -4,9 +4,10 @@ sap.ui.define([
     "./utilities/formatter",
     "./utilities/filter",
     "./utilities/subContracting",
-    "../util/constant"
+    "../util/constant",
+    "../util/helper",
 ],
-    function (BaseModel, InitialData, Formatter, Filter, SubContracting, Constant) {
+    function (BaseModel, InitialData, Formatter, Filter, SubContracting, Constant, Helper) {
         "use strict";
 
         return BaseModel.extend("com.avv.ingerop.ingeropfga.model.utilities", {
@@ -17,11 +18,15 @@ sap.ui.define([
                 this.oSubContracting = new SubContracting(this);
             },
 
+            setView(oView){
+                this.oView = oView;
+            },
+
             reInit() {
                 this.setData({ ...InitialData });
             },
 
-            buildPxSubContractingTreeData(){
+            buildPxSubContractingTreeData() {
                 const { treeData, treeHeader } = this.oSubContracting.buildTreeData();
                 this.setPxSubContractingHierarchy(treeData);
                 this.setPxSubContractingHeader(treeHeader);
@@ -56,7 +61,7 @@ sap.ui.define([
                     this.setPxAutres(pxAutres || []);
 
                     this.setPxSousTraitance(pxSubContracting || []);
-                // A REMETTRE PROPRE
+                    // A REMETTRE PROPRE
                     this.onCalculChartsData(previsions, recaps, charts, chartsadddata);
                 //Notes
                     this.setNotes(notes);
@@ -137,7 +142,7 @@ sap.ui.define([
                         };
                         aData.push(oItem);
                     }
-                    
+
                     if (oModelRecap[i].row_type === "CHARGE") {
                         var oItem = {
                             Categorie: oModelRecap[i].row_description,
@@ -154,9 +159,9 @@ sap.ui.define([
                         aData.push(oItem);
                     }
                 }
-                
+
                 //boucle sur model synthesis
-                for(var j = 0; j < oModelSynthesis.length; j++){
+                for (var j = 0; j < oModelSynthesis.length; j++) {
                     // MAIN D'OEUVRE
                     if (oModelSynthesis[j].line_item === "MAIN_OEUV") {
                         var oItem = {
@@ -175,8 +180,26 @@ sap.ui.define([
                     }
                 }
 
-                for (var g = 0; g < oModelAdditionnalChart.length; g++){
+                for (var g = 0; g < oModelAdditionnalChart.length; g++) {
                     if (oModelAdditionnalChart[g].line_item === "DELAIS") {
+                        if (oModelAdditionnalChart[g].Type === "Realised") {
+                            var oItem = {
+                                Categorie: oModelAdditionnalChart[g].description,
+                                Type: "Réalisé",
+                                Valeur: oModelAdditionnalChart[g].Value
+                            };
+                            aData.push(oItem);
+                        }
+                        else {
+                            var oItem = {
+                                Categorie: oModelAdditionnalChart[g].description,
+                                Type: "A venir",
+                                Valeur: oModelAdditionnalChart[g].Value
+                            };
+                            aData.push(oItem);
+                        }
+                    }
+                    if (oModelAdditionnalChart[g].line_item === "JH") {
                         if (oModelAdditionnalChart[g].Type=== "Realised") {
                             var oItem = {
                                 Categorie: oModelAdditionnalChart[g].description,
@@ -201,9 +224,9 @@ sap.ui.define([
                 this.setCharts(aData);
 
 
-               // 2ème graphique - Facturation et dépenses 12 derniers mois
+                // 2ème graphique - Facturation et dépenses 12 derniers mois
                 var oRecettes = oModelChart.find(obj => obj.line_item === "RECETTES");
-                var oCharges  = oModelChart.find(obj => obj.line_item === "CHARGES");
+                var oCharges = oModelChart.find(obj => obj.line_item === "CHARGES");
 
                 if (oRecettes && oCharges) {
                     const totalMonths = 12; 
@@ -375,34 +398,40 @@ sap.ui.define([
                     const period = this.getPeriod();
                     const urlBusinessNo = encodeURIComponent(businessNo);
                     const urlPeriod = encodeURIComponent(period);
-
+                    this.setTabBusy(true);
                     const sPath = `/ZC_FGASet(BusinessNo='${urlBusinessNo}',p_period='${urlPeriod}')/to_Missions`;
                     console.log(`retrieve missions with period: ${period} and BusinessNo: ${businessNo}`);
                     const missions = await this.read(sPath);
+                    this.setTabBusy(false);
                     return missions?.results || [];
                 } catch (error) {
+                    this.setTabBusy(false);
                     console.log(error);
                 }
             },
 
             async getBEPxAutres() {
                 try {
+                    this.setTabBusy(true);
                     const businessNo = this.getBusinessNo();
                     const period = this.getPeriod();
-                    const urlBusinessNo = encodeURIComponent(businessNo).slice(0, -2);
+                    const urlBusinessNo = encodeURIComponent(businessNo);
                     const urlPeriod = encodeURIComponent(period);
 
                     const sPath = `/ZC_FGASet(BusinessNo='${urlBusinessNo}',p_period='${urlPeriod}')/to_BudgetPxAutre`;
                     console.log(`retrieve Budget Px Autre with period: ${period} and BusinessNo: ${businessNo}`);
                     const pxAutres = await this.read(sPath);
+                    this.setTabBusy(false);
                     return pxAutres?.results || [];
                 } catch (error) {
+                    this.setTabBusy(false);
                     console.log(error);
                 }
             },
 
             async getBEPxExtSubContracting() {
                 try {
+                    this.setTabBusy(true);
                     const businessNo = this.getBusinessNo();
                     const period = this.getPeriod();
                     const urlBusinessNo = encodeURIComponent(businessNo);
@@ -410,8 +439,10 @@ sap.ui.define([
                     const sPath = `/ZC_FGASet(BusinessNo='${urlBusinessNo}',p_period='${urlPeriod}')/to_BudgetPxSubContracting`;
                     console.log(`retrieve previsions with period: ${period} and BusinessNo: ${businessNo}`);
                     const pxSubContract = await this.read(sPath);
+                    this.setTabBusy(false);
                     return (pxSubContract?.results || []).map(Formatter.formatBudgetSubContracting);
                 } catch (error) {
+                    this.setTabBusy(false);
                     console.log(error);
                 }
             },
@@ -463,6 +494,7 @@ sap.ui.define([
 
             async getBECharts() {
                 try {
+                    this.setChartBusy(true);
                     const businessNo = this.getBusinessNo();
                     const period = this.getPeriod();
                     const urlBusinessNo = encodeURIComponent(businessNo);
@@ -470,14 +502,17 @@ sap.ui.define([
                     const sPath = `/ZC_FGA_CHART(p_businessno='${urlBusinessNo}',p_period='${urlPeriod}')/Set`;
                     console.log(`retrieve charts data with period: ${period} and BusinessNo: ${businessNo}`);
                     const charts = await this.read(sPath);
+                    this.setChartBusy(false);
                     return charts?.results || [];
                 } catch (error) {
+                    this.setChartBusy(false);
                     console.log(error);
                 }
             },
 
             async getBEChartsAdditionalData() {
                 try {
+                    this.setChartBusy(true);
                     const businessNo = this.getBusinessNo();
                     const period = this.getPeriod();
                     const urlBusinessNo = encodeURIComponent(businessNo);
@@ -485,8 +520,10 @@ sap.ui.define([
                     const sPath = `/ZC_FGA_CHART_AVANCEMENT(p_businessno='${urlBusinessNo}',p_period='${urlPeriod}')/Set`;
                     console.log(`retrieve charts additionnal data with period: ${period} and BusinessNo: ${businessNo}`);
                     const chartsadddata = await this.read(sPath);
+                    this.setChartBusy(false);
                     return chartsadddata?.results || [];
                 } catch (error) {
+                    this.setChartBusy(false);
                     console.log(error);
                 }
             },
@@ -511,7 +548,7 @@ sap.ui.define([
                 }
             },
 
-            async getBECompanyByProfitCenter(ProfitCenterCode){
+            async getBECompanyByProfitCenter(ProfitCenterCode) {
                 try {
                     const options = { urlParameters: { ProfitCenterCode } };
                     const company = await this.callFunction("/GetCompanyCodeByProfitCenter", options);
@@ -536,6 +573,16 @@ sap.ui.define([
                 }
             },
 
+            setTabBusy(isBusy){
+                const tabId = Helper.getTabId();
+                this.oView.byId(tabId).setBusy(isBusy);
+            },
+
+            setChartBusy(isBusy){
+                const graphId = Helper.getGraphicId();
+                this.oView.byId(graphId).setBusy(isBusy);
+            },
+
             setYearByPeriod(period) {
                 // Extract year from sPeriod (MMYYYY format)
                 var sYear = period.substring(2);
@@ -556,9 +603,10 @@ sap.ui.define([
                 return this.getPxAutres();
             },
 
-            formattedPxSubContractingExt(){
-                // return this.getPxSubContractingHierarchy();
-                return this.getPxSousTraitance();
+            formattedPxSubContractingExt() {
+                return this.oSubContracting
+                           .formattedPxSubContractingExt()
+                           .map(Formatter.reverseFormatBudgetSubContracting);
             }
 
         });

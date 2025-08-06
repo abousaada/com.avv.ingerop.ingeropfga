@@ -102,6 +102,29 @@ sap.ui.define([
         return {identifier, field, visible: visible[_getConstantMode(mode)]};
       });
     },
+
+    // getFieldDefaultValueByMode:function(mode){
+    //   return Object.entries(Params.headerFieldsList).map(([field, {identifier, defaultValue}]) => {
+    //     return {identifier, field, defaultValue: defaultValue[_getConstantMode(mode)]};
+    //   });
+    // },
+
+    getBusinessTypes: function(){
+      return Constant.types;
+    },
+
+    getGraphicId: function(){
+      return Params.headerSectionList.graphic.key;
+    },
+
+    getTabId: function(){
+      return Params.headerSectionList.budget.key;
+    },
+
+    getDefaultNAValueByType(type){
+      return Params.defaultNA[type] || [];
+    },
+
     getFieldEnabledByMode:function(mode){
       return Object.entries(Params.headerFieldsList).map(([field, {identifier, enabled}]) => {
         return {identifier, field, enabled: enabled[_getConstantMode(mode)]};

@@ -7,32 +7,6 @@ sap.ui.define([
 
     return Controller.extend('com.avv.ingerop.ingeropfga.ext.Mission', {
 
-        /*onAddMission: function () {
-            this.getView().getModel("utilities").addMissionNewLine();
-            const oTable = this.byId("missionsTable");
-            // Focus on the new row
-            setTimeout(function () {
-                const oRows = oTable.getRows();
-                oRows[oRows.length - 1].focus();
-            }, 200);
-        },
-
-
-        onDeleteMission: function (oEvent) {
-            var oRowContext = oEvent.getSource().getBindingContext("utilities");
-            var aMissions = this.getView().getModel("utilities").getProperty("/missions");
-        
-            var iIndex = aMissions.findIndex(function (mission) {
-                return mission.MissionId === oRowContext.getProperty("MissionId") &&
-                       mission.BusinessNo === oRowContext.getProperty("BusinessNo");
-            });
-            
-            if (iIndex !== -1) {
-                aMissions.splice(iIndex, 1);
-                
-                this.getView().getModel("utilities").setProperty("/missions", aMissions);
-            }
-        },*/
 
         prepareMissionsTreeData: function () {
             var missions = this.getView().getModel("utilities").getProperty("/missions");
@@ -179,24 +153,24 @@ sap.ui.define([
 
             // ABO : This code needs refactoring
             const oldMissions = this.getView().getModel("utilities").getMissions();
-            const BusinessNo = this.getView().getModel("utilities").getBusinessNo().slice(0, -2);
+            const BusinessNo = this.getView().getModel("utilities").getBusinessNo();
             const maxMission = oldMissions
                 .filter(mission => mission.BusinessNo === BusinessNo)
                 .reduce((max, current) => {
-                    const currentMatch = current.MissionId.match(/-(\d+)$/);
+                    const currentMatch = current.MissionId.match(/^.+?(\d{2})$/);
                     const currentNum = currentMatch ? parseInt(currentMatch[1]) : 0;
 
-                    const maxMatch = max.MissionId?.match(/-(\d+)$/);
+                    const maxMatch = max.MissionId?.match(/^.+?(\d{2})$/);
                     const maxNum = maxMatch ? parseInt(maxMatch[1]) : 0;
 
                     return currentNum > maxNum ? current : max;
-                }, { MissionId: `${BusinessNo}-000` });
+                }, { MissionId: `${BusinessNo}00` });
 
-            const match = maxMission.MissionId.match(/-(\d+)$/);
+            const match = maxMission.MissionId.match(/^.+?(\d{2})$/);
             const currentMax = match ? parseInt(match[1]) : 0;
             const nextNum = currentMax + 1;
-            const paddedNum = String(nextNum).padStart(3, '0'); // add zeros "005"
-            const MissionId = `${BusinessNo}00-${paddedNum}`; // "MEDXXXXXX000000069-005"
+            const paddedNum = String(nextNum).padStart(2, '0'); // add zeros "005"
+            const MissionId = `${BusinessNo}${paddedNum}`; // "MEDXXXXXX000000069-005"
             //End this code needs refactoring
 
             // Create new mission with default values
@@ -284,6 +258,79 @@ sap.ui.define([
                 }
             }
             return false;
+        },
+
+        onRefreshTree: function() {
+            this.getView().setBusy(true);
+            
+            var oModel = this.getView().getModel("utilities");
+            var aMissions = oModel.getProperty("/missions");
+            
+            try {
+                // Rebuild the hierarchy
+                var aHierarchy = this.buildMissionHierarchy(aMissions);
+                
+                // Update the model
+                oModel.setProperty("/missionsHierarchy", aHierarchy);
+                
+                sap.m.MessageToast.show("Mission tree structure refreshed successfully");
+            } catch (error) {
+                sap.m.MessageBox.error("Error refreshing tree: " + error.message);
+            } finally {
+                // Hide busy indicator
+                this.getView().setBusy(false);
+            }
+        },
+        
+        buildMissionHierarchy: function(aMissions) {
+            var treeData = [];
+            var fgaGroups = {};
+        
+            if (!aMissions) return treeData;
+        
+            aMissions.forEach(function(item) {
+                if (!fgaGroups[item.BusinessNo]) {
+                    fgaGroups[item.BusinessNo] = {
+                        name: item.BusinessNo,
+                        isNode: true,
+                        isL0: true,
+                        BusinessNo: item.BusinessNo,
+                        children: {}
+                    };
+                }
+        
+                // Create Regroupement level if it doesn't exist
+                if (!fgaGroups[item.BusinessNo].children[item.Regroupement]) {
+                    fgaGroups[item.BusinessNo].children[item.Regroupement] = {
+                        name: item.Regroupement,
+                        isNode: true,
+                        isL0: false,
+                        Regroupement: item.Regroupement,
+                        children: []
+                    };
+                }
+        
+                fgaGroups[item.BusinessNo].children[item.Regroupement].children.push(item);
+            });
+        
+            for (var businessNo in fgaGroups) {
+                var fgaGroup = fgaGroups[businessNo];
+                fgaGroup.children = Object.values(fgaGroup.children);
+                treeData.push(fgaGroup);
+            }
+        
+            // Sort the hierarchy
+            treeData.sort(function(a, b) {
+                return (a.name || "").localeCompare(b.name || "");
+            });
+        
+            treeData.forEach(function(fgaGroup) {
+                fgaGroup.children.sort(function(a, b) {
+                    return (a.name || "").localeCompare(b.name || "");
+                });
+            });
+        
+            return treeData;
         },
 
 

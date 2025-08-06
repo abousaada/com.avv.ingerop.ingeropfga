@@ -63,9 +63,31 @@
                         </table:template>
                     </table:Column>
 
+                    <!-- Mission Status Column -->
+                    <table:Column width="8rem">
+                        <Label text="Status" />
+                        <table:template>
+                            <ComboBox
+                                selectedKey="{utilities>statutmission}"
+                                items="{
+                                path: 'utilities>/missionStatus',
+                                templateShareable: false
+                            }"
+                                editable="{ui>/editable}"
+                                width="100%"
+                                visible="{= !${utilities>isNode}}"
+                            >
+                                <core:Item
+                                    key="{utilities>code}"
+                                    text="{utilities>description}"
+                                />
+                            </ComboBox>
+                        </table:template>
+                    </table:Column>
+
                     <!-- Mission Type Column -->
                     <table:Column width="8rem">
-                        <Label text="Mission" />
+                        <Label text="Type" />
                         <table:template>
                             <ComboBox
                                 selectedKey="{utilities>MissionCode}"
@@ -167,7 +189,7 @@
             </table:TreeTable>
 
             <!-- Refresh Toolbar -->
-            <Toolbar
+            <!--Toolbar
                 width="100%"
                 design="Transparent"
             >
@@ -179,7 +201,7 @@
                     type="Emphasized"
                     visible="{ui>/editable}"
                 />
-            </Toolbar>
+            </Toolbar-->
         </content>
     </Panel>
 </core:FragmentDefinition>

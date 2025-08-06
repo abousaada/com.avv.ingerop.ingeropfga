@@ -294,13 +294,13 @@ sap.ui.define([
                     totals.totalAcquis.FinAffaire += Number(node.FinAffaire) || 0;
 
                     // Read cumulé from entity
-                    totals.cumule.VoyageDeplacement += Number(node.CumulVoyageDeplacement) || 0;
-                    totals.cumule.AutresFrais += Number(node.CumulAutresFrais) || 0;
-                    totals.cumule.CreancesDouteuses += Number(node.CumulCreancesDouteuses) || 0;
-                    totals.cumule.EtudesTravaux += Number(node.CumulEtudesTravaux) || 0;
-                    totals.cumule.SinistreContentieux += Number(node.CumulSinistreContentieux) || 0;
-                    totals.cumule.AleasDivers += Number(node.CumulAleasDivers) || 0;
-                    totals.cumule.FinAffaire += Number(node.CumulFinAffaire) || 0;
+                    totals.cumule.VoyageDeplacement = Number(node.CumulVoyageDeplacement) || 0;
+                    totals.cumule.AutresFrais = Number(node.CumulAutresFrais) || 0;
+                    totals.cumule.CreancesDouteuses = Number(node.CumulCreancesDouteuses) || 0;
+                    totals.cumule.EtudesTravaux = Number(node.CumulEtudesTravaux) || 0;
+                    totals.cumule.SinistreContentieux = Number(node.CumulSinistreContentieux) || 0;
+                    totals.cumule.AleasDivers = Number(node.CumulAleasDivers) || 0;
+                    totals.cumule.FinAffaire = Number(node.CumulFinAffaire) || 0;
 
                     // Read GlAccounts from entity
                     totals.cumule.GLAccountVoyageDeplacement = node.GLAccountVoyageDeplacement;

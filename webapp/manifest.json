@@ -308,7 +308,28 @@
       "extensions": {
         "sap.ui.controllerExtensions": {
           "sap.suite.ui.generic.template.ListReport.view.ListReport": {
-            "controllerName": "com.avv.ingerop.ingeropfga.ext.controller.extendLR"
+            "controllerName": "com.avv.ingerop.ingeropfga.ext.controller.extendLR",
+            "sap.ui.generic.app": {
+              "ZC_FGASet": {
+                "EntitySet": "ZC_FGASet",
+                "Actions": {
+                  "customAction1": {
+                    "id": "manageSTIButton",
+                    "text": "Manage STI",
+                    "press": "onManageSTIButtonPress",
+                    "requiresSelection": false,
+                    "icon": "sap-icon://action"
+                  },
+                  "customAction2": {
+                    "id": "manageEMXButton",
+                    "text": "Manage EMX",
+                    "press": "onManageEMXButtonPress",
+                    "requiresSelection": true,
+                    "icon": "sap-icon://action"
+                  }
+                }
+              }
+            }
           },
           "sap.suite.ui.generic.template.ObjectPage.view.Details": {
             "controllerName": "com.avv.ingerop.ingeropfga.ext.controller.extendOP",
