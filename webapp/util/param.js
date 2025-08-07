@@ -162,7 +162,7 @@ sap.ui.define([
                 mandatory: { type: [], default: false, create: true, modify: true },
                 action: null
             },
-        // "Facturation"
+            // "Facturation"
             Modalr: {
                 identifier: "Facturation",
                 defaultValue: { create: null, modify: null },
@@ -211,7 +211,7 @@ sap.ui.define([
                 mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI"], default: false, create: true, modify: true },
                 action: null
             },
-            
+
             CurrencyHedging: {
                 identifier: "Facturation",
                 defaultValue: { create: null, modify: null },
@@ -220,7 +220,7 @@ sap.ui.define([
                 mandatory: { type: [], default: false, create: true, modify: true },
                 action: null
             },
-        // "Client"
+            // "Client"
             NClient: {
                 identifier: "Client",
                 defaultValue: { create: null, modify: null },
@@ -261,7 +261,7 @@ sap.ui.define([
                 mandatory: { type: [], default: false, create: true, modify: true },
                 action: null
             },
-        // "Garantie"
+            // "Garantie"
             Assurance: {
                 identifier: "Garantie",
                 defaultValue: { create: null, modify: null },
@@ -270,7 +270,7 @@ sap.ui.define([
                 mandatory: { type: ["PO", "OI"], default: false, create: true, modify: true },
                 action: null
             },
-        // "Contrat"
+            // "Contrat"
             Mission: {
                 identifier: "Contrat",
                 defaultValue: { create: null, modify: null },
@@ -343,7 +343,7 @@ sap.ui.define([
                 mandatory: { type: [], default: false, create: true, modify: true },
                 action: null
             },
-        // "Prix"
+            // "Prix"
             Mtctr: {
                 identifier: "Prix",
                 defaultValue: { create: null, modify: null },
@@ -376,7 +376,7 @@ sap.ui.define([
                 mandatory: { type: [], default: false, create: true, modify: true },
                 action: null
             },
-        // "Travaux"
+            // "Travaux"
             Mttrvx: {
                 identifier: "Travaux",
                 defaultValue: { create: null, modify: null },
@@ -393,7 +393,7 @@ sap.ui.define([
                 mandatory: { type: [], default: false, create: true, modify: true },
                 action: null
             },
-        // "Info"
+            // "Info"
             Period: {
                 identifier: "Info",
                 defaultValue: { create: null, modify: null },
@@ -402,7 +402,7 @@ sap.ui.define([
                 mandatory: { type: [], default: false, create: true, modify: true },
                 action: null
             },
-        // "Duree"
+            // "Duree"
             StartDate: {
                 identifier: "Duree",
                 defaultValue: { create: null, modify: null },
@@ -435,7 +435,7 @@ sap.ui.define([
                 mandatory: { type: [], default: false, create: true, modify: true },
                 action: null
             },
-        // "Qualite"
+            // "Qualite"
             UrlCup: {
                 identifier: "Qualite",
                 defaultValue: { create: null, modify: null },
@@ -454,7 +454,7 @@ sap.ui.define([
                     modify: true
                 }
             },
-            summary: { 
+            summary: {
                 key: "AfterFacet::ZC_FGASet::GeneralInfo::Section",
                 visible: {
                     create: false,
@@ -468,20 +468,32 @@ sap.ui.define([
                     modify: true
                 }
             },
-            missions: {
-                key : "AfterFacet::ZC_FGASet::Missions::Section",
-                visible: {
-                    create: false,
-                    modify: false
-                }
-            },
+            // missions: {
+            //     key: "AfterFacet::ZC_FGASet::Missions::Section",
+            //     visible: {
+            //         create: false,
+            //         modify: false
+            //     }
+            // },
             graphic: {
-                key : "template:::ObjectPageSection:::AfterFacetExtensionSectionWithKey:::sFacet::GeneralInfo:::sEntitySet::ZC_FGASet:::sFacetExtensionKey::1",
+                key: "BeforeFacet::ZC_FGASet::TableInfo::Section",
                 visible: {
                     create: false,
                     modify: true
                 }
-            }
+            },
+            note: {
+                // AfterFacet|ZC_FGASet|GeneralInfo|1
+                key: "com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--template:::ObjectPageSection:::AfterFacetExtensionSectionWithKey:::sFacet::GeneralInfo:::sEntitySet::ZC_FGASet:::sFacetExtensionKey::1",
+                visible: {
+                    create: false,
+                    modify: true
+                }
+            },
+            
+
+
+            // com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--objectPage-anchBar-com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--template:::ObjectPageSection:::AfterFacetExtensionSectionWithKey:::sFacet::GeneralInfo:::sEntitySet::ZC_FGASet:::sFacetExtensionKey::1-anchor
         }
     };
 });
