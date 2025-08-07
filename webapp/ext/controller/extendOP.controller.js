@@ -78,7 +78,7 @@ sap.ui.define(
                         const utilitiesModel = this.getModel("utilities");
 
                         // Accès au contexte via la vue
-                        const oView = this.base.getView();
+                        const  oView= this.base.getView();
                         const oContext = oView.getBindingContext();
 
                         if (!oContext) {
@@ -86,7 +86,7 @@ sap.ui.define(
                             throw new Error("Impossible d'accéder au contexte.");
                         }
 
-                        if (!this.getModel("utilities").validDataBeforeSave()) {
+                        if (!this.getModel("utilities").validDataBeforeSave(oView)) {
                             sap.m.MessageBox.error("Veuillez Vérifier tous les champs");
                             return new Promise((resolve, reject) => {
                                 reject();
@@ -117,15 +117,19 @@ sap.ui.define(
                                 this._setBusy(false);
                                 Helper.errorMessage("FGA updated fail");
                                 console.log(error);
-                                reject();
+                                //reject();
+                                return Promise.reject("No data returned");
+
                             }
 
-                            reject();
+                            //reject();
+                            return Promise.reject(error);
                         });
                     } catch (error) {
                         this._setBusy(false);
                         Helper.errorMessage("FGA updated fail");
                         console.log(error);
+                        return Promise.reject(error);
                     }
                 },
             },

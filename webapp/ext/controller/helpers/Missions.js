@@ -170,11 +170,11 @@ sap.ui.define([
             const currentMax = match ? parseInt(match[1]) : 0;
             const nextNum = currentMax + 1;
             const paddedNum = String(nextNum).padStart(2, '0'); // add zeros "005"
-            const MissionId = `${BusinessNo}${paddedNum}`; 
+            const MissionId = `${BusinessNo}${paddedNum}`;
             //End this code needs refactoring
-            
+
             const oContextFGA = oEvent.getSource().getBindingContext();
-            const oFGAEntity = oContextFGA.getObject(); 
+            const oFGAEntity = oContextFGA.getObject();
             const StartDate = oFGAEntity.StartDate;
             const EndDate = oFGAEntity.EndDate;
 
@@ -265,19 +265,19 @@ sap.ui.define([
             return false;
         },
 
-        onRefreshTree: function() {
+        onRefreshTree: function () {
             this.getView().setBusy(true);
-            
+
             var oModel = this.getView().getModel("utilities");
             var aMissions = oModel.getProperty("/missions");
-            
+
             try {
                 // Rebuild the hierarchy
                 var aHierarchy = this.buildMissionHierarchy(aMissions);
-                
+
                 // Update the model
                 oModel.setProperty("/missionsHierarchy", aHierarchy);
-                
+
                 sap.m.MessageToast.show("Mission tree structure refreshed successfully");
             } catch (error) {
                 sap.m.MessageBox.error("Error refreshing tree: " + error.message);
@@ -286,14 +286,14 @@ sap.ui.define([
                 this.getView().setBusy(false);
             }
         },
-        
-        buildMissionHierarchy: function(aMissions) {
+
+        buildMissionHierarchy: function (aMissions) {
             var treeData = [];
             var fgaGroups = {};
-        
+
             if (!aMissions) return treeData;
-        
-            aMissions.forEach(function(item) {
+
+            aMissions.forEach(function (item) {
                 if (!fgaGroups[item.BusinessNo]) {
                     fgaGroups[item.BusinessNo] = {
                         name: item.BusinessNo,
@@ -303,7 +303,7 @@ sap.ui.define([
                         children: {}
                     };
                 }
-        
+
                 // Create Regroupement level if it doesn't exist
                 if (!fgaGroups[item.BusinessNo].children[item.Regroupement]) {
                     fgaGroups[item.BusinessNo].children[item.Regroupement] = {
@@ -314,88 +314,151 @@ sap.ui.define([
                         children: []
                     };
                 }
-        
+
                 fgaGroups[item.BusinessNo].children[item.Regroupement].children.push(item);
             });
-        
+
             for (var businessNo in fgaGroups) {
                 var fgaGroup = fgaGroups[businessNo];
                 fgaGroup.children = Object.values(fgaGroup.children);
                 treeData.push(fgaGroup);
             }
-        
+
             // Sort the hierarchy
-            treeData.sort(function(a, b) {
+            treeData.sort(function (a, b) {
                 return (a.name || "").localeCompare(b.name || "");
             });
-        
-            treeData.forEach(function(fgaGroup) {
-                fgaGroup.children.sort(function(a, b) {
+
+            treeData.forEach(function (fgaGroup) {
+                fgaGroup.children.sort(function (a, b) {
                     return (a.name || "").localeCompare(b.name || "");
                 });
             });
-        
+
             return treeData;
         },
 
-        validateMissionsTreeRequiredFields: function (that) {
-            self = that;
-            const oTable = self.getView().byId("missionsTreeTable");
+        validateMissionsTreeRequiredFields1: function (oView) {
+            return true;
+        },
+
+        validateMissionsTreeRequiredFields: function (oView) {
+            const oTable = oView.byId("missionsTreeTable");
             const aRows = oTable.getRows();
             let isValid = true;
-        
+
             aRows.forEach((oRow) => {
                 const oContext = oRow.getBindingContext("utilities");
+                if (!oContext) return;
+
                 const oData = oContext.getObject();
-        
                 if (!oData.isNode) {
                     const aCells = oRow.getCells();
-        
-                    const oStatusCombo = aCells[3];     // Adjust index based on column order
-                    const oTypeCombo = aCells[4];
-                    const oStartDate = aCells[5];
-                    const oEndDate = aCells[6];
-        
-                    // Check Status
-                    if (!oStatusCombo.getSelectedKey()) {
-                        oStatusCombo.setValueState("Error");
-                        oStatusCombo.setValueStateText("Statut requis");
-                        isValid = false;
-                    } else {
-                        oStatusCombo.setValueState("None");
+
+                    // Regroupement validation
+                    const regroupementContainer = aCells[2]; // adjust index if needed
+                    const regroupementControl = this._findInputControl(regroupementContainer);
+                    if (regroupementControl && regroupementControl.setValueState) {
+                        const value = this._getControlValue(regroupementControl);
+                        if (!value) {
+                            regroupementControl.setValueState("Error");
+                            regroupementControl.setValueStateText("Regroupement required");
+                            isValid = false;
+                        } else {
+                            regroupementControl.setValueState("None");
+                        }
                     }
-        
-                    // Check Type
-                    if (!oTypeCombo.getSelectedKey()) {
-                        oTypeCombo.setValueState("Error");
-                        oTypeCombo.setValueStateText("Type requis");
-                        isValid = false;
-                    } else {
-                        oTypeCombo.setValueState("None");
+                    // Status validation 
+                    const statusContainer = aCells[3];
+                    if (statusContainer && statusContainer.isA("sap.m.HBox")) {
+                        const statusControl = this._findInputControl(statusContainer);
+                        if (statusControl && statusControl.setValueState) {
+                            const statusValue = this._getControlValue(statusControl);
+                            if (!statusValue) {
+                                statusControl.setValueState("Error");
+                                statusControl.setValueStateText("Status required");
+                                isValid = false;
+                            } else {
+                                statusControl.setValueState("None");
+                            }
+                        }
                     }
-        
-                    // Check Start Date
-                    if (!oStartDate.getDateValue()) {
-                        oStartDate.setValueState("Error");
-                        oStartDate.setValueStateText("Date début requise");
-                        isValid = false;
-                    } else {
-                        oStartDate.setValueState("None");
+
+                    // Type validation
+                    const typeContainer = aCells[4];
+                    if (typeContainer && typeContainer.isA("sap.m.HBox")) {
+                        const typeControl = this._findInputControl(typeContainer);
+                        if (typeControl && typeControl.setValueState) {
+                            const typeValue = this._getControlValue(typeControl);
+                            if (!typeValue) {
+                                typeControl.setValueState("Error");
+                                typeControl.setValueStateText("Type required");
+                                isValid = false;
+                            } else {
+                                typeControl.setValueState("None");
+                            }
+                        }
                     }
-        
-                    // Check End Date
-                    if (!oEndDate.getDateValue()) {
-                        oEndDate.setValueState("Error");
-                        oEndDate.setValueStateText("Date fin requise");
-                        isValid = false;
-                    } else {
-                        oEndDate.setValueState("None");
+
+                    // Date validation
+                    const startDateContainer = aCells[5];
+                    const startDateControl = this._findInputControl(startDateContainer);
+                    if (startDateControl && startDateControl.isA("sap.m.DatePicker")) {
+                        if (!startDateControl.getDateValue()) {
+                            startDateControl.setValueState("Error");
+                            startDateControl.setValueStateText("Start date required");
+                            isValid = false;
+                        } else {
+                            startDateControl.setValueState("None");
+                        }
+                    }
+
+                    const endDateContainer = aCells[6];
+                    const endDateControl = this._findInputControl(endDateContainer);
+                    if (endDateControl && endDateControl.isA("sap.m.DatePicker")) {
+                        if (!endDateControl.getDateValue()) {
+                            endDateControl.setValueState("Error");
+                            endDateControl.setValueStateText("End date required");
+                            isValid = false;
+                        } else {
+                            endDateControl.setValueState("None");
+                        }
                     }
                 }
             });
-        
+
             return isValid;
+        },
+
+        _findInputControl: function (hboxContainer) {
+            const aItems = hboxContainer.getItems();
+            for (let i = 0; i < aItems.length; i++) {
+                const oControl = aItems[i];
+                if (oControl.isA("sap.m.Input") ||
+                    oControl.isA("sap.m.Select") ||
+                    oControl.isA("sap.m.ComboBox") ||
+                    oControl.isA("sap.m.DatePicker")) {
+                    return oControl;
+                }
+            }
+            return null;
+        },
+
+
+        _getControlValue: function (oControl) {
+            if (!oControl) return null;
+
+            if (oControl.isA("sap.m.Select")) {
+                return oControl.getSelectedKey();
+            } else if (oControl.isA("sap.m.ComboBox")) {
+                return oControl.getValue();
+            } else if (oControl.isA("sap.m.Input")) {
+                return oControl.getValue();
+            } else if (oControl.isA("sap.m.DatePicker")) {
+                return oControl.getDateValue();
+            }
+            return null;
         }
-        
+
     });
 });
