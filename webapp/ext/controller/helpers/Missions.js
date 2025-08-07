@@ -170,8 +170,13 @@ sap.ui.define([
             const currentMax = match ? parseInt(match[1]) : 0;
             const nextNum = currentMax + 1;
             const paddedNum = String(nextNum).padStart(2, '0'); // add zeros "005"
-            const MissionId = `${BusinessNo}${paddedNum}`; // "MEDXXXXXX000000069-005"
+            const MissionId = `${BusinessNo}${paddedNum}`; 
             //End this code needs refactoring
+            
+            const oContextFGA = oEvent.getSource().getBindingContext();
+            const oFGAEntity = oContextFGA.getObject(); 
+            const StartDate = oFGAEntity.StartDate;
+            const EndDate = oFGAEntity.EndDate;
 
             // Create new mission with default values
             var oNewMission = {
@@ -179,8 +184,8 @@ sap.ui.define([
                 Regroupement: oGroupementNode.name,
                 MissionId: MissionId, //"NEW_MISSION_" + new Date().getTime(),
                 MissionCode: "",
-                StartDate: null,
-                EndDate: null,
+                StartDate: StartDate,
+                EndDate: EndDate,
                 ExternalRevenue: 0,
                 LaborBudget: 0,
                 isNode: false
@@ -333,6 +338,64 @@ sap.ui.define([
             return treeData;
         },
 
-
+        validateMissionsTreeRequiredFields: function (that) {
+            self = that;
+            const oTable = self.getView().byId("missionsTreeTable");
+            const aRows = oTable.getRows();
+            let isValid = true;
+        
+            aRows.forEach((oRow) => {
+                const oContext = oRow.getBindingContext("utilities");
+                const oData = oContext.getObject();
+        
+                if (!oData.isNode) {
+                    const aCells = oRow.getCells();
+        
+                    const oStatusCombo = aCells[3];     // Adjust index based on column order
+                    const oTypeCombo = aCells[4];
+                    const oStartDate = aCells[5];
+                    const oEndDate = aCells[6];
+        
+                    // Check Status
+                    if (!oStatusCombo.getSelectedKey()) {
+                        oStatusCombo.setValueState("Error");
+                        oStatusCombo.setValueStateText("Statut requis");
+                        isValid = false;
+                    } else {
+                        oStatusCombo.setValueState("None");
+                    }
+        
+                    // Check Type
+                    if (!oTypeCombo.getSelectedKey()) {
+                        oTypeCombo.setValueState("Error");
+                        oTypeCombo.setValueStateText("Type requis");
+                        isValid = false;
+                    } else {
+                        oTypeCombo.setValueState("None");
+                    }
+        
+                    // Check Start Date
+                    if (!oStartDate.getDateValue()) {
+                        oStartDate.setValueState("Error");
+                        oStartDate.setValueStateText("Date début requise");
+                        isValid = false;
+                    } else {
+                        oStartDate.setValueState("None");
+                    }
+        
+                    // Check End Date
+                    if (!oEndDate.getDateValue()) {
+                        oEndDate.setValueState("Error");
+                        oEndDate.setValueStateText("Date fin requise");
+                        isValid = false;
+                    } else {
+                        oEndDate.setValueState("None");
+                    }
+                }
+            });
+        
+            return isValid;
+        }
+        
     });
 });

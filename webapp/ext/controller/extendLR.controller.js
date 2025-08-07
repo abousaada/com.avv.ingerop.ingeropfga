@@ -16,20 +16,6 @@ sap.ui.define(
 
         return {
 
-            isYearEmpty: function (year) {
-                return !!year;
-            },
-
-            onInitSmartFilterBarExtension: function (oEvent) {
-                //set Year Data on List Report Page
-                oEvent.getSource().attachFilterChange(function (event) {
-                    if (event.getParameters().getParameter("id").includes("p_period")) {
-                        const period = event.getParameters().getParameter("newValue");
-                        this.getModel("utilities").setYearByPeriod(period);
-                    }
-                });
-            },
-
             onSTIPress: function (oEvent) {
                 MessageToast.show("onSTIPress invoked.");
             },

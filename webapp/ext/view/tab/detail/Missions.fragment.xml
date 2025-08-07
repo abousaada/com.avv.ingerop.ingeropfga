@@ -43,9 +43,21 @@
                     <table:Column width="20rem">
                         <Label text="Hierarchy" />
                         <table:template>
-                            <Text
-                                text="{= ${utilities>isNode} ? ${utilities>name} : ${utilities>MissionId}}"
-                            />
+                            <HBox>
+                                <Text
+                                    text="{= ${utilities>isNode} ? ${utilities>name} : ${utilities>MissionId}}"
+                                />
+                                <!--Text
+                                    text="{= ${utilities>name}}"
+                                    visible="{= ${utilities>isNode}}"
+                                />
+                                <Input
+                                    value="{= ${utilities>isNode} ? ${utilities>name} : ${utilities>MissionId}}"
+                                    editable="{ui>/editable}"
+                                    width="15rem"
+                                    visible="{= !${utilities>isNode}}"
+                                /-->
+                            </HBox>
                         </table:template>
                     </table:Column>
 
@@ -66,13 +78,17 @@
                     <table:Column width="10rem">
                         <Label text="Regroupement" />
                         <table:template>
+                            <HBox>
                             <Input
                                 value="{utilities>Regroupement}"
                                 editable="{ui>/editable}"
                                 width="100%"
                                 visible="{= !${utilities>isNode}}"
                                 change=".onRegroupementChange"
+                                required="true"
                             />
+                            <Label text=" *" visible="{= !${utilities>isNode}}"/>
+                            </HBox>
                         </table:template>
                     </table:Column>
 
@@ -89,6 +105,7 @@
                                 editable="{ui>/editable}"
                                 width="100%"
                                 visible="{= !${utilities>isNode}}"
+                                required="true"
                             >
                                 <core:Item
                                     key="{utilities>code}"
@@ -111,6 +128,7 @@
                                 editable="{ui>/editable}"
                                 width="100%"
                                 visible="{= !${utilities>isNode}}"
+                                required="true"
                             >
                                 <core:Item
                                     key="{utilities>code}"
@@ -130,6 +148,7 @@
                                 editable="{ui>/editable}"
                                 width="100%"
                                 visible="{= !${utilities>isNode}}"
+                                required="true"
                             />
                         </table:template>
                     </table:Column>
@@ -144,6 +163,7 @@
                                 editable="{ui>/editable}"
                                 width="100%"
                                 visible="{= !${utilities>isNode}}"
+                                required="true"
                             />
                         </table:template>
                     </table:Column>
