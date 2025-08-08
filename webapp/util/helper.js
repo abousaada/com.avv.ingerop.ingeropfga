@@ -147,6 +147,12 @@ sap.ui.define([
         return {identifier, field};
       });
     },
+    getProjectHeaderFieldList(){
+      return Object.entries(Params.headerProjectFieldList).map(([field, {identifier, visible}]) => {
+        return {identifier, field, visible};
+      });
+    },
+
     getFieldActionList(){
       return Object.entries(Params.headerFieldsList)
                     .filter(([field, {action}]) => { return action != null; })

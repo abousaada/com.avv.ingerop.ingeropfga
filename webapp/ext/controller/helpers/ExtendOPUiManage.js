@@ -7,10 +7,16 @@ sap.ui.define([
     "use strict";
 
     return Controller.extend("com.avv.ingerop.ingeropfga.ext.controller.helpers.ExtendOPUiManage", {
+        
+        _setFieldByType(type){
+            this._setMandatoryFieldByType(type);
+            this._setVisibleFieldByType(type);
+            // this._setVisibleFieldByType("Z0");
+        },
 
         _setOPView(context) {
             this._setTabsVisible();
-            this._setFieldVisible();
+            // this._setFieldVisible();
             this._attachChangeEventOnFields();
             this._setFieldEnabled();
             this._setFieldDefaultValue(context);
@@ -40,6 +46,17 @@ sap.ui.define([
             Helper.getTabVisibilityByMode(isCreateMode).map(({ key, visible }) => {
                 this.oView.byId(key)?.setVisible(visible)
             });
+        },
+
+        _setProjectFieldVisible(){
+            const isCreateMode = this.oView.getModel("ui").getProperty("/createMode");
+            if(!isCreateMode){
+                Helper.getProjectHeaderFieldList().map(
+                    ({ identifier, field, visible }) => {
+                        this._getField(identifier, field)?.setVisible(visible);
+                    }
+                );
+            }
         },
 
         _setFieldVisible() {
@@ -155,6 +172,14 @@ sap.ui.define([
                 this._getField(identifier, field)?.setMandatory(mandatory);
             });
         },
+
+        _setVisibleFieldByType(type){
+            if(type === "Z0" || type === "Z1"){
+                this._setProjectFieldVisible();
+            }else{
+                this._setFieldVisible();
+            }
+        }
 
     });
 });

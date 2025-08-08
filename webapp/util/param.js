@@ -30,8 +30,224 @@ sap.ui.define([
                 { identifier: "Garantie", field: "Assurance", value: "NA" },
                 { identifier: "Contrat", field: "Mission", value: "NOTA" },
             ]
-        }
-        ,
+        },
+        headerProjectFieldList: {
+            BusinessNo: {
+                identifier: "Identification",
+                visible: true,
+            },
+            Type: {
+                identifier: "Identification",
+                visible: true,
+            },
+            BusinessName: {
+                identifier: "Identification",
+                visible: true,
+            },
+            BusinessStatus: {
+                identifier: "Identification",
+                visible: false,
+            },
+            UFOName: {
+                identifier: "Identification",
+                visible: false,
+            },
+            CDG: {
+                identifier: "Identification",
+                visible: false,
+            },
+            CompanyCode: {
+                identifier: "Identification",
+                visible: false,
+            },
+            Activity: {
+                identifier: "Identification",
+                visible: false,
+            },
+            Branche: {
+                identifier: "Identification",
+                visible: false,
+            },
+            Soufam: {
+                identifier: "Identification",
+                visible: false,
+            },
+            PROJM: {
+                identifier: "Identification",
+                visible: true,
+            },
+            Site: {
+                identifier: "Identification",
+                visible: false,
+            },
+            International: {
+                identifier: "Identification",
+                visible: false,
+            },
+            AncienNumero: {
+                identifier: "Identification",
+                visible: false,
+            },
+            Rgfact: {
+                identifier: "Identification",
+                visible: false,
+            },
+            Reflet: {
+                identifier: "Identification",
+                visible: false,
+            },
+            // "Facturation"
+            Modalr: {
+                identifier: "Facturation",
+                visible: false,
+            },
+            Avance: {
+                identifier: "Facturation",
+                visible: false,
+            },
+            plateformDemat: {
+                identifier: "Facturation",
+                visible: false,
+            },
+            Rtgart: {
+                identifier: "Facturation",
+                visible: false,
+            },
+            VAT: {
+                identifier: "Facturation",
+                visible: false,
+            },
+            Currency: {
+                identifier: "Facturation",
+                visible: false,
+            },
+
+            CurrencyHedging: {
+                identifier: "Facturation",
+                visible: false,
+            },
+            // "Client"
+            NClient: {
+                identifier: "Client",
+                visible: false,
+            },
+            CustomerName: {
+                identifier: "Client",
+                visible: false,
+            },
+            Scclt: {
+                identifier: "Client",
+                visible: false,
+            },
+            Siret: {
+                identifier: "Client",
+                visible: false,
+            },
+            Country: {
+                identifier: "Client",
+                visible: false,
+            },
+            // "Garantie"
+            Assurance: {
+                identifier: "Garantie",
+                visible: false,
+            },
+            // "Contrat"
+            Mission: {
+                identifier: "Contrat",
+                visible: false,
+            },
+            GroupM: {
+                identifier: "Contrat",
+                visible: false,
+            },
+            isMandataire: {
+                identifier: "Contrat",
+                visible: false,
+            },
+            Mandata: {
+                identifier: "Contrat",
+                visible: false,
+            },
+            membreGroupement: {
+                identifier: "Contrat",
+                visible: false,
+            },
+            projetAgora: {
+                identifier: "Contrat",
+                visible: false,
+            },
+            voletEcologie: {
+                identifier: "Contrat",
+                visible: false,
+            },
+            Business: {
+                identifier: "Contrat",
+                visible: false,
+            },
+            eligibleCir: {
+                identifier: "Contrat",
+                visible: false,
+            },
+            projetCup: {
+                identifier: "Contrat",
+                visible: false,
+            },
+            // "Prix"
+            Mtctr: {
+                identifier: "Prix",
+                visible: false,
+            },
+            nonAcquis: {
+                identifier: "Prix",
+                visible: false,
+            },
+            Paring: {
+                identifier: "Prix",
+                visible: false,
+            },
+            depenseCommercial: {
+                identifier: "Prix",
+                visible: false,
+            },
+            // "Travaux"
+            Mttrvx: {
+                identifier: "Travaux",
+                visible: false,
+            },
+            Ingtrvx: {
+                identifier: "Travaux",
+                visible: false,
+            },
+            // "Info"
+            Period: {
+                identifier: "Info",
+                visible: false,
+            },
+            // "Duree"
+            StartDate: {
+                identifier: "Duree",
+                visible: false,
+            },
+            EndDate: {
+                identifier: "Duree",
+                visible: false,
+            },
+            NbOfMonth: {
+                identifier: "Duree",
+                visible: false,
+            },
+            RemainingMonth: {
+                identifier: "Duree",
+                visible: false,
+            },
+            // "Qualite"
+            UrlCup: {
+                identifier: "Qualite",
+                visible: false,
+            },
+        },
+
         //All header fields
         headerFieldsList: {
             BusinessNo: {
@@ -447,13 +663,13 @@ sap.ui.define([
         },
         //All Section except header fields Section
         headerSectionList: {
-            info: {
-                key: "com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--com.sap.vocabularies.UI.v1.FieldGroup::Info::FormGroup",
-                visible: {
-                    create: false,
-                    modify: true
-                }
-            },
+            // info: {
+            //     key: "com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--com.sap.vocabularies.UI.v1.FieldGroup::Info::FormGroup",
+            //     visible: {
+            //         create: false,
+            //         modify: true
+            //     }
+            // },
             summary: {
                 key: "AfterFacet::ZC_FGASet::GeneralInfo::Section",
                 visible: {
