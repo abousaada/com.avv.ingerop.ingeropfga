@@ -358,7 +358,7 @@
               "viewName": "com.avv.ingerop.ingeropfga.ext.view.Recap",
               "type": "XML",
               "sap.ui.generic.app": {
-                "title": "Summary Table"
+                "title": "Tableau récapitulatif "
               }
             },
             "AfterFacet|ZC_FGASet|GeneralInfo|1": {
@@ -374,7 +374,7 @@
               "viewName": "com.avv.ingerop.ingeropfga.ext.view.ChartInfos",
               "type": "XML",
               "sap.ui.generic.app": {
-                "title": "Graphics"
+                "title": "Graphiques"
               }
             }
           }

@@ -6,8 +6,9 @@ sap.ui.define([
     "./utilities/subContracting",
     "../util/constant",
     "../util/helper",
+    "../ext/controller/helpers/Missions",
 ],
-    function (BaseModel, InitialData, Formatter, Filter, SubContracting, Constant, Helper) {
+    function (BaseModel, InitialData, Formatter, Filter, SubContracting, Constant, Helper,Missions) {
         "use strict";
 
         return BaseModel.extend("com.avv.ingerop.ingeropfga.model.utilities", {
@@ -296,18 +297,22 @@ sap.ui.define([
             },
 
             // Call this when saving the main entity to process all missions
-            validDataBeforeSave: function () {
+            validDataBeforeSave: function (oView) {
                 //return this.validMissions() && this.validFGAHeaderFields();
-                return this.validFGAHeaderFields();
+                return this.validMissions(oView) && this.validFGAHeaderFields();
             },
 
             // Validate missions
-            validMissions() {
-                var aMissions = this.getMissions();
+            validMissions(oView) {
+
+                this._missionsTab = new Missions();
+                return this._missionsTab.validateMissionsTreeRequiredFields(oView);
+
+                /*var aMissions = this.getMissions();
                 if (!Filter.validateMissions(aMissions)) {
                     return false;
                 }
-                return true;
+                return true;*/
             },
 
             getViewField(identifier, field){
