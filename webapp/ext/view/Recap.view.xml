@@ -12,8 +12,9 @@
         rows="{utilities>/recaps}"
         class="syntheseTab"
         selectionMode="None"
+        rowsUpdated="onRowsUpdatedRecapTab"
     >
-        <table:columns>
+         <table:columns>
             <table:Column width="9rem">
                 <Label text="{i18n>recap.ID}" />
                 <table:template>
@@ -133,7 +134,7 @@
                 </table:template>
             </table:Column>
             <table:Column>
-                <Label text="Budget actif" />
+                <Label text="Budget actif N" />
                 <table:template>
                     <!--Text text="{utilities>budget_actif}" /-->
                     <Text
@@ -148,7 +149,7 @@
                 </table:template>
             </table:Column>
             <table:Column>
-                <Label text="Budget actif M-1" />
+                <Label text="Budget actif M-1 N" />
                 <table:template>
                     <!--Text text="{utilities>budget_actif_m1}" /-->
                     <Text
@@ -163,7 +164,7 @@
                 </table:template>
             </table:Column>
             <table:Column>
-                <Label text="Ecart" />
+                <Label text="Ecart N" />
                 <table:template>
                     <!--Text text="{utilities>ecart}" /-->
                     <Text

@@ -20,9 +20,10 @@
         ariaLabelledBy="title"
         enableColumnReordering="false"
         fixedColumnCount="1"
+        rowsUpdated="onRowsUpdatedBudgetPXSubCTab"
     >
         <table:rowMode>
-            <rm:Fixed rowCount="20" />
+            <rm:Auto minRowCount= "{localModel>/tableSettings/minRowCount}" />
         </table:rowMode>
         <table:extension>
             <Toolbar class="sapMTBHeader-CTX">
