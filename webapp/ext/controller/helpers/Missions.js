@@ -46,6 +46,7 @@ sap.ui.define([
                     treeData.push(fgaGroups[fga]);
                 }
 
+
                 return treeData;
             };
 
@@ -54,6 +55,10 @@ sap.ui.define([
 
             // Set tree
             this.getView().getModel("utilities").setProperty("/missionsHierarchy", missionsTreeData);
+
+            var totalRows = this.countRows(missionsTreeData);
+            this.updateRowCount(totalRows);
+
         },
 
 
@@ -352,7 +357,7 @@ sap.ui.define([
                     const aCells = oRow.getCells();
 
                     // Regroupement validation
-                    const regroupementContainer = aCells[2]; 
+                    const regroupementContainer = aCells[2];
                     const regroupementControl = this._findInputControl(regroupementContainer);
                     if (regroupementControl && regroupementControl.setValueState) {
                         const value = this._getControlValue(regroupementControl);
@@ -454,7 +459,44 @@ sap.ui.define([
                 return oControl.getDateValue();
             }
             return null;
-        }
+        },
+
+        updateRowCount: function (rowCount) {
+
+            if (!this.getView().getModel("localModel")) {
+                this.getView().setModel(new JSONModel({
+                    tableSettings: {
+                        minRowCount: 5
+                    }
+                }), "localModel");
+            }
+
+            this.getView().getModel("localModel").setProperty("/tableSettings/minRowCount", 
+                Math.max(rowCount, 1)); 
+        },
+
+        countRows: function (nodes) {
+            if (!nodes || nodes.length === 0) return 0;
+            
+            var count = 0;
+            nodes.forEach(function (node) {
+                count++; 
+                if (node.isNode && !node.isL0) {
+                    count++; // Add 1 for the line total
+                }
+                if (node.children && node.children.length > 0) {
+                    count += this.countRows(node.children);
+                }
+            }.bind(this));
+            
+            // Add 4 lines for global totals 
+            if (nodes[0] && nodes[0].isL0) {
+                count += 4;
+            }
+            
+            return count;
+        },
+
 
     });
 });

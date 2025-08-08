@@ -4,12 +4,12 @@
     xmlns:table="sap.ui.table"
     xmlns:layout="sap.ui.layout"
     xmlns:f="sap.ui.layout.form"
+    xmlns:rm="sap.ui.table.rowmodes"
 >
-    
-    <layout:VerticalLayout width="100%" >
-         <Toolbar>
+    <layout:VerticalLayout width="100%">
+        <Toolbar>
             <content>
-                <ToolbarSpacer/>
+                <ToolbarSpacer />
                 <Button
                     icon="sap-icon://refresh"
                     text="Refresh"
@@ -31,6 +31,11 @@
             ariaLabelledBy="title"
             enableColumnReordering="false"
         >
+            <table:rowMode>
+                <rm:Auto
+                    minRowCount="{localModel>/tableSettings/minRowCount}"
+                />
+            </table:rowMode>
             <table:columns>
                 <!-- Hierarchy Column -->
                 <table:Column width="20rem">

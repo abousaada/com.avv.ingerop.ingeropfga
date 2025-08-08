@@ -24,9 +24,7 @@
         fixedColumnCount="1"
     >
         <table:rowMode>
-            <rm:Fixed
-                rowCount="20"
-            />
+            <rm:Auto minRowCount= "{localModel>/tableSettings/minRowCount}" />
         </table:rowMode>
         <table:columns>
             <!-- Hierarchy Column -->
