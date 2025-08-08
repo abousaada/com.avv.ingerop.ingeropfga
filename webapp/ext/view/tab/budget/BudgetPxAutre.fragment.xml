@@ -4,66 +4,76 @@
     xmlns:table="sap.ui.table"
     xmlns:l="sap.ui.layout"
     xmlns:f="sap.ui.layout.form"
+    xmlns:rm="sap.ui.table.rowmodes"
 >
-        <table:TreeTable
-            id="BudgetPxAutreTreeTable"
-            rows="{
+    <table:TreeTable
+        id="BudgetPxAutreTreeTable"
+        width="100%"
+        rows="{
                 path: 'utilities>/PxAutreHierarchyWithTotals',
                 parameters: {
                     arrayNames: ['children'],
                     numberOfExpandedLevels: 3
                 }
+                
             }"
-            selectionMode="None"
-            ariaLabelledBy="title"
-            enableColumnReordering="false"
-        >
-            <table:columns>
-                <!-- Hierarchy Column -->
-                <table:Column width="17rem">
-                    <Label text="Hierarchy/Mission" />
-                    <table:template>
-                        <Text
-                            text="{= ${utilities>isTotalRow} ? ${utilities>name} : 
+        selectionMode="None"
+        ariaLabelledBy="title"
+        enableColumnReordering="false"
+        enableColumnFreeze="true"
+        fixedColumnCount="1"
+    >
+        <table:rowMode>
+            <rm:Fixed
+                rowCount="20"
+            />
+        </table:rowMode>
+        <table:columns>
+            <!-- Hierarchy Column -->
+            <table:Column width="17rem">
+                <Label text="Hierarchy/Mission" />
+                <table:template>
+                    <Text
+                        text="{= ${utilities>isTotalRow} ? ${utilities>name} : 
                                  ${utilities>isNode} ? ${utilities>name} : 
                                  ${utilities>MissionId}}"
+                    />
+                </table:template>
+            </table:Column>
+
+            <!-- Libelle Column -->
+            <table:Column width="5rem">
+                <Label text="Libellé" />
+                <table:template>
+                    <HBox>
+                        <Text
+                            text="{utilities>Libelle}"
+                            visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
                         />
-                    </table:template>
-                </table:Column>
+                    </HBox>
+                </table:template>
+            </table:Column>
 
-                <!-- Libelle Column -->
-                <table:Column width="5rem">
-                    <Label text="Libellé" />
-                    <table:template>
-                        <HBox>
-                            <Text
-                                text="{utilities>Libelle}"
-                                visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
-                            />
-                        </HBox>
-                    </table:template>
-                </table:Column>
+            <!-- Statut Column -->
+            <table:Column width="5rem">
+                <Label text="Statut" />
+                <table:template>
+                    <HBox>
+                        <Text
+                            text="{utilities>Statut}"
+                            visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
+                        />
+                    </HBox>
+                </table:template>
+            </table:Column>
 
-                <!-- Statut Column -->
-                <table:Column width="5rem">
-                    <Label text="Statut" />
-                    <table:template>
-                        <HBox>
-                            <Text
-                                text="{utilities>Statut}"
-                                visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
-                            />
-                        </HBox>
-                    </table:template>
-                </table:Column>
-
-                <!-- Start Date Column -->
-                <table:Column width="6rem">
-                    <Label text="Date début" />
-                    <table:template>
-                        <HBox>
-                            <Text
-                                text="{
+            <!-- Start Date Column -->
+            <table:Column width="6rem">
+                <Label text="Date début" />
+                <table:template>
+                    <HBox>
+                        <Text
+                            text="{
                                     path: 'utilities>StartDate',
                                     type: 'sap.ui.model.type.Date',
                                     formatOptions: { 
@@ -71,19 +81,19 @@
                                         strictParsing: true
                                     }
                                 }"
-                                visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
-                            />
-                        </HBox>
-                    </table:template>
-                </table:Column>
+                            visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
+                        />
+                    </HBox>
+                </table:template>
+            </table:Column>
 
-                <!-- End Date Column -->
-                <table:Column width="6rem">
-                    <Label text="Date fin" />
-                    <table:template>
-                        <HBox>
-                            <Text
-                                text="{
+            <!-- End Date Column -->
+            <table:Column width="6rem">
+                <Label text="Date fin" />
+                <table:template>
+                    <HBox>
+                        <Text
+                            text="{
                                     path: 'utilities>EndDate',
                                     type: 'sap.ui.model.type.Date',
                                     formatOptions: { 
@@ -91,216 +101,213 @@
                                         strictParsing: true
                                     }
                                 }"
-                                visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
-                            />
-                        </HBox>
-                    </table:template>
-                </table:Column>
+                            visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
+                        />
+                    </HBox>
+                </table:template>
+            </table:Column>
 
-                <!-- Budget Items Columns -->
-                <table:Column width="8rem">
-                    <Label text="Voyage déplacement" />
-                    <table:template>
-                        <HBox>
-                            <Input
-                                value="{utilities>VoyageDeplacement}"
-                                editable="{ui>/editable}"
-                                visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
-                                liveChange=".onLiveChange"
-                                submit=".onPxAutreSubmit"
-                            />
-                            <Text
-                                text="{utilities>VoyageDeplacement}"
-                                visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} !== 'Cumule'}"
-                            />
-                            <Link
-                                text="{utilities>VoyageDeplacement}"
-                                visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} === 'Cumule'}"
-                                press=".onCumuleClick"
-                            >
-                                <customData>
-                                    <core:CustomData
-                                        key="columnId"
-                                        value="VoyageDeplacement"
-                                        xmlns:core="sap.ui.core"
-                                    />
-                                </customData>
-                            </Link>
-                        </HBox>
-                    </table:template>
-                </table:Column>
+            <!-- Budget Items Columns -->
+            <table:Column width="8rem">
+                <Label text="Voyage déplacement" />
+                <table:template>
+                    <HBox>
+                        <Input
+                            value="{utilities>VoyageDeplacement}"
+                            editable="{ui>/editable}"
+                            visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
+                            liveChange=".onLiveChange"
+                            submit=".onPxAutreSubmit"
+                        />
+                        <Text
+                            text="{utilities>VoyageDeplacement}"
+                            visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} !== 'Cumule'}"
+                        />
+                        <Link
+                            text="{utilities>VoyageDeplacement}"
+                            visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} === 'Cumule'}"
+                            press=".onCumuleClick"
+                        >
+                            <customData>
+                                <core:CustomData
+                                    key="columnId"
+                                    value="VoyageDeplacement"
+                                    xmlns:core="sap.ui.core"
+                                />
+                            </customData>
+                        </Link>
+                    </HBox>
+                </table:template>
+            </table:Column>
 
-                <table:Column width="8rem">
-                    <Label text="Autres Frais" />
-                    <table:template>
-                        <HBox>
-                            <Input
-                                value="{utilities>AutresFrais}"
-                                editable="{ui>/editable}"
-                                visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
-                                liveChange=".onLiveChange"
-                                submit=".onPxAutreSubmit"
-                            />
-                            <Text
-                                text="{utilities>AutresFrais}"
-                                visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} !== 'Cumule'}"
-                            />
-                            <Link
-                                text="{utilities>AutresFrais}"
-                                visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} === 'Cumule'}"
-                                press=".onCumuleClick"
-                            >
-                                <customData>
-                                    <core:CustomData
-                                        key="columnId"
-                                        value="AutresFrais"
-                                        xmlns:core="sap.ui.core"
-                                    />
-                                </customData>
-                            </Link>
-                        </HBox>
-                    </table:template>
-                </table:Column>
+            <table:Column width="8rem">
+                <Label text="Autres Frais" />
+                <table:template>
+                    <HBox>
+                        <Input
+                            value="{utilities>AutresFrais}"
+                            editable="{ui>/editable}"
+                            visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
+                            liveChange=".onLiveChange"
+                            submit=".onPxAutreSubmit"
+                        />
+                        <Text
+                            text="{utilities>AutresFrais}"
+                            visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} !== 'Cumule'}"
+                        />
+                        <Link
+                            text="{utilities>AutresFrais}"
+                            visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} === 'Cumule'}"
+                            press=".onCumuleClick"
+                        >
+                            <customData>
+                                <core:CustomData
+                                    key="columnId"
+                                    value="AutresFrais"
+                                    xmlns:core="sap.ui.core"
+                                />
+                            </customData>
+                        </Link>
+                    </HBox>
+                </table:template>
+            </table:Column>
 
-                <table:Column width="8rem">
-                    <Label text="Créances douteuses" />
-                    <table:template>
-                        <HBox>
-                            <Input
-                                value="{utilities>CreancesDouteuses}"
-                                editable="{ui>/editable}"
-                                visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
-                                liveChange=".onLiveChange"
-                                submit=".onPxAutreSubmit"
-                            />
-                            <Text
-                                text="{utilities>CreancesDouteuses}"
-                                visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} !== 'Cumule'}"
-                            />
-                            <Link
-                                text="{utilities>CreancesDouteuses}"
-                                visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} === 'Cumule'}"
-                                press=".onCumuleClick"
-                            >
-                                <customData>
-                                    <core:CustomData
-                                        key="columnId"
-                                        value="CreancesDouteuses"
-                                        xmlns:core="sap.ui.core"
-                                    />
-                                </customData>
-                            </Link>
-                        </HBox>
-                    </table:template>
-                </table:Column>
+            <table:Column width="8rem">
+                <Label text="Créances douteuses" />
+                <table:template>
+                    <HBox>
+                        <Input
+                            value="{utilities>CreancesDouteuses}"
+                            editable="{ui>/editable}"
+                            visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
+                            liveChange=".onLiveChange"
+                            submit=".onPxAutreSubmit"
+                        />
+                        <Text
+                            text="{utilities>CreancesDouteuses}"
+                            visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} !== 'Cumule'}"
+                        />
+                        <Link
+                            text="{utilities>CreancesDouteuses}"
+                            visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} === 'Cumule'}"
+                            press=".onCumuleClick"
+                        >
+                            <customData>
+                                <core:CustomData
+                                    key="columnId"
+                                    value="CreancesDouteuses"
+                                    xmlns:core="sap.ui.core"
+                                />
+                            </customData>
+                        </Link>
+                    </HBox>
+                </table:template>
+            </table:Column>
 
-                <table:Column width="8rem">
-                    <Label text="Etudes travaux" />
-                    <table:template>
-                        <HBox>
-                            <Input
-                                value="{utilities>EtudesTravaux}"
-                                editable="{ui>/editable}"
-                                visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
-                                liveChange=".onLiveChange"
-                                submit=".onPxAutreSubmit"
-                            />
-                            <Text
-                                text="{utilities>EtudesTravaux}"
-                                visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} !== 'Cumule'}"
-                            />
-                            <Link
-                                text="{utilities>EtudesTravaux}"
-                                visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} === 'Cumule'}"
-                                press=".onCumuleClick"
-                            >
-                                <customData>
-                                    <core:CustomData
-                                        key="columnId"
-                                        value="EtudesTravaux"
-                                        xmlns:core="sap.ui.core"
-                                    />
-                                </customData>
-                            </Link>
-                        </HBox>
-                    </table:template>
-                </table:Column>
+            <table:Column width="8rem">
+                <Label text="Etudes travaux" />
+                <table:template>
+                    <HBox>
+                        <Input
+                            value="{utilities>EtudesTravaux}"
+                            editable="{ui>/editable}"
+                            visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
+                            liveChange=".onLiveChange"
+                            submit=".onPxAutreSubmit"
+                        />
+                        <Text
+                            text="{utilities>EtudesTravaux}"
+                            visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} !== 'Cumule'}"
+                        />
+                        <Link
+                            text="{utilities>EtudesTravaux}"
+                            visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} === 'Cumule'}"
+                            press=".onCumuleClick"
+                        >
+                            <customData>
+                                <core:CustomData
+                                    key="columnId"
+                                    value="EtudesTravaux"
+                                    xmlns:core="sap.ui.core"
+                                />
+                            </customData>
+                        </Link>
+                    </HBox>
+                </table:template>
+            </table:Column>
 
-                <table:Column width="8rem">
-                    <Label text="Sinistre contentieux" />
-                    <table:template>
-                        <HBox>
-                            <Input
-                                value="{utilities>SinistreContentieux}"
-                                editable="{ui>/editable}"
-                                visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
-                                liveChange=".onLiveChange"
-                                submit=".onPxAutreSubmit"
-                            />
-                            <Text
-                                text="{utilities>SinistreContentieux}"
-                                visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} !== 'Cumule'}"
-                            />
-                            <Link
-                                text="{utilities>SinistreContentieux}"
-                                visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} === 'Cumule'}"
-                                press=".onCumuleClick"
-                            >
-                                <customData>
-                                    <core:CustomData
-                                        key="columnId"
-                                        value="SinistreContentieux"
-                                        xmlns:core="sap.ui.core"
-                                    />
-                                </customData>
-                            </Link>
-                        </HBox>
-                    </table:template>
-                </table:Column>
+            <table:Column width="8rem">
+                <Label text="Sinistre contentieux" />
+                <table:template>
+                    <HBox>
+                        <Input
+                            value="{utilities>SinistreContentieux}"
+                            editable="{ui>/editable}"
+                            visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
+                            liveChange=".onLiveChange"
+                            submit=".onPxAutreSubmit"
+                        />
+                        <Text
+                            text="{utilities>SinistreContentieux}"
+                            visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} !== 'Cumule'}"
+                        />
+                        <Link
+                            text="{utilities>SinistreContentieux}"
+                            visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} === 'Cumule'}"
+                            press=".onCumuleClick"
+                        >
+                            <customData>
+                                <core:CustomData
+                                    key="columnId"
+                                    value="SinistreContentieux"
+                                    xmlns:core="sap.ui.core"
+                                />
+                            </customData>
+                        </Link>
+                    </HBox>
+                </table:template>
+            </table:Column>
 
-                <table:Column width="8rem">
-                    <Label text="Aléas divers" />
-                    <table:template>
-                        <HBox>
-                            <Input
-                                value="{utilities>AleasDivers}"
-                                editable="{ui>/editable}"
-                                visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
-                                liveChange=".onLiveChange"
-                                submit=".onPxAutreSubmit"
-                            />
-                            <Text
-                                text="{utilities>AleasDivers}"
-                                visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} !== 'Cumule'}"
-                            />
-                            <Link
-                                text="{utilities>AleasDivers}"
-                                visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} === 'Cumule'}"
-                                press=".onCumuleClick"
-                            >
-                                <customData>
-                                    <core:CustomData
-                                        key="columnId"
-                                        value="AleasDivers"
-                                        xmlns:core="sap.ui.core"
-                                    />
-                                </customData>
-                            </Link>
-                        </HBox>
-                    </table:template>
-                </table:Column>
+            <table:Column width="8rem">
+                <Label text="Aléas divers" />
+                <table:template>
+                    <HBox>
+                        <Input
+                            value="{utilities>AleasDivers}"
+                            editable="{ui>/editable}"
+                            visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
+                            liveChange=".onLiveChange"
+                            submit=".onPxAutreSubmit"
+                        />
+                        <Text
+                            text="{utilities>AleasDivers}"
+                            visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} !== 'Cumule'}"
+                        />
+                        <Link
+                            text="{utilities>AleasDivers}"
+                            visible="{= ${utilities>isTotalRow} &amp;&amp; ${utilities>name} === 'Cumule'}"
+                            press=".onCumuleClick"
+                        >
+                            <customData>
+                                <core:CustomData
+                                    key="columnId"
+                                    value="AleasDivers"
+                                    xmlns:core="sap.ui.core"
+                                />
+                            </customData>
+                        </Link>
+                    </HBox>
+                </table:template>
+            </table:Column>
 
-                <table:Column width="8rem">
-                    <Label text="Fin d'affaire" />
-                    <table:template>
-                        <HBox>
-                            <Text
-                                text="{utilities>FinAffaire}"
-                            />
-                        </HBox>
-                    </table:template>
-                </table:Column>
-            </table:columns>
-        </table:TreeTable>
-
+            <table:Column width="8rem">
+                <Label text="Fin d'affaire" />
+                <table:template>
+                    <HBox>
+                        <Text text="{utilities>FinAffaire}" />
+                    </HBox>
+                </table:template>
+            </table:Column>
+        </table:columns>
+    </table:TreeTable>
 </core:FragmentDefinition>

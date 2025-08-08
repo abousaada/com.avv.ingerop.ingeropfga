@@ -4,6 +4,7 @@
     xmlns:l="sap.ui.layout"
     xmlns:table="sap.ui.table"
     xmlns:f="sap.ui.layout.form"
+    xmlns:rm="sap.ui.table.rowmodes"
 >
     <table:TreeTable
         class="budgetSCExtTab"
@@ -20,6 +21,9 @@
         enableColumnReordering="false"
         fixedColumnCount="1"
     >
+        <table:rowMode>
+            <rm:Fixed rowCount="20" />
+        </table:rowMode>
         <table:extension>
             <Toolbar class="sapMTBHeader-CTX">
                 <ToolbarSpacer />
@@ -53,7 +57,7 @@
                 </table:template>
             </table:Column>
 
-            <table:Column width="4rem" >
+            <table:Column width="4rem">
                 <table:multiLabels>
                     <Label text="" />
                     <Label text="" />
@@ -78,7 +82,7 @@
                     <Text text="{utilities>libelle}" />
                 </table:template>
             </table:Column>
-            <table:Column width="4rem" >
+            <table:Column width="4rem">
                 <table:multiLabels>
                     <Label text="" />
                     <Label text="" />
@@ -90,12 +94,27 @@
                     <Text text="{utilities>status}" />
                 </table:template>
             </table:Column>
-            <table:Column width="6rem" headerSpan="2,2,2,2,1" >
+            <table:Column
+                width="6rem"
+                headerSpan="2,2,2,2,1"
+            >
                 <table:multiLabels>
-                    <Label text="{i18n>budget.ext.supplierName}" class="STheaderLabel" />
-                    <Label text="{i18n>budget.ext.supplierCode}" class="STheaderLabel" />
-                    <Label text="{i18n>budget.ext.supplierType}" class="STheaderLabel" />
-                    <Label text="{i18n>budget.ext.supplierCoef}" class="STheaderLabel" />
+                    <Label
+                        text="{i18n>budget.ext.supplierName}"
+                        class="STheaderLabel"
+                    />
+                    <Label
+                        text="{i18n>budget.ext.supplierCode}"
+                        class="STheaderLabel"
+                    />
+                    <Label
+                        text="{i18n>budget.ext.supplierType}"
+                        class="STheaderLabel"
+                    />
+                    <Label
+                        text="{i18n>budget.ext.supplierCoef}"
+                        class="STheaderLabel"
+                    />
                     <Label text="{i18n>budget.ext.startDate}" />
                 </table:multiLabels>
                 <table:template>
@@ -109,13 +128,15 @@
                                     strictParsing: true
                                 }
                             }"
-                            
                         />
                         <!-- visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}" -->
                     </HBox>
                 </table:template>
             </table:Column>
-            <table:Column width="6rem" headerSpan="2,2,2,2,1">
+            <table:Column
+                width="6rem"
+                headerSpan="2,2,2,2,1"
+            >
                 <table:multiLabels>
                     <Label text="{i18n>budget.ext.supplierName}" />
                     <Label text="{i18n>budget.ext.supplierCode}" />
@@ -134,7 +155,6 @@
                                     strictParsing: true
                                 }
                             }"
-                            
                         />
                         <!-- visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}" -->
                     </HBox>
@@ -150,14 +170,14 @@
                     <Label text="{i18n>budget.ext.affaireHorsFrais}" />
                 </table:multiLabels>
                 <table:template>
-                    <Text   
+                    <Text
                         text="{ 
                             parts: [
                                 { path: 'utilities>budgetHorsFrais' },
                                 { path: 'utilities>isPercent' }
                             ], 
                             formatter:'.Formatter.formatTotal' 
-                        }" 
+                        }"
                     />
                 </table:template>
             </table:Column>
@@ -170,17 +190,17 @@
                     <Label text="{i18n>budget.ext.affaireYCFrais}" />
                 </table:multiLabels>
                 <table:template>
-                    <Text 
+                    <Text
                         text="{ 
                             parts: [
                                 { path: 'utilities>budgetYCFrais' },
                                 { path: 'utilities>isPercent' }
                             ], 
                             formatter:'.Formatter.formatTotal' 
-                        }" 
+                        }"
                     />
                 </table:template>
-            </table:Column> 
+            </table:Column>
         </table:columns>
     </table:TreeTable>
 </core:FragmentDefinition>

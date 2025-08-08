@@ -6,7 +6,7 @@
     xmlns:f="sap.ui.layout.form"
 >
     
-    <layout:VerticalLayout width="100%">
+    <layout:VerticalLayout width="100%" >
          <Toolbar>
             <content>
                 <ToolbarSpacer/>
