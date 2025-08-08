@@ -299,7 +299,7 @@ sap.ui.define([
             // Call this when saving the main entity to process all missions
             validDataBeforeSave: function (oView) {
                 //return this.validMissions() && this.validFGAHeaderFields();
-                return this.validMissions(oView) && this.validFGAHeaderFields();
+                return [this.validFGAHeaderFields(), this.validMissions(oView)].every(bool => !!bool);
             },
 
             // Validate missions
@@ -321,14 +321,14 @@ sap.ui.define([
 
             validFGAHeaderFields() {
                 let isValid = true;
-                Helper.getHeaderFieldList.map(({identifier, field}) => {
+                Helper.getHeaderFieldList().map(({identifier, field}) => {
                     const champ = this.getViewField(identifier, field);
-                    if (champ.getMandatory() && !champ.getValue()) {
-                        champ.setValueState("Error");
-                        champ.setValueStateText("Regroupement required");
+                    if (champ?.getVisible() && champ?.getMandatory() && !champ?.getValue()) {
+                        champ?.setValueState("Error");
+                        champ?.setValueStateText("Mandatory Field required");
                         isValid = false;
                     } else {
-                        champ.setValueState("None");
+                        champ?.setValueState("None");
                     }
                 });
                 return isValid;
