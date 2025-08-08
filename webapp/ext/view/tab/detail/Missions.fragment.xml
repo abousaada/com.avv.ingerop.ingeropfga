@@ -133,8 +133,7 @@
                         <table:template>
                             <HBox>
                                 <ComboBox
-                                    
-                                    value="{utilities>MissionCode}"
+                                    selectedKey="{utilities>MissionCode}"
                                     items="{
                                         path: 'utilities>/missionTypes',
                                         templateShareable: false

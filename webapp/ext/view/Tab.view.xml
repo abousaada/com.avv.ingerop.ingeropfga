@@ -42,7 +42,7 @@
                     type="XML"
                 />
             </IconTabFilter>
-            <IconTabFilter text="{i18n>synt.tab.prevision}">
+            <!--IconTabFilter text="{i18n>synt.tab.prevision}">
                 <core:Fragment
                     fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.PrevisionTab"
                     type="XML"
@@ -53,7 +53,7 @@
                     fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.RAFTab"
                     type="XML"
                 />
-            </IconTabFilter>
+            </IconTabFilter-->
         </items>
     </IconTabBar>
 </mvc:View>

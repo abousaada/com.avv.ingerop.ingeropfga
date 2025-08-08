@@ -338,10 +338,6 @@ sap.ui.define([
             return treeData;
         },
 
-        validateMissionsTreeRequiredFields1: function (oView) {
-            return true;
-        },
-
         validateMissionsTreeRequiredFields: function (oView) {
             const oTable = oView.byId("missionsTreeTable");
             const aRows = oTable.getRows();
@@ -356,7 +352,7 @@ sap.ui.define([
                     const aCells = oRow.getCells();
 
                     // Regroupement validation
-                    const regroupementContainer = aCells[2]; // adjust index if needed
+                    const regroupementContainer = aCells[2]; 
                     const regroupementControl = this._findInputControl(regroupementContainer);
                     if (regroupementControl && regroupementControl.setValueState) {
                         const value = this._getControlValue(regroupementControl);
