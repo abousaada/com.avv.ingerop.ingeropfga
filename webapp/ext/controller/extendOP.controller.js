@@ -169,7 +169,7 @@ sap.ui.define(
                 const utilitiesModel = this.getInterface().getModel("utilities");
                 const bCreateMode = this.getView().getModel("ui").getProperty("/createMode");
 
-                this._extendOPUiManage._setOPView();
+                this._extendOPUiManage._setOPView(e.context);
 
                 const type = e.context.getProperty("Type");
                 this._extendOPUiManage._setMandatoryFieldByType(type);

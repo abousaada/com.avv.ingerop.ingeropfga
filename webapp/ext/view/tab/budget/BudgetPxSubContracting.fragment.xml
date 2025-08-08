@@ -18,6 +18,7 @@
         selectionMode="None"
         ariaLabelledBy="title"
         enableColumnReordering="false"
+        fixedColumnCount="1"
     >
         <table:extension>
             <Toolbar class="sapMTBHeader-CTX">

@@ -8,25 +8,32 @@ sap.ui.define([
 
     return Controller.extend("com.avv.ingerop.ingeropfga.ext.controller.helpers.ExtendOPUiManage", {
 
-        _setOPView() {
+        _setOPView(context) {
             this._setTabsVisible();
             this._setFieldVisible();
             this._attachChangeEventOnFields();
             this._setFieldEnabled();
-            // this._setFieldDefaultValue();
+            this._setFieldDefaultValue(context);
         },
 
-        // _setFieldDefaultValue(){
-        //     const isCreateMode = this.oView.getModel("ui").getProperty("/createMode");
-        //     Helper.getFieldDefaultValueByMode(isCreateMode).map(
-        //         ({ identifier, field, defaultValue }) => {
-        //             const champ = this._getField(identifier, field);
-        //             if(champ && !champ.getValue() && defaultValue) {
-        //                 champ.setValue(defaultValue);
-        //             }
-        //         });
-        //         this._getField('Facturation', 'Currency').setValue('EUR');   
-        // },
+        _setFieldDefaultValue(context){
+            const isCreateMode = this.oView.getModel("ui").getProperty("/createMode");
+            const model = this.oView.getModel();
+            const path = context.getPath();
+            Helper.getFieldDefaultValueByMode(isCreateMode).map(
+                ({ identifier, field, defaultValue }) => {
+                    const propertyPath = "/" + field
+                    const fieldValue = context.getProperty(propertyPath);
+                    if(!fieldValue && defaultValue) {
+                        model.setProperty(path + propertyPath , defaultValue);
+                    }
+
+                    // const champ = this._getField(identifier, field);
+                    // if(champ && !champ.getValue() && defaultValue) {
+                    //     champ.setValue(defaultValue);
+                    // }
+                });
+        },
 
         _setTabsVisible() {
             const isCreateMode = this.oView.getModel("ui").getProperty("/createMode");

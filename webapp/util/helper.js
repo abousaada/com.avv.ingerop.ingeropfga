@@ -103,11 +103,13 @@ sap.ui.define([
       });
     },
 
-    // getFieldDefaultValueByMode:function(mode){
-    //   return Object.entries(Params.headerFieldsList).map(([field, {identifier, defaultValue}]) => {
-    //     return {identifier, field, defaultValue: defaultValue[_getConstantMode(mode)]};
-    //   });
-    // },
+    getFieldDefaultValueByMode:function(mode){
+      return Object.entries(Params.headerFieldsList)
+                   .filter(([field, {identifier, defaultValue}]) => !!defaultValue[_getConstantMode(mode)])
+                   .map(([field, {identifier, defaultValue}]) => {
+                      return {identifier, field, defaultValue: defaultValue[_getConstantMode(mode)]};
+                    });
+    },
 
     getBusinessTypes: function(){
       return Constant.types;

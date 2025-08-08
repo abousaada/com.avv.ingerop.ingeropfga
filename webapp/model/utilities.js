@@ -310,8 +310,27 @@ sap.ui.define([
                 return true;
             },
 
+            getViewField(identifier, field){
+                return this.oView.byId(Helper.headerFieldIdBySectionAndFieldName(identifier, field));
+            },
+
             validFGAHeaderFields() {
-                return true;
+                let isValid = true;
+                Helper.getHeaderFieldList.map(({identifier, field}) => {
+                    const champ = this.getViewField(identifier, field);
+                    if (champ.getMandatory() && !champ.getValue()) {
+                        champ.setValueState("Error");
+                        champ.setValueStateText("Regroupement required");
+                        isValid = false;
+                    } else {
+                        champ.setValueState("None");
+                    }
+                });
+                return isValid;
+                // return Helper.getHeaderFieldList.some(({identifier, field}) => {
+                //     const champ = this.getViewField(identifier, field);
+                //     return champ.getMandatory() && !champ.getValue();
+                // });
             },
 
             async deepCreateFGA(data) {
