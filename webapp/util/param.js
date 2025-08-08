@@ -457,7 +457,7 @@ sap.ui.define([
                 identifier: "Client",
                 defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
-                enabled: { create: true, modify: true },
+                enabled: { create: false, modify: false },
                 mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI"], default: false, create: true, modify: true },
                 action: null
             },
