@@ -7,184 +7,192 @@
     xmlns:html="http://www.w3.org/1999/xhtml"
     controllerName="com.avv.ingerop.ingeropfga.ext.controller.extendOP"
 >
-    <Panel
-        class="sapUiSmallMargin"
-        expanded="true"
-        expandable="true"
-        headerText="{i18n>synt.tab.recap.title}"
-        visible="{= !${ui>/createMode}}"
+    <table:Table
+        id="idRecapTable"
+        rows="{utilities>/recaps}"
+        class="syntheseTab"
+        selectionMode="None"
     >
-        <HBox>
-            <!--VBox class="sapUiSmallMargin" >
-                <Label text="Commentaires"></Label>
-                <TextArea height="20rem" width="25rem"></TextArea>
-            </VBox-->
-            <VBox class="sapUiSmallMargin">
-                <Label text="" />
-                <table:Table
-                    id="idRecapTable"
-                    rows="{utilities>/recaps}"
-                    class="syntheseTab"
-                    selectionMode="None"
-                >
-                    <table:columns>
-                        <table:Column>
-                            <Label text="{i18n>recap.ID}" />
-                            <table:template>
-                                <Text text="{utilities>row_description}" />
-                            </table:template>
-                        </table:Column>
-                        <!--table:Column>
+        <table:columns>
+            <table:Column width="9rem">
+                <Label text="{i18n>recap.ID}" />
+                <table:template>
+                    <Text text="{utilities>row_description}" />
+                </table:template>
+            </table:Column>
+            <!--table:Column>
                         <Label text="Budget Initial"/>
                         <table:template>
                             <Text text="{utilities>budget_initial}" />
                             <!- -ObjectStatus class="custObjStatus" state="{= parseFloat(${utilities>P0}) &lt; 0 ? 'Error': 'None'}" text="{ 'parts':[{ path: 'utilities>P0' }, {path: 'utilities>Type'}], formatter: '.formatRecap' }" /
                         </table:template>
                     </table:Column-->
-                        <table:Column>
-                            <Label text="Budget Objectif" />
-                            <table:template>
-                                <!--Text text="{utilities>budget_objectif}" /-->
-                                <Text text="{
+            <table:Column>
+                <Label text="Budget Objectif" />
+                <table:template>
+                    <!--Text text="{utilities>budget_objectif}" /-->
+                    <Text
+                        text="{
                                     parts: [
                                         {path: 'utilities>budget_objectif'},
                                         {path: 'utilities>row_type'}
                                     ],
                                     formatter: '.formatPercentage'
-                                }" />
-                            </table:template>
-                        </table:Column>
-                        <table:Column>
-                            <Label text="Ecart objectif" />
-                            <table:template>
-                                <!--Text text="{utilities>ecart_objectif}" /-->
-                                <Text text="{
+                                }"
+                    />
+                </table:template>
+            </table:Column>
+            <table:Column>
+                <Label text="Ecart objectif" />
+                <table:template>
+                    <!--Text text="{utilities>ecart_objectif}" /-->
+                    <Text
+                        text="{
                                     parts: [
                                         {path: 'utilities>ecart_objectif'},
                                         {path: 'utilities>row_type'}
                                     ],
                                     formatter: '.formatPercentage'
-                                }" />
-                            </table:template>
-                        </table:Column>
-                        <table:Column>
-                            <Label text="Cumul N-1" />
-                            <table:template>
-                                <!--Text text="{utilities>cumul_n1}" /-->
-                                <Text text="{
+                                }"
+                    />
+                </table:template>
+            </table:Column>
+            <table:Column>
+                <Label text="Cumul N-1" />
+                <table:template>
+                    <!--Text text="{utilities>cumul_n1}" /-->
+                    <Text
+                        text="{
                                     parts: [
                                         {path: 'utilities>cumul_n1'},
                                         {path: 'utilities>row_type'}
                                     ],
                                     formatter: '.formatPercentage'
-                                }" />
-                            </table:template>
-                        </table:Column>
-                        <table:Column>
-                            <Label text="Cumul à ce jour" />
-                            <table:template>
-                                <!--Text text="{utilities>cumul_ce_jour}" /-->
-                                <Text text="{
+                                }"
+                    />
+                </table:template>
+            </table:Column>
+            <table:Column>
+                <Label text="Cumul à ce jour" />
+                <table:template>
+                    <!--Text text="{utilities>cumul_ce_jour}" /-->
+                    <Text
+                        text="{
                                     parts: [
                                         {path: 'utilities>cumul_ce_jour'},
                                         {path: 'utilities>row_type'}
                                     ],
                                     formatter: '.formatPercentage'
-                                }" />
-                            </table:template>
-                        </table:Column>
-                        <table:Column>
-                            <Label text="Année en cours" />
-                            <table:template>
-                                <!--Text text="{utilities>annee_en_cours}" /-->
-                                <Text text="{
+                                }"
+                    />
+                </table:template>
+            </table:Column>
+            <table:Column>
+                <Label text="Année en cours" />
+                <table:template>
+                    <!--Text text="{utilities>annee_en_cours}" /-->
+                    <Text
+                        text="{
                                     parts: [
                                         {path: 'utilities>annee_en_cours'},
                                         {path: 'utilities>row_type'}
                                     ],
                                     formatter: '.formatPercentage'
-                                }" />
-                            </table:template>
-                        </table:Column>
-                        <table:Column>
-                            <Label text="Mois M" />
-                            <table:template>
-                                <!--Text text="{utilities>mois_m}" /-->
-                                <Text text="{
+                                }"
+                    />
+                </table:template>
+            </table:Column>
+            <table:Column>
+                <Label text="Mois M" />
+                <table:template>
+                    <!--Text text="{utilities>mois_m}" /-->
+                    <Text
+                        text="{
                                     parts: [
                                         {path: 'utilities>mois_m'},
                                         {path: 'utilities>row_type'}
                                     ],
                                     formatter: '.formatPercentage'
-                                }" />
-                            </table:template>
-                        </table:Column>
-                        <table:Column>
-                            <Label text="Reste à Venir" />
-                            <table:template>
-                                <!--Text text="{utilities>reste_a_venir}" /-->
-                                <Text text="{
+                                }"
+                    />
+                </table:template>
+            </table:Column>
+            <table:Column>
+                <Label text="Reste à Venir" />
+                <table:template>
+                    <!--Text text="{utilities>reste_a_venir}" /-->
+                    <Text
+                        text="{
                                     parts: [
                                         {path: 'utilities>reste_a_venir'},
                                         {path: 'utilities>row_type'}
                                     ],
                                     formatter: '.formatPercentage'
-                                }" />
-                            </table:template>
-                        </table:Column>
-                        <table:Column>
-                            <Label text="Budget actif" />
-                            <table:template>
-                                <!--Text text="{utilities>budget_actif}" /-->
-                                <Text text="{
+                                }"
+                    />
+                </table:template>
+            </table:Column>
+            <table:Column>
+                <Label text="Budget actif" />
+                <table:template>
+                    <!--Text text="{utilities>budget_actif}" /-->
+                    <Text
+                        text="{
                                     parts: [
                                         {path: 'utilities>budget_actif'},
                                         {path: 'utilities>row_type'}
                                     ],
                                     formatter: '.formatPercentage'
-                                }" />
-                            </table:template>
-                        </table:Column>
-                        <table:Column>
-                            <Label text="Budget actif M-1" />
-                            <table:template>
-                                <!--Text text="{utilities>budget_actif_m1}" /-->
-                                <Text text="{
+                                }"
+                    />
+                </table:template>
+            </table:Column>
+            <table:Column>
+                <Label text="Budget actif M-1" />
+                <table:template>
+                    <!--Text text="{utilities>budget_actif_m1}" /-->
+                    <Text
+                        text="{
                                     parts: [
                                         {path: 'utilities>budget_actif_m1'},
                                         {path: 'utilities>row_type'}
                                     ],
                                     formatter: '.formatPercentage'
-                                }" />
-                            </table:template>
-                        </table:Column>
-                        <table:Column>
-                            <Label text="Ecart" />
-                            <table:template>
-                                <!--Text text="{utilities>ecart}" /-->
-                                <Text text="{
+                                }"
+                    />
+                </table:template>
+            </table:Column>
+            <table:Column>
+                <Label text="Ecart" />
+                <table:template>
+                    <!--Text text="{utilities>ecart}" /-->
+                    <Text
+                        text="{
                                     parts: [
                                         {path: 'utilities>ecart'},
                                         {path: 'utilities>row_type'}
                                     ],
                                     formatter: '.formatPercentage'
-                                }" />
-                            </table:template>
-                        </table:Column>
-                        <table:Column>
-                            <Label text="Budget N-1" />
-                            <table:template>
-                                <!--Text text="{utilities>budget_n1}" /-->
-                                <Text text="{
+                                }"
+                    />
+                </table:template>
+            </table:Column>
+            <table:Column>
+                <Label text="Budget N-1" />
+                <table:template>
+                    <!--Text text="{utilities>budget_n1}" /-->
+                    <Text
+                        text="{
                                     parts: [
                                         {path: 'utilities>budget_n1'},
                                         {path: 'utilities>row_type'}
                                     ],
                                     formatter: '.formatPercentage'
-                                }" />
-                            </table:template>
-                        </table:Column>
-                        <!--table:Column>
+                                }"
+                    />
+                </table:template>
+            </table:Column>
+            <!--table:Column>
                         <Label text="{i18n>recap.CumulN}"/>
                         <table:template>
                             <ObjectStatus class="custObjStatus" state="{= parseFloat(${utilities>CumulN}) &lt; 0 ? 'Error': 'None'}" text="{ 'parts':[{ path: 'utilities>CumulN' }, {path: 'utilities>Type'}], formatter: '.formatRecap' }" />
@@ -214,9 +222,6 @@
                             <ObjectStatus class="custObjStatus" state="{= parseFloat(${utilities>Forecast}) &lt; 0 ? 'Error': 'None'}" text="{ 'parts':[{ path: 'utilities>Forecast' }, {path: 'utilities>Type'}], formatter: '.formatRecap' }" />
                         </table:template>
                     </table:Column-->
-                    </table:columns>
-                </table:Table>
-            </VBox>
-        </HBox>
-    </Panel>
+        </table:columns>
+    </table:Table>
 </mvc:View>

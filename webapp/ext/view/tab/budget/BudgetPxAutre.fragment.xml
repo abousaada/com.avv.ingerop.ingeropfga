@@ -5,11 +5,6 @@
     xmlns:l="sap.ui.layout"
     xmlns:f="sap.ui.layout.form"
 >
-    <Panel
-        headerText="BudgetPxAutre"
-        expandable="true"
-        expanded="true"
-    >
         <table:TreeTable
             id="BudgetPxAutreTreeTable"
             rows="{
@@ -307,5 +302,5 @@
                 </table:Column>
             </table:columns>
         </table:TreeTable>
-    </Panel>
+
 </core:FragmentDefinition>
