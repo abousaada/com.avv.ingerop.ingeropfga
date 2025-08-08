@@ -9,6 +9,7 @@
     <table:TreeTable
         id="BudgetPxAutreTreeTable"
         width="100%"
+            rowsUpdated="onRowsUpdatedBudgetPXTab"
         rows="{
                 path: 'utilities>/PxAutreHierarchyWithTotals',
                 parameters: {

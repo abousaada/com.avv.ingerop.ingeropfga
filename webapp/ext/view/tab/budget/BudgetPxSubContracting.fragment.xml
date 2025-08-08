@@ -20,6 +20,7 @@
         ariaLabelledBy="title"
         enableColumnReordering="false"
         fixedColumnCount="1"
+        rowsUpdated="onRowsUpdatedBudgetPXSubCTab"
     >
         <table:rowMode>
             <rm:Auto minRowCount= "{localModel>/tableSettings/minRowCount}" />
