@@ -180,8 +180,15 @@ sap.ui.define(
 
                 this._extendOPUiManage._setOPView(e.context);
 
+                const Percent = e.context.getProperty("Percent");
+                if(Percent === "PI" || !Percent){
+                    this.getInterface().getModel().setProperty(e.context + "/Percent", "%")
+                }
+
                 //1. if create
                 if (bCreateMode) { utilitiesModel.reInit(); return }
+
+                
 
                 const sPeriod = e.context.getProperty("p_period");
                 if (sPeriod) { utilitiesModel.setYearByPeriod(sPeriod); }

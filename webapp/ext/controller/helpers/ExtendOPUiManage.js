@@ -33,11 +33,6 @@ sap.ui.define([
                     if(!fieldValue && defaultValue) {
                         model.setProperty(path + propertyPath , defaultValue);
                     }
-
-                    // const champ = this._getField(identifier, field);
-                    // if(champ && !champ.getValue() && defaultValue) {
-                    //     champ.setValue(defaultValue);
-                    // }
                 });
         },
 
@@ -73,6 +68,8 @@ sap.ui.define([
             Helper.getFieldEnabledByMode(isCreateMode).map(({ identifier, field, enabled }) => {
                 this._getField(identifier, field)?.setEditable(enabled);
             });
+
+            this.oView.byId("com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--com.sap.vocabularies.UI.v1.FieldGroup::Facturation::VAT::Field")?.setUomEditable(false);
         },
 
         _getField(identifiant, champ) {
@@ -118,7 +115,7 @@ sap.ui.define([
             }
             const ing = parseFloat(Mtctr);
             const trav = parseFloat(Mttrvx);
-            const diff = ing / trav;
+            const diff = Math.round(ing / trav * 100);
             this._getField("Travaux", "Ingtrvx").setValue(diff.toString());
         },
 
