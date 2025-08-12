@@ -61,6 +61,28 @@ sap.ui.define(
                     this._extendOPUiManage = new ExtendOPUiManage();
                     this._extendOPUiManage.oView = this.getView();
 
+                    // window.onbeforeunload = null;
+
+                },
+
+                onAfterRendering: function () {
+                    // var oView = this.getView();
+
+                    // // ID généré par Fiori Elements : Entity::Measure::Field
+                    // var oField = oView.byId("com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--com.sap.vocabularies.UI.v1.FieldGroup::Facturation::VAT::Field");
+
+                    // if (oField ) {
+                    //     // On remplace le binding de 'unit' avec un formatter
+                    //     oField.bindProperty("unit", {
+                    //         path: oField.getBindingInfo("unit").parts[0].path,
+                    //         formatter: function (sUnit) {
+                    //             if (sUnit === "PI") {
+                    //                 return "%";
+                    //             }
+                    //             return sUnit;
+                    //         }
+                    //     });
+                    // }
                 },
 
                 // Called before the table is rebound (can be used to adjust binding parameters)
@@ -72,7 +94,6 @@ sap.ui.define(
                 onListNavigationExtension: function (oEvent) {
                     console.log("onListNavigationExtension called", oEvent);
                 },
-
 
                 beforeSaveExtension() {
                     try {
@@ -94,7 +115,6 @@ sap.ui.define(
                             });
                         }
 
-
                         this._setBusy(true);
                         return new Promise(async (resolve, reject) => {
                             const formattedMissions = utilitiesModel.getFormattedMissions();
@@ -108,6 +128,7 @@ sap.ui.define(
                             });
 
                             try {
+                                oPayload.VAT = oPayload.VAT ? oPayload.VAT.toString() : oPayload.VAT;
                                 const updatedFGA = await utilitiesModel.deepUpsertFGA(oPayload);
                                 this._setBusy(false);
                                 if (updatedFGA) {
@@ -120,7 +141,6 @@ sap.ui.define(
                                 console.log(error);
                                 //reject();
                                 return Promise.reject("No data returned");
-
                             }
 
                             //reject();
@@ -152,8 +172,23 @@ sap.ui.define(
             },
 
             onNavBack() {
-                var oHistory = sap.ui.core.routing.History.getInstance();
-                var sPreviousHash = oHistory.getPreviousHash();
+                const oHistory = sap.ui.core.routing.History.getInstance();
+                const sPreviousHash = oHistory.getPreviousHash();
+                const oModel = this.getInterface().getModel();
+                const mPendingChanges = oModel.getPendingChanges();
+                // Parcours des entités modifiées
+                Object.keys(mPendingChanges).forEach(function (sPath) {
+                    // const oChanges = mPendingChanges[sPath];
+
+                    // Vérifie si la propriété 'UnitField' (ou nom réel) a été modifiée
+                    // if (oChanges && oChanges.Percent) {
+                    //     console.log("Changement trouvé sur 'unit' pour :", sPath);
+
+                    // Annule juste ce changement
+                    oModel.resetChanges([`/${sPath}`]);
+                    // }
+                });
+
                 if (sPreviousHash !== undefined) { window.history.go(-1); }
                 else { window.location.hash = ""; }
             },
@@ -185,25 +220,23 @@ sap.ui.define(
                     const oModel = this.getInterface().getModel();
                     oModel.setProperty(e.context + "/Percent", "%");
 
-                //     const mPendingChanges = oModel.getPendingChanges();
-                //     // Parcours des entités modifiées
-                //     Object.keys(mPendingChanges).forEach(function (sPath) {
-                //         const oChanges = mPendingChanges[sPath];
+                    //     const mPendingChanges = oModel.getPendingChanges();
+                    //     // Parcours des entités modifiées
+                    //     Object.keys(mPendingChanges).forEach(function (sPath) {
+                    //         const oChanges = mPendingChanges[sPath];
 
-                //         // Vérifie si la propriété 'UnitField' (ou nom réel) a été modifiée
-                //         if (oChanges && oChanges.Percent) {
-                //             console.log("Changement trouvé sur 'unit' pour :", sPath);
+                    //         // Vérifie si la propriété 'UnitField' (ou nom réel) a été modifiée
+                    //         if (oChanges && oChanges.Percent) {
+                    //             console.log("Changement trouvé sur 'unit' pour :", sPath);
 
-                //             // Annule juste ce changement
-                //             oModel.resetChanges([`/${sPath}`]);
-                //         }
-                //     });
+                    //             // Annule juste ce changement
+                    //             oModel.resetChanges([`/${sPath}`]);
+                    //         }
+                    //     });
                 }
 
                 //1. if create
                 if (bCreateMode) { utilitiesModel.reInit(); return }
-
-                
 
                 const sPeriod = e.context.getProperty("p_period");
                 if (sPeriod) { utilitiesModel.setYearByPeriod(sPeriod); }
