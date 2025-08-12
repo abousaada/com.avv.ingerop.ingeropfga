@@ -1,0 +1,159 @@
+<mvc:View
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.ui.table"
+  xmlns:core="sap.ui.core"
+  xmlns:m="sap.m"
+  controllerName="com.avv.ingerop.ingeropfga.ext.controller.Sfgp">
+
+  <Table id="sfgpTable" rows="{/recapData}" selectionMode="None" width="auto" class="sfgpTable">
+    <!-- === RECAP Projet Columns === -->
+    <columns>
+      <Column>
+        <multiLabels>
+          <m:Label text="Récap Projet"/>
+          <m:Label text="Codes affaire"/>
+        </multiLabels>
+        <template><m:Text text="{RG1}"/></template>
+      </Column>
+      <Column>
+        <multiLabels>
+          <m:Label text="Récap Projet"/>
+          <m:Label text="UFO déléguée"/>
+        </multiLabels>
+        <template><m:Text text="{RG3}"/></template>
+      </Column>
+      <Column>
+        <multiLabels>
+          <m:Label text="Récap Projet"/>
+          <m:Label text="CDG"/>
+        </multiLabels>
+        <template><m:Text text="{RG4}"/></template>
+      </Column>
+      <Column>
+        <multiLabels>
+          <m:Label text="Récap Projet"/>
+          <m:Label text="CA"/>
+        </multiLabels>
+        <template><m:Text text="{RG5}"/></template>
+      </Column>
+      <Column>
+        <multiLabels>
+          <m:Label text="Récap Projet"/>
+          <m:Label text="Dépenses"/>
+        </multiLabels>
+        <template><m:Text text="{RG6}"/></template>
+      </Column>
+      <Column>
+        <multiLabels>
+          <m:Label text="Récap Projet"/>
+          <m:Label text="RBA"/>
+        </multiLabels>
+        <template><m:Text text="{RG7}"/></template>
+      </Column>
+      <Column>
+        <multiLabels>
+          <m:Label text="Récap Projet"/>
+          <m:Label text="%"/>
+        </multiLabels>
+        <template><m:Text text="{RG2}"/></template>
+      </Column>
+
+      <!-- === Budget Fin d’affaire === -->
+      <Column>
+        <multiLabels>
+          <m:Label text="Budget Fin d’affaire"/>
+          <m:Label text="Main d’œuvre"/>
+        </multiLabels>
+        <template><m:Text text="{RG8}"/></template>
+      </Column>
+      <Column>
+        <multiLabels>
+          <m:Label text="Budget Fin d’affaire"/>
+          <m:Label text="Sous-traitance"/>
+        </multiLabels>
+        <template><m:Text text="{RG9}"/></template>
+      </Column>
+      <Column>
+        <multiLabels>
+          <m:Label text="Budget Fin d’affaire"/>
+          <m:Label text="Autres frais"/>
+        </multiLabels>
+        <template><m:Text text="{RG10}"/></template>
+      </Column>
+      <Column>
+        <multiLabels>
+          <m:Label text="Budget Fin d’affaire"/>
+          <m:Label text="Total"/>
+        </multiLabels>
+        <template><m:Text text="{RG11}"/></template>
+      </Column>
+
+      <!-- === Réalisé === -->
+      <Column>
+        <multiLabels>
+          <m:Label text="Réalisé"/>
+          <m:Label text="Main d’œuvre"/>
+        </multiLabels>
+        <template><m:Text text="{RG12}"/></template>
+      </Column>
+      <Column>
+        <multiLabels>
+          <m:Label text="Réalisé"/>
+          <m:Label text="Sous-traitance"/>
+        </multiLabels>
+        <template><m:Text text="{RG13}"/></template>
+      </Column>
+      <Column>
+        <multiLabels>
+          <m:Label text="Réalisé"/>
+          <m:Label text="Autres frais"/>
+        </multiLabels>
+        <template><m:Text text="{RG14}"/></template>
+      </Column>
+      <Column>
+        <multiLabels>
+          <m:Label text="Réalisé"/>
+          <m:Label text="Total"/>
+        </multiLabels>
+        <template><m:Text text="{RG15}"/></template>
+      </Column>
+      <Column>
+        <multiLabels>
+          <m:Label text="Réalisé"/>
+          <m:Label text="% avancement"/>
+        </multiLabels>
+        <template><m:Text text="{RG16}"/></template>
+      </Column>
+
+      <!-- === RAD === -->
+      <Column>
+        <multiLabels>
+          <m:Label text="RAD"/>
+          <m:Label text="Main d’œuvre"/>
+        </multiLabels>
+        <template><m:Text text="{RG17}"/></template>
+      </Column>
+      <Column>
+        <multiLabels>
+          <m:Label text="RAD"/>
+          <m:Label text="Sous-traitance"/>
+        </multiLabels>
+        <template><m:Text text="{RG18}"/></template>
+      </Column>
+      <Column>
+        <multiLabels>
+          <m:Label text="RAD"/>
+          <m:Label text="Autres frais"/>
+        </multiLabels>
+        <template><m:Text text="{RG19}" /></template>
+      </Column>
+      <Column>
+        <multiLabels>
+          <m:Label text="RAD"/>
+          <m:Label text="Total"/>
+        </multiLabels>
+        <template><m:Text text="{RG20}"/></template>
+      </Column>
+    </columns>
+  </Table>
+</mvc:View>

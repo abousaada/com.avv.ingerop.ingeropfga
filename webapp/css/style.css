@@ -92,3 +92,32 @@
 .customTreeLink.sapMLnk:hover {
     color: #004da3 !important;        /* Darker blue on hover */
 }
+
+
+.sfgpTable .sapUiTableHeaderRow {
+    background-color:#333399 !important;
+}
+
+.sfgpTable .sapUiTableHeaderDataCell .sapMLabel, .sapMListTbl .sapMColumnHeader .sapMLabel {
+    color: whitesmoke;
+    font-weight: bold;
+} 
+
+.sfgpTable .sapUiTableHeaderDataCell>.sapUiTableCellInner>div:first-child {
+    justify-content: center !important;
+}
+
+.sfgpTable .sapUiTableHeaderCell:not(.sapUiTableRowActionHeaderCell):hover {
+    background: none;
+}
+
+.sfgpFooterRow .sapUiTableCell {
+    background-color: #333399 !important;
+    color: white !important;
+    font-weight: bold;
+    text-align: center;
+}
+
+.sfgpFooterRow .sapMText {
+    color: white !important;
+}

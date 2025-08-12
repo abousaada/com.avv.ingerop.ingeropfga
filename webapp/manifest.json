@@ -295,7 +295,11 @@
       }
     },
     "resources": {
-      "css": []
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
     },
     "routing": {
       "config": {
@@ -351,6 +355,14 @@
               "loadingBehavior": {
                 "waitForHeaderData": true,
                 "waitForViewportEnter": true
+              }
+            },
+            "AfterFacet|ZC_FGASet|TableInfo|1": {
+              "className": "sap.ui.core.mvc.View",
+              "viewName": "com.avv.ingerop.ingeropfga.ext.view.Sfgp",
+              "type": "XML",
+              "sap.ui.generic.app": {
+                "title": "Sfgp"
               }
             },
             "AfterFacet|ZC_FGASet|GeneralInfo": {

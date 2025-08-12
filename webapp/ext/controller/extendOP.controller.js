@@ -61,7 +61,7 @@ sap.ui.define(
                     this._extendOPUiManage = new ExtendOPUiManage();
                     this._extendOPUiManage.oView = this.getView();
                 },
-
+                  
                 // Called before the table is rebound (can be used to adjust binding parameters)
                 onBeforeRebindTableExtension: function (oEvent) {
                     console.log("onBeforeRebindTableExtension called", oEvent);

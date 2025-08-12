@@ -1,5 +1,5 @@
 {
-  "version": "0.2.0",
+  "version": "",
   "configurations": [
     {
       "name": "com.avv.ingerop.ingeropfga-config1",
@@ -25,4 +25,5 @@
       }
     }
   ]
+}  ]
 }
