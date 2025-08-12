@@ -17,7 +17,24 @@ sap.ui.define(
         return {
 
             onSTIPress: function (oEvent) {
-                MessageToast.show("onSTIPress invoked.");
+                try {
+                    const oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
+
+                    const sHash = oCrossAppNavigator.hrefForExternal({
+                        target: {
+                            semanticObject: "ZSTI",
+                            action: "manage"
+                        }
+                    });
+
+                    // Open the app in a new tab
+                    window.open(sHash, "_blank", "noopener,noreferrer");
+
+                    MessageToast.show("onSTIPress invoked.");
+
+                } catch (err) {
+                    console.error("Error during navigation:", err);
+                }
             },
 
             onEMXPress: function (oEvent) {
@@ -64,8 +81,24 @@ sap.ui.define(
             },
 
             _onAction1: function () {
-                MessageToast.show("Action 1 executed");
-                // Add logic
+                try {
+                    const oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
+
+                    const sHash = oCrossAppNavigator.hrefForExternal({
+                        target: {
+                            semanticObject: "ZEMX",
+                            action: "manage"
+                        }
+                    });
+
+                    // Open the app in a new tab
+                    window.open(sHash, "_blank", "noopener,noreferrer");
+
+                    MessageToast.show("onEMXPress invoked.");
+
+                } catch (err) {
+                    console.error("Error during navigation:", err);
+                }
             },
 
             _onAction2: function () {
@@ -86,5 +119,5 @@ sap.ui.define(
             },
         };
 
- 
+
     });
