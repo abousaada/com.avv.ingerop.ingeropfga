@@ -69,7 +69,8 @@ sap.ui.define([
                 this._getField(identifier, field)?.setEditable(enabled);
             });
 
-            this.oView.byId("com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--com.sap.vocabularies.UI.v1.FieldGroup::Facturation::VAT::Field")?.setUomEditable(false);
+            this._getField("Facturation", "VAT")?.setUomEditable(false);
+            this._getField("Travaux", "Ingtrvx")?.setUomEditable(false);
         },
 
         _getField(identifiant, champ) {

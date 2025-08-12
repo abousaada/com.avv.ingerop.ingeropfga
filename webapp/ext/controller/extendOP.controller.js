@@ -124,7 +124,7 @@ sap.ui.define(
                             }
 
                             //reject();
-                            return Promise.reject(error);
+                            return Promise.reject();
                         });
                     } catch (error) {
                         this._setBusy(false);
@@ -181,8 +181,23 @@ sap.ui.define(
                 this._extendOPUiManage._setOPView(e.context);
 
                 const Percent = e.context.getProperty("Percent");
-                if(Percent === "PI" || !Percent){
-                    this.getInterface().getModel().setProperty(e.context + "/Percent", "%")
+                if (Percent === "P1" || Percent === "PI" || !Percent) {
+                    const oModel = this.getInterface().getModel();
+                    oModel.setProperty(e.context + "/Percent", "%");
+
+                //     const mPendingChanges = oModel.getPendingChanges();
+                //     // Parcours des entités modifiées
+                //     Object.keys(mPendingChanges).forEach(function (sPath) {
+                //         const oChanges = mPendingChanges[sPath];
+
+                //         // Vérifie si la propriété 'UnitField' (ou nom réel) a été modifiée
+                //         if (oChanges && oChanges.Percent) {
+                //             console.log("Changement trouvé sur 'unit' pour :", sPath);
+
+                //             // Annule juste ce changement
+                //             oModel.resetChanges([`/${sPath}`]);
+                //         }
+                //     });
                 }
 
                 //1. if create
