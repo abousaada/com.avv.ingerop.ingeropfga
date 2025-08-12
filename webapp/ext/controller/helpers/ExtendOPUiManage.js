@@ -7,32 +7,51 @@ sap.ui.define([
     "use strict";
 
     return Controller.extend("com.avv.ingerop.ingeropfga.ext.controller.helpers.ExtendOPUiManage", {
-
-        _setOPView() {
-            this._setTabsVisible();
-            this._setFieldVisible();
-            this._attachChangeEventOnFields();
-            this._setFieldEnabled();
-            // this._setFieldDefaultValue();
+        
+        _setFieldByType(type){
+            this._setMandatoryFieldByType(type);
+            this._setVisibleFieldByType(type);
+            // this._setVisibleFieldByType("Z0");
         },
 
-        // _setFieldDefaultValue(){
-        //     const isCreateMode = this.oView.getModel("ui").getProperty("/createMode");
-        //     Helper.getFieldDefaultValueByMode(isCreateMode).map(
-        //         ({ identifier, field, defaultValue }) => {
-        //             const champ = this._getField(identifier, field);
-        //             if(champ && !champ.getValue() && defaultValue) {
-        //                 champ.setValue(defaultValue);
-        //             }
-        //         });
-        //         this._getField('Facturation', 'Currency').setValue('EUR');   
-        // },
+        _setOPView(context) {
+            this._setTabsVisible();
+            // this._setFieldVisible();
+            this._attachChangeEventOnFields();
+            this._setFieldEnabled();
+            this._setFieldDefaultValue(context);
+        },
+
+        _setFieldDefaultValue(context){
+            const isCreateMode = this.oView.getModel("ui").getProperty("/createMode");
+            const model = this.oView.getModel();
+            const path = context.getPath();
+            Helper.getFieldDefaultValueByMode(isCreateMode).map(
+                ({ identifier, field, defaultValue }) => {
+                    const propertyPath = "/" + field
+                    const fieldValue = context.getProperty(propertyPath);
+                    if(!fieldValue && defaultValue) {
+                        model.setProperty(path + propertyPath , defaultValue);
+                    }
+                });
+        },
 
         _setTabsVisible() {
             const isCreateMode = this.oView.getModel("ui").getProperty("/createMode");
             Helper.getTabVisibilityByMode(isCreateMode).map(({ key, visible }) => {
                 this.oView.byId(key)?.setVisible(visible)
             });
+        },
+
+        _setProjectFieldVisible(){
+            const isCreateMode = this.oView.getModel("ui").getProperty("/createMode");
+            if(!isCreateMode){
+                Helper.getProjectHeaderFieldList().map(
+                    ({ identifier, field, visible }) => {
+                        this._getField(identifier, field)?.setVisible(visible);
+                    }
+                );
+            }
         },
 
         _setFieldVisible() {
@@ -49,6 +68,9 @@ sap.ui.define([
             Helper.getFieldEnabledByMode(isCreateMode).map(({ identifier, field, enabled }) => {
                 this._getField(identifier, field)?.setEditable(enabled);
             });
+
+            this._getField("Facturation", "VAT")?.setUomEditable(false);
+            this._getField("Travaux", "Ingtrvx")?.setUomEditable(false);
         },
 
         _getField(identifiant, champ) {
@@ -94,7 +116,7 @@ sap.ui.define([
             }
             const ing = parseFloat(Mtctr);
             const trav = parseFloat(Mttrvx);
-            const diff = ing / trav;
+            const diff = Math.round(ing / trav * 100);
             this._getField("Travaux", "Ingtrvx").setValue(diff.toString());
         },
 
@@ -114,14 +136,16 @@ sap.ui.define([
             const newValue = oEvent.getParameter("newValue");
             if (newValue) {
                 const utilities = this.oView.getModel("utilities");
-                const { Name1, Siret, Country } = await utilities.getBEClientById(newValue);
+                const { Name1, Siret, Country, Secteur } = await utilities.getBEClientById(newValue);
                 this._getField("Client", "CustomerName").setValue(Name1);
                 this._getField("Client", "Siret").setValue(Siret);
                 this._getField("Client", "Country").setValue(Country);
+                this._getField("Client", "Scclt").setValue(Secteur);
             } else {
                 this._getField("Client", "CustomerName").setValue(null);
                 this._getField("Client", "Siret").setValue(null);
                 this._getField("Client", "Country").setValue(null);
+                this._getField("Client", "Scclt").setValue(Country);
             }
         },
 
@@ -148,6 +172,14 @@ sap.ui.define([
                 this._getField(identifier, field)?.setMandatory(mandatory);
             });
         },
+
+        _setVisibleFieldByType(type){
+            if(type === "Z0" || type === "Z1"){
+                this._setProjectFieldVisible();
+            }else{
+                this._setFieldVisible();
+            }
+        }
 
     });
 });

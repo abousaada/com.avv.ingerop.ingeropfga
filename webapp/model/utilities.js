@@ -299,12 +299,15 @@ sap.ui.define([
             // Call this when saving the main entity to process all missions
             validDataBeforeSave: function (oView) {
                 //return this.validMissions() && this.validFGAHeaderFields();
-                return this.validMissions(oView) && this.validFGAHeaderFields();
+                return [this.validFGAHeaderFields(), this.validMissions(oView)].every(bool => !!bool);
             },
 
             // Validate missions
             validMissions(oView) {
-
+                if(oView.getModel("ui").getProperty("/createMode")){
+                    return true;
+                }
+                    
                 this._missionsTab = new Missions();
                 return this._missionsTab.validateMissionsTreeRequiredFields(oView);
 
@@ -315,8 +318,27 @@ sap.ui.define([
                 return true;*/
             },
 
+            getViewField(identifier, field){
+                return this.oView.byId(Helper.headerFieldIdBySectionAndFieldName(identifier, field));
+            },
+
             validFGAHeaderFields() {
-                return true;
+                let isValid = true;
+                Helper.getHeaderFieldList().map(({identifier, field}) => {
+                    const champ = this.getViewField(identifier, field);
+                    if (champ?.getVisible() && champ?.getMandatory() && !champ?.getValue()) {
+                        champ?.setValueState("Error");
+                        champ?.setValueStateText("Mandatory Field required");
+                        isValid = false;
+                    } else {
+                        champ?.setValueState("None");
+                    }
+                });
+                return isValid;
+                // return Helper.getHeaderFieldList.some(({identifier, field}) => {
+                //     const champ = this.getViewField(identifier, field);
+                //     return champ.getMandatory() && !champ.getValue();
+                // });
             },
 
             async deepCreateFGA(data) {

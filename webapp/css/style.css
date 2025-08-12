@@ -121,3 +121,71 @@
 .sfgpFooterRow .sapMText {
     color: white !important;
 }
+
+/* ---------- STYLE POUR TABLE SYNTHESE SECTION BUDGETS ---------- */
+.syntheseTab .sapUiTableRow.totalRow {
+    background-color: #333399 !important;
+    font-weight: bold !important;
+}
+
+.syntheseTab .sapUiTableRow.totalRow .sapUiTableCell .sapMText{
+    color: white !important;
+}
+.syntheseTab .sapUiTableRow.totalRow .sapUiTableCell .sapMLnk{
+    color: white !important;
+}
+
+/* ---------- STYLE POUR LIGNE RBA SI NEGATIVE ---------- */
+.syntheseTab .sapUiTableRow.rbaNegative .sapUiTableCell .sapMLnk{
+    color: red !important;
+}
+/* ---------- STYLE POUR TABLE SUMMARY ---------- */
+.orangeHeader {
+    background-color: #F2AA84 !important; 
+    color: white !important;
+}
+.pinkHeader   { background-color: #D86ECC !important; 
+    color: white !important; 
+}
+.orangeColumn {
+    background-color: #fbe5da !important;
+}
+
+.pinkColumn {
+    background-color: #f3d3f0 !important;
+}
+.negativeValue {
+    color: red !important;
+    font-weight: bold !important;
+}
+/* ---------- STYLE POUR TABLE BUDGETPX AUTRE SECTION BUDGETS ---------- */
+  /* ===== Main TOTAL row ===== */
+  .sapUiTableTr.pxTotalRow .sapUiTableCell {
+    background-color: #333399 !important;   /* dark blue */
+  }
+  .sapUiTableTr.pxTotalRow .sapMText,
+  .sapUiTableTr.pxTotalRow .sapMLnk,
+  .sapUiTableTr.pxTotalRow .sapMInputBaseInner {
+    color: #fff !important;                  /* white text/links/inputs */
+    font-weight: 600;
+  }
+  
+  /* ===== SUB-TOTAL row ===== */
+  .sapUiTableTr.pxSubTotalRow .sapUiTableCell {
+    background-color: #ccc0ff !important;   /* light violet */
+  }
+  .sapUiTableTr.pxSubTotalRow .sapMText,
+  .sapUiTableTr.pxSubTotalRow .sapMLnk,
+  .sapUiTableTr.pxSubTotalRow .sapMInputBaseInner {
+    color: #000 !important;                  /* black text for sub-totals */
+    font-weight: 600;
+  }
+
+.pxHeader{
+    background-color: #333399 !important;
+ 
+}
+.sapUiTableColHdrTr.pxHeader .sapMLabel,
+.sapUiTableColHdrTr.pxHeader .sapUiTableCellInner {
+    color: white !important; 
+}

@@ -2,52 +2,50 @@
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
     xmlns:table="sap.ui.table"
-    xmlns:l="sap.ui.layout"
+    xmlns:layout="sap.ui.layout"
     xmlns:f="sap.ui.layout.form"
+    xmlns:rm="sap.ui.table.rowmodes"
 >
-    <Panel
-        headerText="Missions"
-        expandable="true"
-        expanded="true"
-    >
-        <headerToolbar>
-            <Toolbar>
+    <layout:VerticalLayout width="100%">
+        <Toolbar>
+            <content>
                 <ToolbarSpacer />
                 <Button
                     icon="sap-icon://refresh"
                     text="Refresh"
-                    tooltip="Refresh Tree Structure"
-                    press="onRefreshTree"
-                    visible="{ui>/editable}"
+                    press=".onRefreshTree"
                     type="Emphasized"
                 />
-            </Toolbar>
-        </headerToolbar>
-
-        <content>
-            <table:TreeTable
-                id="missionsTreeTable"
-                rows="{
+            </content>
+        </Toolbar>
+        <table:TreeTable
+            id="missionsTreeTable"
+            rows="{
                 path: 'utilities>/missionsHierarchy',
                 parameters: {
                     arrayNames: ['children'],
                     numberOfExpandedLevels: 3
                 }
             }"
-                selectionMode="None"
-                ariaLabelledBy="title"
-                enableColumnReordering="false"
-            >
-                <table:columns>
-                    <!-- Hierarchy Column -->
-                    <table:Column width="20rem">
-                        <Label text="Hierarchy" />
-                        <table:template>
-                            <HBox>
-                                <Text
-                                    text="{= ${utilities>isNode} ? ${utilities>name} : ${utilities>MissionId}}"
-                                />
-                                <!--Text
+            selectionMode="None"
+            ariaLabelledBy="title"
+            enableColumnReordering="false"
+        >
+            <table:rowMode>
+                <rm:Auto
+                    minRowCount="{localModel>/tableSettings/minRowCount}"
+                />
+            </table:rowMode>
+            <table:columns>
+                <!-- Hierarchy Column -->
+                <table:Column width="20rem">
+                    <Label text="Hierarchy" />
+                    <table:template>
+                        <HBox>
+                            <Text
+                                text="{= ${utilities>isNode} ? ${utilities>name} : ${utilities>MissionId}}"
+                            />
+                            <!--Text
                                     text="{= ${utilities>name}}"
                                     visible="{= ${utilities>isNode}}"
                                 />
@@ -57,164 +55,163 @@
                                     width="15rem"
                                     visible="{= !${utilities>isNode}}"
                                 /-->
-                            </HBox>
-                        </table:template>
-                    </table:Column>
+                        </HBox>
+                    </table:template>
+                </table:Column>
 
-                    <!-- Description Column -->
-                    <table:Column width="10rem">
-                        <Label text="Description" />
-                        <table:template>
+                <!-- Description Column -->
+                <table:Column width="10rem">
+                    <Label text="Description" />
+                    <table:template>
+                        <Input
+                            value="{utilities>description}"
+                            editable="{ui>/editable}"
+                            width="100%"
+                            visible="{= !${utilities>isNode}}"
+                        />
+                    </table:template>
+                </table:Column>
+
+                <!-- Regroupement Column -->
+                <table:Column width="10rem">
+                    <Label text="Regroupement" />
+                    <table:template>
+                        <HBox>
                             <Input
-                                value="{utilities>description}"
+                                value="{utilities>Regroupement}"
                                 editable="{ui>/editable}"
                                 width="100%"
                                 visible="{= !${utilities>isNode}}"
+                                change=".onRegroupementChange"
+                                required="true"
                             />
-                        </table:template>
-                    </table:Column>
+                            <Label
+                                text=""
+                                visible="{= !${utilities>isNode}}"
+                                class="sapMLabelRequired"
+                            />
+                        </HBox>
+                    </table:template>
+                </table:Column>
 
-                    <!-- Regroupement Column -->
-                    <table:Column width="10rem">
-                        <Label text="Regroupement" />
-                        <table:template>
-                            <HBox>
-                                <Input
-                                    value="{utilities>Regroupement}"
-                                    editable="{ui>/editable}"
-                                    width="100%"
-                                    visible="{= !${utilities>isNode}}"
-                                    change=".onRegroupementChange"
-                                    required="true"
-                                />
-                                <Label
-                                    text=""
-                                    visible="{= !${utilities>isNode}}"
-                                    class="sapMLabelRequired"
-                                />
-                            </HBox>
-                        </table:template>
-                    </table:Column>
-
-                    <!-- Mission Status Column -->
-                    <table:Column width="8rem">
-                        <Label text="Status" />
-                        <table:template>
-                            <HBox>
-                                <ComboBox
-                                    selectedKey="{utilities>statutmission}"
-                                    items="{
+                <!-- Mission Status Column -->
+                <table:Column width="8rem">
+                    <Label text="Status" />
+                    <table:template>
+                        <HBox>
+                            <ComboBox
+                                selectedKey="{utilities>statutmission}"
+                                items="{
                                 path: 'utilities>/missionStatus',
                                 templateShareable: false
                             }"
-                                    editable="{ui>/editable}"
-                                    width="100%"
-                                    visible="{= !${utilities>isNode}}"
-                                    required="true"
-                                >
-                                    <core:Item
-                                        key="{utilities>code}"
-                                        text="{utilities>description}"
-                                    />
-                                </ComboBox>
-                                <Label
-                                    text=""
-                                    visible="{= !${utilities>isNode}}"
-                                    class="sapMLabelRequired"
+                                editable="{ui>/editable}"
+                                width="100%"
+                                visible="{= !${utilities>isNode}}"
+                                required="true"
+                            >
+                                <core:Item
+                                    key="{utilities>code}"
+                                    text="{utilities>description}"
                                 />
-                            </HBox>
-                        </table:template>
-                    </table:Column>
+                            </ComboBox>
+                            <Label
+                                text=""
+                                visible="{= !${utilities>isNode}}"
+                                class="sapMLabelRequired"
+                            />
+                        </HBox>
+                    </table:template>
+                </table:Column>
 
-                    <!-- Mission Type Column -->
-                    <table:Column width="8rem">
-                        <Label text="Type" />
+                <!-- Mission Type Column -->
+                <table:Column width="8rem">
+                    <Label text="Type" />
 
-                        <table:template>
-                            <HBox>
-                                <ComboBox
-                                    
-                                    value="{utilities>MissionCode}"
-                                    items="{
+                    <table:template>
+                        <HBox>
+                            <ComboBox
+                                selectedKey="{utilities>MissionCode}"
+                                items="{
                                         path: 'utilities>/missionTypes',
                                         templateShareable: false
                                     }"
-                                    editable="{ui>/editable}"
-                                    width="100%"
-                                    visible="{= !${utilities>isNode}}"
-                                    required="true"
-                                >
-                                    <core:Item
-                                        key="{utilities>code}"
-                                        text="{utilities>description}"
-                                    />
-                                </ComboBox>
-                                <Label
-                                    text=""
-                                    visible="{= !${utilities>isNode}}"
-                                    class="sapMLabelRequired"
+                                editable="{ui>/editable}"
+                                width="100%"
+                                visible="{= !${utilities>isNode}}"
+                                required="true"
+                            >
+                                <core:Item
+                                    key="{utilities>code}"
+                                    text="{utilities>description}"
                                 />
-                            </HBox>
-                        </table:template>
-                    </table:Column>
+                            </ComboBox>
+                            <Label
+                                text=""
+                                visible="{= !${utilities>isNode}}"
+                                class="sapMLabelRequired"
+                            />
+                        </HBox>
+                    </table:template>
+                </table:Column>
 
-                    <!-- Start Date Column -->
-                    <table:Column width="10rem">
-                        <Label text="Date début" />
-                        <table:template>
-                            <HBox>
-                                <DatePicker
-                                    value="{path: 'utilities>StartDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd' }}"
-                                    displayFormat="short"
-                                    editable="{ui>/editable}"
-                                    width="100%"
-                                    visible="{= !${utilities>isNode}}"
-                                    required="true"
-                                />
-                                <Label
-                                    text=""
-                                    visible="{= !${utilities>isNode}}"
-                                    class="sapMLabelRequired"
-                                />
-                            </HBox>
-                        </table:template>
-                    </table:Column>
+                <!-- Start Date Column -->
+                <table:Column width="10rem">
+                    <Label text="Date début" />
+                    <table:template>
+                        <HBox>
+                            <DatePicker
+                                value="{path: 'utilities>StartDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd' }}"
+                                displayFormat="short"
+                                editable="{ui>/editable}"
+                                width="100%"
+                                visible="{= !${utilities>isNode}}"
+                                required="true"
+                            />
+                            <Label
+                                text=""
+                                visible="{= !${utilities>isNode}}"
+                                class="sapMLabelRequired"
+                            />
+                        </HBox>
+                    </table:template>
+                </table:Column>
 
-                    <!-- End Date Column -->
-                    <table:Column width="10rem">
-                        <Label text="Date fin" />
-                        <table:template>
-                            <HBox>
-                                <DatePicker
-                                    value="{path: 'utilities>EndDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd' }}"
-                                    displayFormat="short"
-                                    editable="{ui>/editable}"
-                                    width="100%"
-                                    visible="{= !${utilities>isNode}}"
-                                    required="true"
-                                />
-                                <Label
-                                    text=""
-                                    visible="{= !${utilities>isNode}}"
-                                    class="sapMLabelRequired"
-                                />
-                            </HBox>
-                        </table:template>
-                    </table:Column>
+                <!-- End Date Column -->
+                <table:Column width="10rem">
+                    <Label text="Date fin" />
+                    <table:template>
+                        <HBox>
+                            <DatePicker
+                                value="{path: 'utilities>EndDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd' }}"
+                                displayFormat="short"
+                                editable="{ui>/editable}"
+                                width="100%"
+                                visible="{= !${utilities>isNode}}"
+                                required="true"
+                            />
+                            <Label
+                                text=""
+                                visible="{= !${utilities>isNode}}"
+                                class="sapMLabelRequired"
+                            />
+                        </HBox>
+                    </table:template>
+                </table:Column>
 
-                    <!-- Actions Column (Add/Delete) -->
-                    <table:Column
-                        width="8rem"
-                        visible="{ui>/editable}"
-                    >
-                        <Label text="Actions" />
-                        <table:template>
-                            <HBox>
-                                <Button
-                                    icon="sap-icon://add"
-                                    tooltip="Add Mission"
-                                    press="onAddMissionToGroupement"
-                                    visible="{
+                <!-- Actions Column (Add/Delete) -->
+                <table:Column
+                    width="8rem"
+                    visible="{ui>/editable}"
+                >
+                    <Label text="Actions" />
+                    <table:template>
+                        <HBox>
+                            <Button
+                                icon="sap-icon://add"
+                                tooltip="Add Mission"
+                                press="onAddMissionToGroupement"
+                                visible="{
                                     parts: [
                                         { path: 'ui>/editable' },
                                         { path: 'utilities>isNode' },
@@ -222,15 +219,15 @@
                                     ],
                                     formatter: '.isGroupementAddVisible'
                                 }"
-                                    type="Accept"
-                                    class="sapUiSmallMarginEnd"
-                                />
+                                type="Accept"
+                                class="sapUiSmallMarginEnd"
+                            />
 
-                                <Button
-                                    icon="sap-icon://add"
-                                    tooltip="Add Groupement"
-                                    press="onAddGroupement"
-                                    visible="{
+                            <Button
+                                icon="sap-icon://add"
+                                tooltip="Add Groupement"
+                                press="onAddGroupement"
+                                visible="{
                                     parts: [
                                         {path: 'ui>/editable'},
                                         {path: 'utilities>isNode'},
@@ -238,25 +235,25 @@
                                     ],
                                     formatter: '.isFGAAddVisible'
                                 }"
-                                    type="Accept"
-                                    class="sapUiSmallMarginEnd"
-                                />
-                                <!-- Delete Button (visible for mission items) -->
-                                <Button
-                                    icon="sap-icon://decline"
-                                    tooltip="Delete Mission"
-                                    press="onDeleteMission"
-                                    visible="{= ${ui>/editable} &amp;&amp; !${utilities>isNode}}"
-                                    type="Reject"
-                                />
-                            </HBox>
-                        </table:template>
-                    </table:Column>
-                </table:columns>
-            </table:TreeTable>
+                                type="Accept"
+                                class="sapUiSmallMarginEnd"
+                            />
+                            <!-- Delete Button (visible for mission items) -->
+                            <Button
+                                icon="sap-icon://decline"
+                                tooltip="Delete Mission"
+                                press="onDeleteMission"
+                                visible="{= ${ui>/editable} &amp;&amp; !${utilities>isNode}}"
+                                type="Reject"
+                            />
+                        </HBox>
+                    </table:template>
+                </table:Column>
+            </table:columns>
+        </table:TreeTable>
 
-            <!-- Refresh Toolbar -->
-            <!--Toolbar
+        <!-- Refresh Toolbar -->
+        <!--Toolbar
                 width="100%"
                 design="Transparent"
             >
@@ -269,6 +266,5 @@
                     visible="{ui>/editable}"
                 />
             </Toolbar-->
-        </content>
-    </Panel>
+    </layout:VerticalLayout>
 </core:FragmentDefinition>

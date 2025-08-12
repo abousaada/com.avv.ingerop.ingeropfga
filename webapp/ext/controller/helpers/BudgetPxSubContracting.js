@@ -179,17 +179,52 @@ sap.ui.define([
             }
         },
 
+        async onChangeSubContractor(oEvent){
+            try {
+                const { columnId } = oEvent.getSource().data()
+                const newContractor = await this.getNewContractorId();
+                const newSupplierData = await this.getUtilitiesModel().getBESupplierById(newContractor);
+                this.changeColumnContractorBydId(newSupplierData, columnId);
+                // this.addNewContractorById(newSupplierData);
+                return;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
         _createColumn: function (sColumnId, { subContractorName, subContractorId, subContractorCoef, subContractorPartner, columnId }) {
             return new sap.ui.table.Column({
                 multiLabels: [
                     new sap.m.Label({ text: subContractorName }),
-                    new sap.m.Input({ value: subContractorId, editable: "{ui>/editable}" }),
+                    new sap.m.HBox({
+                        items: [
+                            new sap.m.Text({
+                                text: subContractorId,
+                                visible: "{= !${ui>/editable} }",
+                            }),
+                            new sap.m.Input({ 
+                                value: subContractorId, 
+                                showValueHelp: true,
+                                valueHelpOnly: true,
+                                visible: "{ui>/editable}",
+                                valueHelpRequest: this.onChangeSubContractor.bind(this)
+                            })
+                        ]
+                    }),
                     new sap.m.Label({ text: this.isFiliale(subContractorPartner) }),
-                    new sap.m.Input({ 
-                        value: subContractorCoef, 
-                        editable: "{ui>/editable}" ,
-                        change: this.onCoefChange.bind(this)
-                    }).data(this._CONSTANT_COLUMN_ID, sColumnId),
+                    new sap.m.HBox({
+                        items: [
+                            new sap.m.Text({
+                                text: subContractorCoef,
+                                visible: "{= !${ui>/editable} }",
+                            }),
+                            new sap.m.Input({
+                                value: subContractorCoef, 
+                                visible: "{ui>/editable}" ,
+                                change: this.onCoefChange.bind(this)
+                            }).data(this._CONSTANT_COLUMN_ID, sColumnId)
+                        ]
+                    }),
                     new sap.m.Label({ text: "{i18n>budget.ext.budget}" })
                 ],
                 template: new sap.m.HBox({
@@ -217,7 +252,7 @@ sap.ui.define([
                         }).data(this._CONSTANT_COLUMN_ID, sColumnId)
                     ]
                 }),
-                width: "6rem"
+                width: "8rem"
             }).data(this._CONSTANT_COLUMN_ID, sColumnId);
         },
 
@@ -278,6 +313,19 @@ sap.ui.define([
             this._addNewSupplierToHeader(newSupplierData);
             const oColumn = this._createColumn(columnId, newSupplierData);
             SubContractingTree.insertColumn(oColumn, aColumns.length - 2);
+        },
+
+        changeColumnContractorBydId(supplierData, columnId){
+            const oldPxSubContractingHeader = this.getUtilitiesModel().getPxSubContractingHeader();
+            const filterSubContractingHeader = oldPxSubContractingHeader.filter(contractor => contractor.columnId != columnId);
+            this.getUtilitiesModel().setPxSubContractingHeader([...filterSubContractingHeader, supplierData]);
+            
+            const SubContractingTree = this.oView.byId(this._CONSTANT_EXT_CONTRACTOR_TABLE_ID);
+            const [selectedColumn] = SubContractingTree.getColumns().filter(column => column.data.columnId === columnId );
+            if(selectedColumn){
+                selectedColumn.data("columnId", supplierData.columnId);
+            }
+            this.reCalcColumnTotalById(columnId);
         },
 
         async addNewContractor() {

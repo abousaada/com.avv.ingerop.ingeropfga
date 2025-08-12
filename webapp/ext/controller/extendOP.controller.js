@@ -60,6 +60,29 @@ sap.ui.define(
 
                     this._extendOPUiManage = new ExtendOPUiManage();
                     this._extendOPUiManage.oView = this.getView();
+
+                    // window.onbeforeunload = null;
+
+                },
+
+                onAfterRendering: function () {
+                    // var oView = this.getView();
+
+                    // // ID généré par Fiori Elements : Entity::Measure::Field
+                    // var oField = oView.byId("com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--com.sap.vocabularies.UI.v1.FieldGroup::Facturation::VAT::Field");
+
+                    // if (oField ) {
+                    //     // On remplace le binding de 'unit' avec un formatter
+                    //     oField.bindProperty("unit", {
+                    //         path: oField.getBindingInfo("unit").parts[0].path,
+                    //         formatter: function (sUnit) {
+                    //             if (sUnit === "PI") {
+                    //                 return "%";
+                    //             }
+                    //             return sUnit;
+                    //         }
+                    //     });
+                    // }
                 },
                   
                 // Called before the table is rebound (can be used to adjust binding parameters)
@@ -72,13 +95,12 @@ sap.ui.define(
                     console.log("onListNavigationExtension called", oEvent);
                 },
 
-
                 beforeSaveExtension() {
                     try {
                         const utilitiesModel = this.getModel("utilities");
 
                         // Accès au contexte via la vue
-                        const  oView= this.base.getView();
+                        const oView = this.base.getView();
                         const oContext = oView.getBindingContext();
 
                         if (!oContext) {
@@ -92,14 +114,13 @@ sap.ui.define(
                                 reject();
                             });
                         }
-                            
 
                         this._setBusy(true);
                         return new Promise(async (resolve, reject) => {
                             const formattedMissions = utilitiesModel.getFormattedMissions();
                             const formattedPxAutre = utilitiesModel.getFormattedPxAutre();
                             const formattedPxSubContractingExt = utilitiesModel.formattedPxSubContractingExt();
-                            const oPayload = Helper.extractPlainData({ 
+                            const oPayload = Helper.extractPlainData({
                                 ...oContext.getObject(),
                                 "to_Missions": formattedMissions,
                                 "to_BudgetPxAutre": formattedPxAutre,
@@ -107,6 +128,7 @@ sap.ui.define(
                             });
 
                             try {
+                                oPayload.VAT = oPayload.VAT ? oPayload.VAT.toString() : oPayload.VAT;
                                 const updatedFGA = await utilitiesModel.deepUpsertFGA(oPayload);
                                 this._setBusy(false);
                                 if (updatedFGA) {
@@ -119,11 +141,10 @@ sap.ui.define(
                                 console.log(error);
                                 //reject();
                                 return Promise.reject("No data returned");
-
                             }
 
                             //reject();
-                            return Promise.reject(error);
+                            return Promise.reject();
                         });
                     } catch (error) {
                         this._setBusy(false);
@@ -142,18 +163,33 @@ sap.ui.define(
                 return this._getController().extensionAPI;
             },
 
-            _getController(){
+            _getController() {
                 return this.getInterface().getView().getController();
             },
 
-            _getOwnerComponent(){
+            _getOwnerComponent() {
                 return this._getController().getOwnerComponent();
             },
 
             onNavBack() {
-                var oHistory = sap.ui.core.routing.History.getInstance();
-                var sPreviousHash = oHistory.getPreviousHash();
-                if (sPreviousHash !== undefined) { window.history.go(-1); } 
+                const oHistory = sap.ui.core.routing.History.getInstance();
+                const sPreviousHash = oHistory.getPreviousHash();
+                const oModel = this.getInterface().getModel();
+                const mPendingChanges = oModel.getPendingChanges();
+                // Parcours des entités modifiées
+                Object.keys(mPendingChanges).forEach(function (sPath) {
+                    // const oChanges = mPendingChanges[sPath];
+
+                    // Vérifie si la propriété 'UnitField' (ou nom réel) a été modifiée
+                    // if (oChanges && oChanges.Percent) {
+                    //     console.log("Changement trouvé sur 'unit' pour :", sPath);
+
+                    // Annule juste ce changement
+                    oModel.resetChanges([`/${sPath}`]);
+                    // }
+                });
+
+                if (sPreviousHash !== undefined) { window.history.go(-1); }
                 else { window.location.hash = ""; }
             },
 
@@ -166,7 +202,7 @@ sap.ui.define(
                 }
             },
 
-            _setBusy(busy){
+            _setBusy(busy) {
                 this.getInterface().getView().setBusy(busy);
             },
 
@@ -174,10 +210,30 @@ sap.ui.define(
                 const utilitiesModel = this.getInterface().getModel("utilities");
                 const bCreateMode = this.getView().getModel("ui").getProperty("/createMode");
 
-                this._extendOPUiManage._setOPView();
-
                 const type = e.context.getProperty("Type");
-                this._extendOPUiManage._setMandatoryFieldByType(type);
+                this._extendOPUiManage._setFieldByType(type);
+
+                this._extendOPUiManage._setOPView(e.context);
+
+                const Percent = e.context.getProperty("Percent");
+                if (Percent === "P1" || Percent === "PI" || !Percent) {
+                    const oModel = this.getInterface().getModel();
+                    oModel.setProperty(e.context + "/Percent", "%");
+
+                    //     const mPendingChanges = oModel.getPendingChanges();
+                    //     // Parcours des entités modifiées
+                    //     Object.keys(mPendingChanges).forEach(function (sPath) {
+                    //         const oChanges = mPendingChanges[sPath];
+
+                    //         // Vérifie si la propriété 'UnitField' (ou nom réel) a été modifiée
+                    //         if (oChanges && oChanges.Percent) {
+                    //             console.log("Changement trouvé sur 'unit' pour :", sPath);
+
+                    //             // Annule juste ce changement
+                    //             oModel.resetChanges([`/${sPath}`]);
+                    //         }
+                    //     });
+                }
 
                 //1. if create
                 if (bCreateMode) { utilitiesModel.reInit(); return }
@@ -329,7 +385,7 @@ sap.ui.define(
             onRefreshTree: function (oEvent) {
                 this._missionsTab.onRefreshTree(oEvent);
             },
-            
+
             // ==============================================
             // Handle Budget Px TAB - Budget Px Autres Section
             // Handles preparation and submition budget items 
@@ -348,7 +404,7 @@ sap.ui.define(
                 }
                 this._budgetPxAutre.onSubmit(oEvent);
             },
-            
+
             onCumuleClick: function (oEvent) {
                 if (!this._budgetPxAutre) {
                     this._budgetPxAutre = new BudgetPxAutre();
@@ -367,8 +423,8 @@ sap.ui.define(
                 this._budgetPxSubContracting.preparePxSubContractingTreeData();
             },
 
-            onBtnAddSubContractorPress:function(oEvent){
-                if(!this._budgetPxSubContracting){
+            onBtnAddSubContractorPress: function (oEvent) {
+                if (!this._budgetPxSubContracting) {
                     this._budgetPxSubContracting = new BudgetPxSubContracting();
                     this._budgetPxSubContracting.oView = this.oView;
                 }
@@ -438,13 +494,271 @@ sap.ui.define(
             getModel: function (sName) {
                 return this.getView().getModel(sName);
             },
-            onLiveChangeNotes: function(oEvent) {
+            // ==============================================
+            // Notes Section !!!!
+            // ==============================================
+            onLiveChangeNotes: function (oEvent) {
                 var sValue = oEvent.getParameter("value");
                 var oSource = oEvent.getSource();
                 var oContext = oSource.getBindingContext();
-            
                 oContext.getModel().setProperty(oContext.getPath() + "/Notes", sValue);
+            },
+            // ==============================================
+            // Table Design Budgets Section !!!!
+            // ==============================================
+            onRowsUpdatedSyntTab: function () {
+                var stableName = "synthesisTab";
+                this.onSynthesisUpdated(stableName);
+            },
+            onSynthesisUpdated: function (stableName) {
+                try {
+                    var sViewId = this.oView.sId;
+                    const oTable = sap.ui.getCore().byId(
+                        sViewId + "--SyntheseTab--SyntheseTable--" + stableName);
+                    if (oTable) {
+                        const aTotals = [
+                            "recettes",
+                            "main d’œuvre",
+                            "main d'œuvre",
+                            "autres charges",
+                            "charges"
+                        ];
+                        const aRows = oTable.getRows();
+                        aRows.forEach((oRow, i) => {
+                            const oContext = oRow.getBindingContext("utilities");
+                            if (oContext) {
+                                const sDesc = oContext.getProperty("description").toLowerCase();
+                                const nCumul = oContext.getProperty("CumulN");
+                                // Reset old classes
+                                oRow.$().removeClass("sectionRow rbaNegative");
+                                // Apply total style
+                                if (aTotals.some(label => sDesc === label)) {
+                                    oRow.addStyleClass("totalRow");
+                                }
+                                // Apply RBA style
+                                if (sDesc.includes("rba")) {
+                                    oRow.addStyleClass("totalRow");
+                                    if (parseFloat(nCumul) < 0) {
+                                        oRow.addStyleClass("rbaNegative");
+                                    }
+                                }
+                            }
+                        });
+                    } else {
+                        console.warn("Table not found:", stableName);
+                        return;
+                    }
+                } catch (err) {
+                    console.error("onSynthesisUpdated failed:", err);
+                }
+            },
+            // ==============================================
+            // Table Design Recap  Section !!!!
+            // ==============================================
+            onRowsUpdatedRecapTab: function () {
+                var stableName = "idRecapTable";
+                this.onRecapUpdated(stableName);
+            },
+            onRecapUpdated: function (stableName) {
+                const oTable = this.oView.byId(stableName);
+                if (!oTable) {
+                    console.warn("Recap table not found:", stableName);
+                    return;
+                }
+
+                try {
+                    const oDomRef = oTable.getDomRef();
+                    if (!oDomRef) {
+                        console.warn("DOM ref not ready for table:", stableName);
+                        return;
+                    }
+
+                    // Map labels -> classes (normalize to lowercase once)
+                    const acolorLabels = new Map([
+                        ["budget objectif", { header: "orangeHeader", body: "orangeColumn" }],
+                        ["ecart objectif", { header: "orangeHeader", body: "orangeColumn" }],
+                        ["budget actif n", { header: "pinkHeader", body: "pinkColumn" }],
+                        ["budget actif m-1 n", { header: "pinkHeader", body: "pinkColumn" }],
+                        ["ecart n", { header: "pinkHeader", body: "pinkColumn" }],
+                        ["budget n-1", { header: "pinkHeader", body: "pinkColumn" }],
+                    ]);
+                    const norm = s => (s || "").trim().toLowerCase();
+                    // columns where negatives must be bold + red
+                    const anegativeCols = new Set([
+                        "année en cours",
+                        "reste à venir"
+                    ]);
+
+                    oTable.getColumns().forEach((oCol) => {
+                        const sLabel = norm(oCol.getLabel()?.getText?.());
+                        const cfg = acolorLabels.get(sLabel);
+                        const sColId = oCol.getId();
+
+                        // Header cell (color whole header cell, not just the label)
+                        const oHeaderCell = oDomRef.querySelector(`td[data-sap-ui-colid="${sColId}"]`);
+                        if (cfg && oHeaderCell) oHeaderCell.classList.add(cfg.header);
+                        // body cells for this column
+                        const aBodyCells = oDomRef.querySelectorAll(
+                            `.sapUiTableTr:not(.sapUiTableHeaderRow) td[data-sap-ui-colid="${sColId}"]`
+                        );
+                        // Body cells for this column 
+                        if (cfg) {
+                            aBodyCells.forEach(cell => cell.classList.add(cfg.body));
+                        }
+                        // negative formatting for specific columns
+                        if (anegativeCols.has(sLabel)) {
+                            aBodyCells.forEach(cell => {
+                                const val = this.parseCellNumber(cell.textContent);
+                                const oTextElem = cell.querySelector(".sapMText, .sapMLnk");
+                                if (!isNaN(val) && val < 0) {
+                                    //cell.classList.add("negativeValue");
+                                    oTextElem.classList.add("negativeValue");
+                                } else {
+                                    //cell.classList.remove("negativeValue");
+                                    oTextElem.classList.remove("negativeValue");
+                                }
+                            });
+                        }
+                    });
+
+                } catch (err) {
+                    console.error("onRecapUpdated failed:", err);
+                }
+
+            },
+            parseCellNumber: function (svalue) {
+                return parseFloat(
+                    String(svalue)
+                        .replace(/\u00A0/g, "") // espace insécable
+                        .replace(/\s/g, "")     // espaces normaux
+                        .replace(/%/g, "")      // symbole pourcentage
+                        .replace(/,/g, ".")     // virgule décimale → point
+                );
+            },
+            // ================================================
+            // Table Design  BudgetPXAutre Budgets Section !!!!
+            // ================================================
+            onRowsUpdatedBudgetPXTab: function () {
+                var stableName = "BudgetPxAutreTreeTable";
+                this.onBudgetPXUpdated(stableName);
+            },
+            onBudgetPXUpdated: function (stableName) {
+                try {
+                    var sViewId = this.oView.sId;
+                    const oTable = sap.ui.getCore().byId(
+                        sViewId + "--" + stableName);
+                    if (oTable) {
+                        const oDomRef = oTable.getDomRef();
+                        if (!oDomRef) {
+                            console.warn("DOM ref not ready for table:", stableName);
+                            return;
+                        }
+                        const aRows = oTable.getRows();
+                        const aExclure = new Set(["cumule", "cumulé", "pourcentage", "rad"]);
+
+                        aRows.forEach(oRow => {
+
+                            // Header cell (color whole header cell, not just the label)
+                            oDomRef.querySelectorAll(".sapUiTableColHdrTr.pxHeader")
+                                .forEach(tr => tr.classList.remove("pxHeader"));
+                            const aHeaderRows = oDomRef.querySelectorAll(".sapUiTableColHdrTr");
+                            const oLast = aHeaderRows[aHeaderRows.length - 1];
+                            const oFirst = aHeaderRows[aHeaderRows.length / 2 - 1];
+                            if (oLast && oFirst) {
+                                oFirst.classList.add("pxHeader");
+                                oLast.classList.add("pxHeader");
+
+                            }
+                            const oContext = oRow.getBindingContext("utilities");
+                            if (oContext) {
+                                const bIsTotal = !!oContext.getProperty("isTotalRow");
+                                const bIsNode = !!oContext.getProperty("isNode");
+                                const sName = String(oContext.getProperty("name") || "").trim().toLowerCase();
+                                const $row = oRow.$();
+                                // Enlever les anciens styles
+                                $row.removeClass("pxTotalRow pxSubTotalRow");
+                                if (aExclure.has(sName)) {
+                                    return;
+                                }
+                                // total/sub-total rules
+                                if (bIsTotal) {
+                                    // main total (dark blue + white text)
+                                    if (sName === "total acquis") {
+                                        oRow.addStyleClass("pxTotalRow");
+                                    } else {
+                                        if (sName.startsWith("total")) {
+                                            // Sous-total (violet clair + texte noir)
+                                            oRow.addStyleClass("pxSubTotalRow");
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    }
+
+                } catch (err) {
+                    console.error("onBudgetPXUpdated failed:", err);
+                }
+
+            },
+            // ===================================================
+            // Table Design  BudgetPXSub Cont Budgets Section !!!!
+            // ===================================================
+            onRowsUpdatedBudgetPXSubCTab: function () {
+                var stableName = "BudgetPxSubContractingTreeTableId";
+                this.onBudgetPXSubCUpdated(stableName);
+            },
+            onBudgetPXSubCUpdated: function (stableName) {
+                try {
+                    var sViewId = this.oView.sId;
+                    const oTable = sap.ui.getCore().byId(
+                        sViewId + "--" + stableName);
+                    if (oTable) {
+                        const oDomRef = oTable.getDomRef();
+                        if (!oDomRef) {
+                            console.warn("DOM ref not ready for table:", stableName);
+                            return;
+                        }
+                        // Header cell (color whole header cell, not just the label)
+                        oDomRef.querySelectorAll(".sapUiTableColHdrTr.pxHeader")
+                            .forEach(tr => tr.classList.remove("pxHeader"));
+                        const aHeaderRows = oDomRef.querySelectorAll(".sapUiTableColHdrTr");
+                        const oLast = aHeaderRows[aHeaderRows.length - 1];
+                        const oFirst = aHeaderRows[aHeaderRows.length / 2 - 1];
+                        if (oLast && oFirst) {
+                            oFirst.classList.add("pxHeader");
+                            oLast.classList.add("pxHeader");
+
+                        }
+                        // if (oHeaderRow && oHeaderRow.textContent !== '') oHeaderRow.classList.add("pxHeader");
+                        const aRows = oTable.getRows();
+                        aRows.forEach(oRow => {
+                            const oContext = oRow.getBindingContext("utilities");
+                            if (oContext) {
+                                const sName = String(oContext.getProperty("name") || "").trim().toLowerCase();
+                                const $row = oRow.$();
+                                // Enlever les anciens styles
+                                $row.removeClass("pxTotalRow pxSubTotalRow");
+                                // main total (dark blue + white text)
+                                if (sName === "total global") {
+                                    oRow.addStyleClass("pxTotalRow");
+                                } else {
+                                    if (sName.startsWith("total")) {
+                                        // Sous-total (violet clair + texte noir)
+                                        oRow.addStyleClass("pxSubTotalRow");
+                                    }
+                                }
+
+                            }
+                        });
+                    }
+
+                } catch (err) {
+                    console.error("onBudgetPXUpdated failed:", err);
+                }
+
             }
 
         });
+
     });
