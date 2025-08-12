@@ -304,7 +304,10 @@ sap.ui.define([
 
             // Validate missions
             validMissions(oView) {
-
+                if(oView.getModel("ui").getProperty("/createMode")){
+                    return true;
+                }
+                    
                 this._missionsTab = new Missions();
                 return this._missionsTab.validateMissionsTreeRequiredFields(oView);
 
