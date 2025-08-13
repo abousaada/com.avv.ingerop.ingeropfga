@@ -140,7 +140,7 @@ sap.ui.define([
             );
         },
 
-        _setCurrencyLabel(currency){
+        _setCurrencyLabel(currency="Devise"){
             const resourceBundle = this.oView.getModel("i18n").getResourceBundle();
 
             const labelForField = [
