@@ -34,6 +34,11 @@ sap.ui.define([
                         model.setProperty(path + propertyPath , defaultValue);
                     }
                 });
+            //set Default Label By Currency
+            const currency = context.getProperty("Currency");
+            if(!!currency){
+                this._setCurrencyLabel(currency);
+            }
         },
 
         _setTabsVisible() {
@@ -69,12 +74,21 @@ sap.ui.define([
                 this._getField(identifier, field)?.setEditable(enabled);
             });
 
-            this._getField("Facturation", "VAT")?.setUomEditable(false);
-            this._getField("Travaux", "Ingtrvx")?.setUomEditable(false);
+            const uomEditable = [
+                {identifier:"Facturation"   , field:"VAT"},
+                {identifier:"Travaux"       , field:"Ingtrvx"}
+            ];
+            uomEditable.forEach(({identifier, field}) => {
+                this._getField(identifier, field)?.setUomEditable(false);
+            });
         },
 
         _getField(identifiant, champ) {
             return this.oView.byId(Helper.headerFieldIdBySectionAndFieldName(identifiant, champ));
+        },
+
+        _getFieldLabel(identifiant, champ) {
+            return this.oView.byId(Helper.headerFieldLabelIdBySectionAndFieldName(identifiant, champ));
         },
 
         _attachChangeEventOnFields() {
@@ -126,10 +140,31 @@ sap.ui.define([
             );
         },
 
+        _setCurrencyLabel(currency){
+            const resourceBundle = this.oView.getModel("i18n").getResourceBundle();
+
+            const labelForField = [
+                { identifier: "Prix",       field: "Paring",    i18nText: "Field_Paring_Label" },
+                { identifier: "Travaux",    field: "Mttrvx",    i18nText: "Field_Mttrvx_Label" },
+                { identifier: "Prix",       field: "Mtctr",     i18nText: "Field_Mtctr_Label" }
+            ];
+
+            labelForField.forEach(({identifier, field, i18nText}) => {
+                const text = resourceBundle.getText(i18nText, [currency]);
+                this._getFieldLabel(identifier, field)?.setText(text);
+            });
+        },
+
         onTypeChange(event) {
             const newValue = event.getParameter("newValue");
             this._setMandatoryFieldByType(newValue);
             this._resetDefaultValueByType(newValue);
+        },
+
+
+        onCurrencyChange(oEvent){
+            const currency = oEvent.getParameter("newValue");
+            this._setCurrencyLabel(currency);
         },
 
         async onBpChange(oEvent) {

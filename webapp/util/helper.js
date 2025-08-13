@@ -172,6 +172,12 @@ sap.ui.define([
       if(!identifiant || !champ){ return ;}
       return `com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--com.sap.vocabularies.UI.v1.FieldGroup::${identifiant}::${champ}::Field`;
     },
+
+    headerFieldLabelIdBySectionAndFieldName:function(identifiant, champ){
+      if(!identifiant || !champ){ return ;}
+      return `com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--com.sap.vocabularies.UI.v1.FieldGroup::${identifiant}::${champ}::Field-label`;
+    },
+
     diffEnMois: function(date1, date2) {
       const d1 = new Date(date1);
       const d2 = new Date(date2);
