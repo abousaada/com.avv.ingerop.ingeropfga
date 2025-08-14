@@ -18,12 +18,17 @@ sap.ui.define(
 
             onSTIPress: function (oEvent) {
                 try {
+                    var aFAGs = this.getSelectedBusinessNumbers();
+
                     const oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
 
                     const sHash = oCrossAppNavigator.hrefForExternal({
                         target: {
                             semanticObject: "ZSTI",
                             action: "manage"
+                        },
+                        params: {
+                            business_no_e: aFAGs
                         }
                     });
 
@@ -84,14 +89,18 @@ sap.ui.define(
                 try {
                     const oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
 
+                    var aFAGs = this.getSelectedBusinessNumbers();
+                    
                     const sHash = oCrossAppNavigator.hrefForExternal({
                         target: {
                             semanticObject: "ZEMX",
                             action: "manage"
+                        },
+                        params: {
+                            FGA: aFAGs
                         }
                     });
 
-                    // Open the app in a new tab
                     window.open(sHash, "_blank", "noopener,noreferrer");
 
                     MessageToast.show("onEMXPress invoked.");
@@ -117,7 +126,33 @@ sap.ui.define(
                 MessageToast.show(`Exporting ${aSelected.length} items to PDF`);
                 // Add export logic
             },
+
+
+            getSelectedBusinessNumbers: function () {
+                var oSmartTable = this.oView.byId("listReport");
+                var oInnerTable = oSmartTable.getTable();
+                var oPlugin = oInnerTable.getPlugins()[0];
+
+                if (!oPlugin || !oPlugin.getSelectedIndices) {
+                    return [];
+                }
+
+                var aIndices = oPlugin.getSelectedIndices();
+
+                if (!aIndices.length) {
+                    sap.m.MessageToast.show("Please select at least one item.");
+                    return [];
+                }
+
+                var aSelectedContexts = aIndices.map(function (iIndex) {
+                    return oInnerTable.getContextByIndex(iIndex);
+                });
+
+                return aSelectedContexts.map(function (oContext) {
+                    return oContext.getObject().BusinessNo;
+                });
+            }
+
+
         };
-
-
     });
