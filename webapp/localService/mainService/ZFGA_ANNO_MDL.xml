@@ -206,12 +206,12 @@
                             <PropertyValue Property="Target" AnnotationPath="@UI.DataPoint#BusinessNo"/>
                         </Record>
                         <Record Type="UI.CollectionFacet">
-                            <PropertyValue Property="Label" String="General Informations"/>
+                            <PropertyValue Property="Label" String="Informations générales"/>
                             <PropertyValue Property="ID" String="GeneralInfo"/>
                             <PropertyValue Property="Facets">
                                 <Collection>
                                     <Record Type="UI.ReferenceFacet">
-                                        <PropertyValue Property="Label" String="General"/>
+                                        <PropertyValue Property="Label" String="Général"/>
                                         <PropertyValue Property="Target" AnnotationPath="@UI.Identification"/>
                                     </Record>
                                     <Record Type="UI.ReferenceFacet">
@@ -223,19 +223,19 @@
                                         <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Facturation"/>
                                     </Record>
                                     <Record Type="UI.ReferenceFacet">
-                                        <PropertyValue Property="Label" String="Customer"/>
+                                        <PropertyValue Property="Label" String="Client"/>
                                         <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Client"/>
                                     </Record>
                                     <Record Type="UI.ReferenceFacet">
-                                        <PropertyValue Property="Label" String="Garanty"/>
+                                        <PropertyValue Property="Label" String="Garantie"/>
                                         <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Garantie"/>
                                     </Record>
                                     <Record Type="UI.ReferenceFacet">
-                                        <PropertyValue Property="Label" String="Contract"/>
+                                        <PropertyValue Property="Label" String="Contrat"/>
                                         <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Contrat"/>
                                     </Record>
                                     <Record Type="UI.ReferenceFacet">
-                                        <PropertyValue Property="Label" String="Price"/>
+                                        <PropertyValue Property="Label" String="Prix"/>
                                         <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Prix"/>
                                     </Record>
                                     <Record Type="UI.ReferenceFacet">
@@ -247,11 +247,11 @@
                                         <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Info"/>
                                     </Record>
                                     <Record Type="UI.ReferenceFacet">
-                                        <PropertyValue Property="Label" String="Duration"/>
+                                        <PropertyValue Property="Label" String="Durée"/>
                                         <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Duree"/>
                                     </Record>
                                     <Record Type="UI.ReferenceFacet">
-                                        <PropertyValue Property="Label" String="Quality"/>
+                                        <PropertyValue Property="Label" String="Qualité"/>
                                         <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Qualite"/>
                                     </Record>
                                 </Collection>
@@ -382,17 +382,6 @@
                             <Collection>
                                 <Record Type="UI.DataField">
                                     <PropertyValue Property="Value" Path="Assurance"/>
-                                </Record>
-                            </Collection>
-                        </PropertyValue>
-                    </Record>
-                </Annotation>
-                <Annotation Term="UI.FieldGroup" Qualifier="General">
-                    <Record>
-                        <PropertyValue Property="Data">
-                            <Collection>
-                                <Record Type="UI.DataField">
-                                    <PropertyValue Property="Value" Path="StiNbr"/>
                                 </Record>
                             </Collection>
                         </PropertyValue>
@@ -546,6 +535,9 @@
                         <Record Type="UI.DataField">
                             <PropertyValue Property="Value" Path="PROJM"/>
                         </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="STILinkedCount"/>
+                        </Record>
                     </Collection>
                 </Annotation>
                 <Annotation Term="UI.PresentationVariant">
@@ -567,6 +559,7 @@
                         <PropertyPath>UFOName</PropertyPath>
                         <PropertyPath>ProfitCenter</PropertyPath>
                         <PropertyPath>PROJM</PropertyPath>
+                        <PropertyPath>STILinkedCount</PropertyPath>
                     </Collection>
                 </Annotation>
             </Annotations>
@@ -651,6 +644,12 @@
             <Annotations Target="ZFGA_SRV.ZC_FGA_PxSubContractingType/Regroupement">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGA_SFGP_REPORTType/p_businessno">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGA_SFGP_REPORTType/p_period">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_FGA_SubContractorBudgetType/Regroupement">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
@@ -663,7 +662,7 @@
             <Annotations Target="ZFGA_SRV.ZI_FGA_BOOLEAN_VHType/Spras">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
-            <Annotations Target="ZFGA_SRV.ZI_FGA_BRANCHE_VHType/spras">
+            <Annotations Target="ZFGA_SRV.ZI_FGA_BRANCHE_VHType/Spras">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
             <Annotations Target="ZFGA_SRV.ZI_FGA_BUSINESS_VHType/spras">
@@ -705,7 +704,10 @@
             <Annotations Target="ZFGA_SRV.ZI_FGA_RTGART_VHType/Spras">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
-            <Annotations Target="ZFGA_SRV.ZI_FGA_SCCLT_VHType/spras">
+            <Annotations Target="ZFGA_SRV.ZI_FGA_SCCLT_VHType/istype">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_FGA_SCCLT_VHType/Spras">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
             <Annotations Target="ZFGA_SRV.ZI_FGA_SITE_VHType/Land">
