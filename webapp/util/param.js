@@ -425,7 +425,7 @@ sap.ui.define([
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
                 mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI"], default: false, create: true, modify: true },
-                action: null
+                action: "onCurrencyChange"
             },
 
             CurrencyHedging: {

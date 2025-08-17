@@ -136,6 +136,7 @@ sap.ui.define([], function () {
       const cumulTotal = {
         ...globalTotal , 
         name: "Cumul", 
+        isCumul: true,
         budgetHorsFrais: 0 , 
         budgetYCFrais: 0
       };

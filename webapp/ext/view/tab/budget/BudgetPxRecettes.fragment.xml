@@ -1,0 +1,236 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout"
+    xmlns:table="sap.ui.table"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:rm="sap.ui.table.rowmodes"
+>
+    <table:TreeTable
+        class="budgetSCExtTab"
+        id="BudgetPxRecettesTreeTableId"
+        rows="{
+            path: 'utilities>/pxRecettesHierarchy',
+            parameters: {
+                arrayNames: ['children'],
+                numberOfExpandedLevels: 3
+            }
+        }"
+        selectionMode="None"
+        ariaLabelledBy="title"
+        enableColumnReordering="false"
+        fixedColumnCount="1"
+        rowsUpdated="onRowsUpdatedBudgetPXRecetteTab"
+    >
+        <table:rowMode>
+            <rm:Auto minRowCount= "{localModel>/tableSettings/minRowCount}" />
+        </table:rowMode>
+        <!-- <table:extension>
+            <Toolbar class="sapMTBHeader-CTX">
+                <ToolbarSpacer />
+                <Button
+                    text="{i18n>btn.addSubContractor}"
+                    icon="sap-icon://add"
+                    press="onBtnAddSubContractorPress"
+                    type="Emphasized"
+                    visible="{ui>/editable}"
+                />
+            </Toolbar>
+        </table:extension> -->
+        <!-- <table:rowSettingsTemplate>
+            <table:RowSettings
+                highlight="{= ${budget>Status} === 'Non acquis' ? 'Error' : 'None'}"
+            />
+        </table:rowSettingsTemplate> -->
+        <table:columns>
+            <table:Column width="17rem" >
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="{i18n>budget.recette.missionHiearchie}" />
+                </table:multiLabels>
+                <table:template>
+                    <VBox>
+                        <Text text="{utilities>name}" />
+                    </VBox>
+                </table:template>
+            </table:Column>
+
+            <table:Column width="4rem" headerSpan="6,1">
+                <table:multiLabels>
+                    <Label text="{i18n>budget.recette.extern.contract}" />
+                    <Label text="{i18n>budget.recette.missionCode}" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{utilities>code}" />
+                </table:template>
+            </table:Column>
+
+            <table:Column width="5rem" headerSpan="6,1">
+                <table:multiLabels>
+                    <Label text="{i18n>budget.recette.extern.contract}" />
+                    <Label text="{i18n>budget.recette.missionLibelle}" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{utilities>libelle}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="4rem" headerSpan="6,1">
+                <table:multiLabels>
+                    <Label text="{i18n>budget.recette.extern.contract}" />
+                    <Label text="{i18n>budget.recette.missionStatus}" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{utilities>status}" />
+                </table:template>
+            </table:Column>
+
+            <table:Column width="7rem" headerSpan="6,1">
+                <table:multiLabels>
+                    <Label text="{i18n>budget.recette.extern.contract}" />
+                    <Label text="{i18n>budget.recette.montant}" />
+                </table:multiLabels>
+                <table:template>
+                <HBox>
+                    <Text   text="{utilities>montant}" visible="{= !${ui>/editable} }"/>
+                    <Input  value="{utilities>montant}" visible="{= ${ui>/editable} }"/>
+                </HBox>
+                </table:template>
+            </table:Column>
+
+            <table:Column width="6rem" headerSpan="6,1" >
+                <table:multiLabels>
+                    <Label text="{i18n>budget.recette.extern.contract}" />
+                    <Label text="{i18n>budget.recette.startDate}" />
+                </table:multiLabels>
+                <table:template>
+                    <HBox>
+                        <Text
+                            text="{
+                                path: 'utilities>startDate',
+                                type: 'sap.ui.model.type.Date',
+                                formatOptions: { 
+                                    style: 'short',
+                                    strictParsing: true
+                                }
+                            }"
+                        />
+                        <!-- visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}" -->
+                    </HBox>
+                </table:template>
+            </table:Column>
+            <table:Column width="6rem" headerSpan="6,1" >
+                <table:multiLabels>
+                    <Label text="{i18n>budget.recette.extern.contract}" />
+                    <Label text="{i18n>budget.recette.endDate}" />
+                </table:multiLabels>
+                <table:template>
+                    <HBox>
+                        <Text
+                            text="{
+                                path: 'utilities>endDate',
+                                type: 'sap.ui.model.type.Date',
+                                formatOptions: { 
+                                    style: 'short',
+                                    strictParsing: true
+                                }
+                            }"
+                        />
+                        <!-- visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}" -->
+                    </HBox>
+                </table:template>
+            </table:Column>
+
+            <table:Column width="7rem" headerSpan="4,1">
+                <table:multiLabels>
+                    <Label text="{i18n>budget.recette.acquise}" />
+                    <Label text="{i18n>budget.recette.externe}" />
+                </table:multiLabels>
+                <table:template>
+                <HBox>
+                    <Text   text="{utilities>externe}" visible="{= !${ui>/editable} }"/>
+                    <Input  value="{utilities>externe}" visible="{= ${ui>/editable} }"/>
+                </HBox>
+                </table:template>
+            </table:Column>
+
+            <table:Column width="7rem" headerSpan="4,1">
+                <table:multiLabels>
+                    <Label text="{i18n>budget.recette.acquise}" />
+                    <Label text="{i18n>budget.recette.groupe}" />
+                </table:multiLabels>
+                <table:template>
+                    <HBox>
+                        <Text   text="{utilities>groupe}" visible="{= !${ui>/editable} }"/>
+                        <Input  value="{utilities>groupe}" visible="{= ${ui>/editable} }"/>
+                    </HBox>
+                </table:template>
+            </table:Column>
+
+            <table:Column width="7rem" headerSpan="4,1">
+                <table:multiLabels>
+                    <Label text="{i18n>budget.recette.acquise}" />
+                    <Label text="{i18n>budget.recette.interUFO}" />
+                </table:multiLabels>
+                <table:template>
+                    <HBox>
+                        <Text   text="{utilities>interUFO}" visible="{= !${ui>/editable} }"/>
+                        <Input  value="{utilities>interUFO}" visible="{= ${ui>/editable} }"/>
+                    </HBox>
+                </table:template>
+            </table:Column>
+
+            <table:Column width="7rem" headerSpan="4,1">
+                <table:multiLabels>
+                    <Label text="{i18n>budget.recette.acquise}" />
+                    <Label text="{i18n>budget.recette.intraUFO}" />
+                </table:multiLabels>
+                <table:template>
+                    <HBox>
+                        <Text   text="{utilities>intraUFO}" visible="{= !${ui>/editable} }"/>
+                        <Input  value="{utilities>intraUFO}" visible="{= ${ui>/editable} }"/>
+                    </HBox>
+                </table:template>
+            </table:Column>
+
+            <table:Column width="7rem" headerSpan="3,1">
+                <table:multiLabels>
+                    <Label text="{i18n>budget.recette.fact.extern.m}" />
+                    <Label text="{i18n>budget.recette.cumuleEur}" />
+                </table:multiLabels>
+                <table:template>
+                    <HBox>
+                        <Text   text="{utilities>cumuleEur}" visible="{= !${ui>/editable} }"/>
+                        <Input  value="{utilities>cumuleEur}" visible="{= ${ui>/editable} }"/>
+                    </HBox>
+                </table:template>
+            </table:Column>
+
+            <table:Column width="7rem" headerSpan="3,1">
+                <table:multiLabels>
+                    <Label text="{i18n>budget.recette.fact.extern.m}" />
+                    <Label text="{i18n>budget.recette.cumulePercent}" />
+                </table:multiLabels>
+                <table:template>
+                    <HBox>
+                        <Text   text="{utilities>cumulePercent}" visible="{= !${ui>/editable} }"/>
+                        <Input  value="{utilities>cumulePercent}" visible="{= ${ui>/editable} }"/>
+                    </HBox>
+                </table:template>
+            </table:Column>
+
+            <table:Column width="7rem" headerSpan="3,1">
+                <table:multiLabels>
+                    <Label text="{i18n>budget.recette.fact.extern.m}" />
+                    <Label text="{i18n>budget.recette.aVenir}" />
+                </table:multiLabels>
+                <table:template>
+                    <HBox>
+                        <Text   text="{utilities>aVenir}" visible="{= !${ui>/editable} }"/>
+                        <Input  value="{utilities>aVenir}" visible="{= ${ui>/editable} }"/>
+                    </HBox>
+                </table:template>
+            </table:Column>
+
+        </table:columns>
+    </table:TreeTable>
+</core:FragmentDefinition>

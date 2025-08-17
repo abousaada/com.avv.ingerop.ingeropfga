@@ -61,28 +61,8 @@ sap.ui.define(
                     this._extendOPUiManage = new ExtendOPUiManage();
                     this._extendOPUiManage.oView = this.getView();
 
-                    // window.onbeforeunload = null;
-
-                },
-
-                onAfterRendering: function () {
-                    // var oView = this.getView();
-
-                    // // ID généré par Fiori Elements : Entity::Measure::Field
-                    // var oField = oView.byId("com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--com.sap.vocabularies.UI.v1.FieldGroup::Facturation::VAT::Field");
-
-                    // if (oField ) {
-                    //     // On remplace le binding de 'unit' avec un formatter
-                    //     oField.bindProperty("unit", {
-                    //         path: oField.getBindingInfo("unit").parts[0].path,
-                    //         formatter: function (sUnit) {
-                    //             if (sUnit === "PI") {
-                    //                 return "%";
-                    //             }
-                    //             return sUnit;
-                    //         }
-                    //     });
-                    // }
+                    window.addEventListener("popstate", this._cleanModification.bind(this));
+                    window.addEventListener("onbeforeunload", this._cleanModification.bind(this));
                 },
                   
                 // Called before the table is rebound (can be used to adjust binding parameters)
@@ -155,6 +135,15 @@ sap.ui.define(
                 },
             },
 
+            _cleanModification(){
+                const oModel = this.getInterface().getView().getModel();
+                const mPendingChanges = oModel.getPendingChanges();
+                // Parcours des entités modifiées
+                Object.keys(mPendingChanges).forEach(function (sPath) {
+                    oModel.resetChanges([`/${sPath}`]);
+                });
+            },
+
             routing: {
 
             },
@@ -174,20 +163,8 @@ sap.ui.define(
             onNavBack() {
                 const oHistory = sap.ui.core.routing.History.getInstance();
                 const sPreviousHash = oHistory.getPreviousHash();
-                const oModel = this.getInterface().getModel();
-                const mPendingChanges = oModel.getPendingChanges();
-                // Parcours des entités modifiées
-                Object.keys(mPendingChanges).forEach(function (sPath) {
-                    // const oChanges = mPendingChanges[sPath];
-
-                    // Vérifie si la propriété 'UnitField' (ou nom réel) a été modifiée
-                    // if (oChanges && oChanges.Percent) {
-                    //     console.log("Changement trouvé sur 'unit' pour :", sPath);
-
-                    // Annule juste ce changement
-                    oModel.resetChanges([`/${sPath}`]);
-                    // }
-                });
+                
+                this._cleanModification();
 
                 if (sPreviousHash !== undefined) { window.history.go(-1); }
                 else { window.location.hash = ""; }

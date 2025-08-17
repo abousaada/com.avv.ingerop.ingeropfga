@@ -5,8 +5,12 @@
     <IconTabBar id="budgetItb" class="custItb" >
         <items>
 
-            <IconTabFilter key="STIncomeTab" text="{i18n>synt.tab.budget.subcontract}">
+            <IconTabFilter key="STIncomeTab" text="{i18n>synt.tab.budget.subcontract}" >
                 <core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.budget.BudgetPxSubContracting" type="XML" />
+            </IconTabFilter>
+
+            <IconTabFilter key="RecetteTab" text="{i18n>synt.tab.budget.recettes}">
+                <core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.budget.BudgetPxRecettes" type="XML" />
             </IconTabFilter>
             
             <!--IconTabFilter key="INVIncomeTab" text="{i18n>synt.tab.budget.invoice}" >

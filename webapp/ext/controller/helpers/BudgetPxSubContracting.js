@@ -63,7 +63,7 @@ sap.ui.define([
             const [root]  = this.getUtilitiesModel().getPxSubContractingHierarchy();
             const groupement = root.children.slice(0, -4);
             const globalTotal = root.children.at(-4);
-            const cumulTotal = root.children.at(-3);
+            let   cumulTotal = root.children.at(-3);
             const percentTotal = root.children.at(-2);
             const radTotal = root.children.at(-1);
 
@@ -157,6 +157,130 @@ sap.ui.define([
             return subContractorPartner ? subContractorPartner : 1;
         },
 
+        navToGLAccount(oEvent){
+            var oItem = oEvent.getSource().getBindingContext("utilities").getObject();
+            
+            var sColumnId = oEvent.getSource().data("columnId"); // from BudgetPx view
+
+            // Determine which GLAccount to show based on the clicked column
+            var sGLAccount = "0068000010";
+
+            var period = this.oView.getModel("utilities").getPeriod();
+
+            try {
+
+                const oLink = oEvent.getSource();
+
+                // 2. Get GL Accounts
+                const oContext = oLink.getBindingContext("utilities");
+                const oData = oContext.getObject();
+
+                const glAccounts = sGLAccount
+                    ? sGLAccount.split(";").map(a => a.trim()).filter(a => a.length > 0)
+                    : [];
+
+                if (glAccounts.length === 0) {
+                    sap.m.MessageToast.show("GLAccount non disponible.");
+                    return;
+                }
+
+                // 3. Get Date range
+                const month = period.substring(0, 2);
+                const year = period.substring(2);
+
+                // 4. Get missions
+                let missions = [];
+                try {
+                    missions = oLink.getModel('utilities').getMissions();
+
+                } catch (error) {
+                    console.error("Failed to fetch missions:", error);
+                    throw error;
+                }
+
+                const wbsElements = [oData.business_no];
+                if (missions && missions.length > 0) {
+                    // Add missions to the WBS elements array
+                    wbsElements.push(...missions.map(mission => mission.MissionId));
+                }
+
+                // 5. Create navigation
+                /*const oComponent = sap.ui.core.Component.getOwnerComponentFor(this.oView);
+                const oAppStateService = sap.ushell.Container.getService("AppState");
+                const oSelectionVariant = new sap.ui.generic.app.navigation.service.SelectionVariant();
+
+                const oAppState = await oAppStateService.createEmptyAppState(oComponent);
+                oAppState.setData(oSelectionVariant.toJSONString());
+                await oAppState.save();
+
+                const sAppStateKey = oAppState.getKey();*/
+                const oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
+
+                // Construct the URL parameters
+                /*var params = {
+                    FiscalYearPeriod: `${year}0${month}`,
+                    GLAccount: glAccounts,
+                    WBSElementExternalID: wbsElements
+                };*/
+
+                var params = {
+                    FiscalYearPeriod: `${year}0${month}`,
+                    GLAccount: glAccounts,
+                    WBSElementExternalID: wbsElements
+                };
+
+                // Get the base URL for the target app
+                const sHash = oCrossAppNavigator.hrefForExternal({
+                    target: {
+                        semanticObject: "GLAccount",
+                        action: "displayGLLineItemReportingView"
+                    },
+                    params: Object.fromEntries(
+                        Object.entries(params).map(([key, value]) => {
+                            if (Array.isArray(value)) {
+                                return [key, value.map(v => encodeURIComponent(v))];
+                            }
+                            return [key, encodeURIComponent(value)];
+                        })
+                    )
+                });
+
+                // Open in new window
+                window.open(sHash, "_blank", "noopener,noreferrer");
+
+                /*
+                        // Convert params to URL string
+                        const sParams = Object.entries(params)
+                            .map(([key, value]) => {
+                                if (Array.isArray(value)) {
+                                    return value.map(v => `${key}=${encodeURIComponent(v)}`).join('&');
+                                }
+                                return `${key}=${encodeURIComponent(value)}`;
+                            })
+                            .join('&');
+        
+                        // Get the base URL for the target app
+                        const sHash = oCrossAppNavigator.hrefForExternal({
+                            target: {
+                                semanticObject: "GLAccount",
+                                action: "displayGLLineItemReportingView"
+                            }
+                        });
+        
+                        // Get the FLP base URL
+                        const sBaseUrl = window.location.origin + window.location.pathname;
+        
+                        // Construct the full URL
+                        const sUrl = `${sBaseUrl}#${sHash}&${sParams}`;
+        
+                        // Open in new window
+                        window.open(sUrl, "_blank", "noopener,noreferrer");*/
+
+            } catch (err) {
+                console.error("Error during navigation:", err);
+            }
+        },
+
         isFloat(input){
             const normalized = input.trim().replace(',', '.');
             // Regex : entier ou float avec max 2 décimales
@@ -239,7 +363,7 @@ sap.ui.define([
                                     return percent ? total + "%": total;
                                 }
                             },
-                            visible: "{= !!${utilities>isTotal} }"
+                            visible: "{= !!${utilities>isTotal} && !${utilities>isCumul} }"
                         }),
                         new sap.m.Input({
                             value: {
@@ -249,7 +373,15 @@ sap.ui.define([
                             editable: "{= ${ui>/editable} && ${utilities>isBudget} }",
                             visible: "{= !!${utilities>isBudget} }",
                             change: this.onContractorBudgetChange.bind(this)
-                        }).data(this._CONSTANT_COLUMN_ID, sColumnId)
+                        }).data(this._CONSTANT_COLUMN_ID, sColumnId),
+                        new sap.m.Link({
+                            visible: "{= !!${utilities>isTotal} && !!${utilities>isCumul} }",
+                            press: this.navToGLAccount.bind(this),
+                            text: {
+                                path: "utilities>" + columnId,
+                                type: new sap.ui.model.type.Float({ minFractionDigits: 2 })
+                            }
+                        }).data(this._CONSTANT_COLUMN_ID, subContractorId)
                     ]
                 }),
                 width: "8rem"
