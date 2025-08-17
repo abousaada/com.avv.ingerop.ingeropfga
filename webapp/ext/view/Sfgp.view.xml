@@ -5,154 +5,156 @@
   xmlns:m="sap.m"
   controllerName="com.avv.ingerop.ingeropfga.ext.controller.Sfgp">
 
-  <Table id="sfgpTable" rows="{/recapData}" selectionMode="None" width="auto" class="sfgpTable">
+  <Table id="sfgpTable" rows="{utilities>/sfgp}" selectionMode="None" width="auto" class="sfgpTable">
     <!-- === RECAP Projet Columns === -->
     <columns>
-      <Column>
+      <Column headerSpan="7" width="14em">
         <multiLabels>
           <m:Label text="Récap Projet"/>
           <m:Label text="Codes affaire"/>
         </multiLabels>
-        <template><m:Text text="{RG1}"/></template>
+      <template>
+          <m:Link text="{utilities>business_no}" press=".onPressFGALink" enabled="{= !${utilities>isFooter} }"/>
+      </template>
       </Column>
       <Column>
         <multiLabels>
           <m:Label text="Récap Projet"/>
           <m:Label text="UFO déléguée"/>
         </multiLabels>
-        <template><m:Text text="{RG3}"/></template>
+        <template><m:Text text="{utilities>ufo_name}"/></template>
       </Column>
       <Column>
         <multiLabels>
           <m:Label text="Récap Projet"/>
           <m:Label text="CDG"/>
         </multiLabels>
-        <template><m:Text text="{RG4}"/></template>
+        <template><m:Text text="{utilities>cdg}"/></template>
       </Column>
       <Column>
         <multiLabels>
           <m:Label text="Récap Projet"/>
           <m:Label text="CA"/>
         </multiLabels>
-        <template><m:Text text="{RG5}"/></template>
+        <template><m:Text text="{utilities>Ca}"/></template>
       </Column>
       <Column>
         <multiLabels>
           <m:Label text="Récap Projet"/>
           <m:Label text="Dépenses"/>
         </multiLabels>
-        <template><m:Text text="{RG6}"/></template>
+        <template><m:Text text="{utilities>Depenses}"/></template>
       </Column>
       <Column>
         <multiLabels>
           <m:Label text="Récap Projet"/>
           <m:Label text="RBA"/>
         </multiLabels>
-        <template><m:Text text="{RG7}"/></template>
+        <template><m:ObjectStatus text="{utilities>Rba}" state="{ path: 'utilities>Rba', formatter: '.formatter.setNegativeRedValue' }" /></template>
       </Column>
       <Column>
         <multiLabels>
           <m:Label text="Récap Projet"/>
           <m:Label text="%"/>
         </multiLabels>
-        <template><m:Text text="{RG2}"/></template>
+        <template><m:ObjectNumber number="{utilities>RbaPourcent}" unit="%" /></template>
       </Column>
 
       <!-- === Budget Fin d’affaire === -->
-      <Column>
+      <Column headerSpan="4">
         <multiLabels>
           <m:Label text="Budget Fin d’affaire"/>
           <m:Label text="Main d’œuvre"/>
         </multiLabels>
-        <template><m:Text text="{RG8}"/></template>
+        <template><m:Text text="{utilities>MoBudget}"/></template>
       </Column>
       <Column>
         <multiLabels>
           <m:Label text="Budget Fin d’affaire"/>
           <m:Label text="Sous-traitance"/>
         </multiLabels>
-        <template><m:Text text="{RG9}"/></template>
+        <template><m:Text text="{utilities>StBudget}"/></template>
       </Column>
       <Column>
         <multiLabels>
           <m:Label text="Budget Fin d’affaire"/>
           <m:Label text="Autres frais"/>
         </multiLabels>
-        <template><m:Text text="{RG10}"/></template>
+        <template><m:Text text="{utilities>AfBudget}"/></template>
       </Column>
       <Column>
         <multiLabels>
           <m:Label text="Budget Fin d’affaire"/>
           <m:Label text="Total"/>
         </multiLabels>
-        <template><m:Text text="{RG11}"/></template>
+        <template><m:Text class="boldTotal" text="{utilities>TotalBudget}"/></template>
       </Column>
 
       <!-- === Réalisé === -->
-      <Column>
+      <Column headerSpan="5">
         <multiLabels>
           <m:Label text="Réalisé"/>
           <m:Label text="Main d’œuvre"/>
         </multiLabels>
-        <template><m:Text text="{RG12}"/></template>
+        <template><m:Text text="{utilities>MoRealise}"/></template>
       </Column>
       <Column>
         <multiLabels>
           <m:Label text="Réalisé"/>
           <m:Label text="Sous-traitance"/>
         </multiLabels>
-        <template><m:Text text="{RG13}"/></template>
+        <template><m:Text text="{utilities>StRealise}"/></template>
       </Column>
       <Column>
         <multiLabels>
           <m:Label text="Réalisé"/>
           <m:Label text="Autres frais"/>
         </multiLabels>
-        <template><m:Text text="{RG14}"/></template>
+        <template><m:Text text="{utilities>AfRealise}"/></template>
       </Column>
       <Column>
         <multiLabels>
           <m:Label text="Réalisé"/>
           <m:Label text="Total"/>
         </multiLabels>
-        <template><m:Text text="{RG15}"/></template>
+        <template><m:Text class="boldTotal" text="{utilities>TotalRealise}"/></template>
       </Column>
       <Column>
         <multiLabels>
           <m:Label text="Réalisé"/>
           <m:Label text="% avancement"/>
         </multiLabels>
-        <template><m:Text text="{RG16}"/></template>
+        <template><m:Text class="boldTotal" text="{utilities>AvancementRealise}"/></template>
       </Column>
 
       <!-- === RAD === -->
-      <Column>
+      <Column headerSpan="4">
         <multiLabels>
           <m:Label text="RAD"/>
           <m:Label text="Main d’œuvre"/>
         </multiLabels>
-        <template><m:Text text="{RG17}"/></template>
+        <template><m:ObjectStatus text="{utilities>MoRad}" state="{ path: 'utilities>MoRad', formatter: '.formatter.setNegativeRedValue' }" /></template>
       </Column>
       <Column>
         <multiLabels>
           <m:Label text="RAD"/>
           <m:Label text="Sous-traitance"/>
         </multiLabels>
-        <template><m:Text text="{RG18}"/></template>
+        <template><m:ObjectStatus text="{utilities>StRad}" state="{ path: 'utilities>StRad', formatter: '.formatter.setNegativeRedValue' }" /></template>
       </Column>
       <Column>
         <multiLabels>
           <m:Label text="RAD"/>
           <m:Label text="Autres frais"/>
         </multiLabels>
-        <template><m:Text text="{RG19}" /></template>
+        <template><m:ObjectStatus text="{utilities>AfRad}" state="{ path: 'utilities>AfRad', formatter: '.formatter.setNegativeRedValue' }" /></template>
       </Column>
       <Column>
         <multiLabels>
           <m:Label text="RAD"/>
           <m:Label text="Total"/>
         </multiLabels>
-        <template><m:Text text="{RG20}"/></template>
+        <template><m:Text class="boldTotal" text="{utilities>TotalRad}"/></template>
       </Column>
     </columns>
   </Table>

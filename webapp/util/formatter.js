@@ -12,5 +12,8 @@ sap.ui.define([
         formatTotal: function(total, percent){
 			return percent ? total + "%": total;
 		},
+        setNegativeRedValue: function (sValue) {
+            return parseFloat(sValue) < 0 ? "Error" : "None";
+        },
     };
 });

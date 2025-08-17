@@ -111,7 +111,47 @@
     background: none;
 }
 
+.sfgpTable .sapUiTableCell {
+    border-top: .0625rem solid #e5e5e5 !important;
+}
+
+.sfgpTable .sapMObjStatusError .sapMObjStatusText {
+    color: #b00 !important;
+    font-weight: bold !important;
+}
+
+.sfgpTable .sapMObjStatusNone:not(.sapMObjStatusInverted) .sapMObjStatusText{
+    color: #32363a !important;
+}
+
+.sfgpTable .sapMObjectNumberStatusNone{
+    color: #32363a !important;
+}
+
+.sfgpTable .sapMObjectNumberEmph .sapMObjectNumberText {
+    font-weight: normal !important;
+}
+
+.sfgpTable .boldTotal{
+    font-weight: bold !important;
+}
+
+.sfgpTable .sapMLnkDsbl {
+  pointer-events: none !important;
+  color: whitesmoke !important; 
+  opacity: 1 !important;
+  text-decoration: none !important ; 
+  cursor: default !important;           
+}
+
 .sfgpFooterRow .sapUiTableCell {
+    background-color: #333399 !important;
+    color: white !important;
+    font-weight: bold;
+    text-align: center;
+}
+
+.sfgpFooterRow .sapUiTableCell .sapMObjectNumberStatusNone{
     background-color: #333399 !important;
     color: white !important;
     font-weight: bold;

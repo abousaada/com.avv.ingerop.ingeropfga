@@ -22,6 +22,7 @@ sap.ui.define([], function() {
           }*/
         ],
         "Notes": '',
+        "sfgp": [],
         "missionTypes": [
             { code: "GEN", description: "GEN" },
             { code: "AVP", description: "AVP" },
