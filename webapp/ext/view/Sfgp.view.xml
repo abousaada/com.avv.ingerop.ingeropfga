@@ -14,7 +14,7 @@
           <m:Label text="Codes affaire"/>
         </multiLabels>
       <template>
-          <m:Link text="{utilities>business_no}" press=".onPressFGALink" enabled="{= !${utilities>isFooter} }"/>
+          <m:Link text="{utilities>business_no}" press=".onPressFGALink" enabled="{= !${utilities>isFooter} }" href="{ path: 'utilities>business_no', formatter: '.formatter.buildFgaHref' }"/>
       </template>
       </Column>
       <Column>
