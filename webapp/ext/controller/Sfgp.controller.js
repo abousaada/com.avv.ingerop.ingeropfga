@@ -132,8 +132,17 @@ sap.ui.define([
         oEvent.preventDefault();
       });
     },
-    onPressFGALink: function(){
-      
+
+    onPressFGALink: function(oEvent){
+      var oCtx = oEvent.getSource().getBindingContext("utilities");
+      var period = this.getView().getModel("utilities").getProperty("/period");
+      var businessNo = oCtx.getProperty("business_no");
+
+      var sKeys = `p_period='${period}',BusinessNo='${businessNo}'`;
+
+      this.getOwnerComponent().getRouter().navTo("ZC_FGASet", {
+        keys1: sKeys
+      });
     }
   });
 });
