@@ -11,10 +11,10 @@ sap.ui.define([
       const oTable = this.byId("sfgpTable");
       if (!oTable) return;
 
-      // 1) quand le binding rows apparaît, on s’y accroche une fois
+      // quand le binding rows apparaît, on s’y accroche une fois
       oTable.attachModelContextChange(this._hookRowsBinding, this);
 
-      // 2) après chaque rendu des lignes, on stylise le footer
+      // après chaque rendu des lignes, on (re)style la/les lignes footer
       oTable.attachRowsUpdated(this._styleFooterRow, this);
     },
 
@@ -26,7 +26,7 @@ sap.ui.define([
 
       this._rowsBindingHooked = true;
 
-      // OData → dataReceived; JSON → change (on écoute les deux par sécurité)
+      // OData → dataReceived; JSON → change
       oBinding.attachEventOnce("dataReceived", this._onRowsChanged, this);
       oBinding.attachChange(this._onRowsChanged, this);
 
@@ -36,38 +36,12 @@ sap.ui.define([
 
     /* ===== Quand les données arrivent/changent ===== */
     _onRowsChanged: function () {
-      this._ensureFooterRow();  // ajoute "TOTAL" s’il n’existe pas
-      this._setRowCount();      // ajuste le nombre de lignes visibles
-      this._setDefaultColumnWidths(); // <-- largeur par défaut
+      // ⚠️ plus d’injection de ligne synthétique ici
+      this._setRowCount();
+      this._setDefaultColumnWidths();
     },
 
-    /* ===== Ajoute une ligne synthétique TOTAL à la fin si absente ===== */
-    _ensureFooterRow: function () {
-      const oTable   = this.byId("sfgpTable");
-      const oBinding = oTable.getBinding("rows");
-      if (!oBinding) return;
-
-      // modèle & chemin réellement utilisés par la table
-      const oModel = oBinding.getModel();
-      const sPath  = oBinding.getPath(); // ex. "/sfgp"
-
-      let a = oModel.getProperty(sPath);
-      if (!Array.isArray(a) || a.length === 0) return;
-
-      const last = a[a.length - 1];
-      const hasFooter = last && (last.isFooter === true || last.business_no === "TOTAL");
-      if (hasFooter) return;
-
-      var sBusinessNo = this.getView().getModel("utilities").getBusinessNo();
-      var sFooterTitleText = "TOTAL " + sBusinessNo;
-      // construit un objet footer avec les mêmes clés que la 1ère ligne
-      const f = { isFooter: true, business_no: sFooterTitleText };
-      Object.keys(a[0]).forEach(k => { if (!(k in f)) f[k] = ""; });
-
-      oModel.setProperty(sPath, a.concat([f]));
-    },
-
-    /* ===== visibleRowCount = nb de lignes (footer inclus) ===== */
+    /* ===== visibleRowCount = nb de lignes ===== */
     _setRowCount: function () {
       const oTable   = this.byId("sfgpTable");
       const oBinding = oTable.getBinding("rows");
@@ -75,24 +49,25 @@ sap.ui.define([
       oTable.setVisibleRowCount(Math.max(1, len));
     },
 
-    /* ===== Styling + fusion 3 premières cellules sur la DERNIÈRE ligne ===== */
+    /* ===== Styling : applique le bleu sur les lignes isFooter ===== */
     _styleFooterRow: function () {
       const oTable   = this.byId("sfgpTable");
       const oBinding = oTable.getBinding("rows");
       if (!oBinding) return;
 
-      const iLast = oBinding.getLength() - 1;
-      if (iLast < 0) return;
-
       oTable.getRows().forEach((oRow) => {
         const $row = oRow.$();
         if (!$row.length) return;
 
-        const isLast = oRow.getIndex() === iLast;
-        $row.toggleClass("sfgpFooterRow", isLast);
+        const oCtx = oRow.getBindingContext("utilities");
+        const vFlag = oCtx && oCtx.getProperty("isFooter");
+        const isFooter = (vFlag === true || vFlag === "X" || vFlag === 1 || vFlag === "1");
 
-        if (isLast) {
-          // fusion visuelle des 3 premières cellules
+        // ajoute/retire la classe marquant le footer
+        $row.toggleClass("sfgpFooterRow", isFooter);
+
+        // si footer → fusion visuelle des 3 premières cellules
+        if (isFooter) {
           setTimeout(() => {
             const $cells = $row.find(".sapUiTableCell");
             if ($cells.length >= 3) {
@@ -108,23 +83,20 @@ sap.ui.define([
               $cells.eq(2).remove();
             }
           }, 0);
-        } else {
-          $row.removeClass("sfgpFooterRow");
         }
       });
     },
 
-        /* ===== Largeur par défaut sur toutes les colonnes ===== */
+    /* ===== Largeur par défaut sur toutes les colonnes ===== */
     _setDefaultColumnWidths: function () {
       const oTable = this.byId("sfgpTable");
       if (!oTable) return;
 
       oTable.getColumns().forEach((oCol) => {
-        let width = oCol.getWidth();
+        const width = oCol.getWidth();
         if (!width || width === "auto" || width === "") {
           oCol.setWidth("8rem");
         }
-        // oCol.setResizable(false); // optionnel : empêche l’utilisateur de réduire
       });
 
       // empêche le drag & drop de colonnes
@@ -133,16 +105,28 @@ sap.ui.define([
       });
     },
 
-    onPressFGALink: function(oEvent){
-      var oCtx = oEvent.getSource().getBindingContext("utilities");
-      var period = this.getView().getModel("utilities").getProperty("/period");
-      var businessNo = oCtx.getProperty("business_no");
+    /* ===== Navigation sur clic du lien (ignore la ligne footer) ===== */
+    onPressFGALink: function (oEvent) {
+      const oCtx = oEvent.getSource().getBindingContext("utilities");
+      if (!oCtx) return;
 
-      var sKeys = `p_period='${period}',BusinessNo='${businessNo}'`;
+      const vFlag = oCtx.getProperty("isFooter");
+      const isFooter = (vFlag === true || vFlag === "X" || vFlag === 1 || vFlag === "1");
+      if (isFooter) return; // pas de nav sur la ligne total
 
-      this.getOwnerComponent().getRouter().navTo("ZC_FGASet", {
-        keys1: sKeys
-      });
+      const period     = this.getView().getModel("utilities").getProperty("/period");
+      const businessNo = oCtx.getProperty("business_no");
+
+      // clé OData sûre
+      const oMainModel = this.getOwnerComponent().getModel();
+      const sKeyPath   = oMainModel.createKey("/ZC_FGASet", {
+        p_period  : period,
+        BusinessNo: businessNo
+      }); // "/ZC_FGASet(p_period='...',BusinessNo='...')"
+
+      // nav via router FE (clé attendue dans {keys1})
+      const sKeys1 = sKeyPath.slice(sKeyPath.indexOf("(")); // "(...)"
+      this.getOwnerComponent().getRouter().navTo("ZC_FGASet", { keys1: sKeys1 });
     }
   });
 });

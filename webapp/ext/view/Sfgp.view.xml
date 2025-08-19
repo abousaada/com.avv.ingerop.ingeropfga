@@ -14,7 +14,7 @@
           <m:Label text="Codes affaire"/>
         </multiLabels>
       <template>
-          <m:Link text="{utilities>business_no}" press=".onPressFGALink" enabled="{= !${utilities>isFooter} }" href="{ path: 'utilities>business_no', formatter: '.formatter.buildFgaHref' }"/>
+          <m:Link text="{parts: ['utilities>business_no', 'utilities>isFooter'], formatter: '.formatter.formatBusinessNo'}" press=".onPressFGALink" enabled="{= !${utilities>isFooter} }" href="{ path: 'utilities>business_no', formatter: '.formatter.buildFgaHref' }"/>
       </template>
       </Column>
       <Column>
@@ -133,7 +133,7 @@
           <m:Label text="RAD"/>
           <m:Label text="Main d’œuvre"/>
         </multiLabels>
-        <template><m:ObjectStatus text="{utilities>MoRad}" state="{ path: 'utilities>MoRad', formatter: '.formatter.setNegativeRedValue' }" /></template>
+        <template><m:ObjectStatus text="{utilities>MoRad}" state="{parts: ['utilities>MoRad','utilities>isFooter'],formatter: '.formatter.setNegativeRedValue'}" /></template>
       </Column>
       <Column>
         <multiLabels>

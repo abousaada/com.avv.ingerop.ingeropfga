@@ -151,6 +151,12 @@
     text-align: center;
 }
 
+.sapUiTableTr.sfgpFooterRow .sapUiTableCell {
+  font-weight: bold !important;
+  color: white !important;
+  background-color: #333399 !important;
+}
+
 .sfgpFooterRow .sapUiTableCell .sapMObjectNumberStatusNone{
     background-color: #333399 !important;
     color: white !important;
