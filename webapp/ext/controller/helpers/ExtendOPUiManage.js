@@ -12,6 +12,7 @@ sap.ui.define([
             this._setMandatoryFieldByType(type);
             this._setVisibleFieldByType(type);
             // this._setVisibleFieldByType("Z0");
+            this._setVisibleFieldGroupByType(type);
         },
 
         _setOPView(context) {
@@ -56,6 +57,22 @@ sap.ui.define([
                         this._getField(identifier, field)?.setVisible(visible);
                     }
                 );
+            }
+        },
+
+        _setProjectFieldGroupVisible(sType){
+            const isCreateMode = this.oView.getModel("ui").getProperty("/createMode");
+            if(!isCreateMode){
+                // bloc report SFGP
+                var oFieldGroup = this.oView.byId("com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--template:::ObjectPageSection:::AfterFacetExtensionSectionWithKey:::sFacet::TableInfo:::sEntitySet::ZC_FGASet:::sFacetExtensionKey::1");
+                if (oFieldGroup) {
+                    if (sType !== "Z0" && sType !== "Z1") {
+                        oFieldGroup.setVisible(false);
+                    }
+                    else {
+                        oFieldGroup.setVisible(true);
+                    }
+                }
             }
         },
 
@@ -214,6 +231,10 @@ sap.ui.define([
             }else{
                 this._setFieldVisible();
             }
+        },
+
+        _setVisibleFieldGroupByType(type){
+            this._setProjectFieldGroupVisible(type);
         }
 
     });

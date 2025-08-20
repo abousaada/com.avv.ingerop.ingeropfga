@@ -31,324 +31,327 @@
         <edmx:Include Namespace="Org.OData.Validation.V1" Alias="Validation"/>
     </edmx:Reference>
     <edmx:DataServices m:DataServiceVersion="2.0">
-        <Schema Namespace="ZFGA_SRV" xml:lang="en" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <Schema Namespace="ZFGA_SRV" xml:lang="fr" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
             <EntityType Name="Company" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="CompanyCode"/>
                 </Key>
-                <Property Name="CompanyCode" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Company Code" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="CompanyName" Type="Edm.String" Nullable="false" MaxLength="25" sap:unicode="false" sap:label="Company Name" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CompanyCode" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Société" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CompanyName" Type="Edm.String" Nullable="false" MaxLength="25" sap:unicode="false" sap:label="Nom de société" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
             </EntityType>
             <EntityType Name="Client" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="ClientNo"/>
                 </Key>
-                <Property Name="ClientNo" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Customer" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Country" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Country/Region Key" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Name1" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="Name" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Name2" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="Name 2" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Siret" Type="Edm.String" Nullable="false" MaxLength="16" sap:unicode="false" sap:label="Tax Number 1" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Secteur" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Branche" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ClientNo" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Client" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Country" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Clé de pays/région" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Name1" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="Nom" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Name2" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="Nom 2" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Siret" Type="Edm.String" Nullable="false" MaxLength="16" sap:unicode="false" sap:label="N° ID fiscale 1" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
             </EntityType>
             <EntityType Name="Supplier" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="SupplierNo"/>
                 </Key>
-                <Property Name="SupplierNo" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Supplier" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="SupplierCoef" Type="Edm.Decimal" Nullable="false" Precision="4" Scale="2" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Country" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Country/Region Key" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="Name" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="CompanyPartner" Type="Edm.String" Nullable="false" MaxLength="6" sap:unicode="false" sap:label="Trading Partner" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Cumul" Type="Edm.Decimal" Nullable="false" Precision="24" Scale="3" sap:unicode="false" sap:label="Mtt dev. transaction" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="SupplierNo" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Fournisseur" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="SupplierCoef" Type="Edm.Decimal" Nullable="false" Precision="4" Scale="2" sap:unicode="false" sap:label="Coef fournisseur" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Country" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Clé de pays/région" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="Nom" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CompanyPartner" Type="Edm.String" Nullable="false" MaxLength="6" sap:unicode="false" sap:label="Sté S/L parten." sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
             </EntityType>
-            <EntityType Name="C_ProjectTypeVHType" sap:label="Project Type Value Help" sap:content-version="1">
+            <EntityType Name="C_ProjectTypeVHType" sap:label="Aide à la saisie pour type de projet" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="ProjectType"/>
                 </Key>
-                <Property Name="ProjectType" Type="Edm.String" Nullable="false" MaxLength="2" sap:display-format="UpperCase" sap:text="ProjectTypeName" sap:label="Proj.type" sap:quickinfo="Project Type"/>
-                <Property Name="ProjectTypeName" Type="Edm.String" MaxLength="40" sap:label="Description" sap:quickinfo="Name of Project Type"/>
+                <Property Name="ProjectType" Type="Edm.String" Nullable="false" MaxLength="2" sap:display-format="UpperCase" sap:text="ProjectTypeName" sap:label="Type de projet"/>
+                <Property Name="ProjectTypeName" Type="Edm.String" MaxLength="40" sap:label="Désignation" sap:quickinfo="Désignation du type de projet"/>
             </EntityType>
-            <EntityType Name="I_BusinessPartnerVHType" sap:label="Business Partner" sap:value-list="true" sap:content-version="1">
+            <EntityType Name="I_BusinessPartnerVHType" sap:label="Partenaire" sap:value-list="true" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="BusinessPartner"/>
                 </Key>
-                <Property Name="BusinessPartner" Type="Edm.String" Nullable="false" MaxLength="10" sap:display-format="UpperCase" sap:text="BusinessPartnerName" sap:label="Business Partner" sap:quickinfo="Business Partner Number"/>
-                <Property Name="FormOfAddress" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Title Key" sap:quickinfo="Form-of-Address Key"/>
-                <Property Name="FormOfAddressName" Type="Edm.String" MaxLength="30" sap:label="Title"/>
-                <Property Name="BusinessPartnerName" Type="Edm.String" MaxLength="81" sap:label="Business Partner Name"/>
-                <Property Name="BusinessPartnerCategory" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Business Partner Category"/>
-                <Property Name="BusinessPartnerIDByExtSystem" Type="Edm.String" MaxLength="20" sap:display-format="UpperCase" sap:label="External BP Number" sap:quickinfo="Business Partner Number in External System"/>
-                <Property Name="FirstName" Type="Edm.String" MaxLength="40" sap:label="First Name" sap:quickinfo="First Name of Business Partner (Person)"/>
-                <Property Name="LastName" Type="Edm.String" MaxLength="40" sap:label="Last Name" sap:quickinfo="Last Name of Business Partner (Person)"/>
-                <Property Name="OrganizationBPName1" Type="Edm.String" MaxLength="40" sap:label="Organization Name 1" sap:quickinfo="Name 1 of organization"/>
-                <Property Name="GroupBusinessPartnerName1" Type="Edm.String" MaxLength="40" sap:label="Group Name 1" sap:quickinfo="Name 1 (group)"/>
-                <Property Name="BirthDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date of Birth" sap:quickinfo="Date of Birth of Business Partner"/>
-                <Property Name="AuthorizationGroup" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Authorization Group"/>
-                <Property Name="IsBusinessPurposeCompleted" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Purpose Completed" sap:quickinfo="Business Purpose Completed Flag"/>
-                <Property Name="DataControllerSet" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Data Ctrlr. Set" sap:quickinfo="BP: Data Controller Set Flag"/>
-                <Property Name="DataController1" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Data Controller" sap:quickinfo="BP: Data Controller (Internal Use Only)"/>
-                <Property Name="DataController2" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Data Controller" sap:quickinfo="BP: Data Controller (Internal Use Only)"/>
-                <Property Name="DataController3" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Data Controller" sap:quickinfo="BP: Data Controller (Internal Use Only)"/>
-                <Property Name="DataController4" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Data Controller" sap:quickinfo="BP: Data Controller (Internal Use Only)"/>
-                <Property Name="DataController5" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Data Controller" sap:quickinfo="BP: Data Controller (Internal Use Only)"/>
-                <Property Name="DataController6" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Data Controller" sap:quickinfo="BP: Data Controller (Internal Use Only)"/>
-                <Property Name="DataController7" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Data Controller" sap:quickinfo="BP: Data Controller (Internal Use Only)"/>
-                <Property Name="DataController8" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Data Controller" sap:quickinfo="BP: Data Controller (Internal Use Only)"/>
-                <Property Name="DataController9" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Data Controller" sap:quickinfo="BP: Data Controller (Internal Use Only)"/>
-                <Property Name="DataController10" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Data Controller" sap:quickinfo="BP: Data Controller (Internal Use Only)"/>
+                <Property Name="BusinessPartner" Type="Edm.String" Nullable="false" MaxLength="10" sap:display-format="UpperCase" sap:text="BusinessPartnerName" sap:label="Partenaire" sap:quickinfo="Numéro de partenaire"/>
+                <Property Name="FormOfAddress" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Clé titre civilité" sap:quickinfo="Clé de qualité"/>
+                <Property Name="FormOfAddressName" Type="Edm.String" MaxLength="30" sap:label="Titre"/>
+                <Property Name="BusinessPartnerName" Type="Edm.String" MaxLength="81" sap:label="Nom du partenaire"/>
+                <Property Name="BusinessPartnerCategory" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Catégorie de partenaire"/>
+                <Property Name="BusinessPartnerIDByExtSystem" Type="Edm.String" MaxLength="20" sap:display-format="UpperCase" sap:label="Nº ext. partenaire" sap:quickinfo="Numéro partenaire dans le système externe"/>
+                <Property Name="FirstName" Type="Edm.String" MaxLength="40" sap:label="Prénom" sap:quickinfo="Prénom du partenaire (personne)"/>
+                <Property Name="LastName" Type="Edm.String" MaxLength="40" sap:label="Nom de famille" sap:quickinfo="Nom du partenaire (personne)"/>
+                <Property Name="OrganizationBPName1" Type="Edm.String" MaxLength="40" sap:label="Nom de l'organisation 1" sap:quickinfo="Nom 1 de l'organisation"/>
+                <Property Name="GroupBusinessPartnerName1" Type="Edm.String" MaxLength="40" sap:label="Nom du groupe 1" sap:quickinfo="Nom 1 (groupe)"/>
+                <Property Name="BirthDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date de naissance" sap:quickinfo="Date de naissance du partenaire"/>
+                <Property Name="AuthorizationGroup" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Groupe autorisations" sap:quickinfo="Groupe d'autorisations"/>
+                <Property Name="IsBusinessPurposeCompleted" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="C.Motif opér. traité" sap:quickinfo="Code indiquant que le motif de l'opération est traité."/>
+                <Property Name="DataControllerSet" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Act. resp. tr." sap:quickinfo="Paetenaire : code d'activation du responsable du traitement"/>
+                <Property Name="DataController1" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Resp. du traitement" sap:quickinfo="Partenaire : responsable du traitement (util. interne uniqt)"/>
+                <Property Name="DataController2" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Resp. du traitement" sap:quickinfo="Partenaire : responsable du traitement (util. interne uniqt)"/>
+                <Property Name="DataController3" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Resp. du traitement" sap:quickinfo="Partenaire : responsable du traitement (util. interne uniqt)"/>
+                <Property Name="DataController4" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Resp. du traitement" sap:quickinfo="Partenaire : responsable du traitement (util. interne uniqt)"/>
+                <Property Name="DataController5" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Resp. du traitement" sap:quickinfo="Partenaire : responsable du traitement (util. interne uniqt)"/>
+                <Property Name="DataController6" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Resp. du traitement" sap:quickinfo="Partenaire : responsable du traitement (util. interne uniqt)"/>
+                <Property Name="DataController7" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Resp. du traitement" sap:quickinfo="Partenaire : responsable du traitement (util. interne uniqt)"/>
+                <Property Name="DataController8" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Resp. du traitement" sap:quickinfo="Partenaire : responsable du traitement (util. interne uniqt)"/>
+                <Property Name="DataController9" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Resp. du traitement" sap:quickinfo="Partenaire : responsable du traitement (util. interne uniqt)"/>
+                <Property Name="DataController10" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Resp. du traitement" sap:quickinfo="Partenaire : responsable du traitement (util. interne uniqt)"/>
             </EntityType>
-            <EntityType Name="I_ChartOfAccountsType" sap:label="Chart Of Accounts" sap:content-version="1">
+            <EntityType Name="I_ChartOfAccountsType" sap:label="Plan comptable" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="ChartOfAccounts"/>
                 </Key>
-                <Property Name="ChartOfAccounts" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:text="ChartOfAccounts_Text" sap:label="Chart of Accounts"/>
-                <Property Name="ChartOfAccounts_Text" Type="Edm.String" MaxLength="50" sap:label="Chart of Accounts Description" sap:creatable="false" sap:updatable="false"/>
-                <Property Name="CorporateGroupChartOfAccounts" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:text="CorporateGroupChartOfAccounts_Text" sap:label="Group Chart of Accts" sap:value-list="standard"/>
-                <Property Name="CorporateGroupChartOfAccounts_Text" Type="Edm.String" MaxLength="50" sap:label="Chart of Accounts Description" sap:creatable="false" sap:updatable="false"/>
-                <Property Name="ChartOfAcctsIsBlocked" Type="Edm.Boolean" sap:label="Blocked" sap:quickinfo="Indicator: Is the Chart of Accounts Blocked ?"/>
-                <Property Name="MaintenanceLanguage" Type="Edm.String" MaxLength="2" sap:label="Maint.Language" sap:quickinfo="Maintenance Language for the Chart of Accounts"/>
+                <Property Name="ChartOfAccounts" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:text="ChartOfAccounts_Text" sap:label="Plan comptable"/>
+                <Property Name="ChartOfAccounts_Text" Type="Edm.String" MaxLength="50" sap:label="Description du plan comptable" sap:quickinfo="Désignation du plan comptable" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="CorporateGroupChartOfAccounts" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:text="CorporateGroupChartOfAccounts_Text" sap:label="Plan compt. groupe" sap:quickinfo="Plan comptable du groupe" sap:value-list="standard"/>
+                <Property Name="CorporateGroupChartOfAccounts_Text" Type="Edm.String" MaxLength="50" sap:label="Description du plan comptable" sap:quickinfo="Désignation du plan comptable" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="ChartOfAcctsIsBlocked" Type="Edm.Boolean" sap:label="Bloqué" sap:quickinfo="Code : Plan comptable bloqué ?"/>
+                <Property Name="MaintenanceLanguage" Type="Edm.String" MaxLength="2" sap:label="Langue de gestion" sap:quickinfo="Langue de gestion pour le plan comptable"/>
             </EntityType>
-            <EntityType Name="I_ChartOfAccountsStdVHType" sap:label="Chart Of Accounts" sap:value-list="true" sap:content-version="1">
+            <EntityType Name="I_ChartOfAccountsStdVHType" sap:label="Plan comptable" sap:value-list="true" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="ChartOfAccounts"/>
                 </Key>
-                <Property Name="ChartOfAccounts" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:text="ChartOfAccounts_Text" sap:label="Chart of Accounts"/>
-                <Property Name="ChartOfAccounts_Text" Type="Edm.String" MaxLength="50" sap:label="Chart of Accounts Description" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="ChartOfAccounts" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:text="ChartOfAccounts_Text" sap:label="Plan comptable"/>
+                <Property Name="ChartOfAccounts_Text" Type="Edm.String" MaxLength="50" sap:label="Description du plan comptable" sap:quickinfo="Désignation du plan comptable" sap:creatable="false" sap:updatable="false"/>
                 <NavigationProperty Name="to_Text" Relationship="ZFGA_SRV.assoc_915DF1EF68705DB0A2EB2F82E9B87907" FromRole="FromRole_assoc_915DF1EF68705DB0A2EB2F82E9B87907" ToRole="ToRole_assoc_915DF1EF68705DB0A2EB2F82E9B87907"/>
             </EntityType>
-            <EntityType Name="I_ChartOfAccountsTextType" sap:label="Chart Of Accounts - Text" sap:content-version="1">
+            <EntityType Name="I_ChartOfAccountsTextType" sap:label="Plan comptable - Texte" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="ChartOfAccounts"/>
                     <PropertyRef Name="Language"/>
                 </Key>
-                <Property Name="ChartOfAccounts" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:text="ChartOfAccounts_Text" sap:label="Chart of Accounts" sap:value-list="standard"/>
-                <Property Name="ChartOfAccounts_Text" Type="Edm.String" MaxLength="50" sap:label="Chart of Accounts Description" sap:creatable="false" sap:updatable="false"/>
-                <Property Name="Language" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Language Key"/>
-                <Property Name="ChartOfAccountsName" Type="Edm.String" MaxLength="50" sap:label="Chart of Accounts Description"/>
+                <Property Name="ChartOfAccounts" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:text="ChartOfAccounts_Text" sap:label="Plan comptable" sap:value-list="standard"/>
+                <Property Name="ChartOfAccounts_Text" Type="Edm.String" MaxLength="50" sap:label="Description du plan comptable" sap:quickinfo="Désignation du plan comptable" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="Language" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Code langue"/>
+                <Property Name="ChartOfAccountsName" Type="Edm.String" MaxLength="50" sap:label="Description du plan comptable" sap:quickinfo="Désignation du plan comptable"/>
             </EntityType>
-            <EntityType Name="I_CompanyCodeVHType" sap:label="Company Code" sap:value-list="true" sap:content-version="1">
+            <EntityType Name="I_CompanyCodeVHType" sap:label="Société" sap:value-list="true" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="CompanyCode"/>
                 </Key>
-                <Property Name="CompanyCode" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:text="CompanyCodeName" sap:label="Company Code"/>
-                <Property Name="CompanyCodeName" Type="Edm.String" MaxLength="25" sap:label="Company Name" sap:quickinfo="Name of Company Code or Company"/>
-                <Property Name="ControllingArea" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Controlling Area"/>
-                <Property Name="CityName" Type="Edm.String" MaxLength="25" sap:label="City"/>
-                <Property Name="Country" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Country/Region Key"/>
-                <Property Name="Currency" Type="Edm.String" MaxLength="5" sap:display-format="UpperCase" sap:label="Currency" sap:quickinfo="Currency Key" sap:semantics="currency-code"/>
-                <Property Name="Language" Type="Edm.String" MaxLength="2" sap:label="Language Key"/>
-                <Property Name="ChartOfAccounts" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Chart of Accounts"/>
-                <Property Name="FiscalYearVariant" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Fiscal Year Variant"/>
-                <Property Name="Company" Type="Edm.String" MaxLength="6" sap:display-format="UpperCase" sap:label="Company"/>
-                <Property Name="CreditControlArea" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Credit Control Area"/>
-                <Property Name="CountryChartOfAccounts" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Alternative Chart of Accounts" sap:quickinfo="Alternative Chart of Accounts for Country/Region"/>
-                <Property Name="FinancialManagementArea" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="FM Area" sap:quickinfo="Financial Management Area"/>
+                <Property Name="CompanyCode" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:text="CompanyCodeName" sap:label="Société"/>
+                <Property Name="CompanyCodeName" Type="Edm.String" MaxLength="25" sap:label="Nom de la société" sap:quickinfo="Désignation de la société ou de l'entreprise"/>
+                <Property Name="ControllingArea" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Périmètre analytique"/>
+                <Property Name="CityName" Type="Edm.String" MaxLength="25" sap:label="Ville"/>
+                <Property Name="Country" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Clé de pays/région"/>
+                <Property Name="Currency" Type="Edm.String" MaxLength="5" sap:display-format="UpperCase" sap:label="Devise" sap:quickinfo="Clé de devise" sap:semantics="currency-code"/>
+                <Property Name="Language" Type="Edm.String" MaxLength="2" sap:label="Code langue"/>
+                <Property Name="ChartOfAccounts" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Plan comptable"/>
+                <Property Name="FiscalYearVariant" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Version d'exercice"/>
+                <Property Name="Company" Type="Edm.String" MaxLength="6" sap:display-format="UpperCase" sap:label="Société"/>
+                <Property Name="CreditControlArea" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Dom.contrôle crédits" sap:quickinfo="Domaine de contrôle des crédits"/>
+                <Property Name="CountryChartOfAccounts" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Plan comptable alternatif" sap:quickinfo="Plan comptable alternatif pour pays/région"/>
+                <Property Name="FinancialManagementArea" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Périm.financier" sap:quickinfo="Périm. financier"/>
             </EntityType>
-            <EntityType Name="I_ControllingAreaType" sap:label="Controlling Area" sap:content-version="1">
+            <EntityType Name="I_ControllingAreaType" sap:label="Périmètre analytique" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="ControllingArea"/>
                 </Key>
-                <Property Name="ControllingArea" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:text="ControllingAreaName" sap:label="Controlling Area"/>
-                <Property Name="FiscalYearVariant" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Fiscal Year Variant"/>
-                <Property Name="ControllingAreaName" Type="Edm.String" MaxLength="25" sap:label="Controlling Area Name"/>
-                <Property Name="ControllingAreaCurrency" Type="Edm.String" MaxLength="5" sap:display-format="UpperCase" sap:label="Controlling Area Currency" sap:semantics="currency-code"/>
-                <Property Name="ChartOfAccounts" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:text="ChartOfAccounts_Text" sap:label="Chart of Accounts" sap:value-list="standard"/>
-                <Property Name="ChartOfAccounts_Text" Type="Edm.String" MaxLength="50" sap:label="Chart of Accounts Description" sap:creatable="false" sap:updatable="false"/>
-                <Property Name="CostCenterStandardHierarchy" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Cost Center Standard Hierarchy"/>
-                <Property Name="OperatingConcern" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Operating concern"/>
-                <Property Name="ProfitCenterStandardHierarchy" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Profit Center Standard Hierarchy"/>
-                <Property Name="BusinessProcessStandardHier" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Business Process Standard Hierarchy Area"/>
-                <Property Name="CreditDownPaymentDefaultGLAcct" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="G/L Account for Supplier Down Payments" sap:quickinfo="Default General Ledger Account for Supplier Down Payments"/>
-                <Property Name="DebitDownPaymentDefaultGLAcct" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="G/L Account for Customer Down Payments" sap:quickinfo="Default General Ledger Account for Customer Down Payments"/>
-                <Property Name="ControllingAreaCurrencyRole" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Currency Type for Controlling Area"/>
-                <Property Name="FinancialManagementArea" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="FM Area" sap:quickinfo="Financial Management Area"/>
-                <Property Name="ControllingAreaResponsibleUser" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Responsible User of Controlling Area"/>
-                <Property Name="DefaultProfitCenter" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Default Profit Center" sap:quickinfo="Default Profit Center for Nonassigned Processes"/>
-                <Property Name="CtrlgStdFinStatementVersion" Type="Edm.String" MaxLength="42" sap:display-format="UpperCase" sap:text="CtrlgStdFinStatementVersion_Text" sap:label="Leading Ctrlg Financial Stmnt Version" sap:quickinfo="Leading Controlling Financial Statement Version"/>
-                <Property Name="CtrlgStdFinStatementVersion_Text" Type="Edm.String" MaxLength="50" sap:label="Financial Statement Description" sap:quickinfo="Hierarchy description" sap:creatable="false" sap:updatable="false"/>
-                <Property Name="ProfitCenterAccountingCurrency" Type="Edm.String" MaxLength="5" sap:display-format="UpperCase" sap:label="Profit Center Local Currency" sap:quickinfo="Local Currency for Profit Center Accounting" sap:semantics="currency-code"/>
+                <Property Name="ControllingArea" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:text="ControllingAreaName" sap:label="Périmètre analytique"/>
+                <Property Name="FiscalYearVariant" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Version exerc.comp." sap:quickinfo="Version d'exercice comptable"/>
+                <Property Name="ControllingAreaName" Type="Edm.String" MaxLength="25" sap:label="Nom du périmètre analytique"/>
+                <Property Name="ControllingAreaCurrency" Type="Edm.String" MaxLength="5" sap:display-format="UpperCase" sap:label="Devise du périmètre analytique" sap:semantics="currency-code"/>
+                <Property Name="ChartOfAccounts" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:text="ChartOfAccounts_Text" sap:label="Plan comptable" sap:value-list="standard"/>
+                <Property Name="ChartOfAccounts_Text" Type="Edm.String" MaxLength="50" sap:label="Description du plan comptable" sap:quickinfo="Désignation du plan comptable" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="CostCenterStandardHierarchy" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Hiérarchie standard de centres de coûts"/>
+                <Property Name="OperatingConcern" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Périmètre résultat" sap:quickinfo="Périmètre de résultat"/>
+                <Property Name="ProfitCenterStandardHierarchy" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Hiérarchie standard centres de profit" sap:quickinfo="Hiérarchie standard des centres de profit"/>
+                <Property Name="BusinessProcessStandardHier" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Domaine hiérar. standard proc. gestion" sap:quickinfo="Domaine de hiérarchie standard de processus de gestion"/>
+                <Property Name="CreditDownPaymentDefaultGLAcct" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Cpte général pour acomptes fournisseurs" sap:quickinfo="Compte général par défaut pour acomptes fournisseurs"/>
+                <Property Name="DebitDownPaymentDefaultGLAcct" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Compte général pour acomptes clients" sap:quickinfo="Compte général par défaut pour acomptes clients"/>
+                <Property Name="ControllingAreaCurrencyRole" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Type de devise du périmètre analytique"/>
+                <Property Name="FinancialManagementArea" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Périm.financier" sap:quickinfo="Périm. financier"/>
+                <Property Name="ControllingAreaResponsibleUser" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Utilisateur responsable périm.analytique" sap:quickinfo="Utilisateur responsable du périmètre analytique"/>
+                <Property Name="DefaultProfitCenter" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Centre de profit par défaut" sap:quickinfo="Centre de profit par défaut pour processus non affectés"/>
+                <Property Name="CtrlgStdFinStatementVersion" Type="Edm.String" MaxLength="42" sap:display-format="UpperCase" sap:text="CtrlgStdFinStatementVersion_Text" sap:label="Str. bilan/cpte rés. ctrle gestion ppale" sap:quickinfo="Structure bilan/compte résultat contrôle gestion principale"/>
+                <Property Name="CtrlgStdFinStatementVersion_Text" Type="Edm.String" MaxLength="50" sap:label="Description de l'état financier" sap:quickinfo="Description de la hiérarchie" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="ProfitCenterAccountingCurrency" Type="Edm.String" MaxLength="5" sap:display-format="UpperCase" sap:label="Devise interne du centre de profit" sap:quickinfo="Devise interne de la comptabilité des centres de profit" sap:semantics="currency-code"/>
             </EntityType>
-            <EntityType Name="I_CurrencyType" sap:label="Currency" sap:content-version="1">
+            <EntityType Name="I_CurrencyType" sap:label="Devise" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Currency"/>
                 </Key>
-                <Property Name="Currency" Type="Edm.String" Nullable="false" MaxLength="5" sap:display-format="UpperCase" sap:text="Currency_Text" sap:label="Currency" sap:quickinfo="Currency Key" sap:semantics="currency-code"/>
+                <Property Name="Currency" Type="Edm.String" Nullable="false" MaxLength="5" sap:display-format="UpperCase" sap:text="Currency_Text" sap:label="Devise" sap:quickinfo="Clé de devise" sap:semantics="currency-code"/>
                 <Property Name="Currency_Text" Type="Edm.String" MaxLength="40" sap:label="Description" sap:creatable="false" sap:updatable="false"/>
-                <Property Name="Decimals" Type="Edm.Byte" sap:label="Decimal Places" sap:quickinfo="Number of decimal places"/>
-                <Property Name="CurrencyISOCode" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="ISO Code" sap:quickinfo="ISO Currency Code"/>
-                <Property Name="AlternativeCurrencyKey" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Alternative Key"/>
-                <Property Name="IsPrimaryCurrencyForISOCrcy" Type="Edm.Boolean" sap:label="Primary" sap:quickinfo="Primary SAP Currency Code for ISO Code"/>
+                <Property Name="Decimals" Type="Edm.Byte" sap:label="Nombre de décimales"/>
+                <Property Name="CurrencyISOCode" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Code ISO" sap:quickinfo="Code devise ISO"/>
+                <Property Name="AlternativeCurrencyKey" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Clé alternative"/>
+                <Property Name="IsPrimaryCurrencyForISOCrcy" Type="Edm.Boolean" sap:label="Primaire" sap:quickinfo="Code de devise SAP primaire pour code ISO"/>
             </EntityType>
-            <EntityType Name="I_CurrencyStdVHType" sap:label="Currency" sap:value-list="true" sap:content-version="1">
+            <EntityType Name="I_CurrencyStdVHType" sap:label="Devise" sap:value-list="true" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Currency"/>
                 </Key>
-                <Property Name="Currency" Type="Edm.String" Nullable="false" MaxLength="5" sap:display-format="UpperCase" sap:text="Currency_Text" sap:label="Currency" sap:quickinfo="Currency Key" sap:semantics="currency-code"/>
+                <Property Name="Currency" Type="Edm.String" Nullable="false" MaxLength="5" sap:display-format="UpperCase" sap:text="Currency_Text" sap:label="Devise" sap:quickinfo="Clé de devise" sap:semantics="currency-code"/>
                 <Property Name="Currency_Text" Type="Edm.String" MaxLength="40" sap:label="Description" sap:creatable="false" sap:updatable="false"/>
             </EntityType>
-            <EntityType Name="I_FiscalYearVariantType" sap:label="Fiscal Year Variant" sap:content-version="1">
+            <EntityType Name="I_FiscalYearVariantType" sap:label="Version d'exercice" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="FiscalYearVariant"/>
                 </Key>
-                <Property Name="FiscalYearVariant" Type="Edm.String" Nullable="false" MaxLength="2" sap:display-format="UpperCase" sap:text="FiscalYearVariant_Text" sap:label="Fiscal Year Variant"/>
-                <Property Name="FiscalYearVariant_Text" Type="Edm.String" MaxLength="30" sap:label="Fiscal Year Variant Name" sap:quickinfo="Description of Fiscal Year Variant" sap:creatable="false" sap:updatable="false"/>
-                <Property Name="FiscalPeriodIsEqualMonth" Type="Edm.Boolean" sap:label="Fscl Perd Equal Mnth" sap:quickinfo="Indicator: Fiscal Period Is Equal Calendar Month"/>
-                <Property Name="IsYearDependent" Type="Edm.Boolean" sap:label="Year-dependent" sap:quickinfo="Indicator: Fiscal year variants year-dependent ?"/>
-                <Property Name="PostingPeriodsNumberVal" Type="Edm.String" MaxLength="3" sap:display-format="NonNegative" sap:label="Posting Period" sap:quickinfo="Number of Posting Periods"/>
-                <Property Name="NumberOfSpecialPeriods" Type="Edm.String" MaxLength="2" sap:display-format="NonNegative" sap:label="No. Special Periods" sap:quickinfo="Number of Special Periods"/>
-                <Property Name="FsclWeekStartIsFsclYearStart" Type="Edm.Boolean" sap:label="Fiscal Week Start" sap:quickinfo="Flag: Fiscal Weeks Calculated from Start of Fiscal Year"/>
-                <Property Name="FiscalCalendarIsWeekBased" Type="Edm.Boolean" sap:label="Weekly Calendar" sap:quickinfo="Flag: Fiscal Year Variant as Week Calendar"/>
+                <Property Name="FiscalYearVariant" Type="Edm.String" Nullable="false" MaxLength="2" sap:display-format="UpperCase" sap:text="FiscalYearVariant_Text" sap:label="Version exerc.comp." sap:quickinfo="Version d'exercice comptable"/>
+                <Property Name="FiscalYearVariant_Text" Type="Edm.String" MaxLength="30" sap:label="Nom de la version d'exercice" sap:quickinfo="Description de la version d'exercice" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="FiscalPeriodIsEqualMonth" Type="Edm.Boolean" sap:label="Pér. cpt. égale mois" sap:quickinfo="Code : période comptable égale à mois calendaire"/>
+                <Property Name="IsYearDependent" Type="Edm.Boolean" sap:label="Dépendant exercice" sap:quickinfo="Code : version exercice cptable dépendante de l'exercice"/>
+                <Property Name="PostingPeriodsNumberVal" Type="Edm.String" MaxLength="3" sap:display-format="NonNegative" sap:label="Période cptable" sap:quickinfo="Nombre de périodes comptables"/>
+                <Property Name="NumberOfSpecialPeriods" Type="Edm.String" MaxLength="2" sap:display-format="NonNegative" sap:label="Nbre périodes spéc." sap:quickinfo="Nombre périodes spéciales"/>
+                <Property Name="FsclWeekStartIsFsclYearStart" Type="Edm.Boolean" sap:label="Semaines fisc. début" sap:quickinfo="Code : semaines fiscales calculées depuis début ex. cptable"/>
+                <Property Name="FiscalCalendarIsWeekBased" Type="Edm.Boolean" sap:label="Calendrier hebdo." sap:quickinfo="Code : variante d'ex.comptable comme calendrier hebdomadaire"/>
             </EntityType>
-            <EntityType Name="I_LanguageType" sap:label="Language" sap:content-version="1">
+            <EntityType Name="I_LanguageType" sap:label="Langue" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Language"/>
                 </Key>
-                <Property Name="Language" Type="Edm.String" Nullable="false" MaxLength="2" sap:text="Language_Text" sap:label="Language Key"/>
-                <Property Name="Language_Text" Type="Edm.String" MaxLength="16" sap:label="Name" sap:quickinfo="Name of Language" sap:creatable="false" sap:updatable="false"/>
-                <Property Name="LanguageISOCode" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Language Code" sap:quickinfo="2-Character SAP Language Code"/>
+                <Property Name="Language" Type="Edm.String" Nullable="false" MaxLength="2" sap:text="Language_Text" sap:label="Code langue"/>
+                <Property Name="Language_Text" Type="Edm.String" MaxLength="16" sap:label="Désignation" sap:quickinfo="Désignation de la langue" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="LanguageISOCode" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Code langue" sap:quickinfo="Code langue SAP à deux caractères"/>
             </EntityType>
-            <EntityType Name="I_ProfitCenterStdVHType" sap:label="Profit Center" sap:value-list="true" sap:content-version="1">
+            <EntityType Name="I_ProfitCenterStdVHType" sap:label="Centre de profit" sap:value-list="true" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="ControllingArea"/>
                     <PropertyRef Name="ProfitCenter"/>
                     <PropertyRef Name="ValidityEndDate"/>
                 </Key>
-                <Property Name="ControllingArea" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:text="to_ControllingArea/ControllingAreaName" sap:label="Controlling Area" sap:value-list="standard"/>
-                <Property Name="ProfitCenter" Type="Edm.String" Nullable="false" MaxLength="10" sap:display-format="UpperCase" sap:text="ProfitCenter_Text" sap:label="Profit Center"/>
-                <Property Name="ProfitCenter_Text" Type="Edm.String" MaxLength="20" sap:label="Profit Center Name" sap:quickinfo="Description of Profit Center" sap:creatable="false" sap:updatable="false"/>
-                <Property Name="ValidityEndDate" Type="Edm.DateTime" Nullable="false" Precision="0" sap:display-format="Date" sap:label="Valid To" sap:quickinfo="Valid To Date"/>
-                <Property Name="ValidityStartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Valid From" sap:quickinfo="Valid-From Date"/>
+                <Property Name="ControllingArea" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:text="to_ControllingArea/ControllingAreaName" sap:label="Périmètre analytique" sap:value-list="standard"/>
+                <Property Name="ProfitCenter" Type="Edm.String" Nullable="false" MaxLength="10" sap:display-format="UpperCase" sap:text="ProfitCenter_Text" sap:label="Centre de profit"/>
+                <Property Name="ProfitCenter_Text" Type="Edm.String" MaxLength="20" sap:label="Nom centre de profit" sap:quickinfo="Description du centre de profit" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="ValidityEndDate" Type="Edm.DateTime" Nullable="false" Precision="0" sap:display-format="Date" sap:label="Fin de validité" sap:quickinfo="Date de fin de validité"/>
+                <Property Name="ValidityStartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Début de validité" sap:quickinfo="Date de début de validité"/>
                 <NavigationProperty Name="to_Text" Relationship="ZFGA_SRV.assoc_24FC23D321DDD66B6ED917396AA49B5A" FromRole="FromRole_assoc_24FC23D321DDD66B6ED917396AA49B5A" ToRole="ToRole_assoc_24FC23D321DDD66B6ED917396AA49B5A"/>
             </EntityType>
-            <EntityType Name="I_ProfitCenterTextType" sap:label="Profit Center - Text" sap:content-version="1">
+            <EntityType Name="I_ProfitCenterTextType" sap:label="Centre de profit - Texte" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Language"/>
                     <PropertyRef Name="ControllingArea"/>
                     <PropertyRef Name="ProfitCenter"/>
                 </Key>
-                <Property Name="Language" Type="Edm.String" Nullable="false" MaxLength="2" sap:text="to_Language/Language_Text" sap:label="Language Key" sap:value-list="standard"/>
-                <Property Name="ControllingArea" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:text="ControllingArea_Text" sap:label="Controlling Area" sap:value-list="standard"/>
-                <Property Name="ControllingArea_Text" Type="Edm.String" MaxLength="25" sap:label="Controlling Area Name" sap:creatable="false" sap:updatable="false"/>
-                <Property Name="ProfitCenter" Type="Edm.String" Nullable="false" MaxLength="10" sap:display-format="UpperCase" sap:text="ProfitCenterLongName" sap:label="Profit Center"/>
-                <Property Name="ValidityEndDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Valid To" sap:quickinfo="Valid To Date"/>
-                <Property Name="ValidityStartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Valid From" sap:quickinfo="Valid-From Date"/>
-                <Property Name="ProfitCenterName" Type="Edm.String" MaxLength="20" sap:attribute-for="ProfitCenter" sap:label="Profit Center Name" sap:quickinfo="Description of Profit Center"/>
-                <Property Name="ProfitCenterLongName" Type="Edm.String" MaxLength="40" sap:label="Profit Center Description" sap:quickinfo="Description of Profit Center"/>
+                <Property Name="Language" Type="Edm.String" Nullable="false" MaxLength="2" sap:text="to_Language/Language_Text" sap:label="Code langue" sap:value-list="standard"/>
+                <Property Name="ControllingArea" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:text="ControllingArea_Text" sap:label="Périmètre analytique" sap:value-list="standard"/>
+                <Property Name="ControllingArea_Text" Type="Edm.String" MaxLength="25" sap:label="Nom du périmètre analytique" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="ProfitCenter" Type="Edm.String" Nullable="false" MaxLength="10" sap:display-format="UpperCase" sap:text="ProfitCenterLongName" sap:label="Centre de profit"/>
+                <Property Name="ValidityEndDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Fin de validité" sap:quickinfo="Date de fin de validité"/>
+                <Property Name="ValidityStartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Début de validité" sap:quickinfo="Date de début de validité"/>
+                <Property Name="ProfitCenterName" Type="Edm.String" MaxLength="20" sap:attribute-for="ProfitCenter" sap:label="Nom centre de profit" sap:quickinfo="Description du centre de profit"/>
+                <Property Name="ProfitCenterLongName" Type="Edm.String" MaxLength="40" sap:label="Description du centre de profit"/>
                 <NavigationProperty Name="to_ControllingArea" Relationship="ZFGA_SRV.assoc_288FEA07E9CACA304B22C3E4B7929D5A" FromRole="FromRole_assoc_288FEA07E9CACA304B22C3E4B7929D5A" ToRole="ToRole_assoc_288FEA07E9CACA304B22C3E4B7929D5A"/>
                 <NavigationProperty Name="to_Language" Relationship="ZFGA_SRV.assoc_FBA82F058290BED0BE4336104DFD554A" FromRole="FromRole_assoc_FBA82F058290BED0BE4336104DFD554A" ToRole="ToRole_assoc_FBA82F058290BED0BE4336104DFD554A"/>
             </EntityType>
-            <EntityType Name="I_Supplier_VHType" sap:label="Supplier" sap:content-version="1">
+            <EntityType Name="I_Supplier_VHType" sap:label="Fournisseur" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Supplier"/>
                 </Key>
-                <Property Name="Supplier" Type="Edm.String" Nullable="false" MaxLength="10" sap:display-format="UpperCase" sap:text="BPSupplierName" sap:label="Supplier" sap:quickinfo="Account Number of Supplier"/>
-                <Property Name="SupplierName" Type="Edm.String" MaxLength="35" sap:label="Supplier Name1" sap:quickinfo="Supplier Name"/>
-                <Property Name="BusinessPartnerName1" Type="Edm.String" MaxLength="40" sap:label="Business Partner Name1"/>
-                <Property Name="BPSupplierName" Type="Edm.String" MaxLength="81" sap:label="Business Partner Supplier Name" sap:quickinfo="Supplier Name"/>
-                <Property Name="AuthorizationGroup" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Authorization" sap:quickinfo="Authorization Group"/>
-                <Property Name="SupplierAccountGroup" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Account group" sap:quickinfo="Vendor account group"/>
-                <Property Name="IsBusinessPurposeCompleted" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Purpose Completed" sap:quickinfo="Business Purpose Completed Flag"/>
-                <Property Name="BusinessPartner" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Business Partner" sap:quickinfo="Business Partner Number"/>
-                <Property Name="BusinessPartnerType" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Business Partner Type"/>
-                <Property Name="DataControllerSet" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Data Ctrlr. Set" sap:quickinfo="BP: Data Controller Set Flag"/>
-                <Property Name="DataController1" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Data Controller" sap:quickinfo="BP: Data Controller (Internal Use Only)"/>
-                <Property Name="DataController2" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Data Controller" sap:quickinfo="BP: Data Controller (Internal Use Only)"/>
-                <Property Name="DataController3" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Data Controller" sap:quickinfo="BP: Data Controller (Internal Use Only)"/>
-                <Property Name="DataController4" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Data Controller" sap:quickinfo="BP: Data Controller (Internal Use Only)"/>
-                <Property Name="DataController5" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Data Controller" sap:quickinfo="BP: Data Controller (Internal Use Only)"/>
-                <Property Name="DataController6" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Data Controller" sap:quickinfo="BP: Data Controller (Internal Use Only)"/>
-                <Property Name="DataController7" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Data Controller" sap:quickinfo="BP: Data Controller (Internal Use Only)"/>
-                <Property Name="DataController8" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Data Controller" sap:quickinfo="BP: Data Controller (Internal Use Only)"/>
-                <Property Name="DataController9" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Data Controller" sap:quickinfo="BP: Data Controller (Internal Use Only)"/>
-                <Property Name="DataController10" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Data Controller" sap:quickinfo="BP: Data Controller (Internal Use Only)"/>
+                <Property Name="Supplier" Type="Edm.String" Nullable="false" MaxLength="10" sap:display-format="UpperCase" sap:text="BPSupplierName" sap:label="Fournisseur" sap:quickinfo="Numéro de compte fournisseur"/>
+                <Property Name="SupplierName" Type="Edm.String" MaxLength="35" sap:label="Nom du fournisseur 1" sap:quickinfo="Nom du fournisseur"/>
+                <Property Name="BusinessPartnerName1" Type="Edm.String" MaxLength="40" sap:label="Nom du partenaire 1"/>
+                <Property Name="BPSupplierName" Type="Edm.String" MaxLength="81" sap:label="Nom du fournisseur partenaire" sap:quickinfo="Nom du fournisseur"/>
+                <Property Name="AuthorizationGroup" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Autorisation" sap:quickinfo="Groupe d'autorisations"/>
+                <Property Name="SupplierAccountGroup" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Groupe de comptes" sap:quickinfo="Groupe de comptes fournisseurs"/>
+                <Property Name="IsBusinessPurposeCompleted" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Objectif rempli" sap:quickinfo="Code : objectif commercial rempli"/>
+                <Property Name="BusinessPartner" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Partenaire" sap:quickinfo="Numéro de partenaire"/>
+                <Property Name="BusinessPartnerType" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Type de partenaire"/>
+                <Property Name="DataControllerSet" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Act. resp. tr." sap:quickinfo="Paetenaire : code d'activation du responsable du traitement"/>
+                <Property Name="DataController1" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Resp. du traitement" sap:quickinfo="Partenaire : responsable du traitement (util. interne uniqt)"/>
+                <Property Name="DataController2" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Resp. du traitement" sap:quickinfo="Partenaire : responsable du traitement (util. interne uniqt)"/>
+                <Property Name="DataController3" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Resp. du traitement" sap:quickinfo="Partenaire : responsable du traitement (util. interne uniqt)"/>
+                <Property Name="DataController4" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Resp. du traitement" sap:quickinfo="Partenaire : responsable du traitement (util. interne uniqt)"/>
+                <Property Name="DataController5" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Resp. du traitement" sap:quickinfo="Partenaire : responsable du traitement (util. interne uniqt)"/>
+                <Property Name="DataController6" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Resp. du traitement" sap:quickinfo="Partenaire : responsable du traitement (util. interne uniqt)"/>
+                <Property Name="DataController7" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Resp. du traitement" sap:quickinfo="Partenaire : responsable du traitement (util. interne uniqt)"/>
+                <Property Name="DataController8" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Resp. du traitement" sap:quickinfo="Partenaire : responsable du traitement (util. interne uniqt)"/>
+                <Property Name="DataController9" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Resp. du traitement" sap:quickinfo="Partenaire : responsable du traitement (util. interne uniqt)"/>
+                <Property Name="DataController10" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Resp. du traitement" sap:quickinfo="Partenaire : responsable du traitement (util. interne uniqt)"/>
             </EntityType>
             <EntityType Name="ZC_FGAType" sap:label="FGA" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="p_period"/>
                     <PropertyRef Name="BusinessNo"/>
                 </Key>
-                <Property Name="p_period" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase" sap:label="Period MMYYYY"/>
-                <Property Name="BusinessNo" Type="Edm.String" Nullable="false" MaxLength="24" sap:label="Business Number" sap:creatable="false" sap:updatable="false"/>
-                <Property Name="BusinessName" Type="Edm.String" MaxLength="40" sap:label="Business Name" sap:quickinfo="PS: Short description (1st text line)"/>
-                <Property Name="UFOName" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="UFO" sap:quickinfo="Set Name" sap:value-list="standard"/>
-                <Property Name="Activity" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="Activity" sap:quickinfo="" sap:value-list="fixed-values"/>
-                <Property Name="CDG" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Profit Center" sap:quickinfo="" sap:value-list="standard"/>
-                <Property Name="Branche" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Branche" sap:quickinfo="" sap:value-list="fixed-values"/>
-                <Property Name="PROJM" Type="Edm.String" MaxLength="25" sap:label="Project Manager" sap:quickinfo="Name of responsible person (Project manager)"/>
-                <Property Name="BusinessType" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Type" sap:quickinfo=""/>
-                <Property Name="BusinessStatus" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Status" sap:quickinfo="" sap:value-list="fixed-values"/>
-                <Property Name="Soufam" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Sous famille" sap:quickinfo="" sap:value-list="fixed-values"/>
-                <Property Name="Rgfact" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Règle de facturation" sap:quickinfo=""/>
-                <Property Name="AncienNumero" Type="Edm.String" MaxLength="8" sap:display-format="UpperCase" sap:label="Ancien Numéro" sap:quickinfo=""/>
-                <Property Name="Modalr" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Révisable / Actualisable" sap:quickinfo="" sap:value-list="fixed-values"/>
-                <Property Name="Modalf" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Fofaitaire / Régie" sap:quickinfo=""/>
-                <Property Name="Avance" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Avance" sap:quickinfo="" sap:value-list="fixed-values"/>
-                <Property Name="Rtgart" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Retenue de garantie" sap:quickinfo="" sap:value-list="fixed-values"/>
-                <Property Name="VAT" Type="Edm.String" DefaultValue="20" MaxLength="10" sap:display-format="UpperCase" sap:label="VAT" sap:quickinfo="Character Field with Length 10"/>
-                <Property Name="RateDevis" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Rate/Currency" sap:quickinfo="Character Field with Length 10"/>
-                <Property Name="Currency" Type="Edm.String" MaxLength="5" sap:display-format="UpperCase" sap:label="Currency" sap:quickinfo="Currency Key" sap:value-list="standard" sap:semantics="currency-code"/>
-                <Property Name="Reflet" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label=""/>
-                <Property Name="CurrencyHedging" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="" sap:value-list="fixed-values"/>
-                <Property Name="NClient" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Customer Number" sap:quickinfo="" sap:value-list="standard"/>
-                <Property Name="CustomerName" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Customer Name" sap:quickinfo=""/>
-                <Property Name="Scclt" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Customer Sector" sap:quickinfo="" sap:value-list="fixed-values"/>
-                <Property Name="Guarantee" Type="Edm.String" MaxLength="50" sap:label="Guarantee - Completion Bond" sap:quickinfo="Text Field"/>
-                <Property Name="CautGA" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Caution / Garantie à PD" sap:quickinfo=""/>
-                <Property Name="Assurance" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Insurance" sap:quickinfo="" sap:value-list="fixed-values"/>
-                <Property Name="Mission" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Mission" sap:quickinfo="" sap:value-list="fixed-values"/>
-                <Property Name="GroupM" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Groupement (O/N)" sap:quickinfo="" sap:value-list="fixed-values"/>
-                <Property Name="isMandataire" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Mandataire O/N" sap:quickinfo="" sap:value-list="fixed-values"/>
+                <Property Name="p_period" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase" sap:label="Période MMYYYY"/>
+                <Property Name="BusinessNo" Type="Edm.String" Nullable="false" MaxLength="24" sap:label="N°Affaire" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="BusinessName" Type="Edm.String" MaxLength="40" sap:label="Libellé" sap:quickinfo="PS: désignation (première ligne de texte)"/>
+                <Property Name="UFOName" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="UFO Délégué" sap:quickinfo="Nom de set" sap:value-list="standard"/>
+                <Property Name="Activity" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="Activité" sap:quickinfo="FGA Business activity" sap:value-list="fixed-values"/>
+                <Property Name="CDG" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Centre de profit" sap:quickinfo="FGA Profit Center" sap:value-list="standard"/>
+                <Property Name="Branche" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Branche" sap:value-list="fixed-values"/>
+                <Property Name="PROJM" Type="Edm.String" MaxLength="25" sap:label="Chef de projet" sap:quickinfo="Responsable (chef de projet)" sap:value-list="standard"/>
+                <Property Name="STILinkedCount" Type="Edm.Int32" sap:label=""/>
+                <Property Name="BusinessType" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Type" sap:quickinfo="FGA Business Type"/>
+                <Property Name="BusinessStatus" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Statut de l'affaire" sap:quickinfo="Elément de données Statut pour FGA" sap:value-list="fixed-values"/>
+                <Property Name="Soufam" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Sous famille" sap:quickinfo="Elément de donnée pour Soufam" sap:value-list="fixed-values"/>
+                <Property Name="Rgfact" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Règle de facturation" sap:quickinfo="élément de donnée pour RTFACT"/>
+                <Property Name="AncienNumero" Type="Edm.String" MaxLength="8" sap:display-format="UpperCase" sap:label="Ancien Numéro" sap:quickinfo="Ancien numéro"/>
+                <Property Name="Modalr" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Révisable / Actualisable" sap:quickinfo="Elément de donnée MODALR pour FGA" sap:value-list="fixed-values"/>
+                <Property Name="Modalf" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Forfaitaire / Régie" sap:quickinfo="Elément de données MODALF pour FGA"/>
+                <Property Name="Avance" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Avance" sap:quickinfo="Elément de donnée avance pour FGA" sap:value-list="fixed-values"/>
+                <Property Name="Rtgart" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Retenue de garantie" sap:quickinfo="Elément de donnée RTGART" sap:value-list="fixed-values"/>
+                <Property Name="Percent" Type="Edm.String" MaxLength="3" sap:label="Percent" sap:quickinfo="Type Percent Unit" sap:semantics="unit-of-measure"/>
+                <Property Name="VAT" Type="Edm.Decimal" DefaultValue="20" Precision="23" Scale="0" sap:unit="Percent" sap:label="TVA"/>
+                <Property Name="RateDevis" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Devise" sap:quickinfo="Zone de 10 caractères"/>
+                <Property Name="Currency" Type="Edm.String" MaxLength="5" sap:display-format="UpperCase" sap:label="Devise" sap:quickinfo="Clé de devise" sap:value-list="standard" sap:semantics="currency-code"/>
+                <Property Name="Reflet" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Affaire Reflet"/>
+                <Property Name="CurrencyHedging" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Couverture de change" sap:value-list="fixed-values"/>
+                <Property Name="NClient" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Numéro Client" sap:quickinfo="Elément de donnée NCLIENT" sap:value-list="standard"/>
+                <Property Name="CustomerName" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Nom du client" sap:quickinfo="Elément de donnée pour Client"/>
+                <Property Name="Scclt" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Secteur du client" sap:quickinfo="Elément de donnée SCCLT pour FGA" sap:value-list="standard"/>
+                <Property Name="Guarantee" Type="Edm.String" MaxLength="50" sap:label="Guarantee - Completion Bond" sap:quickinfo="Zone de texte"/>
+                <Property Name="CautGA" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Caution / Garantie à PD" sap:quickinfo="Elément de donnée CAUTGA"/>
+                <Property Name="Assurance" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Assurance" sap:quickinfo="Elément de donnée pour ASSUR" sap:value-list="fixed-values"/>
+                <Property Name="Mission" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Mission" sap:quickinfo="Elément de donnée MISSION" sap:value-list="fixed-values"/>
+                <Property Name="GroupM" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Groupement (O/N)" sap:quickinfo="Elément de donnée GROUPM pour FGA" sap:value-list="fixed-values"/>
+                <Property Name="isMandataire" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Mandataire O/N" sap:value-list="fixed-values"/>
                 <Property Name="Mandata" Type="Edm.String" MaxLength="80" sap:display-format="UpperCase" sap:label="Mandataire" sap:quickinfo="Char 80"/>
                 <Property Name="Mtctr" Type="Edm.Decimal" Precision="14" Scale="3" sap:label="Montant contrat KEUR"/>
                 <Property Name="Paring" Type="Edm.Decimal" Precision="14" Scale="3" sap:label="Part Ingerop KEUR"/>
                 <Property Name="Mttrvx" Type="Edm.Decimal" Precision="14" Scale="3" sap:label="Montant travaux KEUR"/>
-                <Property Name="Ingtrvx" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Ingénierie / Travaux" sap:quickinfo="Character field of length 40"/>
+                <Property Name="Ingtrvx" Type="Edm.Decimal" Precision="23" Scale="0" sap:unit="Percent" sap:label="Ingénierie / Travaux"/>
                 <Property Name="Period" Type="Edm.String" MaxLength="6" sap:label="Période"/>
                 <Property Name="Tmoyj" Type="Edm.String" MaxLength="10" sap:display-format="NonNegative" sap:label="Taux moyen journalier"/>
-                <Property Name="Datmaj" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Maj du" sap:quickinfo="Field of type DATS"/>
-                <Property Name="Datcha" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Maj du" sap:quickinfo="Field of type DATS"/>
-                <Property Name="StartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Start Date" sap:quickinfo="WBS element: Basic start date"/>
-                <Property Name="EndDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="End Date" sap:quickinfo="WBS element: Basic finish date"/>
-                <Property Name="NbOfMonth" Type="Edm.Int32" sap:label="Number of Months" sap:quickinfo="4 Byte Signed Integer"/>
-                <Property Name="RemainingMonth" Type="Edm.Int32" sap:label="Remaining Months" sap:quickinfo="4 Byte Signed Integer"/>
-                <Property Name="QuoteReview" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Quote Review" sap:quickinfo="Character Field with Length 10"/>
-                <Property Name="ContractReview" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Contract Review" sap:quickinfo="Character Field with Length 10"/>
-                <Property Name="EngagementCommittee" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Engagement Committee" sap:quickinfo="Character Field with Length 10"/>
-                <Property Name="StartReview" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Start Review" sap:quickinfo="Character Field with Length 10"/>
-                <Property Name="ProjectReview" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Project Review" sap:quickinfo="Character Field with Length 10"/>
-                <Property Name="EndProjectReview" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="End of Project Review" sap:quickinfo="Character Field with Length 10"/>
-                <Property Name="UrlCup" Type="Edm.String" MaxLength="255" sap:display-format="UpperCase" sap:label="URL" sap:quickinfo="Char255"/>
-                <Property Name="CompanyCode" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Company" sap:quickinfo="Company code for WBS element" sap:value-list="standard"/>
-                <Property Name="ProfitCenter" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Profit Center" sap:value-list="standard"/>
-                <Property Name="StiNbr" Type="Edm.Int16" sap:label="Linked STIs" sap:creatable="false" sap:updatable="false"/>
-                <Property Name="Type" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Business Type" sap:quickinfo="Project Type" sap:value-list="fixed-values"/>
-                <Property Name="BusinessManager" Type="Edm.String" MaxLength="25" sap:label="Business Manager" sap:quickinfo=""/>
-                <Property Name="BusinessFactRule" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Billing Rule" sap:quickinfo=""/>
+                <Property Name="Datmaj" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Maj du" sap:quickinfo="Zone de type DATS"/>
+                <Property Name="Datcha" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Maj du" sap:quickinfo="Zone de type DATS"/>
+                <Property Name="StartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date de début" sap:quickinfo="Élément d'OTP : date de début de base"/>
+                <Property Name="EndDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date de fin" sap:quickinfo="Élément d'OTP : date de fin de base"/>
+                <Property Name="NbOfMonth" Type="Edm.Int32" sap:label="Nombre mois" sap:quickinfo="Nombre entier signé de 4 octets"/>
+                <Property Name="RemainingMonth" Type="Edm.Int32" sap:label="Mois restants" sap:quickinfo="Nombre entier signé de 4 octets"/>
+                <Property Name="QuoteReview" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Quote Review" sap:quickinfo="Zone de 10 caractères"/>
+                <Property Name="ContractReview" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Revue de contrat" sap:quickinfo="Zone de 10 caractères"/>
+                <Property Name="EngagementCommittee" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Comité d'engagement" sap:quickinfo="Zone de 10 caractères"/>
+                <Property Name="StartReview" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Start Review" sap:quickinfo="Zone de 10 caractères"/>
+                <Property Name="ProjectReview" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Revue de projet" sap:quickinfo="Zone de 10 caractères"/>
+                <Property Name="EndProjectReview" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Fin de revue projet" sap:quickinfo="Zone de 10 caractères"/>
+                <Property Name="UrlCup" Type="Edm.String" MaxLength="255" sap:display-format="UpperCase" sap:label="Lien CUP" sap:quickinfo="char255"/>
+                <Property Name="CompanyCode" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Société" sap:quickinfo="Société de l'élément d'OTP" sap:value-list="standard"/>
+                <Property Name="ProfitCenter" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Centre de profit" sap:value-list="standard"/>
+                <Property Name="Type" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Type d'affaire" sap:quickinfo="Type de projet" sap:value-list="fixed-values"/>
+                <Property Name="BusinessManager" Type="Edm.String" MaxLength="25" sap:label="Business Manager" sap:quickinfo="FGA Business Manager"/>
+                <Property Name="BusinessFactRule" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Règle de facturation" sap:quickinfo="FGA Fact Rule"/>
                 <Property Name="RBACumulNm1" Type="Edm.Int32" sap:label="Cumulative RBA N-1"/>
                 <Property Name="RBACumulN" Type="Edm.Int32" sap:label="Cumulative RBA N"/>
                 <Property Name="RBAMonthM" Type="Edm.Int32" sap:label="Monthly RBA M"/>
-                <Property Name="ReviActu" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Revisable/Updatable" sap:quickinfo="Single-Character Flag"/>
+                <Property Name="ReviActu" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Résisable/Actualisable" sap:quickinfo="Code à 1 caractère"/>
                 <Property Name="RBAForecast" Type="Edm.Int32" sap:label="End of Business RBA"/>
                 <Property Name="Criticality" Type="Edm.String" MaxLength="1" sap:display-format="NonNegative"/>
-                <Property Name="Site" Type="Edm.String" MaxLength="80" sap:display-format="UpperCase" sap:label="Site" sap:quickinfo="" sap:value-list="fixed-values"/>
-                <Property Name="International" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="National/International" sap:quickinfo="" sap:value-list="fixed-values"/>
-                <Property Name="Country" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="France" sap:quickinfo=""/>
-                <Property Name="CompanyCountry" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Country/Region Key"/>
-                <Property Name="Siret" Type="Edm.String" MaxLength="14" sap:display-format="UpperCase" sap:label="SIRET" sap:quickinfo=""/>
-                <Property Name="plateformDemat" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Plateforme Dématérialisée" sap:quickinfo="" sap:value-list="fixed-values"/>
-                <Property Name="nonAcquis" Type="Edm.Decimal" Precision="16" Scale="3" sap:label="Dont Non Acquis" sap:quickinfo=""/>
-                <Property Name="depenseCommercial" Type="Edm.Decimal" Precision="16" Scale="3" sap:label="Dépense Commercial" sap:quickinfo=""/>
-                <Property Name="membreGroupement" Type="Edm.String" MaxLength="50" sap:display-format="UpperCase" sap:label="Membre du Groupement" sap:quickinfo=""/>
-                <Property Name="Business" Type="Edm.String" MaxLength="15" sap:display-format="UpperCase" sap:label="Business" sap:quickinfo="" sap:value-list="fixed-values"/>
-                <Property Name="eligibleCir" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Eligible CIR" sap:quickinfo="" sap:value-list="fixed-values"/>
-                <Property Name="NoClientMarche" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Client/Market Number" sap:quickinfo="Character Field with Length 10"/>
-                <Property Name="ContractAmount" Type="Edm.Decimal" Precision="16" Scale="3" sap:label="Contract Amount" sap:quickinfo="Net Value in Document Currency"/>
-                <Property Name="IngeropPart" Type="Edm.Decimal" Precision="16" Scale="3" sap:label="Ingerop Share" sap:quickinfo="Net Value in Document Currency"/>
+                <Property Name="Site" Type="Edm.String" MaxLength="80" sap:display-format="UpperCase" sap:label="Site" sap:quickinfo="Site du FGA" sap:value-list="fixed-values"/>
+                <Property Name="International" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="National/International" sap:quickinfo="International" sap:value-list="fixed-values"/>
+                <Property Name="Country" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="France" sap:quickinfo="Pays"/>
+                <Property Name="CompanyCountry" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Clé de pays/région"/>
+                <Property Name="Siret" Type="Edm.String" MaxLength="14" sap:display-format="UpperCase" sap:label="SIRET" sap:quickinfo="Numéro de Siret"/>
+                <Property Name="plateformDemat" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Plateforme Dématérialisée" sap:value-list="fixed-values"/>
+                <Property Name="nonAcquis" Type="Edm.Decimal" Precision="16" Scale="3" sap:label="Dont Non Acquis" sap:quickinfo="Dont non acquis TC/TO"/>
+                <Property Name="depenseCommercial" Type="Edm.Decimal" Precision="16" Scale="3" sap:label="Dépense Commercial"/>
+                <Property Name="membreGroupement" Type="Edm.String" MaxLength="50" sap:display-format="UpperCase" sap:label="Membre du Groupement" sap:quickinfo="Membre du groupement"/>
+                <Property Name="Business" Type="Edm.String" MaxLength="15" sap:display-format="UpperCase" sap:label="Business" sap:value-list="fixed-values"/>
+                <Property Name="eligibleCir" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Eligible CIR" sap:value-list="fixed-values"/>
+                <Property Name="NoClientMarche" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Numéro de client/marché" sap:quickinfo="Zone de 10 caractères"/>
+                <Property Name="ContractAmount" Type="Edm.Decimal" Precision="16" Scale="3" sap:label="Montant du contrat" sap:quickinfo="Valeur nette dans la devise du document"/>
+                <Property Name="IngeropPart" Type="Edm.Decimal" Precision="16" Scale="3" sap:label="Ingerop Share" sap:quickinfo="Valeur nette dans la devise du document"/>
                 <Property Name="WorkAmount" Type="Edm.String" MaxLength="20" sap:display-format="UpperCase" sap:label="Work Amount" sap:quickinfo="Char 20"/>
                 <Property Name="Engineering" Type="Edm.String" MaxLength="20" sap:display-format="UpperCase" sap:label="Engineering/Works" sap:quickinfo="Char 20"/>
-                <Property Name="DailyAvgRate" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Daily Average Rate" sap:quickinfo="Character Field with Length 10"/>
-                <Property Name="LastUpdate" Type="Edm.String" MaxLength="20" sap:display-format="UpperCase" sap:label="Last Update" sap:quickinfo="Char 20"/>
-                <Property Name="GrpConvention" Type="Edm.String" MaxLength="50" sap:label="Group Convention" sap:quickinfo="Text Field"/>
-                <Property Name="Notes" Type="Edm.String" MaxLength="1250" sap:display-format="UpperCase" sap:label="Notes" sap:quickinfo=""/>
-                <Property Name="DataSource" Type="Edm.String" MaxLength="4" sap:label="DataSource"/>
+                <Property Name="DailyAvgRate" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Taux moyen journalier" sap:quickinfo="Zone de 10 caractères"/>
+                <Property Name="LastUpdate" Type="Edm.String" MaxLength="20" sap:display-format="UpperCase" sap:label="Dernière mise à jour" sap:quickinfo="Char 20"/>
+                <Property Name="GrpConvention" Type="Edm.String" MaxLength="50" sap:label="Convention de groupe" sap:quickinfo="Zone de texte"/>
+                <Property Name="Notes" Type="Edm.String" MaxLength="1250" sap:display-format="UpperCase" sap:label="Notes" sap:heading="" sap:quickinfo="Champ pour les commentaires"/>
+                <Property Name="DataSource" Type="Edm.String" MaxLength="4" sap:label="#DataSource"/>
                 <Property Name="HeaderDescription" Type="Edm.String" MaxLength="31"/>
                 <NavigationProperty Name="to_BudgetPxAutre" Relationship="ZFGA_SRV.assoc_E414682AC737A1471EE64CE372D268CB" FromRole="FromRole_assoc_E414682AC737A1471EE64CE372D268CB" ToRole="ToRole_assoc_E414682AC737A1471EE64CE372D268CB"/>
                 <NavigationProperty Name="to_BudgetPxSubContracting" Relationship="ZFGA_SRV.assoc_733945962AA43335851B4AB0A78DD1C7" FromRole="FromRole_assoc_733945962AA43335851B4AB0A78DD1C7" ToRole="ToRole_assoc_733945962AA43335851B4AB0A78DD1C7"/>
@@ -359,18 +362,18 @@
                 <Key>
                     <PropertyRef Name="p_period"/>
                 </Key>
-                <Property Name="p_period" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase" sap:parameter="mandatory" sap:label="Period MMYYYY" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="p_period" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase" sap:parameter="mandatory" sap:label="Période MMYYYY" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <NavigationProperty Name="Set" Relationship="ZFGA_SRV.assoc_FBAFCCB8228F35F33FFA98CD63EBFA5B" FromRole="FromRole_assoc_FBAFCCB8228F35F33FFA98CD63EBFA5B" ToRole="ToRole_assoc_FBAFCCB8228F35F33FFA98CD63EBFA5B"/>
             </EntityType>
-            <EntityType Name="ZC_FGA_CHARTType" sap:label="Vue pour graphique facturation/dépenses" sap:content-version="1">
+            <EntityType Name="ZC_FGA_CHARTType" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="p_businessno"/>
                     <PropertyRef Name="p_period"/>
                     <PropertyRef Name="line_item"/>
                 </Key>
-                <Property Name="p_businessno" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase"/>
-                <Property Name="p_period" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase"/>
-                <Property Name="line_item" Type="Edm.String" Nullable="false" MaxLength="40" sap:display-format="UpperCase" sap:label="Char" sap:quickinfo="Character field of length 40"/>
+                <Property Name="p_businessno" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Business Number"/>
+                <Property Name="p_period" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase" sap:label="Period"/>
+                <Property Name="line_item" Type="Edm.String" Nullable="false" MaxLength="40" sap:display-format="UpperCase" sap:label="Car." sap:quickinfo="Zone de 40 caractères"/>
                 <Property Name="business_no" Type="Edm.String" MaxLength="24"/>
                 <Property Name="description" Type="Edm.String" MaxLength="38"/>
                 <Property Name="Month01" Type="Edm.Decimal" Precision="24" Scale="3"/>
@@ -394,23 +397,23 @@
                     <PropertyRef Name="p_businessno"/>
                     <PropertyRef Name="p_period"/>
                 </Key>
-                <Property Name="p_businessno" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:parameter="mandatory" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="p_period" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase" sap:parameter="mandatory" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="p_businessno" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:parameter="mandatory" sap:label="Business Number" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="p_period" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase" sap:parameter="mandatory" sap:label="Period" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <NavigationProperty Name="Set" Relationship="ZFGA_SRV.assoc_F30625EBF5882318C47AE1D1CF431165" FromRole="FromRole_assoc_F30625EBF5882318C47AE1D1CF431165" ToRole="ToRole_assoc_F30625EBF5882318C47AE1D1CF431165"/>
             </EntityType>
-            <EntityType Name="ZC_FGA_CHART_AVANCEMENTType" sap:label="Vue pour graphique Avancement" sap:content-version="1">
+            <EntityType Name="ZC_FGA_CHART_AVANCEMENTType" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="p_businessno"/>
                     <PropertyRef Name="p_period"/>
                     <PropertyRef Name="line_item"/>
                 </Key>
-                <Property Name="p_businessno" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase"/>
-                <Property Name="p_period" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase"/>
-                <Property Name="line_item" Type="Edm.String" Nullable="false" MaxLength="40" sap:display-format="UpperCase" sap:label="Char" sap:quickinfo="Character field of length 40"/>
+                <Property Name="p_businessno" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Business Number"/>
+                <Property Name="p_period" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase" sap:label="Period"/>
+                <Property Name="line_item" Type="Edm.String" Nullable="false" MaxLength="40" sap:display-format="UpperCase" sap:label="Car." sap:quickinfo="Zone de 40 caractères"/>
                 <Property Name="business_no" Type="Edm.String" MaxLength="24"/>
                 <Property Name="description" Type="Edm.String" MaxLength="13"/>
-                <Property Name="Type" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="Text 24" sap:quickinfo="Character field length 24"/>
-                <Property Name="Value" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
+                <Property Name="Type" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="Texte 24" sap:quickinfo="Zone de caractères de longueur 24"/>
+                <Property Name="Value" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Montant" sap:quickinfo="Montant en devise de la pièce"/>
                 <NavigationProperty Name="Parameters" Relationship="ZFGA_SRV.assoc_FE6B4C4249FA0DD7A7C69CBFC58C3715" FromRole="ToRole_assoc_FE6B4C4249FA0DD7A7C69CBFC58C3715" ToRole="FromRole_assoc_FE6B4C4249FA0DD7A7C69CBFC58C3715" sap:filterable="false"/>
             </EntityType>
             <EntityType Name="ZC_FGA_CHART_AVANCEMENTParameters" sap:semantics="parameters" sap:content-version="1">
@@ -418,39 +421,39 @@
                     <PropertyRef Name="p_businessno"/>
                     <PropertyRef Name="p_period"/>
                 </Key>
-                <Property Name="p_businessno" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:parameter="mandatory" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="p_period" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase" sap:parameter="mandatory" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="p_businessno" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:parameter="mandatory" sap:label="Business Number" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="p_period" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase" sap:parameter="mandatory" sap:label="Period" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <NavigationProperty Name="Set" Relationship="ZFGA_SRV.assoc_FE6B4C4249FA0DD7A7C69CBFC58C3715" FromRole="FromRole_assoc_FE6B4C4249FA0DD7A7C69CBFC58C3715" ToRole="ToRole_assoc_FE6B4C4249FA0DD7A7C69CBFC58C3715"/>
             </EntityType>
-            <EntityType Name="ZC_FGA_MISSIONType" sap:content-version="1">
+            <EntityType Name="ZC_FGA_MISSIONType" sap:label="FGA Missions" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="MissionId"/>
                     <PropertyRef Name="BusinessNo"/>
                 </Key>
-                <Property Name="MissionId" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Text 24" sap:quickinfo="Character field length 24"/>
-                <Property Name="BusinessNo" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label=""/>
-                <Property Name="MissionCode" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="3-Byte field" sap:heading=""/>
-                <Property Name="StartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date" sap:heading="" sap:quickinfo="Field of type DATS"/>
-                <Property Name="EndDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date" sap:heading="" sap:quickinfo="Field of type DATS"/>
-                <Property Name="ExternalRevenue" Type="Edm.Decimal" Precision="14" Scale="3" sap:label=""/>
-                <Property Name="LaborBudget" Type="Edm.Decimal" Precision="14" Scale="3" sap:label=""/>
+                <Property Name="MissionId" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Texte 24" sap:quickinfo="Zone de caractères de longueur 24"/>
+                <Property Name="BusinessNo" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Numéro de business" sap:quickinfo="FGA Numéro de business"/>
+                <Property Name="MissionCode" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Mission Code" sap:quickinfo="Zone d'une longueur de 3 octets"/>
+                <Property Name="StartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Start Date" sap:quickinfo="Zone de type DATS"/>
+                <Property Name="EndDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="End Date" sap:quickinfo="Zone de type DATS"/>
+                <Property Name="ExternalRevenue" Type="Edm.Decimal" Precision="14" Scale="3" sap:label="External Revenue"/>
+                <Property Name="LaborBudget" Type="Edm.Decimal" Precision="14" Scale="3" sap:label="Labor Budget"/>
                 <Property Name="Regroupement" Type="Edm.String" MaxLength="40" sap:label="Regroupement mission"/>
                 <Property Name="statutmission" Type="Edm.String" MaxLength="1" sap:label="Statut mission"/>
-                <Property Name="description" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label=""/>
+                <Property Name="description" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="description" sap:quickinfo="Description Mission"/>
             </EntityType>
-            <EntityType Name="zc_fga_opportType" sap:content-version="1">
+            <EntityType Name="zc_fga_opportType" sap:label="zc_fga_opport" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="p_businessno"/>
                     <PropertyRef Name="p_period"/>
                     <PropertyRef Name="OpportuniteId"/>
                 </Key>
-                <Property Name="p_businessno" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase"/>
-                <Property Name="p_period" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase"/>
-                <Property Name="OpportuniteId" Type="Edm.String" Nullable="false" MaxLength="10" sap:display-format="UpperCase" sap:label="Character Field with Length 10" sap:heading=""/>
+                <Property Name="p_businessno" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Business Number"/>
+                <Property Name="p_period" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase" sap:label="Period"/>
+                <Property Name="OpportuniteId" Type="Edm.String" Nullable="false" MaxLength="10" sap:display-format="UpperCase" sap:label="Zone de 10 caractères" sap:heading=""/>
                 <Property Name="description" Type="Edm.String" MaxLength="11"/>
                 <Property Name="valueOpport" Type="Edm.Decimal" Precision="14" Scale="3" sap:unit="Devise"/>
                 <Property Name="sort_order" Type="Edm.Byte"/>
-                <Property Name="Devise" Type="Edm.String" MaxLength="5" sap:display-format="UpperCase" sap:label="Currency" sap:quickinfo="Currency Key" sap:semantics="currency-code"/>
+                <Property Name="Devise" Type="Edm.String" MaxLength="5" sap:display-format="UpperCase" sap:label="Devise" sap:quickinfo="Clé de devise" sap:semantics="currency-code"/>
                 <NavigationProperty Name="Parameters" Relationship="ZFGA_SRV.assoc_7DB828901AD03000D4E43C4DDBB5C308" FromRole="ToRole_assoc_7DB828901AD03000D4E43C4DDBB5C308" ToRole="FromRole_assoc_7DB828901AD03000D4E43C4DDBB5C308" sap:filterable="false"/>
             </EntityType>
             <EntityType Name="zc_fga_opportParameters" sap:semantics="parameters" sap:content-version="1">
@@ -458,44 +461,44 @@
                     <PropertyRef Name="p_businessno"/>
                     <PropertyRef Name="p_period"/>
                 </Key>
-                <Property Name="p_businessno" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:parameter="mandatory" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="p_period" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase" sap:parameter="mandatory" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="p_businessno" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:parameter="mandatory" sap:label="Business Number" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="p_period" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase" sap:parameter="mandatory" sap:label="Period" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <NavigationProperty Name="Set" Relationship="ZFGA_SRV.assoc_7DB828901AD03000D4E43C4DDBB5C308" FromRole="FromRole_assoc_7DB828901AD03000D4E43C4DDBB5C308" ToRole="ToRole_assoc_7DB828901AD03000D4E43C4DDBB5C308"/>
             </EntityType>
-            <EntityType Name="ZC_FGA_PREVISIONSType" sap:content-version="1">
+            <EntityType Name="ZC_FGA_PREVISIONSType" sap:label="Forecast Matrix CDS View" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="p_businessno"/>
                     <PropertyRef Name="p_period"/>
                     <PropertyRef Name="line_item"/>
                 </Key>
-                <Property Name="p_businessno" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase"/>
-                <Property Name="p_period" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase"/>
-                <Property Name="line_item" Type="Edm.String" Nullable="false" MaxLength="40" sap:display-format="UpperCase" sap:label="Char" sap:quickinfo="Character field of length 40"/>
+                <Property Name="p_businessno" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Business Number"/>
+                <Property Name="p_period" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase" sap:label="Period"/>
+                <Property Name="line_item" Type="Edm.String" Nullable="false" MaxLength="40" sap:display-format="UpperCase" sap:label="Car." sap:quickinfo="Zone de 40 caractères"/>
                 <Property Name="business_no" Type="Edm.String" MaxLength="24"/>
                 <Property Name="description" Type="Edm.String" MaxLength="38"/>
-                <Property Name="cumul_n1" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
-                <Property Name="month01" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
-                <Property Name="month02" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
-                <Property Name="month03" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
-                <Property Name="month04" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
-                <Property Name="month05" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
-                <Property Name="month06" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
-                <Property Name="month07" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
-                <Property Name="month08" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
-                <Property Name="month09" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
-                <Property Name="month10" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
-                <Property Name="month11" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
-                <Property Name="month12" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
-                <Property Name="AnneeN" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
-                <Property Name="CumulN" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
-                <Property Name="AVenir" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
-                <Property Name="FinAffaire" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
-                <Property Name="HistBudgetObjectif" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
+                <Property Name="cumul_n1" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Montant" sap:quickinfo="Montant en devise de la pièce"/>
+                <Property Name="month01" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Montant" sap:quickinfo="Montant en devise de la pièce"/>
+                <Property Name="month02" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Montant" sap:quickinfo="Montant en devise de la pièce"/>
+                <Property Name="month03" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Montant" sap:quickinfo="Montant en devise de la pièce"/>
+                <Property Name="month04" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Montant" sap:quickinfo="Montant en devise de la pièce"/>
+                <Property Name="month05" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Montant" sap:quickinfo="Montant en devise de la pièce"/>
+                <Property Name="month06" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Montant" sap:quickinfo="Montant en devise de la pièce"/>
+                <Property Name="month07" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Montant" sap:quickinfo="Montant en devise de la pièce"/>
+                <Property Name="month08" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Montant" sap:quickinfo="Montant en devise de la pièce"/>
+                <Property Name="month09" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Montant" sap:quickinfo="Montant en devise de la pièce"/>
+                <Property Name="month10" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Montant" sap:quickinfo="Montant en devise de la pièce"/>
+                <Property Name="month11" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Montant" sap:quickinfo="Montant en devise de la pièce"/>
+                <Property Name="month12" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Montant" sap:quickinfo="Montant en devise de la pièce"/>
+                <Property Name="AnneeN" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Montant" sap:quickinfo="Montant en devise de la pièce"/>
+                <Property Name="CumulN" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Montant" sap:quickinfo="Montant en devise de la pièce"/>
+                <Property Name="AVenir" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Montant" sap:quickinfo="Montant en devise de la pièce"/>
+                <Property Name="FinAffaire" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Montant" sap:quickinfo="Montant en devise de la pièce"/>
+                <Property Name="HistBudgetObjectif" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Montant" sap:quickinfo="Montant en devise de la pièce"/>
                 <Property Name="GLAccounts" Type="Edm.String" MaxLength="255"/>
-                <Property Name="created_by" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Created By" sap:quickinfo="Created By User"/>
-                <Property Name="created_at" Type="Edm.DateTimeOffset" Precision="7" sap:label="Created On" sap:quickinfo="Creation Date Time"/>
-                <Property Name="last_changed_by" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Changed By" sap:quickinfo="Last Changed By User"/>
-                <Property Name="last_changed_at" Type="Edm.DateTimeOffset" Precision="7" sap:label="Changed On" sap:quickinfo="Last Change Date Time"/>
+                <Property Name="created_by" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Créé par" sap:quickinfo="Créé par l'utilisateur"/>
+                <Property Name="created_at" Type="Edm.DateTimeOffset" Precision="7" sap:label="Créé le" sap:quickinfo="Date/Heure de création"/>
+                <Property Name="last_changed_by" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Modifié par" sap:quickinfo="Auteur de la dernière modification"/>
+                <Property Name="last_changed_at" Type="Edm.DateTimeOffset" Precision="7" sap:label="Date/Heure modif." sap:quickinfo="Date/Heure de la dernière modification"/>
                 <NavigationProperty Name="Parameters" Relationship="ZFGA_SRV.assoc_BC39B087465F974A895526BF7592B66D" FromRole="ToRole_assoc_BC39B087465F974A895526BF7592B66D" ToRole="FromRole_assoc_BC39B087465F974A895526BF7592B66D" sap:filterable="false"/>
             </EntityType>
             <EntityType Name="ZC_FGA_PREVISIONSParameters" sap:semantics="parameters" sap:content-version="1">
@@ -503,50 +506,50 @@
                     <PropertyRef Name="p_businessno"/>
                     <PropertyRef Name="p_period"/>
                 </Key>
-                <Property Name="p_businessno" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:parameter="mandatory" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="p_period" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase" sap:parameter="mandatory" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="p_businessno" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:parameter="mandatory" sap:label="Business Number" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="p_period" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase" sap:parameter="mandatory" sap:label="Period" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <NavigationProperty Name="Set" Relationship="ZFGA_SRV.assoc_BC39B087465F974A895526BF7592B66D" FromRole="FromRole_assoc_BC39B087465F974A895526BF7592B66D" ToRole="ToRole_assoc_BC39B087465F974A895526BF7592B66D"/>
             </EntityType>
-            <EntityType Name="ZC_FGA_PxAutreType" sap:content-version="1">
+            <EntityType Name="ZC_FGA_PxAutreType" sap:label="FGA Missions" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="MissionId"/>
                     <PropertyRef Name="BusinessNo"/>
                 </Key>
-                <Property Name="MissionId" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Text 24" sap:quickinfo="Character field length 24"/>
-                <Property Name="BusinessNo" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label=""/>
-                <Property Name="MissionCode" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="3-Byte field" sap:heading=""/>
-                <Property Name="Libelle" Type="Edm.String" MaxLength="40" sap:label="Description" sap:heading="" sap:quickinfo="PS: Short description (1st text line)"/>
-                <Property Name="Statut" Type="Edm.String" MaxLength="60" sap:label="Statut mission (Descr.)" sap:heading=""/>
-                <Property Name="StartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date" sap:heading="" sap:quickinfo="Field of type DATS"/>
-                <Property Name="EndDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date" sap:heading="" sap:quickinfo="Field of type DATS"/>
-                <Property Name="VoyageDeplacement" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
-                <Property Name="AutresFrais" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
-                <Property Name="CreancesDouteuses" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
-                <Property Name="EtudesTravaux" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
-                <Property Name="SinistreContentieux" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
-                <Property Name="AleasDivers" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
-                <Property Name="FinAffaire" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
-                <Property Name="CumulVoyageDeplacement" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:heading="" sap:quickinfo="Amount in document currency"/>
-                <Property Name="CumulAutresFrais" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:heading="" sap:quickinfo="Amount in document currency"/>
-                <Property Name="CumulCreancesDouteuses" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:heading="" sap:quickinfo="Amount in document currency"/>
-                <Property Name="CumulEtudesTravaux" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:heading="" sap:quickinfo="Amount in document currency"/>
-                <Property Name="CumulSinistreContentieux" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:heading="" sap:quickinfo="Amount in document currency"/>
-                <Property Name="CumulAleasDivers" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:heading="" sap:quickinfo="Amount in document currency"/>
-                <Property Name="CumulFinAffaire" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:heading="" sap:quickinfo="Amount in document currency"/>
-                <Property Name="PctVoyageDeplacement" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
-                <Property Name="PctAutresFrais" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
-                <Property Name="PctCreancesDouteuses" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
-                <Property Name="PctEtudesTravaux" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
-                <Property Name="PctSinistreContentieux" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
-                <Property Name="PctAleasDivers" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
-                <Property Name="PctFinAffaire" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
-                <Property Name="RadVoyageDeplacement" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
-                <Property Name="RadAutresFrais" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
-                <Property Name="RadCreancesDouteuses" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
-                <Property Name="RadEtudesTravaux" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
-                <Property Name="RadSinistreContentieux" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
-                <Property Name="RadAleasDivers" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
-                <Property Name="RadFinAffaire" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
+                <Property Name="MissionId" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Texte 24" sap:quickinfo="Zone de caractères de longueur 24"/>
+                <Property Name="BusinessNo" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Numéro de business" sap:quickinfo="FGA Numéro de business"/>
+                <Property Name="MissionCode" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Mission Code" sap:quickinfo="Zone d'une longueur de 3 octets"/>
+                <Property Name="Libelle" Type="Edm.String" MaxLength="40" sap:label="Libelle" sap:quickinfo="PS: désignation (première ligne de texte)"/>
+                <Property Name="Statut" Type="Edm.String" MaxLength="60" sap:label="Statut" sap:quickinfo="Statut mission (Descr.)"/>
+                <Property Name="StartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Start Date" sap:quickinfo="Zone de type DATS"/>
+                <Property Name="EndDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="End Date" sap:quickinfo="Zone de type DATS"/>
+                <Property Name="VoyageDeplacement" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Voyage déplacement"/>
+                <Property Name="AutresFrais" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Autres Frais"/>
+                <Property Name="CreancesDouteuses" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Créances douteuses"/>
+                <Property Name="EtudesTravaux" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Etudes travaux"/>
+                <Property Name="SinistreContentieux" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Sinistre contentieux"/>
+                <Property Name="AleasDivers" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Aléas divers"/>
+                <Property Name="FinAffaire" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Fin d'affaire"/>
+                <Property Name="CumulVoyageDeplacement" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Cumulé Voyage déplacement" sap:quickinfo="Montant en devise de la pièce"/>
+                <Property Name="CumulAutresFrais" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Cumulé Autres Frais" sap:quickinfo="Montant en devise de la pièce"/>
+                <Property Name="CumulCreancesDouteuses" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Cumulé Créances douteuses" sap:quickinfo="Montant en devise de la pièce"/>
+                <Property Name="CumulEtudesTravaux" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Cumulé Etudes travaux" sap:quickinfo="Montant en devise de la pièce"/>
+                <Property Name="CumulSinistreContentieux" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Cumulé Sinistre contentieux" sap:quickinfo="Montant en devise de la pièce"/>
+                <Property Name="CumulAleasDivers" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Cumulé Aléas divers" sap:quickinfo="Montant en devise de la pièce"/>
+                <Property Name="CumulFinAffaire" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Cumulé Fin d'affaire" sap:quickinfo="Montant en devise de la pièce"/>
+                <Property Name="PctVoyageDeplacement" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Pourcentage Voyage déplacement"/>
+                <Property Name="PctAutresFrais" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Pourcentage Autres Frais"/>
+                <Property Name="PctCreancesDouteuses" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Pourcentage Créances douteuses"/>
+                <Property Name="PctEtudesTravaux" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Pourcentage Etudes travaux"/>
+                <Property Name="PctSinistreContentieux" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Pourcentage Sinistre contentieux"/>
+                <Property Name="PctAleasDivers" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Pourcentage Aléas divers"/>
+                <Property Name="PctFinAffaire" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Pourcentage Fin d'affaire"/>
+                <Property Name="RadVoyageDeplacement" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="RAD Voyage déplacement"/>
+                <Property Name="RadAutresFrais" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="RAD Autres Frais"/>
+                <Property Name="RadCreancesDouteuses" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="RAD Créances douteuses"/>
+                <Property Name="RadEtudesTravaux" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="RAD Etudes travaux"/>
+                <Property Name="RadSinistreContentieux" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="RAD Sinistre contentieux"/>
+                <Property Name="RadAleasDivers" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="RAD Aléas divers"/>
+                <Property Name="RadFinAffaire" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="RAD Fin d'affaire"/>
                 <Property Name="GLAccountVoyageDeplacement" Type="Edm.String" MaxLength="255"/>
                 <Property Name="GLAccountAutresFrais" Type="Edm.String" MaxLength="255"/>
                 <Property Name="GLAccountCreancesDouteuses" Type="Edm.String" MaxLength="255"/>
@@ -556,215 +559,271 @@
                 <Property Name="GLAccountFinAffaire" Type="Edm.String" MaxLength="255"/>
                 <Property Name="Regroupement" Type="Edm.String" MaxLength="40" sap:label="Regroupement mission"/>
             </EntityType>
-            <EntityType Name="ZC_FGA_PxSubContractingType" sap:label="Vue sur Budget Px Sous consultant" sap:content-version="1">
+            <EntityType Name="ZC_FGA_PxSubContractingType" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="MissionId"/>
                     <PropertyRef Name="BusinessNo"/>
                 </Key>
-                <Property Name="MissionId" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Text 24" sap:quickinfo="Character field length 24"/>
-                <Property Name="BusinessNo" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label=""/>
-                <Property Name="MissionCode" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Mission Code" sap:quickinfo="3-Byte field"/>
-                <Property Name="Libelle" Type="Edm.String" MaxLength="40" sap:label="Libelle" sap:quickinfo="PS: Short description (1st text line)"/>
-                <Property Name="Statut" Type="Edm.String" MaxLength="1" sap:label="Statut" sap:quickinfo="Statut mission"/>
-                <Property Name="StartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Start Date" sap:quickinfo="Field of type DATS"/>
-                <Property Name="EndDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="End Date" sap:quickinfo="Field of type DATS"/>
+                <Property Name="MissionId" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Texte 24" sap:quickinfo="Zone de caractères de longueur 24"/>
+                <Property Name="BusinessNo" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Numéro de business" sap:quickinfo="FGA Numéro de business"/>
+                <Property Name="MissionCode" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Zone d'une longueur de 3 octets" sap:heading=""/>
+                <Property Name="Libelle" Type="Edm.String" MaxLength="40" sap:label="Désignation" sap:heading="" sap:quickinfo="PS: désignation (première ligne de texte)"/>
+                <Property Name="Statut" Type="Edm.String" MaxLength="1" sap:label="Statut mission" sap:heading=""/>
+                <Property Name="StartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date" sap:heading="" sap:quickinfo="Zone de type DATS"/>
+                <Property Name="EndDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date" sap:heading="" sap:quickinfo="Zone de type DATS"/>
                 <Property Name="Regroupement" Type="Edm.String" MaxLength="40" sap:label="Regroupement mission"/>
             </EntityType>
-            <EntityType Name="ZC_FGA_SubContractorBudgetType" sap:label="Budget des sub contractors" sap:content-version="1">
+            <EntityType Name="ZC_FGA_SFGP_REPORTType" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="p_businessno"/>
+                    <PropertyRef Name="p_period"/>
+                    <PropertyRef Name="cle"/>
+                </Key>
+                <Property Name="p_businessno" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Business Number"/>
+                <Property Name="p_period" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase" sap:label="Period"/>
+                <Property Name="cle" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Elément d'OTP" sap:quickinfo="Elément d'organigramme technique de projet (élt OTP)"/>
+                <Property Name="business_no" Type="Edm.String" MaxLength="24"/>
+                <Property Name="ufo_name" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="FGA UFO Name" sap:quickinfo="FGA UFO NAME"/>
+                <Property Name="cdg" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Centre de profit"/>
+                <Property Name="Ca" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Val./Dev.Transaction" sap:quickinfo="Valeur globale en devise de la transaction"/>
+                <Property Name="Depenses" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Val./Dev.Transaction" sap:quickinfo="Valeur globale en devise de la transaction"/>
+                <Property Name="Rba" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Val./Dev.Transaction" sap:quickinfo="Valeur globale en devise de la transaction"/>
+                <Property Name="RbaPourcent" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Val./Dev.Transaction" sap:quickinfo="Valeur globale en devise de la transaction"/>
+                <Property Name="MoBudget" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Val./Dev.Transaction" sap:quickinfo="Valeur globale en devise de la transaction"/>
+                <Property Name="StBudget" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Val./Dev.Transaction" sap:quickinfo="Valeur globale en devise de la transaction"/>
+                <Property Name="AfBudget" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Val./Dev.Transaction" sap:quickinfo="Valeur globale en devise de la transaction"/>
+                <Property Name="TotalBudget" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Val./Dev.Transaction" sap:quickinfo="Valeur globale en devise de la transaction"/>
+                <Property Name="MoRealise" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Val./Dev.Transaction" sap:quickinfo="Valeur globale en devise de la transaction"/>
+                <Property Name="StRealise" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Val./Dev.Transaction" sap:quickinfo="Valeur globale en devise de la transaction"/>
+                <Property Name="AfRealise" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Val./Dev.Transaction" sap:quickinfo="Valeur globale en devise de la transaction"/>
+                <Property Name="TotalRealise" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Val./Dev.Transaction" sap:quickinfo="Valeur globale en devise de la transaction"/>
+                <Property Name="AvancementRealise" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Val./Dev.Transaction" sap:quickinfo="Valeur globale en devise de la transaction"/>
+                <Property Name="MoRad" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Val./Dev.Transaction" sap:quickinfo="Valeur globale en devise de la transaction"/>
+                <Property Name="StRad" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Val./Dev.Transaction" sap:quickinfo="Valeur globale en devise de la transaction"/>
+                <Property Name="AfRad" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Val./Dev.Transaction" sap:quickinfo="Valeur globale en devise de la transaction"/>
+                <Property Name="TotalRad" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Val./Dev.Transaction" sap:quickinfo="Valeur globale en devise de la transaction"/>
+                <NavigationProperty Name="Parameters" Relationship="ZFGA_SRV.assoc_E6994698C16013590FF9BB15479C0926" FromRole="ToRole_assoc_E6994698C16013590FF9BB15479C0926" ToRole="FromRole_assoc_E6994698C16013590FF9BB15479C0926" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="ZC_FGA_SFGP_REPORTParameters" sap:semantics="parameters" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="p_businessno"/>
+                    <PropertyRef Name="p_period"/>
+                </Key>
+                <Property Name="p_businessno" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:parameter="mandatory" sap:label="Business Number" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="p_period" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase" sap:parameter="mandatory" sap:label="Period" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <NavigationProperty Name="Set" Relationship="ZFGA_SRV.assoc_E6994698C16013590FF9BB15479C0926" FromRole="FromRole_assoc_E6994698C16013590FF9BB15479C0926" ToRole="ToRole_assoc_E6994698C16013590FF9BB15479C0926"/>
+            </EntityType>
+            <EntityType Name="ZC_FGA_SubContractorBudgetType" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="BusinessNo"/>
                     <PropertyRef Name="MissionId"/>
                     <PropertyRef Name="SubContractor"/>
                 </Key>
-                <Property Name="BusinessNo" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label=""/>
-                <Property Name="MissionId" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Text 24" sap:quickinfo="Character field length 24"/>
-                <Property Name="SubContractor" Type="Edm.String" Nullable="false" MaxLength="10" sap:display-format="UpperCase" sap:label=""/>
-                <Property Name="SubContractorName" Type="Edm.String" MaxLength="35" sap:label="Name" sap:quickinfo="Name 1"/>
-                <Property Name="SubContractorPartner" Type="Edm.String" MaxLength="6" sap:display-format="UpperCase" sap:label="Partner" sap:quickinfo="Company ID of Trading Partner"/>
-                <Property Name="SubContractorCoef" Type="Edm.Decimal" Precision="4" Scale="2" sap:label=""/>
-                <Property Name="Budget" Type="Edm.Decimal" Precision="16" Scale="3" sap:label="Budget" sap:quickinfo="Net Value in Document Currency"/>
-                <Property Name="Cumul" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Cumulé" sap:quickinfo="Amount in document currency"/>
-                <Property Name="MissionCode" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Mission Code" sap:quickinfo="3-Byte field"/>
-                <Property Name="Libelle" Type="Edm.String" MaxLength="40" sap:label="Libelle" sap:quickinfo="PS: Short description (1st text line)"/>
-                <Property Name="Statut" Type="Edm.String" MaxLength="1" sap:label="Statut" sap:quickinfo="Statut mission"/>
-                <Property Name="StartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Start Date" sap:quickinfo="Field of type DATS"/>
-                <Property Name="EndDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="End Date" sap:quickinfo="Field of type DATS"/>
+                <Property Name="BusinessNo" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Numéro de business" sap:quickinfo="FGA Numéro de business"/>
+                <Property Name="MissionId" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Texte 24" sap:quickinfo="Zone de caractères de longueur 24"/>
+                <Property Name="SubContractor" Type="Edm.String" Nullable="false" MaxLength="10" sap:display-format="UpperCase" sap:label="Sous Traitant" sap:quickinfo="Sous traitants des missions"/>
+                <Property Name="SubContractorName" Type="Edm.String" MaxLength="35" sap:label="Nom" sap:heading="" sap:quickinfo="Nom 1"/>
+                <Property Name="SubContractorPartner" Type="Edm.String" MaxLength="6" sap:display-format="UpperCase" sap:label="N° société S/L part." sap:heading="" sap:quickinfo="Numéro de la société S/L partenaire"/>
+                <Property Name="SubContractorCoef" Type="Edm.Decimal" Precision="4" Scale="2" sap:label="Coef fournisseur" sap:quickinfo="element de donnée pour stock le coefficient du fournisseur"/>
+                <Property Name="Budget" Type="Edm.Decimal" Precision="16" Scale="3" sap:label="Valeur nette" sap:heading="" sap:quickinfo="Valeur nette dans la devise du document"/>
+                <Property Name="Mois" Type="Edm.String" MaxLength="2" sap:display-format="NonNegative" sap:label="Période comptable" sap:heading="" sap:quickinfo="Mois d'exercice"/>
+                <Property Name="Annee" Type="Edm.String" MaxLength="4" sap:display-format="NonNegative" sap:label="Exercice comptable" sap:heading=""/>
+                <Property Name="Cumul" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Montant" sap:heading="" sap:quickinfo="Montant en devise de la pièce"/>
+                <Property Name="MissionCode" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Zone d'une longueur de 3 octets" sap:heading=""/>
+                <Property Name="Libelle" Type="Edm.String" MaxLength="40" sap:label="Désignation" sap:heading="" sap:quickinfo="PS: désignation (première ligne de texte)"/>
+                <Property Name="Statut" Type="Edm.String" MaxLength="1" sap:label="Statut mission" sap:heading=""/>
+                <Property Name="StartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date" sap:heading="" sap:quickinfo="Zone de type DATS"/>
+                <Property Name="EndDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date" sap:heading="" sap:quickinfo="Zone de type DATS"/>
                 <Property Name="Regroupement" Type="Edm.String" MaxLength="40" sap:label="Regroupement mission"/>
             </EntityType>
-            <EntityType Name="ZI_FGA_ACTIVITY_VHType" sap:label="Aide à la recherche Activity" sap:value-list="true" sap:content-version="1">
+            <EntityType Name="ZI_FGA_ACTIVITY_VHType" sap:value-list="true" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Activity"/>
                     <PropertyRef Name="Spras"/>
                 </Key>
-                <Property Name="Activity" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:text="description" sap:label=""/>
-                <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Language Key"/>
-                <Property Name="description" Type="Edm.String" MaxLength="80" sap:display-format="UpperCase" sap:label=""/>
+                <Property Name="Activity" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:text="description" sap:label="clé" sap:quickinfo="Clé de la table VH activitées"/>
+                <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Code langue"/>
+                <Property Name="description" Type="Edm.String" MaxLength="80" sap:display-format="UpperCase" sap:label="Description de la table VH Activitées" sap:heading=""/>
             </EntityType>
-            <EntityType Name="ZI_FGA_ASSUR_VHType" sap:label="Aide à la recherche Assur" sap:value-list="true" sap:content-version="1">
+            <EntityType Name="ZI_FGA_ASSUR_VHType" sap:value-list="true" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Assur"/>
                     <PropertyRef Name="Spras"/>
                 </Key>
-                <Property Name="Assur" Type="Edm.String" Nullable="false" MaxLength="8" sap:display-format="UpperCase" sap:text="description" sap:label="char8" sap:quickinfo="Character field, 8 characters long"/>
-                <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Language ID"/>
-                <Property Name="description" Type="Edm.String" MaxLength="50" sap:label="c" sap:quickinfo="Comment"/>
+                <Property Name="Assur" Type="Edm.String" Nullable="false" MaxLength="8" sap:display-format="UpperCase" sap:text="description" sap:label="char8" sap:quickinfo="Zone de caractères, long.8"/>
+                <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Code langue"/>
+                <Property Name="description" Type="Edm.String" MaxLength="50" sap:label="c" sap:quickinfo="Commentaire"/>
             </EntityType>
-            <EntityType Name="ZI_FGA_AVANCE_VHType" sap:label="Aide à la recherche Avance" sap:value-list="true" sap:content-version="1">
+            <EntityType Name="ZI_FGA_AVANCE_VHType" sap:value-list="true" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Avance"/>
                     <PropertyRef Name="Spras"/>
                 </Key>
-                <Property Name="Avance" Type="Edm.String" Nullable="false" MaxLength="1" sap:display-format="UpperCase" sap:text="description" sap:label="Single-Character Flag" sap:heading=""/>
-                <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Language ID"/>
-                <Property Name="description" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Character Field with Length 10" sap:heading=""/>
+                <Property Name="Avance" Type="Edm.String" Nullable="false" MaxLength="1" sap:display-format="UpperCase" sap:text="description" sap:label="Caractère 1" sap:quickinfo="Code à 1 caractère"/>
+                <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Code langue"/>
+                <Property Name="description" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Zone de 10 caractères" sap:heading=""/>
             </EntityType>
-            <EntityType Name="ZI_FGA_BOOLEAN_VHType" sap:label="Aide à la recherche Oui/Non" sap:value-list="true" sap:content-version="1">
+            <EntityType Name="ZI_FGA_BOOLEAN_VHType" sap:value-list="true" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Bool"/>
                     <PropertyRef Name="Spras"/>
                 </Key>
-                <Property Name="Bool" Type="Edm.String" Nullable="false" MaxLength="3" sap:display-format="UpperCase" sap:text="description" sap:label="3-Byte field" sap:heading=""/>
-                <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Language ID"/>
-                <Property Name="description" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="30 Characters" sap:heading=""/>
+                <Property Name="Bool" Type="Edm.String" Nullable="false" MaxLength="3" sap:display-format="UpperCase" sap:text="description" sap:label="Zone d'une longueur de 3 octets" sap:heading=""/>
+                <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Code langue"/>
+                <Property Name="description" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="30 caractères" sap:heading=""/>
             </EntityType>
-            <EntityType Name="ZI_FGA_BRANCHE_VHType" sap:label="Aide à la recherche Branche" sap:value-list="true" sap:content-version="1">
+            <EntityType Name="ZI_FGA_BRANCHE_VHType" sap:value-list="true" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Branche"/>
-                    <PropertyRef Name="spras"/>
+                    <PropertyRef Name="Spras"/>
                 </Key>
-                <Property Name="Branche" Type="Edm.String" Nullable="false" MaxLength="30" sap:display-format="UpperCase" sap:text="description" sap:label=""/>
-                <Property Name="spras" Type="Edm.String" Nullable="false" MaxLength="3" sap:display-format="UpperCase" sap:label="Country/Region" sap:quickinfo="Company Country/Region"/>
-                <Property Name="description" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="30 Characters" sap:heading=""/>
+                <Property Name="Branche" Type="Edm.String" Nullable="false" MaxLength="10" sap:display-format="UpperCase" sap:text="description" sap:label="Branche"/>
+                <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Code langue"/>
+                <Property Name="description" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="30 caractères" sap:heading=""/>
             </EntityType>
-            <EntityType Name="ZI_FGA_BUSINESS_VHType" sap:label="Aide à la recherche Business" sap:value-list="true" sap:content-version="1">
+            <EntityType Name="ZI_FGA_BUSINESS_VHType" sap:value-list="true" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Business"/>
                     <PropertyRef Name="spras"/>
                 </Key>
-                <Property Name="Business" Type="Edm.String" Nullable="false" MaxLength="2" sap:display-format="UpperCase" sap:text="description" sap:label="Component of the Version Number" sap:heading=""/>
-                <Property Name="spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Language ID"/>
+                <Property Name="Business" Type="Edm.String" Nullable="false" MaxLength="2" sap:display-format="UpperCase" sap:text="description" sap:label="Composante du n° de version" sap:heading=""/>
+                <Property Name="spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Code langue"/>
                 <Property Name="description" Type="Edm.String" MaxLength="80" sap:display-format="UpperCase" sap:label="Char80" sap:quickinfo="Char 80"/>
             </EntityType>
-            <EntityType Name="ZI_FGA_CAUTGA_VHType" sap:label="Aide à la recherche Cautga" sap:content-version="1">
+            <EntityType Name="ZI_FGA_CAUTGA_VHType" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Cautga"/>
                     <PropertyRef Name="Spras"/>
                 </Key>
-                <Property Name="Cautga" Type="Edm.String" Nullable="false" MaxLength="1" sap:display-format="UpperCase" sap:text="description" sap:label="Single-Character Flag" sap:heading=""/>
-                <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Language ID"/>
-                <Property Name="description" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Character Field with Length 10" sap:heading=""/>
+                <Property Name="Cautga" Type="Edm.String" Nullable="false" MaxLength="1" sap:display-format="UpperCase" sap:text="description" sap:label="Caractère 1" sap:quickinfo="Code à 1 caractère"/>
+                <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Code langue"/>
+                <Property Name="description" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Zone de 10 caractères" sap:heading=""/>
             </EntityType>
-            <EntityType Name="ZI_FGA_CHORUS_VHType" sap:label="Aide à la recherche Soufam" sap:content-version="1">
+            <EntityType Name="ZI_FGA_CHORUS_VHType" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Chorus"/>
                     <PropertyRef Name="Spras"/>
                 </Key>
-                <Property Name="Chorus" Type="Edm.String" Nullable="false" MaxLength="1" sap:display-format="UpperCase" sap:text="description" sap:label="Single-Character Flag" sap:heading=""/>
-                <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Language ID"/>
-                <Property Name="description" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Character Field with Length 10" sap:heading=""/>
+                <Property Name="Chorus" Type="Edm.String" Nullable="false" MaxLength="1" sap:display-format="UpperCase" sap:text="description" sap:label="Caractère 1" sap:quickinfo="Code à 1 caractère"/>
+                <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Code langue"/>
+                <Property Name="description" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Zone de 10 caractères" sap:heading=""/>
             </EntityType>
-            <EntityType Name="ZI_FGA_CURRENCYHEDGING_VHType" sap:label="Aide à la recherche couverture de change" sap:content-version="1">
+            <EntityType Name="ZI_FGA_CURRENCYHEDGING_VHType" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="CurrencyHedging"/>
                     <PropertyRef Name="Spras"/>
                 </Key>
-                <Property Name="CurrencyHedging" Type="Edm.String" Nullable="false" MaxLength="1" sap:display-format="UpperCase" sap:text="description" sap:label="Single-Character Flag" sap:heading=""/>
-                <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Language ID"/>
-                <Property Name="description" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Character Field with Length 10" sap:heading=""/>
+                <Property Name="CurrencyHedging" Type="Edm.String" Nullable="false" MaxLength="1" sap:display-format="UpperCase" sap:text="description" sap:label="Caractère 1" sap:quickinfo="Code à 1 caractère"/>
+                <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Code langue"/>
+                <Property Name="description" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Zone de 10 caractères" sap:heading=""/>
             </EntityType>
-            <EntityType Name="ZI_FGA_ELIGIBLECIR_VHType" sap:label="Aide à la recherche Eligible CIR" sap:content-version="1">
+            <EntityType Name="ZI_FGA_ELIGIBLECIR_VHType" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="eligibleCir"/>
                     <PropertyRef Name="Spras"/>
                 </Key>
-                <Property Name="eligibleCir" Type="Edm.String" Nullable="false" MaxLength="1" sap:display-format="UpperCase" sap:text="description" sap:label="Single-Character Flag" sap:heading=""/>
-                <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="3" sap:display-format="UpperCase" sap:label="Country/Region" sap:quickinfo="Company Country/Region"/>
-                <Property Name="description" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Character Field with Length 10" sap:heading=""/>
+                <Property Name="eligibleCir" Type="Edm.String" Nullable="false" MaxLength="1" sap:display-format="UpperCase" sap:text="description" sap:label="Caractère 1" sap:quickinfo="Code à 1 caractère"/>
+                <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="3" sap:display-format="UpperCase" sap:label="Pays/Région" sap:quickinfo="Pays/région de la société"/>
+                <Property Name="description" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Zone de 10 caractères" sap:heading=""/>
             </EntityType>
-            <EntityType Name="ZI_FGA_GROUPM_VHType" sap:label="Aide à la recherche GroupM" sap:value-list="true" sap:content-version="1">
+            <EntityType Name="ZI_FGA_GROUPM_VHType" sap:value-list="true" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="GroupM"/>
                     <PropertyRef Name="spras"/>
                 </Key>
-                <Property Name="GroupM" Type="Edm.String" Nullable="false" MaxLength="1" sap:display-format="UpperCase" sap:text="description" sap:label="Single-Character Flag" sap:heading=""/>
-                <Property Name="spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Language ID"/>
-                <Property Name="description" Type="Edm.String" MaxLength="5" sap:display-format="UpperCase" sap:label="R/2 table"/>
+                <Property Name="GroupM" Type="Edm.String" Nullable="false" MaxLength="1" sap:display-format="UpperCase" sap:text="description" sap:label="Caractère 1" sap:quickinfo="Code à 1 caractère"/>
+                <Property Name="spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Code langue"/>
+                <Property Name="description" Type="Edm.String" MaxLength="5" sap:display-format="UpperCase" sap:label="TABLE R/2" sap:quickinfo="Table R/2"/>
             </EntityType>
-            <EntityType Name="ZI_FGA_MANDATA_VHType" sap:label="Aide à la recherche is Mandataire ?" sap:content-version="1">
+            <EntityType Name="ZI_FGA_MANDATA_VHType" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="isMandataire"/>
                     <PropertyRef Name="Spras"/>
                 </Key>
-                <Property Name="isMandataire" Type="Edm.String" Nullable="false" MaxLength="1" sap:display-format="UpperCase" sap:text="description" sap:label="Single-Character Flag" sap:heading=""/>
-                <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="3" sap:display-format="UpperCase" sap:label="Country/Region" sap:quickinfo="Company Country/Region"/>
-                <Property Name="description" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Character Field with Length 10" sap:heading=""/>
+                <Property Name="isMandataire" Type="Edm.String" Nullable="false" MaxLength="1" sap:display-format="UpperCase" sap:text="description" sap:label="Caractère 1" sap:quickinfo="Code à 1 caractère"/>
+                <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="3" sap:display-format="UpperCase" sap:label="Pays/Région" sap:quickinfo="Pays/région de la société"/>
+                <Property Name="description" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Zone de 10 caractères" sap:heading=""/>
             </EntityType>
-            <EntityType Name="ZI_FGA_MISSION_VHType" sap:label="Aide à la recherche Missionr" sap:value-list="true" sap:content-version="1">
+            <EntityType Name="ZI_FGA_MISSION_VHType" sap:value-list="true" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Mission"/>
                 </Key>
-                <Property Name="Mission" Type="Edm.String" Nullable="false" MaxLength="5" sap:display-format="UpperCase" sap:text="description" sap:label="R/2 table"/>
-                <Property Name="spras" Type="Edm.String" MaxLength="2" sap:label="Language ID"/>
+                <Property Name="Mission" Type="Edm.String" Nullable="false" MaxLength="5" sap:display-format="UpperCase" sap:text="description" sap:label="TABLE R/2" sap:quickinfo="Table R/2"/>
+                <Property Name="spras" Type="Edm.String" MaxLength="2" sap:label="Code langue"/>
                 <Property Name="description" Type="Edm.String" MaxLength="80" sap:display-format="UpperCase" sap:label="Char80" sap:quickinfo="Char 80"/>
             </EntityType>
-            <EntityType Name="ZI_FGA_MODALF_VHType" sap:label="Aide à la recherche ModalF" sap:content-version="1">
+            <EntityType Name="ZI_FGA_MODALF_VHType" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Modalf"/>
                 </Key>
-                <Property Name="Modalf" Type="Edm.String" Nullable="false" MaxLength="1" sap:display-format="UpperCase" sap:text="description" sap:label="Single-Character Flag" sap:heading=""/>
-                <Property Name="description" Type="Edm.String" MaxLength="20" sap:display-format="UpperCase" sap:label="Char20" sap:quickinfo="Char 20"/>
+                <Property Name="Modalf" Type="Edm.String" Nullable="false" MaxLength="1" sap:display-format="UpperCase" sap:text="description" sap:label="Caractère 1" sap:quickinfo="Code à 1 caractère"/>
+                <Property Name="description" Type="Edm.String" MaxLength="20" sap:display-format="UpperCase" sap:label="char 20" sap:quickinfo="Char 20"/>
             </EntityType>
-            <EntityType Name="ZI_FGA_MODALR_VHType" sap:label="Aide à la recherche ModalR" sap:value-list="true" sap:content-version="1">
+            <EntityType Name="ZI_FGA_MODALR_VHType" sap:value-list="true" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Modalr"/>
                     <PropertyRef Name="Spras"/>
                 </Key>
-                <Property Name="Modalr" Type="Edm.String" Nullable="false" MaxLength="1" sap:display-format="UpperCase" sap:text="description" sap:label="Single-Character Flag" sap:heading=""/>
-                <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Language ID"/>
-                <Property Name="description" Type="Edm.String" MaxLength="50" sap:label="c" sap:quickinfo="Comment"/>
+                <Property Name="Modalr" Type="Edm.String" Nullable="false" MaxLength="1" sap:display-format="UpperCase" sap:text="description" sap:label="Caractère 1" sap:quickinfo="Code à 1 caractère"/>
+                <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Code langue"/>
+                <Property Name="description" Type="Edm.String" MaxLength="50" sap:label="c" sap:quickinfo="Commentaire"/>
             </EntityType>
-            <EntityType Name="ZI_FGA_NATIONAL_VHType" sap:label="Aide à la recherche is National" sap:value-list="true" sap:content-version="1">
+            <EntityType Name="ZI_FGA_NATIONAL_VHType" sap:value-list="true" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="IsNational"/>
                     <PropertyRef Name="Spras"/>
                 </Key>
-                <Property Name="IsNational" Type="Edm.String" Nullable="false" MaxLength="1" sap:display-format="UpperCase" sap:text="description" sap:label="Single-Character Flag" sap:heading=""/>
-                <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Language ID"/>
-                <Property Name="description" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="30 Characters" sap:heading=""/>
+                <Property Name="IsNational" Type="Edm.String" Nullable="false" MaxLength="1" sap:display-format="UpperCase" sap:text="description" sap:label="Caractère 1" sap:quickinfo="Code à 1 caractère"/>
+                <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Code langue"/>
+                <Property Name="description" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="30 caractères" sap:heading=""/>
             </EntityType>
-            <EntityType Name="ZI_FGA_PROFITCENTER_VHType" sap:label="Aide à la recherche Centre de profit" sap:value-list="true" sap:content-version="1">
+            <EntityType Name="ZI_FGA_PERCENT_VHType" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Uom"/>
+                </Key>
+                <Property Name="Uom" Type="Edm.String" Nullable="false" MaxLength="3" sap:text="Description" sap:label="Unité de mesure" sap:semantics="unit-of-measure"/>
+                <Property Name="Description" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Code ISO" sap:quickinfo="Code ISO unité de mesure"/>
+            </EntityType>
+            <EntityType Name="ZI_FGA_PROFITCENTER_VHType" sap:value-list="true" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="ProfitCenter"/>
                 </Key>
-                <Property Name="ProfitCenter" Type="Edm.String" Nullable="false" MaxLength="40" sap:display-format="UpperCase" sap:label="Centre de profit" sap:quickinfo="From Value"/>
-                <Property Name="UFO" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="UFO Délégué" sap:quickinfo="Set Name"/>
-                <Property Name="description" Type="Edm.String" MaxLength="40" sap:label="Centre de profit Description" sap:quickinfo="Short Description of a Set"/>
+                <Property Name="ProfitCenter" Type="Edm.String" Nullable="false" MaxLength="40" sap:display-format="UpperCase" sap:label="De la valeur" sap:heading=""/>
+                <Property Name="UFO" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="Nom de set" sap:heading=""/>
+                <Property Name="description" Type="Edm.String" MaxLength="40" sap:label="Description" sap:heading="" sap:quickinfo="Désignation synthétique d'un set"/>
             </EntityType>
-            <EntityType Name="ZI_FGA_RECAPType" sap:content-version="1">
+            <EntityType Name="ZI_FGA_PROJM_VHType" sap:value-list="true" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="UsrId"/>
+                </Key>
+                <Property Name="UsrId" Type="Edm.String" Nullable="false" MaxLength="30" sap:display-format="UpperCase" sap:text="description" sap:label="ID du système" sap:quickinfo="Communication : identification/n°"/>
+                <Property Name="description" Type="Edm.String" MaxLength="81"/>
+            </EntityType>
+            <EntityType Name="ZI_FGA_RECAPType" sap:label="ZI_FGA_RECAP" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="p_businessno"/>
                     <PropertyRef Name="p_period"/>
                     <PropertyRef Name="row_type"/>
                 </Key>
-                <Property Name="p_businessno" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase"/>
-                <Property Name="p_period" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase"/>
-                <Property Name="row_type" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase" sap:text="row_description" sap:label="Reserve" sap:quickinfo="Character field of length 6"/>
+                <Property Name="p_businessno" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Business Number"/>
+                <Property Name="p_period" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase" sap:label="Period"/>
+                <Property Name="row_type" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase" sap:text="row_description" sap:label="Réserve" sap:quickinfo="Zone de 6 caractères"/>
                 <Property Name="business_no" Type="Edm.String" MaxLength="24"/>
                 <Property Name="period" Type="Edm.String" MaxLength="6"/>
                 <Property Name="row_description" Type="Edm.String" MaxLength="19"/>
-                <Property Name="budget_initial" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
-                <Property Name="budget_objectif" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
-                <Property Name="budget_actif" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
-                <Property Name="ecart_objectif" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
-                <Property Name="cumul_n1" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
-                <Property Name="cumul_ce_jour" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
-                <Property Name="annee_en_cours" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
-                <Property Name="mois_m" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
-                <Property Name="reste_a_venir" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
-                <Property Name="budget_actif_m1" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
-                <Property Name="ecart" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
-                <Property Name="budget_n1" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Amount" sap:quickinfo="Amount in document currency"/>
-                <Property Name="currency" Type="Edm.String" MaxLength="5" sap:display-format="UpperCase" sap:label="Currency" sap:quickinfo="Currency Key" sap:semantics="currency-code"/>
+                <Property Name="budget_initial" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Montant" sap:quickinfo="Montant en devise de la pièce"/>
+                <Property Name="budget_objectif" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Montant" sap:quickinfo="Montant en devise de la pièce"/>
+                <Property Name="budget_actif" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Montant" sap:quickinfo="Montant en devise de la pièce"/>
+                <Property Name="ecart_objectif" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Montant" sap:quickinfo="Montant en devise de la pièce"/>
+                <Property Name="cumul_n1" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Montant" sap:quickinfo="Montant en devise de la pièce"/>
+                <Property Name="cumul_ce_jour" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Montant" sap:quickinfo="Montant en devise de la pièce"/>
+                <Property Name="annee_en_cours" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Montant" sap:quickinfo="Montant en devise de la pièce"/>
+                <Property Name="mois_m" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Montant" sap:quickinfo="Montant en devise de la pièce"/>
+                <Property Name="reste_a_venir" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Montant" sap:quickinfo="Montant en devise de la pièce"/>
+                <Property Name="budget_actif_m1" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Montant" sap:quickinfo="Montant en devise de la pièce"/>
+                <Property Name="ecart" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Montant" sap:quickinfo="Montant en devise de la pièce"/>
+                <Property Name="budget_n1" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Montant" sap:quickinfo="Montant en devise de la pièce"/>
+                <Property Name="currency" Type="Edm.String" MaxLength="5" sap:display-format="UpperCase" sap:label="Devise" sap:quickinfo="Clé de devise" sap:semantics="currency-code"/>
                 <Property Name="sort_order" Type="Edm.Byte"/>
                 <NavigationProperty Name="Parameters" Relationship="ZFGA_SRV.assoc_74AEBE66DBEED4EB5E7BA5A75F686E95" FromRole="ToRole_assoc_74AEBE66DBEED4EB5E7BA5A75F686E95" ToRole="FromRole_assoc_74AEBE66DBEED4EB5E7BA5A75F686E95" sap:filterable="false"/>
             </EntityType>
@@ -773,71 +832,73 @@
                     <PropertyRef Name="p_businessno"/>
                     <PropertyRef Name="p_period"/>
                 </Key>
-                <Property Name="p_businessno" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:parameter="mandatory" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="p_period" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase" sap:parameter="mandatory" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="p_businessno" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:parameter="mandatory" sap:label="Business Number" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="p_period" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase" sap:parameter="mandatory" sap:label="Period" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <NavigationProperty Name="Set" Relationship="ZFGA_SRV.assoc_74AEBE66DBEED4EB5E7BA5A75F686E95" FromRole="FromRole_assoc_74AEBE66DBEED4EB5E7BA5A75F686E95" ToRole="ToRole_assoc_74AEBE66DBEED4EB5E7BA5A75F686E95"/>
             </EntityType>
-            <EntityType Name="ZI_FGA_RTGART_VHType" sap:label="Aide à la recherche Soufam" sap:content-version="1">
+            <EntityType Name="ZI_FGA_RTGART_VHType" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Rtgart"/>
                     <PropertyRef Name="Spras"/>
                 </Key>
-                <Property Name="Rtgart" Type="Edm.String" Nullable="false" MaxLength="1" sap:display-format="UpperCase" sap:text="description" sap:label="Single-Character Flag" sap:heading=""/>
-                <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Language ID"/>
-                <Property Name="description" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Character Field with Length 10" sap:heading=""/>
+                <Property Name="Rtgart" Type="Edm.String" Nullable="false" MaxLength="1" sap:display-format="UpperCase" sap:text="description" sap:label="Caractère 1" sap:quickinfo="Code à 1 caractère"/>
+                <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Code langue"/>
+                <Property Name="description" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Zone de 10 caractères" sap:heading=""/>
             </EntityType>
-            <EntityType Name="ZI_FGA_SCCLT_VHType" sap:label="Aide à la recherche Scclt" sap:value-list="true" sap:content-version="1">
+            <EntityType Name="ZI_FGA_SCCLT_VHType" sap:value-list="true" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Scclt"/>
-                    <PropertyRef Name="spras"/>
+                    <PropertyRef Name="istype"/>
+                    <PropertyRef Name="Spras"/>
                 </Key>
-                <Property Name="Scclt" Type="Edm.String" Nullable="false" MaxLength="2" sap:text="description"/>
-                <Property Name="spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Language ID"/>
-                <Property Name="description" Type="Edm.String" MaxLength="20"/>
+                <Property Name="Scclt" Type="Edm.String" Nullable="false" MaxLength="10" sap:display-format="UpperCase" sap:text="description" sap:label="Branche"/>
+                <Property Name="istype" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:label="Système branche" sap:quickinfo="Système de classification métier"/>
+                <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Code langue"/>
+                <Property Name="description" Type="Edm.String" MaxLength="100" sap:label="Désignation"/>
             </EntityType>
-            <EntityType Name="ZI_FGA_SITE_VHType" sap:label="Aide à la recherche SITE" sap:value-list="true" sap:content-version="1">
+            <EntityType Name="ZI_FGA_SITE_VHType" sap:value-list="true" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Site"/>
                     <PropertyRef Name="Land"/>
                 </Key>
-                <Property Name="Site" Type="Edm.String" Nullable="false" MaxLength="80" sap:display-format="UpperCase" sap:text="description" sap:label=""/>
-                <Property Name="Land" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Language Key"/>
+                <Property Name="Site" Type="Edm.String" Nullable="false" MaxLength="80" sap:display-format="UpperCase" sap:text="description" sap:label="Lieu" sap:quickinfo="Site du FGA"/>
+                <Property Name="Land" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Code langue"/>
                 <Property Name="description" Type="Edm.String" MaxLength="80" sap:display-format="UpperCase" sap:label="Char80" sap:quickinfo="Char 80"/>
             </EntityType>
-            <EntityType Name="ZI_FGA_SOUFAM_VHType" sap:label="Aide à la recherche Soufam" sap:value-list="true" sap:content-version="1">
+            <EntityType Name="ZI_FGA_SOUFAM_VHType" sap:value-list="true" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Soufam"/>
                     <PropertyRef Name="Spras"/>
                 </Key>
-                <Property Name="Soufam" Type="Edm.String" Nullable="false" MaxLength="3" sap:display-format="UpperCase" sap:text="description" sap:label="3-Byte field" sap:heading=""/>
-                <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Language Key"/>
-                <Property Name="Activity" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label=""/>
+                <Property Name="Soufam" Type="Edm.String" Nullable="false" MaxLength="3" sap:display-format="UpperCase" sap:text="description" sap:label="Zone d'une longueur de 3 octets" sap:heading=""/>
+                <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Code langue"/>
+                <Property Name="Activity" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="clé" sap:quickinfo="Clé de la table VH activitées"/>
                 <Property Name="description" Type="Edm.String" MaxLength="80" sap:display-format="UpperCase" sap:label="Char80" sap:quickinfo="Char 80"/>
             </EntityType>
-            <EntityType Name="ZI_FGA_STATUS_VHType" sap:label="Aide à la recherche Status" sap:value-list="true" sap:content-version="1">
+            <EntityType Name="ZI_FGA_STATUS_VHType" sap:value-list="true" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Status"/>
                     <PropertyRef Name="Spras"/>
                 </Key>
-                <Property Name="Status" Type="Edm.String" Nullable="false" MaxLength="1" sap:display-format="UpperCase" sap:text="description" sap:label="Single-Character Flag" sap:heading=""/>
-                <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Language ID"/>
-                <Property Name="description" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Character Field with Length 10" sap:heading=""/>
+                <Property Name="Status" Type="Edm.String" Nullable="false" MaxLength="1" sap:display-format="UpperCase" sap:text="description" sap:label="Caractère 1" sap:quickinfo="Code à 1 caractère"/>
+                <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Code langue"/>
+                <Property Name="description" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Zone de 10 caractères" sap:heading=""/>
             </EntityType>
-            <EntityType Name="ZI_FGA_TYPE_VHType" sap:label="Aide à la recherche Type d'affaire" sap:value-list="true" sap:content-version="1">
+            <EntityType Name="ZI_FGA_TYPE_VHType" sap:value-list="true" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Type"/>
                     <PropertyRef Name="spras"/>
                 </Key>
-                <Property Name="Type" Type="Edm.String" Nullable="false" MaxLength="3" sap:display-format="UpperCase" sap:text="description" sap:label="3-Byte field" sap:heading=""/>
-                <Property Name="spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Language ID"/>
+                <Property Name="Type" Type="Edm.String" Nullable="false" MaxLength="3" sap:display-format="UpperCase" sap:text="description" sap:label="Zone d'une longueur de 3 octets" sap:heading=""/>
+                <Property Name="spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Code langue"/>
                 <Property Name="description" Type="Edm.String" MaxLength="80" sap:display-format="UpperCase" sap:label="Char80" sap:quickinfo="Char 80"/>
             </EntityType>
-            <EntityType Name="ZI_FGA_UFO_VHType" sap:label="Aide à la recherche d'UFO Délégué" sap:value-list="true" sap:content-version="1">
+            <EntityType Name="ZI_FGA_UFO_VHType" sap:value-list="true" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="UFO"/>
                 </Key>
-                <Property Name="UFO" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="UFO Délégué" sap:quickinfo="Set Name"/>
-                <Property Name="description" Type="Edm.String" MaxLength="40" sap:label="UFO Délégué Description" sap:quickinfo="Short Description of a Set"/>
+                <Property Name="UFO" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Nom de set" sap:heading=""/>
+                <Property Name="description" Type="Edm.String" MaxLength="40" sap:label="Description" sap:heading="" sap:quickinfo="Désignation synthétique d'un set"/>
             </EntityType>
             <Association Name="assoc_24FC23D321DDD66B6ED917396AA49B5A" sap:content-version="1">
                 <End Type="ZFGA_SRV.I_ProfitCenterStdVHType" Multiplicity="1" Role="FromRole_assoc_24FC23D321DDD66B6ED917396AA49B5A"/>
@@ -903,6 +964,10 @@
                 <End Type="ZFGA_SRV.ZC_FGA_CHART_AVANCEMENTParameters" Multiplicity="1" Role="FromRole_assoc_FE6B4C4249FA0DD7A7C69CBFC58C3715"/>
                 <End Type="ZFGA_SRV.ZC_FGA_CHART_AVANCEMENTType" Multiplicity="*" Role="ToRole_assoc_FE6B4C4249FA0DD7A7C69CBFC58C3715"/>
             </Association>
+            <Association Name="assoc_E6994698C16013590FF9BB15479C0926" sap:content-version="1">
+                <End Type="ZFGA_SRV.ZC_FGA_SFGP_REPORTParameters" Multiplicity="1" Role="FromRole_assoc_E6994698C16013590FF9BB15479C0926"/>
+                <End Type="ZFGA_SRV.ZC_FGA_SFGP_REPORTType" Multiplicity="*" Role="ToRole_assoc_E6994698C16013590FF9BB15479C0926"/>
+            </Association>
             <Association Name="assoc_FBAFCCB8228F35F33FFA98CD63EBFA5B" sap:content-version="1">
                 <End Type="ZFGA_SRV.ZC_FGAParameters" Multiplicity="1" Role="FromRole_assoc_FBAFCCB8228F35F33FFA98CD63EBFA5B"/>
                 <End Type="ZFGA_SRV.ZC_FGAType" Multiplicity="*" Role="ToRole_assoc_FBAFCCB8228F35F33FFA98CD63EBFA5B"/>
@@ -938,6 +1003,8 @@
                 <EntitySet Name="ZC_FGA_PREVISIONS" EntityType="ZFGA_SRV.ZC_FGA_PREVISIONSParameters" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
                 <EntitySet Name="ZC_FGA_PxAutre" EntityType="ZFGA_SRV.ZC_FGA_PxAutreType" sap:content-version="1"/>
                 <EntitySet Name="ZC_FGA_PxSubContracting" EntityType="ZFGA_SRV.ZC_FGA_PxSubContractingType" sap:content-version="1"/>
+                <EntitySet Name="ZC_FGA_SFGP_REPORTSet" EntityType="ZFGA_SRV.ZC_FGA_SFGP_REPORTType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="ZC_FGA_SFGP_REPORT" EntityType="ZFGA_SRV.ZC_FGA_SFGP_REPORTParameters" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
                 <EntitySet Name="ZC_FGA_SubContractorBudget" EntityType="ZFGA_SRV.ZC_FGA_SubContractorBudgetType" sap:content-version="1"/>
                 <EntitySet Name="ZI_FGA_ACTIVITY_VH" EntityType="ZFGA_SRV.ZI_FGA_ACTIVITY_VHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
                 <EntitySet Name="ZI_FGA_ASSUR_VH" EntityType="ZFGA_SRV.ZI_FGA_ASSUR_VHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
@@ -955,7 +1022,9 @@
                 <EntitySet Name="ZI_FGA_MODALF_VH" EntityType="ZFGA_SRV.ZI_FGA_MODALF_VHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
                 <EntitySet Name="ZI_FGA_MODALR_VH" EntityType="ZFGA_SRV.ZI_FGA_MODALR_VHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
                 <EntitySet Name="ZI_FGA_NATIONAL_VH" EntityType="ZFGA_SRV.ZI_FGA_NATIONAL_VHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
+                <EntitySet Name="ZI_FGA_PERCENT_VH" EntityType="ZFGA_SRV.ZI_FGA_PERCENT_VHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
                 <EntitySet Name="ZI_FGA_PROFITCENTER_VH" EntityType="ZFGA_SRV.ZI_FGA_PROFITCENTER_VHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
+                <EntitySet Name="ZI_FGA_PROJM_VH" EntityType="ZFGA_SRV.ZI_FGA_PROJM_VHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
                 <EntitySet Name="ZI_FGA_RECAPSet" EntityType="ZFGA_SRV.ZI_FGA_RECAPType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:addressable="false" sap:content-version="1"/>
                 <EntitySet Name="ZI_FGA_RECAP" EntityType="ZFGA_SRV.ZI_FGA_RECAPParameters" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
                 <EntitySet Name="ZI_FGA_RTGART_VH" EntityType="ZFGA_SRV.ZI_FGA_RTGART_VHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
@@ -993,6 +1062,10 @@
                     <End EntitySet="ZC_FGA" Role="FromRole_assoc_FBAFCCB8228F35F33FFA98CD63EBFA5B"/>
                     <End EntitySet="ZC_FGASet" Role="ToRole_assoc_FBAFCCB8228F35F33FFA98CD63EBFA5B"/>
                 </AssociationSet>
+                <AssociationSet Name="assoc_E6994698C16013590FF9BB15479C0926" Association="ZFGA_SRV.assoc_E6994698C16013590FF9BB15479C0926" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="ZC_FGA_SFGP_REPORT" Role="FromRole_assoc_E6994698C16013590FF9BB15479C0926"/>
+                    <End EntitySet="ZC_FGA_SFGP_REPORTSet" Role="ToRole_assoc_E6994698C16013590FF9BB15479C0926"/>
+                </AssociationSet>
                 <AssociationSet Name="assoc_74AEBE66DBEED4EB5E7BA5A75F686E95" Association="ZFGA_SRV.assoc_74AEBE66DBEED4EB5E7BA5A75F686E95" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
                     <End EntitySet="ZI_FGA_RECAP" Role="FromRole_assoc_74AEBE66DBEED4EB5E7BA5A75F686E95"/>
                     <End EntitySet="ZI_FGA_RECAPSet" Role="ToRole_assoc_74AEBE66DBEED4EB5E7BA5A75F686E95"/>
@@ -1017,14 +1090,14 @@
                     <End EntitySet="I_ProfitCenterStdVH" Role="FromRole_assoc_24FC23D321DDD66B6ED917396AA49B5A"/>
                     <End EntitySet="I_ProfitCenterText" Role="ToRole_assoc_24FC23D321DDD66B6ED917396AA49B5A"/>
                 </AssociationSet>
-                <FunctionImport Name="GetCompanyCodeByProfitCenter" ReturnType="ZFGA_SRV.Company" EntitySet="CompanyCollection" m:HttpMethod="GET" sap:action-for="ZFGA_SRV.Company">
-                    <Parameter Name="ProfitCenterCode" Type="Edm.String" Mode="In" MaxLength="10"/>
+                <FunctionImport Name="GetCompanyCodeByProfitCenter" ReturnType="ZFGA_SRV.Company" EntitySet="CompanyCollection" m:HttpMethod="GET" sap:label="GetCompanyCode" sap:action-for="ZFGA_SRV.Company">
+                    <Parameter Name="ProfitCenterCode" Type="Edm.String" Mode="In" MaxLength="10" sap:label="Profit Center"/>
                 </FunctionImport>
-                <FunctionImport Name="GetSupplier" ReturnType="ZFGA_SRV.Supplier" EntitySet="SupplierCollection" m:HttpMethod="GET" sap:action-for="ZFGA_SRV.Supplier">
-                    <Parameter Name="SupplierNo" Type="Edm.String" Mode="In" MaxLength="10"/>
+                <FunctionImport Name="GetSupplier" ReturnType="ZFGA_SRV.Supplier" EntitySet="SupplierCollection" m:HttpMethod="GET" sap:label="GetSupplier" sap:action-for="ZFGA_SRV.Supplier">
+                    <Parameter Name="SupplierNo" Type="Edm.String" Mode="In" MaxLength="10" sap:label="SupplierNo"/>
                 </FunctionImport>
-                <FunctionImport Name="GetClient" ReturnType="ZFGA_SRV.Client" EntitySet="ClientCollection" m:HttpMethod="GET" sap:action-for="ZFGA_SRV.Client">
-                    <Parameter Name="ClientNo" Type="Edm.String" Mode="In" MaxLength="10"/>
+                <FunctionImport Name="GetClient" ReturnType="ZFGA_SRV.Client" EntitySet="ClientCollection" m:HttpMethod="GET" sap:label="GetClient" sap:action-for="ZFGA_SRV.Client">
+                    <Parameter Name="ClientNo" Type="Edm.String" Mode="In" MaxLength="10" sap:label="ClientNo"/>
                 </FunctionImport>
             </EntityContainer>
             <Annotation Term="Core.SchemaVersion" String="1.0.0" xmlns="http://docs.oasis-open.org/odata/ns/edm"/>
@@ -1291,6 +1364,26 @@
                 </Annotation>
                 <Annotation Term="Common.ValueListWithFixedValues"/>
             </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGAType/PROJM" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.ValueList">
+                    <Record>
+                        <PropertyValue Property="Label" String="Value Help for Project Manager"/>
+                        <PropertyValue Property="CollectionPath" String="ZI_FGA_PROJM_VH"/>
+                        <PropertyValue Property="SearchSupported" Bool="true"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="PROJM"/>
+                                    <PropertyValue Property="ValueListProperty" String="UsrId"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="description"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_FGAType/BusinessStatus" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Common.ValueList">
                     <Record>
@@ -1517,7 +1610,6 @@
                         </PropertyValue>
                     </Record>
                 </Annotation>
-                <Annotation Term="Common.ValueListWithFixedValues"/>
             </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_FGAType/Assurance" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Common.ValueList">
@@ -1936,6 +2028,44 @@
                 </Annotation>
             </Annotations>
             <Annotations Target="ZFGA_SRV.ZFGA_SRV_Entities/ZC_FGA_PREVISIONS" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Capabilities.FilterRestrictions">
+                    <Record>
+                        <PropertyValue Property="NonFilterableProperties">
+                            <Collection>
+                                <PropertyPath>p_businessno</PropertyPath>
+                                <PropertyPath>p_period</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.NavigationRestrictions">
+                    <Record>
+                        <PropertyValue Property="RestrictedProperties">
+                            <Collection>
+                                <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="Parameters"/>
+                                    <PropertyValue Property="FilterRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Filterable" Bool="false"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.SortRestrictions">
+                    <Record>
+                        <PropertyValue Property="NonSortableProperties">
+                            <Collection>
+                                <PropertyPath>p_businessno</PropertyPath>
+                                <PropertyPath>p_period</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZFGA_SRV_Entities/ZC_FGA_SFGP_REPORT" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Capabilities.FilterRestrictions">
                     <Record>
                         <PropertyValue Property="NonFilterableProperties">

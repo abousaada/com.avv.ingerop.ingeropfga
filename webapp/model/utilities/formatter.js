@@ -77,7 +77,6 @@ sap.ui.define([
       subContractorId: "SupplierNo",
       subContractorCoef : ({ SubContractorCoef }) => Number.parseFloat(SubContractorCoef) ? SubContractorCoef : 1,
       subContractorPartner: "SubContractorPartner"
-    })
-
+    }),
   };
 });

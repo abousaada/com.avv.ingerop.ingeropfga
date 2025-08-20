@@ -50,7 +50,8 @@ sap.ui.define([
 
             async getBEDatas() {
                 try {
-                    const [missions, previsions, recaps, opport, charts, chartsadddata, pxRecettes, pxAutres, pxSubContracting, notes] = await Promise.all([
+                    const [missions, previsions, recaps, opport, charts, chartsadddata, pxRecettes, pxAutres, pxSubContracting, notes, sfgp] = await Promise.all([
+
                         this.getBEMissions(),
                         this.getBEPrevisions(),
                         this.getBERecaps(),
@@ -64,7 +65,8 @@ sap.ui.define([
                         this.getBEPxExtSubContracting(),
 
                         //Notes
-                        this.getBENotes()
+                        this.getBENotes(),
+                        this.getBESfgp()
                     ]);
 
                     this.setMissions(missions || []);
@@ -83,6 +85,8 @@ sap.ui.define([
                     this.onCalculChartsData(previsions, recaps, charts, chartsadddata);
                 //Notes
                     this.setNotes(notes);
+
+                    this.setSfgp(sfgp || []);
 
                 } catch (error) {
                     console.log(error);
@@ -585,6 +589,24 @@ sap.ui.define([
                     const chartsadddata = await this.read(sPath);
                     this.setChartBusy(false);
                     return chartsadddata?.results || [];
+                } catch (error) {
+                    this.setChartBusy(false);
+                    console.log(error);
+                }
+            },
+
+            async getBESfgp() {
+                try {
+                    this.setChartBusy(true);
+                    const businessNo = this.getBusinessNo();
+                    const period = this.getPeriod();
+                    const urlBusinessNo = encodeURIComponent(businessNo);
+                    const urlPeriod = encodeURIComponent(period);
+                    const sPath = `/ZC_FGA_SFGP_REPORT(p_businessno='${urlBusinessNo}',p_period='${urlPeriod}')/Set`;
+                    console.log(`retrieve sfgp report data with period: ${period} and BusinessNo: ${businessNo}`);
+                    const sfgp = await this.read(sPath);
+                    this.setChartBusy(false);
+                    return sfgp?.results || [];
                 } catch (error) {
                     this.setChartBusy(false);
                     console.log(error);

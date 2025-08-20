@@ -93,6 +93,117 @@
     color: #004da3 !important;        /* Darker blue on hover */
 }
 
+
+.sfgpTable .sapUiTableHeaderRow {
+    background-color:#333399 !important;
+}
+
+.sfgpTable .sapUiTableHeaderDataCell .sapMLabel, .sapMListTbl .sapMColumnHeader .sapMLabel {
+    color: whitesmoke;
+    font-weight: bold;
+} 
+
+.sfgpTable .sapUiTableHeaderDataCell>.sapUiTableCellInner>div:first-child {
+    justify-content: center !important;
+}
+
+.sfgpTable .sapUiTableHeaderCell:not(.sapUiTableRowActionHeaderCell):hover {
+    background: none;
+}
+
+.sfgpTable .sapUiTableCell {
+    border-top: .0625rem solid #e5e5e5 !important;
+    border-right: .0625rem solid #e5e5e5 !important;
+}
+
+/* .sfgpTable .sapUiTableColHdrCnt {
+    border-top: 3px solid black !important;
+}
+
+.sfgpTable .sapUiTableHeaderCell .sapUiTableHeaderDataCell .sapUiTableHeaderCellActive{
+    border-right: 3px solid black !important;
+}
+
+.sfgpTable .sapUiTableCell.sapUiTableCellLast {
+    border-right: 3px solid black !important;
+}
+
+.sfgpTable .sapUiTableCell.sapUiTableCellFirst {
+    border-left: 3px solid black !important;
+}
+
+.sfgpTable .sapUiTableLastRow>.sapUiTableCell {
+    border-bottom: 3px solid black !important;
+} */
+
+.sfgpTable .sapMObjStatusError .sapMObjStatusText {
+    color: #b00 !important;
+    font-weight: bold !important;
+}
+
+.sfgpTable .sfgpFooterRow .sapMObjStatusError .sapMObjStatusText {
+    color: #FF8C8C !important;
+    font-weight: bold !important;
+}
+
+.sfgpTable .sapMObjStatusNone:not(.sapMObjStatusInverted) .sapMObjStatusText{
+    color: #32363a !important;
+}
+
+.sfgpTable .sapMObjectNumberStatusNone{
+    color: #32363a !important;
+}
+
+.sfgpTable .boldTotal{
+    font-weight: bold !important;
+}
+
+.sfgpTable .sapMObjectNumberEmph .sapMObjectNumberText {
+    font-weight: normal !important;
+}
+
+.sfgpTable .sfgpFooterRow .sapMObjStatusNone:not(.sapMObjStatusInverted) .sapMObjStatusText{
+    color: whitesmoke !important;
+}
+
+.sfgpTable .sfgpFooterRow .sapMObjStatus:not(.sapMObjStatusInverted) .sapMObjStatusText {
+    text-shadow: none !important;
+}
+
+.sfgpTable .sfgpFooterRow .sapMObjectNumberText {
+    text-shadow: none !important;
+}
+
+.sfgpTable .sfgpFooterRow .sapMObjectNumberEmph .sapMObjectNumberText {
+    font-weight: bold !important;
+}
+
+.sfgpTable .sapMLnkDsbl {
+  pointer-events: none !important;
+  color: whitesmoke !important; 
+  opacity: 1 !important;
+  text-decoration: none !important ; 
+  cursor: default !important;           
+}
+
+.sfgpFooterRow .sapUiTableCell {
+    background-color: #333399 !important;
+    color: white !important;
+    font-weight: bold;
+    text-align: center;
+}
+
+.sfgpFooterRow .sapMObjectNumberStatusNone{
+    background-color: #333399 !important;
+    color: white !important;
+    font-weight: bold;
+    text-align: center;
+}
+
+.sfgpFooterRow .sapMText {
+    color: white !important;
+}
+
 /* ---------- STYLE POUR TABLE SYNTHESE SECTION BUDGETS ---------- */
 .syntheseTab .sapUiTableRow.totalRow {
     background-color: #333399 !important;

@@ -357,6 +357,14 @@
                 "waitForViewportEnter": true
               }
             },
+            "AfterFacet|ZC_FGASet|TableInfo|1": {
+              "className": "sap.ui.core.mvc.View",
+              "viewName": "com.avv.ingerop.ingeropfga.ext.view.Sfgp",
+              "type": "XML",
+              "sap.ui.generic.app": {
+                "title": "Sfgp"
+              }
+            },
             "AfterFacet|ZC_FGASet|GeneralInfo": {
               "className": "sap.ui.core.mvc.View",
               "viewName": "com.avv.ingerop.ingeropfga.ext.view.Recap",
