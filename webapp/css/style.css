@@ -113,10 +113,36 @@
 
 .sfgpTable .sapUiTableCell {
     border-top: .0625rem solid #e5e5e5 !important;
+    border-right: .0625rem solid #e5e5e5 !important;
 }
+
+/* .sfgpTable .sapUiTableColHdrCnt {
+    border-top: 3px solid black !important;
+}
+
+.sfgpTable .sapUiTableHeaderCell .sapUiTableHeaderDataCell .sapUiTableHeaderCellActive{
+    border-right: 3px solid black !important;
+}
+
+.sfgpTable .sapUiTableCell.sapUiTableCellLast {
+    border-right: 3px solid black !important;
+}
+
+.sfgpTable .sapUiTableCell.sapUiTableCellFirst {
+    border-left: 3px solid black !important;
+}
+
+.sfgpTable .sapUiTableLastRow>.sapUiTableCell {
+    border-bottom: 3px solid black !important;
+} */
 
 .sfgpTable .sapMObjStatusError .sapMObjStatusText {
     color: #b00 !important;
+    font-weight: bold !important;
+}
+
+.sfgpTable .sfgpFooterRow .sapMObjStatusError .sapMObjStatusText {
+    color: #FF8C8C !important;
     font-weight: bold !important;
 }
 
@@ -128,11 +154,27 @@
     color: #32363a !important;
 }
 
+.sfgpTable .boldTotal{
+    font-weight: bold !important;
+}
+
 .sfgpTable .sapMObjectNumberEmph .sapMObjectNumberText {
     font-weight: normal !important;
 }
 
-.sfgpTable .boldTotal{
+.sfgpTable .sfgpFooterRow .sapMObjStatusNone:not(.sapMObjStatusInverted) .sapMObjStatusText{
+    color: whitesmoke !important;
+}
+
+.sfgpTable .sfgpFooterRow .sapMObjStatus:not(.sapMObjStatusInverted) .sapMObjStatusText {
+    text-shadow: none !important;
+}
+
+.sfgpTable .sfgpFooterRow .sapMObjectNumberText {
+    text-shadow: none !important;
+}
+
+.sfgpTable .sfgpFooterRow .sapMObjectNumberEmph .sapMObjectNumberText {
     font-weight: bold !important;
 }
 
@@ -151,13 +193,7 @@
     text-align: center;
 }
 
-.sapUiTableTr.sfgpFooterRow .sapUiTableCell {
-  font-weight: bold !important;
-  color: white !important;
-  background-color: #333399 !important;
-}
-
-.sfgpFooterRow .sapUiTableCell .sapMObjectNumberStatusNone{
+.sfgpFooterRow .sapMObjectNumberStatusNone{
     background-color: #333399 !important;
     color: white !important;
     font-weight: bold;

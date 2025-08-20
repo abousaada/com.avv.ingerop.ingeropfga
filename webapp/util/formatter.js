@@ -24,6 +24,14 @@ sap.ui.define([
         formatBusinessNo: function (sBusinessNo, vIsFooter) {
             const isFooter = (vIsFooter === true || vIsFooter === 'X' || vIsFooter === 1 || vIsFooter === '1');
             return isFooter ? 'TOTAL' : sBusinessNo;
+        },
+        formatInt: function (fValue) {
+            if (fValue == null) {
+                return "";
+            }
+            var  intVal = Math.round(fValue);
+            // Formater avec séparateur "espace"
+            return intVal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
         }
     };
 });

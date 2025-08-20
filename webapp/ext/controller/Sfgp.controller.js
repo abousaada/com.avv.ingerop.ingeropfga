@@ -49,27 +49,27 @@ sap.ui.define([
       oTable.setVisibleRowCount(Math.max(1, len));
     },
 
-    /* ===== Styling : applique le bleu sur les lignes isFooter ===== */
+    /* ===== Styling + fusion 3 premières cellules sur la DERNIÈRE ligne ===== */
     _styleFooterRow: function () {
       const oTable   = this.byId("sfgpTable");
       const oBinding = oTable.getBinding("rows");
       if (!oBinding) return;
 
+      const iLast = oBinding.getLength() - 1;
+      if (iLast < 0) return;
+
       oTable.getRows().forEach((oRow) => {
         const $row = oRow.$();
         if (!$row.length) return;
 
-        const oCtx = oRow.getBindingContext("utilities");
-        const vFlag = oCtx && oCtx.getProperty("isFooter");
-        const isFooter = (vFlag === true || vFlag === "X" || vFlag === 1 || vFlag === "1");
+        const isLast = oRow.getIndex() === iLast;
+        $row.toggleClass("sfgpFooterRow", isLast);
 
-        // ajoute/retire la classe marquant le footer
-        $row.toggleClass("sfgpFooterRow", isFooter);
-
-        // si footer → fusion visuelle des 3 premières cellules
-        if (isFooter) {
+        if (isLast) {
           setTimeout(() => {
             const $cells = $row.find(".sapUiTableCell");
+
+            // fusion visuelle des 3 premières cellules
             if ($cells.length >= 3) {
               const $c0 = $cells.eq(0);
               $c0.attr("colspan", 3).css({
@@ -82,10 +82,21 @@ sap.ui.define([
               $cells.eq(1).remove();
               $cells.eq(2).remove();
             }
+
+            $cells.css({"background-color":"#333399"});
+            $cells.find(".sfgpTable, .sapMObjStatusNone:not(.sapMObjStatusInverted), .sapMObjStatusText, .sapMObjectNumberStatusNone")
+                  .css({
+                    "font-weight": "bold",
+                    "background-color": "#333399",
+                    "color": "white"
+                  });
           }, 0);
+        } else {
+          $row.removeClass("sfgpFooterRow");
         }
       });
     },
+
 
     /* ===== Largeur par défaut sur toutes les colonnes ===== */
     _setDefaultColumnWidths: function () {

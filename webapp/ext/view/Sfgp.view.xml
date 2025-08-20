@@ -8,7 +8,7 @@
   <Table id="sfgpTable" rows="{utilities>/sfgp}" selectionMode="None" width="auto" class="sfgpTable">
     <!-- === RECAP Projet Columns === -->
     <columns>
-      <Column headerSpan="7" width="14em">
+      <Column headerSpan="7" width="14em" class="testjro">
         <multiLabels>
           <m:Label text="Récap Projet"/>
           <m:Label text="Codes affaire"/>
@@ -36,28 +36,28 @@
           <m:Label text="Récap Projet"/>
           <m:Label text="CA"/>
         </multiLabels>
-        <template><m:Text text="{utilities>Ca}"/></template>
+        <template><m:Text text="{path: 'utilities>Ca', formatter: '.formatter.formatInt'}"/></template>
       </Column>
       <Column>
         <multiLabels>
           <m:Label text="Récap Projet"/>
           <m:Label text="Dépenses"/>
         </multiLabels>
-        <template><m:Text text="{utilities>Depenses}"/></template>
+        <template><m:Text text="{path: 'utilities>Depenses', formatter: '.formatter.formatInt'}"/></template>
       </Column>
       <Column>
         <multiLabels>
           <m:Label text="Récap Projet"/>
           <m:Label text="RBA"/>
         </multiLabels>
-        <template><m:ObjectStatus text="{utilities>Rba}" state="{ path: 'utilities>Rba', formatter: '.formatter.setNegativeRedValue' }" /></template>
+        <template><m:ObjectStatus text="{path: 'utilities>Rba', formatter: '.formatter.formatInt'}" state="{ path: 'utilities>Rba', formatter: '.formatter.setNegativeRedValue' }" /></template>
       </Column>
       <Column>
         <multiLabels>
           <m:Label text="Récap Projet"/>
           <m:Label text="%"/>
         </multiLabels>
-        <template><m:ObjectNumber number="{utilities>RbaPourcent}" unit="%" /></template>
+        <template><m:ObjectNumber number="{path: 'utilities>RbaPourcent', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2, groupingEnabled: false, decimalSeparator: ',' }}" unit="%"/></template>
       </Column>
 
       <!-- === Budget Fin d’affaire === -->
@@ -66,28 +66,28 @@
           <m:Label text="Budget Fin d’affaire"/>
           <m:Label text="Main d’œuvre"/>
         </multiLabels>
-        <template><m:Text text="{utilities>MoBudget}"/></template>
+        <template><m:Text text="{path: 'utilities>MoBudget', formatter: '.formatter.formatInt'}"/></template>
       </Column>
       <Column>
         <multiLabels>
           <m:Label text="Budget Fin d’affaire"/>
           <m:Label text="Sous-traitance"/>
         </multiLabels>
-        <template><m:Text text="{utilities>StBudget}"/></template>
+        <template><m:Text text="{path: 'utilities>StBudget', formatter: '.formatter.formatInt'}"/></template>
       </Column>
       <Column>
         <multiLabels>
           <m:Label text="Budget Fin d’affaire"/>
           <m:Label text="Autres frais"/>
         </multiLabels>
-        <template><m:Text text="{utilities>AfBudget}"/></template>
+        <template><m:Text text="{path: 'utilities>AfBudget', formatter: '.formatter.formatInt'}"/></template>
       </Column>
       <Column>
         <multiLabels>
           <m:Label text="Budget Fin d’affaire"/>
           <m:Label text="Total"/>
         </multiLabels>
-        <template><m:Text class="boldTotal" text="{utilities>TotalBudget}"/></template>
+        <template><m:Text class="boldTotal" text="{path: 'utilities>TotalBudget', formatter: '.formatter.formatInt'}"/></template>
       </Column>
 
       <!-- === Réalisé === -->
@@ -96,65 +96,64 @@
           <m:Label text="Réalisé"/>
           <m:Label text="Main d’œuvre"/>
         </multiLabels>
-        <template><m:Text text="{utilities>MoRealise}"/></template>
+        <template><m:Text text="{path: 'utilities>MoRealise', formatter: '.formatter.formatInt'}"/></template>
       </Column>
       <Column>
         <multiLabels>
           <m:Label text="Réalisé"/>
           <m:Label text="Sous-traitance"/>
         </multiLabels>
-        <template><m:Text text="{utilities>StRealise}"/></template>
+        <template><m:Text text="{path: 'utilities>StRealise', formatter: '.formatter.formatInt'}"/></template>
       </Column>
       <Column>
         <multiLabels>
           <m:Label text="Réalisé"/>
           <m:Label text="Autres frais"/>
         </multiLabels>
-        <template><m:Text text="{utilities>AfRealise}"/></template>
+        <template><m:Text text="{path: 'utilities>AfRealise', formatter: '.formatter.formatInt'}"/></template>
       </Column>
       <Column>
         <multiLabels>
           <m:Label text="Réalisé"/>
           <m:Label text="Total"/>
         </multiLabels>
-        <template><m:Text class="boldTotal" text="{utilities>TotalRealise}"/></template>
+        <template><m:Text class="boldTotal" text="{path: 'utilities>TotalRealise', formatter: '.formatter.formatInt'}"/></template>
       </Column>
       <Column>
         <multiLabels>
           <m:Label text="Réalisé"/>
           <m:Label text="% avancement"/>
         </multiLabels>
-        <template><m:Text class="boldTotal" text="{utilities>AvancementRealise}"/></template>
+        <template><m:ObjectNumber number="{path: 'utilities>AvancementRealise', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2, groupingEnabled: false, decimalSeparator: ',' }}" unit="%" class="boldTotal"/></template>
       </Column>
-
       <!-- === RAD === -->
       <Column headerSpan="4">
         <multiLabels>
           <m:Label text="RAD"/>
           <m:Label text="Main d’œuvre"/>
         </multiLabels>
-        <template><m:ObjectStatus text="{utilities>MoRad}" state="{parts: ['utilities>MoRad','utilities>isFooter'],formatter: '.formatter.setNegativeRedValue'}" /></template>
+        <template><m:ObjectStatus text="{path: 'utilities>MoRad', formatter: '.formatter.formatInt'}" state="{parts: ['utilities>MoRad','utilities>isFooter'],formatter: '.formatter.setNegativeRedValue'}" /></template>
       </Column>
       <Column>
         <multiLabels>
           <m:Label text="RAD"/>
           <m:Label text="Sous-traitance"/>
         </multiLabels>
-        <template><m:ObjectStatus text="{utilities>StRad}" state="{ path: 'utilities>StRad', formatter: '.formatter.setNegativeRedValue' }" /></template>
+        <template><m:ObjectStatus text="{path: 'utilities>StRad', formatter: '.formatter.formatInt'}" state="{ path: 'utilities>StRad', formatter: '.formatter.setNegativeRedValue' }" /></template>
       </Column>
       <Column>
         <multiLabels>
           <m:Label text="RAD"/>
           <m:Label text="Autres frais"/>
         </multiLabels>
-        <template><m:ObjectStatus text="{utilities>AfRad}" state="{ path: 'utilities>AfRad', formatter: '.formatter.setNegativeRedValue' }" /></template>
+        <template><m:ObjectStatus text="{path: 'utilities>AfRad', formatter: '.formatter.formatInt'}" state="{ path: 'utilities>AfRad', formatter: '.formatter.setNegativeRedValue' }" /></template>
       </Column>
       <Column>
         <multiLabels>
           <m:Label text="RAD"/>
           <m:Label text="Total"/>
         </multiLabels>
-        <template><m:Text class="boldTotal" text="{utilities>TotalRad}"/></template>
+        <template><m:Text class="boldTotal" text="{path: 'utilities>TotalRad', formatter: '.formatter.formatInt'}"/></template>
       </Column>
     </columns>
   </Table>
