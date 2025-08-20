@@ -4,11 +4,12 @@ sap.ui.define([
     "./utilities/formatter",
     "./utilities/filter",
     "./utilities/subContracting",
+    "./utilities/recetteExt",
     "../util/constant",
     "../util/helper",
     "../ext/controller/helpers/Missions",
 ],
-    function (BaseModel, InitialData, Formatter, Filter, SubContracting, Constant, Helper,Missions) {
+    function (BaseModel, InitialData, Formatter, Filter, SubContracting, RecetteExt, Constant, Helper,Missions) {
         "use strict";
 
         return BaseModel.extend("com.avv.ingerop.ingeropfga.model.utilities", {
@@ -16,11 +17,16 @@ sap.ui.define([
             init: function (oModel) {
                 this.setData({ ...InitialData });
                 this.initModel(oModel);
-                this.oSubContracting = new SubContracting(this);
+                this.oSubContracting    = new SubContracting(this);
+                this.oRecetteExt        = new RecetteExt(this);
             },
 
             setView(oView){
                 this.oView = oView;
+            },
+
+            getView(){
+                return this.oView;
             },
 
             reInit() {
@@ -33,9 +39,18 @@ sap.ui.define([
                 this.setPxSubContractingHeader(treeHeader);
             },
 
+            buildPxRecetteExtTreeData(){
+                const treeData = this.oRecetteExt.buildTreeData();
+                this.setPxRecetteExtHierarchy(treeData);
+            },
+
+            reCalcRecetteTable(){
+                return this.oRecetteExt.reCalcRecetteTable();
+            },
+
             async getBEDatas() {
                 try {
-                    const [missions, previsions, recaps, opport, charts, chartsadddata, pxAutres, pxSubContracting, notes] = await Promise.all([
+                    const [missions, previsions, recaps, opport, charts, chartsadddata, pxRecettes, pxAutres, pxSubContracting, notes] = await Promise.all([
                         this.getBEMissions(),
                         this.getBEPrevisions(),
                         this.getBERecaps(),
@@ -44,6 +59,7 @@ sap.ui.define([
                         this.getBEChartsAdditionalData(),
 
                         //Bugets PX
+                        this.getBEPxRecettes(),
                         this.getBEPxAutres(),
                         this.getBEPxExtSubContracting(),
 
@@ -60,6 +76,7 @@ sap.ui.define([
                  
                     //Bugets PX
                     this.setPxAutres(pxAutres || []);
+                    this.setPxRecetteExt(pxRecettes || []);
 
                     this.setPxSousTraitance(pxSubContracting || []);
                     // A REMETTRE PROPRE
@@ -437,6 +454,25 @@ sap.ui.define([
                 }
             },
 
+            async getBEPxRecettes() {
+                try {
+                    this.setTabBusy(true);
+                    const businessNo = this.getBusinessNo();
+                    const period = this.getPeriod();
+                    const urlBusinessNo = encodeURIComponent(businessNo);
+                    const urlPeriod = encodeURIComponent(period);
+
+                    const sPath = `/ZC_FGASet(BusinessNo='${urlBusinessNo}',p_period='${urlPeriod}')/to_BudgetPxRecetteExt`;
+                    console.log(`retrieve Budget Px Recettes with period: ${period} and BusinessNo: ${businessNo}`);
+                    const pxRecettes = await this.read(sPath);
+                    this.setTabBusy(false);
+                    return (pxRecettes?.results || []).map(Formatter.formatBudgetRecetteExt);
+                } catch (error) {
+                    this.setTabBusy(false);
+                    console.log(error);
+                }
+            },
+
             async getBEPxAutres() {
                 try {
                     this.setTabBusy(true);
@@ -634,8 +670,13 @@ sap.ui.define([
                 return this.oSubContracting
                            .formattedPxSubContractingExt()
                            .map(Formatter.reverseFormatBudgetSubContracting);
-            }
+            },
 
+            formattedPxRecetteExt(){
+                return this.oRecetteExt
+                           .formattedPxRecetteExt()
+                           .map(Formatter.reverseFormatBudgetRecetteExt);
+            }
         });
 
     });

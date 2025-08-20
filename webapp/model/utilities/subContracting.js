@@ -2,10 +2,11 @@ sap.ui.define([], function () {
   "use strict";
 
   return class SubContracting {
+    
+    _CONSTANT_COLUMN_PREFIXE = "SC_";
+
     constructor(model) {
       this.oModel = model;
-
-      this._CONSTANT_COLUMN_PREFIXE = "SC_";
     }
 
     buildTreeData() {

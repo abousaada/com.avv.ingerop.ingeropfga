@@ -22,6 +22,22 @@ sap.ui.define([
       SubContractorCoef : ({subContractorCoef}) => subContractorCoef?.toString(),
       Cumul: ({subContractorCumul}) => subContractorCumul?.toString(),
     }),
+
+    reverseFormatBudgetRecetteExt: Helper.buildObjectKeysMapper({
+      BusinessNo: "businessNo",
+      EndDate: "endDate",
+      MissionCode: "code",
+      MissionId: "name",
+      Regroupement: "regroupement",
+      StartDate: "startDate",
+      Statut: "status",
+      Montant :   ({ montant })   => montant.toString(),
+      Groupe :    ({ groupe })    => groupe.toString(),
+      InterUFO :  ({ interUfo })  => interUfo.toString(),
+      IntraUFO :  ({ intraUfo })  => intraUfo.toString(),
+      CumuleEUR : ({ cumuleEur }) => cumuleEur.toString(),
+    }),
+
     formatBudgetSubContracting: Helper.buildObjectKeysMapper({
       businessNo: "BusinessNo",
       endDate: "EndDate",
@@ -37,6 +53,22 @@ sap.ui.define([
       subContractorCoef : ({ SubContractorCoef }) => Number.parseFloat(SubContractorCoef) ? SubContractorCoef : 1,
       subContractorPartner: "SubContractorPartner",
       subContractorCumul: ({ Cumul }) => Number.parseFloat(Cumul),
+    }),
+
+    formatBudgetRecetteExt: Helper.buildObjectKeysMapper({
+      businessNo: "BusinessNo",
+      regroupement: "Regroupement",
+      name: "MissionId",
+      libelle: "Libelle",
+      code: "MissionCode",
+      status: "Statut",
+      startDate: "StartDate",
+      endDate: "EndDate",
+      montant: ({Montant}) => parseFloat(Montant),
+      groupe: ({Groupe}) => parseFloat(Groupe),
+      interUfo: ({InterUFO}) => parseFloat(InterUFO),
+      intraUfo: ({IntraUFO}) => parseFloat(IntraUFO),
+      cumuleEur: ({CumuleEUR}) => parseFloat(CumuleEUR),
     }),
 
     formatSupplier: Helper.buildObjectKeysMapper({

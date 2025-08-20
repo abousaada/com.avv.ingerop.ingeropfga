@@ -9,6 +9,7 @@ sap.ui.define(
         "./helpers/ExtendOPUiManage",
         "./helpers/BudgetPxAutre",
         "./helpers/BudgetPxSubContracting",
+        "./helpers/BudgetPxRecetteExt",
         "./helpers/Synthese"
     ],
     function (
@@ -21,6 +22,7 @@ sap.ui.define(
         ExtendOPUiManage,
         BudgetPxAutre,
         BudgetPxSubContracting,
+        BudgetPxRecetteExt,
         Synthese
     ) {
         "use strict";
@@ -51,12 +53,15 @@ sap.ui.define(
                     this._SyntheseTab.oView = this.getView();
                     //this.onPressMonthLink = this.onPressMonthLink.bind(this);
 
-                    // Initializes the Budget Px Autre Tab
+                    // Initializes the Budget Px Tab
                     this._budgetPxAutre = new BudgetPxAutre();
                     this._budgetPxAutre.oView = this.getView();
 
                     this._budgetPxSubContracting = new BudgetPxSubContracting();
                     this._budgetPxSubContracting.oView = this.getView();
+
+                    this._budgetPxRecetteExt = new BudgetPxRecetteExt();
+                    this._budgetPxRecetteExt.oView = this.getView();
 
                     this._extendOPUiManage = new ExtendOPUiManage();
                     this._extendOPUiManage.oView = this.getView();
@@ -100,11 +105,13 @@ sap.ui.define(
                             const formattedMissions = utilitiesModel.getFormattedMissions();
                             const formattedPxAutre = utilitiesModel.getFormattedPxAutre();
                             const formattedPxSubContractingExt = utilitiesModel.formattedPxSubContractingExt();
+                            const formattedPxRecetteExt = utilitiesModel.formattedPxRecetteExt();
                             const oPayload = Helper.extractPlainData({
                                 ...oContext.getObject(),
                                 "to_Missions": formattedMissions,
                                 "to_BudgetPxAutre": formattedPxAutre,
                                 "to_BudgetPxSubContracting": formattedPxSubContractingExt,
+                                "to_BudgetPxRecetteExt": formattedPxRecetteExt,
                             });
 
                             try {
@@ -277,6 +284,7 @@ sap.ui.define(
                     this.prepareMissionsTreeData();
                     this.preparePxAutreTreeData();
                     this.preparePxSubContractingTreeData();
+                    this.preparePxRecetteExtTreeData();
                 }
                 else {
 
@@ -374,6 +382,10 @@ sap.ui.define(
                 this._budgetPxAutre.preparePxAutreTreeData();
             },
 
+            preparePxRecetteExtTreeData: function(){
+                this._budgetPxRecetteExt.preparePxRecetteExtTreeData();
+            },
+
             onPxAutreSubmit: function (oEvent) {
                 if (!this._budgetPxAutre) {
                     this._budgetPxAutre = new BudgetPxAutre();
@@ -407,6 +419,20 @@ sap.ui.define(
                 }
 
                 this._budgetPxSubContracting.addNewContractor();
+            },
+
+            // ===========================================================
+            // Handle Budget Px TAB - Budget Px Recette Externe Section
+            // Handles preparation and submition budget items 
+            // in the mission  process
+            // ===========================================================
+            onChangeRecetteExtMontant(oEvent){
+                if (!this._budgetPxRecetteExt) {
+                    this._budgetPxRecetteExt = new BudgetPxRecetteExt();
+                    this._budgetPxRecetteExt.oView = this.oView;
+                }
+
+                this._budgetPxRecetteExt.reCalcRecetteTable();
             },
 
             // ==============================================

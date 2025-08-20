@@ -12,7 +12,9 @@ sap.ui.define([], function() {
         "chartsAdditionalData": [],
         "pxAutres": [],
         "pxSousTraitance":[],
+        "pxRecetteExt":[],
         "PxAutreHierarchyWithTotals": [],
+        "pxRecetteExtHierarchy": [],
         "pxSubContractingHierarchy": [],
         "pxSubContractingHeader": [
           /*{

@@ -98,6 +98,7 @@
             <table:Column
                 width="6rem"
                 headerSpan="2,2,2,2,1"
+                hAlign= "End"
             >
                 <table:multiLabels>
                     <Label
