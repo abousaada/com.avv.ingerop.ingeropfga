@@ -13,19 +13,19 @@ sap.ui.define([
 			return percent ? total + "%": total;
 		},
         formatExterne:function(montant = 0, groupe = 0){
-            montant = parseFloat(montant);
-            groupe  = parseFloat(groupe);
+            montant = parseFloat(montant || 0);
+            groupe  = parseFloat(groupe || 0);
             return montant - groupe;
         },
         formatCumulePercent:function(montant = 0, cumuleEur = 0){
-            montant     = parseFloat(montant);
-            cumuleEur   = parseFloat(cumuleEur);
-            if(!montant && !cumuleEur){ return "0 %"; }
-            return ( cumuleEur / montant * 100 ).toString() + "%";
+            montant     = parseFloat(montant || 0);
+            cumuleEur   = parseFloat(cumuleEur || 0);
+            if(!montant || !cumuleEur){ return "0 %"; }
+            return (parseFloat( cumuleEur / montant * 100 ).toFixed(2)).toString() + "%";
         },
         formatAVenir:function(montant = 0, cumuleEur = 0){
-            montant     = parseFloat(montant);
-            cumuleEur   = parseFloat(cumuleEur);
+            montant     = parseFloat(montant || 0);
+            cumuleEur   = parseFloat(cumuleEur || 0);
             return montant - cumuleEur
         },
         setNegativeRedValue: function (value, vIsFooter) {
