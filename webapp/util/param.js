@@ -458,7 +458,8 @@ sap.ui.define([
                 defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: false, modify: false },
-                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI"], default: false, create: true, modify: true },
+                // mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI"], default: false, create: true, modify: true },
+                mandatory: { type: [], default: false, create: true, modify: true },
                 action: null
             },
             Siret: {
