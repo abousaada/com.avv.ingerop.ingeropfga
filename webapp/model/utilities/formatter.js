@@ -31,11 +31,11 @@ sap.ui.define([
       Regroupement: "regroupement",
       StartDate: "startDate",
       Statut: "status",
-      Montant :   ({ montant })   => montant.toString(),
-      Groupe :    ({ groupe })    => groupe.toString(),
-      InterUFO :  ({ interUfo })  => interUfo.toString(),
-      IntraUFO :  ({ intraUfo })  => intraUfo.toString(),
-      CumuleEUR : ({ cumuleEur }) => cumuleEur.toString(),
+      Montant :   ({ montant })   => parseFloat(montant || 0).toString(),
+      Groupe :    ({ groupe })    => parseFloat(groupe || 0).toString(),
+      InterUFO :  ({ interUfo })  => parseFloat(interUfo || 0).toString(),
+      IntraUFO :  ({ intraUfo })  => parseFloat(intraUfo || 0).toString(),
+      CumuleEUR : ({ cumuleEur }) => parseFloat(cumuleEur || 0).toString(),
     }),
 
     formatBudgetSubContracting: Helper.buildObjectKeysMapper({
