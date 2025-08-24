@@ -356,8 +356,24 @@ sap.ui.define([
                 if (!oData.isNode) {
                     const aCells = oRow.getCells();
 
+                    // Type validation
+                    const typeContainer = aCells[1];
+                    if (typeContainer && typeContainer.isA("sap.m.HBox")) {
+                        const typeControl = this._findInputControl(typeContainer);
+                        if (typeControl && typeControl.setValueState) {
+                            const typeValue = this._getControlValue(typeControl);
+                            if (!typeValue) {
+                                typeControl.setValueState("Error");
+                                typeControl.setValueStateText("Type required");
+                                isValid = false;
+                            } else {
+                                typeControl.setValueState("None");
+                            }
+                        }
+                    }
+
                     // Regroupement validation
-                    const regroupementContainer = aCells[2];
+                    const regroupementContainer = aCells[3];
                     const regroupementControl = this._findInputControl(regroupementContainer);
                     if (regroupementControl && regroupementControl.setValueState) {
                         const value = this._getControlValue(regroupementControl);
@@ -370,7 +386,7 @@ sap.ui.define([
                         }
                     }
                     // Status validation 
-                    const statusContainer = aCells[3];
+                    const statusContainer = aCells[4];
                     if (statusContainer && statusContainer.isA("sap.m.HBox")) {
                         const statusControl = this._findInputControl(statusContainer);
                         if (statusControl && statusControl.setValueState) {
@@ -381,22 +397,6 @@ sap.ui.define([
                                 isValid = false;
                             } else {
                                 statusControl.setValueState("None");
-                            }
-                        }
-                    }
-
-                    // Type validation
-                    const typeContainer = aCells[4];
-                    if (typeContainer && typeContainer.isA("sap.m.HBox")) {
-                        const typeControl = this._findInputControl(typeContainer);
-                        if (typeControl && typeControl.setValueState) {
-                            const typeValue = this._getControlValue(typeControl);
-                            if (!typeValue) {
-                                typeControl.setValueState("Error");
-                                typeControl.setValueStateText("Type required");
-                                isValid = false;
-                            } else {
-                                typeControl.setValueState("None");
                             }
                         }
                     }
@@ -499,6 +499,17 @@ sap.ui.define([
             return count;
         },
 
+        onMissionCodeChange: function (oEvent) {
+            var oComboBox = oEvent.getSource();
+            var sKey = oComboBox.getSelectedKey(); // 🔑 this is the "code" from missionTypes
+
+            var sValue = oComboBox.getValue();
+            var oBindingContext = oComboBox.getBindingContext("utilities");
+
+            if (oBindingContext) {
+                oBindingContext.getModel().setProperty(oBindingContext.getPath() + "/MissionCode", sValue);
+            }
+        },
 
     });
 });

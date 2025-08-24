@@ -69,7 +69,7 @@ sap.ui.define(
                     window.addEventListener("popstate", this._cleanModification.bind(this));
                     window.addEventListener("onbeforeunload", this._cleanModification.bind(this));
                 },
-                  
+
                 // Called before the table is rebound (can be used to adjust binding parameters)
                 onBeforeRebindTableExtension: function (oEvent) {
                     console.log("onBeforeRebindTableExtension called", oEvent);
@@ -142,7 +142,7 @@ sap.ui.define(
                 },
             },
 
-            _cleanModification(){
+            _cleanModification() {
                 const oModel = this.getInterface().getView().getModel();
                 const mPendingChanges = oModel.getPendingChanges();
                 // Parcours des entités modifiées
@@ -170,7 +170,7 @@ sap.ui.define(
             onNavBack() {
                 const oHistory = sap.ui.core.routing.History.getInstance();
                 const sPreviousHash = oHistory.getPreviousHash();
-                
+
                 this._cleanModification();
 
                 if (sPreviousHash !== undefined) { window.history.go(-1); }
@@ -371,6 +371,10 @@ sap.ui.define(
                 this._missionsTab.onRefreshTree(oEvent);
             },
 
+            onMissionCodeChange: function (oEvent) {
+                this._missionsTab.onMissionCodeChange(oEvent);
+            },
+            
             // ==============================================
             // Handle Budget Px TAB - Budget Px Autres Section
             // Handles preparation and submition budget items 
@@ -382,7 +386,7 @@ sap.ui.define(
                 this._budgetPxAutre.preparePxAutreTreeData();
             },
 
-            preparePxRecetteExtTreeData: function(){
+            preparePxRecetteExtTreeData: function () {
                 this._budgetPxRecetteExt.preparePxRecetteExtTreeData();
             },
 
@@ -426,7 +430,7 @@ sap.ui.define(
             // Handles preparation and submition budget items 
             // in the mission  process
             // ===========================================================
-            onChangeRecetteExtMontant(oEvent){
+            onChangeRecetteExtMontant(oEvent) {
                 if (!this._budgetPxRecetteExt) {
                     this._budgetPxRecetteExt = new BudgetPxRecetteExt();
                     this._budgetPxRecetteExt.oView = this.oView;

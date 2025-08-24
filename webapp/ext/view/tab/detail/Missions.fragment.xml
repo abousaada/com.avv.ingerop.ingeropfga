@@ -67,6 +67,7 @@
                         <HBox>
                             <ComboBox
                                 selectedKey="{utilities>MissionCode}"
+                                value="{utilities>MissionCode}" 
                                 items="{
                                         path: 'utilities>/missionTypes',
                                         templateShareable: false
@@ -75,6 +76,7 @@
                                 width="100%"
                                 visible="{= !${utilities>isNode}}"
                                 required="true"
+                                change=".onMissionCodeChange"
                             >
                                 <core:Item
                                     key="{utilities>code}"
