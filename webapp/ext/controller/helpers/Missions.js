@@ -432,14 +432,16 @@ sap.ui.define([
         },
 
         _findInputControl: function (hboxContainer) {
-            const aItems = hboxContainer.getItems();
-            for (let i = 0; i < aItems.length; i++) {
-                const oControl = aItems[i];
-                if (oControl.isA("sap.m.Input") ||
-                    oControl.isA("sap.m.Select") ||
-                    oControl.isA("sap.m.ComboBox") ||
-                    oControl.isA("sap.m.DatePicker")) {
-                    return oControl;
+            if (hboxContainer && hboxContainer.isA && hboxContainer.isA("sap.m.HBox")) {
+                const aItems = hboxContainer.getItems();
+                for (let i = 0; i < aItems.length; i++) {
+                    const oControl = aItems[i];
+                    if (oControl.isA("sap.m.Input") ||
+                        oControl.isA("sap.m.Select") ||
+                        oControl.isA("sap.m.ComboBox") ||
+                        oControl.isA("sap.m.DatePicker")) {
+                        return oControl;
+                    }
                 }
             }
             return null;
@@ -471,16 +473,16 @@ sap.ui.define([
                 }), "localModel");
             }
 
-            this.getView().getModel("localModel").setProperty("/tableSettings/minRowCount", 
-                Math.max(rowCount, 1)); 
+            this.getView().getModel("localModel").setProperty("/tableSettings/minRowCount",
+                Math.max(rowCount, 1));
         },
 
         countRows: function (nodes) {
             if (!nodes || nodes.length === 0) return 0;
-            
+
             var count = 0;
             nodes.forEach(function (node) {
-                count++; 
+                count++;
                 if (node.isNode && !node.isL0) {
                     count++; // Add 1 for the line total
                 }
@@ -488,12 +490,12 @@ sap.ui.define([
                     count += this.countRows(node.children);
                 }
             }.bind(this));
-            
+
             // Add 4 lines for global totals 
             if (nodes[0] && nodes[0].isL0) {
                 count += 4;
             }
-            
+
             return count;
         },
 
