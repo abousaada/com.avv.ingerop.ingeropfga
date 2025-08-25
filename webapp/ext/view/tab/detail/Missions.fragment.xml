@@ -59,6 +59,39 @@
                     </table:template>
                 </table:Column>
 
+                <!-- Mission Type Column -->
+                <table:Column width="8rem">
+                    <Label text="Mission" />
+
+                    <table:template>
+                        <HBox>
+                            <ComboBox
+                                selectedKey="{utilities>MissionCode}"
+                                value="{utilities>MissionCode}" 
+                                items="{
+                                        path: 'utilities>/missionTypes',
+                                        templateShareable: false
+                                    }"
+                                editable="{ui>/editable}"
+                                width="100%"
+                                visible="{= !${utilities>isNode}}"
+                                required="true"
+                                change=".onMissionCodeChange"
+                            >
+                                <core:Item
+                                    key="{utilities>code}"
+                                    text="{utilities>description}"
+                                />
+                            </ComboBox>
+                            <Label
+                                text=""
+                                visible="{= !${utilities>isNode}}"
+                                class="sapMLabelRequired"
+                            />
+                        </HBox>
+                    </table:template>
+                </table:Column>
+
                 <!-- Description Column -->
                 <table:Column width="10rem">
                     <Label text="Description" />
@@ -105,37 +138,6 @@
                                 path: 'utilities>/missionStatus',
                                 templateShareable: false
                             }"
-                                editable="{ui>/editable}"
-                                width="100%"
-                                visible="{= !${utilities>isNode}}"
-                                required="true"
-                            >
-                                <core:Item
-                                    key="{utilities>code}"
-                                    text="{utilities>description}"
-                                />
-                            </ComboBox>
-                            <Label
-                                text=""
-                                visible="{= !${utilities>isNode}}"
-                                class="sapMLabelRequired"
-                            />
-                        </HBox>
-                    </table:template>
-                </table:Column>
-
-                <!-- Mission Type Column -->
-                <table:Column width="8rem">
-                    <Label text="Type" />
-
-                    <table:template>
-                        <HBox>
-                            <ComboBox
-                                selectedKey="{utilities>MissionCode}"
-                                items="{
-                                        path: 'utilities>/missionTypes',
-                                        templateShareable: false
-                                    }"
                                 editable="{ui>/editable}"
                                 width="100%"
                                 visible="{= !${utilities>isNode}}"

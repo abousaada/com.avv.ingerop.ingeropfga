@@ -332,11 +332,6 @@ sap.ui.define([
                 this._missionsTab = new Missions();
                 return this._missionsTab.validateMissionsTreeRequiredFields(oView);
 
-                /*var aMissions = this.getMissions();
-                if (!Filter.validateMissions(aMissions)) {
-                    return false;
-                }
-                return true;*/
             },
 
             getViewField(identifier, field){

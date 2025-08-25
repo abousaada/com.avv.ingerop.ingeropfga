@@ -356,8 +356,24 @@ sap.ui.define([
                 if (!oData.isNode) {
                     const aCells = oRow.getCells();
 
+                    // Type validation
+                    const typeContainer = aCells[1];
+                    if (typeContainer && typeContainer.isA("sap.m.HBox")) {
+                        const typeControl = this._findInputControl(typeContainer);
+                        if (typeControl && typeControl.setValueState) {
+                            const typeValue = this._getControlValue(typeControl);
+                            if (!typeValue) {
+                                typeControl.setValueState("Error");
+                                typeControl.setValueStateText("Type required");
+                                isValid = false;
+                            } else {
+                                typeControl.setValueState("None");
+                            }
+                        }
+                    }
+
                     // Regroupement validation
-                    const regroupementContainer = aCells[2];
+                    const regroupementContainer = aCells[3];
                     const regroupementControl = this._findInputControl(regroupementContainer);
                     if (regroupementControl && regroupementControl.setValueState) {
                         const value = this._getControlValue(regroupementControl);
@@ -370,7 +386,7 @@ sap.ui.define([
                         }
                     }
                     // Status validation 
-                    const statusContainer = aCells[3];
+                    const statusContainer = aCells[4];
                     if (statusContainer && statusContainer.isA("sap.m.HBox")) {
                         const statusControl = this._findInputControl(statusContainer);
                         if (statusControl && statusControl.setValueState) {
@@ -381,22 +397,6 @@ sap.ui.define([
                                 isValid = false;
                             } else {
                                 statusControl.setValueState("None");
-                            }
-                        }
-                    }
-
-                    // Type validation
-                    const typeContainer = aCells[4];
-                    if (typeContainer && typeContainer.isA("sap.m.HBox")) {
-                        const typeControl = this._findInputControl(typeContainer);
-                        if (typeControl && typeControl.setValueState) {
-                            const typeValue = this._getControlValue(typeControl);
-                            if (!typeValue) {
-                                typeControl.setValueState("Error");
-                                typeControl.setValueStateText("Type required");
-                                isValid = false;
-                            } else {
-                                typeControl.setValueState("None");
                             }
                         }
                     }
@@ -432,14 +432,16 @@ sap.ui.define([
         },
 
         _findInputControl: function (hboxContainer) {
-            const aItems = hboxContainer.getItems();
-            for (let i = 0; i < aItems.length; i++) {
-                const oControl = aItems[i];
-                if (oControl.isA("sap.m.Input") ||
-                    oControl.isA("sap.m.Select") ||
-                    oControl.isA("sap.m.ComboBox") ||
-                    oControl.isA("sap.m.DatePicker")) {
-                    return oControl;
+            if (hboxContainer && hboxContainer.isA && hboxContainer.isA("sap.m.HBox")) {
+                const aItems = hboxContainer.getItems();
+                for (let i = 0; i < aItems.length; i++) {
+                    const oControl = aItems[i];
+                    if (oControl.isA("sap.m.Input") ||
+                        oControl.isA("sap.m.Select") ||
+                        oControl.isA("sap.m.ComboBox") ||
+                        oControl.isA("sap.m.DatePicker")) {
+                        return oControl;
+                    }
                 }
             }
             return null;
@@ -471,16 +473,16 @@ sap.ui.define([
                 }), "localModel");
             }
 
-            this.getView().getModel("localModel").setProperty("/tableSettings/minRowCount", 
-                Math.max(rowCount, 1)); 
+            this.getView().getModel("localModel").setProperty("/tableSettings/minRowCount",
+                Math.max(rowCount, 1));
         },
 
         countRows: function (nodes) {
             if (!nodes || nodes.length === 0) return 0;
-            
+
             var count = 0;
             nodes.forEach(function (node) {
-                count++; 
+                count++;
                 if (node.isNode && !node.isL0) {
                     count++; // Add 1 for the line total
                 }
@@ -488,15 +490,26 @@ sap.ui.define([
                     count += this.countRows(node.children);
                 }
             }.bind(this));
-            
+
             // Add 4 lines for global totals 
             if (nodes[0] && nodes[0].isL0) {
                 count += 4;
             }
-            
+
             return count;
         },
 
+        onMissionCodeChange: function (oEvent) {
+            var oComboBox = oEvent.getSource();
+            var sKey = oComboBox.getSelectedKey(); // 🔑 this is the "code" from missionTypes
+
+            var sValue = oComboBox.getValue();
+            var oBindingContext = oComboBox.getBindingContext("utilities");
+
+            if (oBindingContext) {
+                oBindingContext.getModel().setProperty(oBindingContext.getPath() + "/MissionCode", sValue);
+            }
+        },
 
     });
 });

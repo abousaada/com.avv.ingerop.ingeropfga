@@ -34,6 +34,9 @@
             <Annotations Target="ZFGA_SRV.I_BusinessPartnerVHType/BusinessPartnerName">
                 <Annotation Term="UI.HiddenFilter"/>
             </Annotations>
+            <Annotations Target="ZFGA_SRV.I_BusinessPartnerVHType/to_FormOfAddressText">
+                <Annotation Term="UI.HiddenFilter"/>
+            </Annotations>
             <Annotations Target="ZFGA_SRV.I_BusinessPartnerVHType/FormOfAddress">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
@@ -641,7 +644,7 @@
             <Annotations Target="ZFGA_SRV.ZC_FGA_PxAutreType/Regroupement">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
-            <Annotations Target="ZFGA_SRV.ZC_FGA_PxSubContractingType/Regroupement">
+            <Annotations Target="ZFGA_SRV.ZC_FGA_PxRecetteExtType/Regroupement">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_FGA_SFGP_REPORTType/p_businessno">
