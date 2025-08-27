@@ -271,3 +271,13 @@
 .sapUiTableColHdrTr.pxHeader .sapUiTableCellInner {
     color: white !important; 
 }
+
+
+/* #RecapTable */
+.sfgpMergedText {
+  font-weight: bold !important;
+  color: #fff !important;        /* texte blanc */
+  text-align: center !important;
+  width: 100% !important;
+  display: block !important;
+}

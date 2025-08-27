@@ -565,6 +565,7 @@ sap.ui.define(
             onRowsUpdatedRecapTab: function () {
                 var stableName = "idRecapTable";
                 this.onRecapUpdated(stableName);
+                this._styleMergedRecapRow();
             },
             onRecapUpdated: function (stableName) {
                 const oTable = this.oView.byId(stableName);
@@ -632,6 +633,112 @@ sap.ui.define(
                     console.error("onRecapUpdated failed:", err);
                 }
 
+            },
+
+            _styleMergedRecapRow: function () {
+                const oTable   = this.oView.byId("idRecapTable");
+                const oBinding = oTable && oTable.getBinding("rows");
+                if (!oBinding) return;
+
+                const iLast   = oBinding.getLength() - 1; // dernière ligne
+                const iBefore = iLast - 1;                // avant-dernière ligne
+                if (iLast < 0) return;
+
+                const norm = s => (s || "").trim().toLowerCase();
+
+                // Map colId -> label normalisé
+                const aCols = oTable.getColumns();
+                const idToLabel = new Map(
+                    aCols.map(c => [c.getId(), norm(c.getLabel && c.getLabel().getText ? c.getLabel().getText() : "")])
+                );
+
+                const handleRow = (oRow, customText) => {
+                    const $row = oRow.$();
+                    if (!$row.length) return;
+
+                    setTimeout(() => {
+                    const tdSel = "td[data-sap-ui-colid]";
+                    let $cells = $row.find(tdSel);
+                    if (!$cells.length) return;
+
+                    // indices repères
+                    const colIds = $cells.map((i, td) => td.getAttribute("data-sap-ui-colid")).get();
+                    let idxCumulN1 = -1, idxAnneeEnCours = -1;
+                    for (let i = 0; i < colIds.length; i++) {
+                        const lbl = idToLabel.get(colIds[i]) || "";
+                        if (lbl === "cumul n-1") idxCumulN1 = i;
+                        if (lbl === "année en cours") idxAnneeEnCours = i;
+                    }
+                    if (idxCumulN1 < 1 && idxAnneeEnCours < 0) return;
+
+                    // ========= Fusion DROITE (fond blanc classique) =========
+                    if (idxAnneeEnCours >= 0 && idxAnneeEnCours < $cells.length) {
+                        $cells = $row.find(tdSel);
+                        const spanRight = $cells.length - idxAnneeEnCours;
+                        if (spanRight > 1) {
+                        const $start = $cells.eq(idxAnneeEnCours);
+                        $start
+                            .attr("colspan", spanRight)
+                            .css({
+                            "text-align": "center",
+                            "vertical-align": "middle",
+                            "background-color": "#fff",
+                            "color": "#000"
+                            });
+
+                        $row.find(tdSel).slice(idxAnneeEnCours + 1).remove();
+
+                        $start.find(".sapMText, .sapMLnk").css({ "display": "none" });
+                        }
+                    }
+
+                    // ========= Fusion GAUCHE (fond bleu, texte blanc) =========
+                    if (idxCumulN1 >= 1) {
+                        $cells = $row.find(tdSel); // refresh
+
+                        const colIdsNow = $cells.map((i, td) => td.getAttribute("data-sap-ui-colid")).get();
+                        let idxCumulN1Now = -1;
+                        for (let i = 0; i < colIdsNow.length; i++) {
+                        const lbl = idToLabel.get(colIdsNow[i]) || "";
+                        if (lbl === "cumul n-1") { idxCumulN1Now = i; break; }
+                        }
+
+                        if (idxCumulN1Now >= 1) {
+                        const spanLeft = idxCumulN1Now + 1;
+                        const $c0 = $cells.eq(0);
+                        $c0
+                            .attr("colspan", spanLeft)
+                            .css({
+                            "text-align": "center",
+                            "vertical-align": "middle",
+                            "background-color": "#333399",
+                            "color": "#fff"
+                            });
+
+                        $row.find(tdSel).slice(1, idxCumulN1Now + 1).remove();
+
+                        // 👉 injecte texte + classe de style
+                        const $content = $c0.find(".sapMText, .sapMLnk");
+                        if ($content.length) {
+                            $content.text(customText)
+                                    .addClass("sfgpMergedText");
+                        } else {
+                            $c0.text(customText).addClass("sfgpMergedText");
+                        }
+                        }
+                    }
+                    }, 0);
+                };
+
+                oTable.getRows().forEach((oRow) => {
+                    const idx = oRow.getIndex();
+                    if (idx === iBefore) {
+                    handleRow(oRow, "Impact super projet ajustement");
+                    }
+                    if (idx === iLast) {
+                    handleRow(oRow, "Impact super projet PAT");
+                    }
+                });
             },
             parseCellNumber: function (svalue) {
                 return parseFloat(

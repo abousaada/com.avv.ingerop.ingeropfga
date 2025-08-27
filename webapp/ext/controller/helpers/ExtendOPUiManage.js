@@ -110,7 +110,7 @@ sap.ui.define([
 
         _attachChangeEventOnFields() {
             Helper.getFieldActionList().map(({ identifier, field, action }) => {
-                this.oView.byId(Helper.headerFieldIdBySectionAndFieldName(identifier, field)).attachChange(this[action].bind(this));
+                this._getField(identifier, field)?.attachChange(this[action].bind(this));
             });
         },
 
