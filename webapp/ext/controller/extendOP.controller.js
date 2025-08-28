@@ -44,6 +44,8 @@ sap.ui.define(
 
                     this._getExtensionAPI().attachPageDataLoaded(this._onObjectExtMatched.bind(this));
 
+                    this._getExtensionAPI().getTransactionController().attachAfterCancel(this._resetViewSetUp.bind(this));
+
                     // Initializes the Create Missions tab
                     this._missionsTab = new Missions();
                     this._missionsTab.oView = this.getView();
@@ -69,6 +71,10 @@ sap.ui.define(
                     window.addEventListener("popstate", this._cleanModification.bind(this));
                     window.addEventListener("onbeforeunload", this._cleanModification.bind(this));
                 },
+
+                // onCancel:function(oEvent){
+                //     console.log("onCancel called", oEvent);
+                // },
 
                 // Called before the table is rebound (can be used to adjust binding parameters)
                 onBeforeRebindTableExtension: function (oEvent) {
@@ -106,12 +112,14 @@ sap.ui.define(
                             const formattedPxAutre = utilitiesModel.getFormattedPxAutre();
                             const formattedPxSubContractingExt = utilitiesModel.formattedPxSubContractingExt();
                             const formattedPxRecetteExt = utilitiesModel.formattedPxRecetteExt();
+                            const formattedMainOeuvre = [];
                             const oPayload = Helper.extractPlainData({
                                 ...oContext.getObject(),
                                 "to_Missions": formattedMissions,
                                 "to_BudgetPxAutre": formattedPxAutre,
                                 "to_BudgetPxSubContracting": formattedPxSubContractingExt,
                                 "to_BudgetPxRecetteExt": formattedPxRecetteExt,
+                                "to_BudgetPxMainOeuvre": formattedMainOeuvre,
                             });
 
                             try {
@@ -149,6 +157,16 @@ sap.ui.define(
                 Object.keys(mPendingChanges).forEach(function (sPath) {
                     oModel.resetChanges([`/${sPath}`]);
                 });
+            },
+
+            _resetViewSetUp(){
+                const context = this.base.getView().getBindingContext();
+                this._extendOPUiManage._setOPView(context);
+                const Percent = context.getProperty("Percent");
+                if (Percent === "P1" || Percent === "PI" || !Percent) {
+                    const oModel = this.base.getView().getModel();
+                    oModel.setProperty(context + "/Percent", "%");
+                }
             },
 
             routing: {
@@ -194,29 +212,12 @@ sap.ui.define(
                 const utilitiesModel = this.getInterface().getModel("utilities");
                 const bCreateMode = this.getView().getModel("ui").getProperty("/createMode");
 
-                const type = e.context.getProperty("Type");
-                this._extendOPUiManage._setFieldByType(type);
-
                 this._extendOPUiManage._setOPView(e.context);
 
                 const Percent = e.context.getProperty("Percent");
                 if (Percent === "P1" || Percent === "PI" || !Percent) {
                     const oModel = this.getInterface().getModel();
                     oModel.setProperty(e.context + "/Percent", "%");
-
-                    //     const mPendingChanges = oModel.getPendingChanges();
-                    //     // Parcours des entités modifiées
-                    //     Object.keys(mPendingChanges).forEach(function (sPath) {
-                    //         const oChanges = mPendingChanges[sPath];
-
-                    //         // Vérifie si la propriété 'UnitField' (ou nom réel) a été modifiée
-                    //         if (oChanges && oChanges.Percent) {
-                    //             console.log("Changement trouvé sur 'unit' pour :", sPath);
-
-                    //             // Annule juste ce changement
-                    //             oModel.resetChanges([`/${sPath}`]);
-                    //         }
-                    //     });
                 }
 
                 //1. if create

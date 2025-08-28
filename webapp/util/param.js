@@ -40,6 +40,11 @@ sap.ui.define([
                 identifier: "Identification",
                 visible: true,
             },
+
+            BusinessType: {
+                identifier: "Identification",
+                visible: false,
+            },
             BusinessName: {
                 identifier: "Identification",
                 visible: true,
@@ -224,6 +229,14 @@ sap.ui.define([
                 identifier: "Info",
                 visible: false,
             },
+            ModifyBy: {
+                identifier: "Info",
+                visible: true,
+            },
+            ModifyDate: {
+                identifier: "Info",
+                visible: true,
+            },
             // "Duree"
             StartDate: {
                 identifier: "Duree",
@@ -254,11 +267,21 @@ sap.ui.define([
                 identifier: "Identification",
                 defaultValue: { create: null, modify: null },
                 visible: { create: false, modify: true },
-                enabled: { create: true, modify: true },
+                enabled: { create: false, modify: false },
                 mandatory: { type: [], default: false, create: true, modify: true },
                 action: null
             },
+
             Type: {
+                identifier: "Identification",
+                defaultValue: { create: null, modify: null },
+                visible: { create: false, modify: false },
+                enabled: { create: true, modify: true },
+                mandatory: { type: [], default: true, create: true, modify: true },
+                action: "onTypeChange"
+            },
+
+            BusinessType: {
                 identifier: "Identification",
                 defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
@@ -619,6 +642,22 @@ sap.ui.define([
                 mandatory: { type: [], default: false, create: true, modify: true },
                 action: null
             },
+            ModifyBy: {
+                identifier: "Info",
+                defaultValue: { create: null, modify: null },
+                visible: { create: false, modify: true },
+                enabled: { create: false, modify: false },
+                mandatory: { type: [], default: false, create: false, modify: false },
+                action: null
+            },
+            ModifyDate: {
+                identifier: "Info",
+                defaultValue: { create: null, modify: null },
+                visible: { create: false, modify: true },
+                enabled: { create: false, modify: false },
+                mandatory: { type: [], default: false, create: false, modify: false },
+                action: null
+            },
             // "Duree"
             StartDate: {
                 identifier: "Duree",
@@ -664,13 +703,6 @@ sap.ui.define([
         },
         //All Section except header fields Section
         headerSectionList: {
-            // info: {
-            //     key: "com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--com.sap.vocabularies.UI.v1.FieldGroup::Info::FormGroup",
-            //     visible: {
-            //         create: false,
-            //         modify: true
-            //     }
-            // },
             summary: {
                 key: "AfterFacet::ZC_FGASet::GeneralInfo::Section",
                 visible: {
@@ -685,13 +717,6 @@ sap.ui.define([
                     modify: true
                 }
             },
-            // missions: {
-            //     key: "AfterFacet::ZC_FGASet::Missions::Section",
-            //     visible: {
-            //         create: false,
-            //         modify: false
-            //     }
-            // },
             graphic: {
                 key: "BeforeFacet::ZC_FGASet::TableInfo::Section",
                 visible: {
@@ -707,8 +732,17 @@ sap.ui.define([
                     modify: true
                 }
             },
-            
 
+            fgp: {
+                // AfterFacet|ZC_FGASet|TableInfo|1
+                key: "com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--template:::ObjectPageSection:::AfterFacetExtensionSectionWithKey:::sFacet::TableInfo:::sEntitySet::ZC_FGASet:::sFacetExtensionKey::1",
+                visible: {
+                    create: false,
+                    modify: true
+                }
+            },
+            
+            // com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--template:::ObjectPageSection:::AfterFacetExtensionSectionWithKey:::sFacet::TableInfo:::sEntitySet::ZC_FGASet:::sFacetExtensionKey::1
 
             // com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--objectPage-anchBar-com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--template:::ObjectPageSection:::AfterFacetExtensionSectionWithKey:::sFacet::GeneralInfo:::sEntitySet::ZC_FGASet:::sFacetExtensionKey::1-anchor
         }

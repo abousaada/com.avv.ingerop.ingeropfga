@@ -186,6 +186,10 @@ sap.ui.define([
       const moisDiff = d2.getMonth() - d1.getMonth();
     
       return anneeDiff * 12 + moisDiff;
+    },
+
+    isProject: function(type){
+      return type === "Z0" || type === "Z1"
     }
   };
 });

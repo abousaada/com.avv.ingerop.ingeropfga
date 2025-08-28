@@ -11,15 +11,27 @@ sap.ui.define([
         _setFieldByType(type){
             this._setMandatoryFieldByType(type);
             this._setVisibleFieldByType(type);
-            // this._setVisibleFieldByType("Z0");
             this._setVisibleFieldGroupByType(type);
         },
 
         _setOPView(context) {
+            //set Tabs visibilities
             this._setTabsVisible();
-            // this._setFieldVisible();
-            this._attachChangeEventOnFields();
+
+            // const type = context.getProperty("BusinessType");
+            const type = context.getProperty("Type");
+            
+            if(Helper.isProject(type)){
+                this._setProjectFieldEnabled();
+                this._setProjectFieldVisible();
+                this._setProjectFieldGroupVisible(type);
+                return;
+            }
+
             this._setFieldEnabled();
+            this._setFieldVisible();
+            this._attachChangeEventOnFields();
+            this._setMandatoryFieldByType(type);
             this._setFieldDefaultValue(context);
         },
 
@@ -97,6 +109,13 @@ sap.ui.define([
             ];
             uomEditable.forEach(({identifier, field}) => {
                 this._getField(identifier, field)?.setUomEditable(false);
+            });
+        },
+
+        _setProjectFieldEnabled() {
+            const isCreateMode = this.oView.getModel("ui").getProperty("/createMode");
+            Helper.getFieldEnabledByMode(isCreateMode).map(({ identifier, field, enabled }) => {
+                this._getField(identifier, field)?.setEditable(enabled);
             });
         },
 
