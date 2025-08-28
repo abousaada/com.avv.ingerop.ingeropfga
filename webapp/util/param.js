@@ -286,7 +286,7 @@ sap.ui.define([
                 defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
-                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI"], default: true, create: true, modify: true },
+                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI","PC"], default: true, create: true, modify: true },
                 action: "onTypeChange"
             },
             BusinessName: {
@@ -294,7 +294,7 @@ sap.ui.define([
                 defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
-                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI"], default: false, create: true, modify: true },
+                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI","PC"], default: false, create: true, modify: true },
                 action: null
             },
             BusinessStatus: {
@@ -310,7 +310,7 @@ sap.ui.define([
                 defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
-                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI"], default: false, create: true, modify: true },
+                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI","PC"], default: false, create: true, modify: true },
                 action: null
             },
             CDG: {
@@ -318,7 +318,7 @@ sap.ui.define([
                 defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
-                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI"], default: false, create: true, modify: true },
+                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI","PC"], default: false, create: true, modify: true },
                 action: 'onCDGChange'
             },
             CompanyCode: {
@@ -358,7 +358,7 @@ sap.ui.define([
                 defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
-                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI"], default: false, create: true, modify: true },
+                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI","PC"], default: false, create: true, modify: true },
                 action: null
             },
             Site: {
@@ -366,7 +366,7 @@ sap.ui.define([
                 defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: false },
                 enabled: { create: true, modify: true },
-                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI"], default: false, create: true, modify: true },
+                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI","PC"], default: false, create: true, modify: true },
                 action: null
             },
             International: {
@@ -374,7 +374,7 @@ sap.ui.define([
                 defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: false },
                 enabled: { create: true, modify: true },
-                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI"], default: false, create: true, modify: true },
+                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI","PC"], default: false, create: true, modify: true },
                 action: null
             },
             AncienNumero: {
@@ -439,7 +439,7 @@ sap.ui.define([
                 defaultValue: { create: 20, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
-                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI"], default: false, create: true, modify: true },
+                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI","PC"], default: false, create: true, modify: true },
                 action: null
             },
             Currency: {
@@ -447,7 +447,7 @@ sap.ui.define([
                 defaultValue: { create: "EUR", modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
-                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI"], default: false, create: true, modify: true },
+                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI","PC"], default: false, create: true, modify: true },
                 action: "onCurrencyChange"
             },
 
@@ -664,7 +664,7 @@ sap.ui.define([
                 defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
-                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI"], default: false, create: true, modify: true },
+                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI","PC"], default: false, create: true, modify: true },
                 action: "onDateChange"
             },
             EndDate: {
@@ -672,7 +672,7 @@ sap.ui.define([
                 defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
-                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI"], default: false, create: true, modify: true },
+                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI","PC"], default: false, create: true, modify: true },
                 action: "onDateChange"
             },
             NbOfMonth: {
