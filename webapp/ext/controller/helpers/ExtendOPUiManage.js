@@ -24,10 +24,11 @@ sap.ui.define([
             if(Helper.isProject(type)){
                 this._setProjectFieldEnabled();
                 this._setProjectFieldVisible();
-                this._setProjectFieldGroupVisible(type);
+                // this._setProjectFieldGroupVisible(type);
                 return;
             }
 
+            this._setProjectFieldGroupVisible(type);
             this._setFieldEnabled();
             this._setFieldVisible();
             this._attachChangeEventOnFields();
