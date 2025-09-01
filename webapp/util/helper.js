@@ -168,6 +168,7 @@ sap.ui.define([
     errorMessage: function(message){
       return MessageBox.error(message);
     },
+    
     headerFieldIdBySectionAndFieldName: function(identifiant, champ){
       if(!identifiant || !champ){ return ;}
       return `com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--com.sap.vocabularies.UI.v1.FieldGroup::${identifiant}::${champ}::Field`;

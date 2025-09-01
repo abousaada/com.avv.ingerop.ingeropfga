@@ -118,26 +118,46 @@ sap.ui.define([
 
     /* ===== Navigation sur clic du lien (ignore la ligne footer) ===== */
     onPressFGALink: function (oEvent) {
-      const oCtx = oEvent.getSource().getBindingContext("utilities");
-      if (!oCtx) return;
+      // const oCtx = oEvent.getSource().getBindingContext("utilities");
+      // if (!oCtx) return;
 
-      const vFlag = oCtx.getProperty("isFooter");
-      const isFooter = (vFlag === true || vFlag === "X" || vFlag === 1 || vFlag === "1");
-      if (isFooter) return; // pas de nav sur la ligne total
+      // const vFlag = oCtx.getProperty("isFooter");
+      // const isFooter = (vFlag === true || vFlag === "X" || vFlag === 1 || vFlag === "1");
+      // if (isFooter) return; // pas de nav sur la ligne total
 
-      const period     = this.getView().getModel("utilities").getProperty("/period");
-      const businessNo = oCtx.getProperty("business_no");
+      // const period     = this.getView().getModel("utilities").getProperty("/period");
+      // const businessNo = oCtx.getProperty("business_no");
 
-      // clé OData sûre
-      const oMainModel = this.getOwnerComponent().getModel();
-      const sKeyPath   = oMainModel.createKey("/ZC_FGASet", {
-        p_period  : period,
-        BusinessNo: businessNo
-      }); // "/ZC_FGASet(p_period='...',BusinessNo='...')"
+      // // clé OData sûre
+      // const oMainModel = this.getOwnerComponent().getModel();
+      // const sKeyPath   = oMainModel.createKey("/ZC_FGASet", {
+      //   p_period  : period,
+      //   BusinessNo: businessNo
+      // }); // "/ZC_FGASet(p_period='...',BusinessNo='...')"
 
-      // nav via router FE (clé attendue dans {keys1})
-      const sKeys1 = sKeyPath.slice(sKeyPath.indexOf("(")); // "(...)"
-      this.getOwnerComponent().getRouter().navTo("ZC_FGASet", { keys1: sKeys1 });
+      // // nav via router FE (clé attendue dans {keys1})
+      // const sKeys1 = sKeyPath.slice(sKeyPath.indexOf("(")); // "(...)"
+      // this.getOwnerComponent().getRouter().navTo("ZC_FGASet", { keys1: sKeys1 });
+        const oCtx = oEvent.getSource().getBindingContext("utilities");
+        if (!oCtx) return;
+
+        const vFlag = oCtx.getProperty("isFooter");
+        if (vFlag === true || vFlag === "X" || vFlag === 1 || vFlag === "1") return;
+
+        const period     = this.getModel("utilities").getProperty("/period");
+        const businessNo = oCtx.getProperty("business_no");
+
+        const oMainModel = this.getInterface().getModel(); // modèle OData principal
+        const sKeyPath   = oMainModel.createKey("/ZC_FGASet", {
+          p_period  : period,
+          BusinessNo: businessNo
+        }); // "/ZC_FGASet(p_period='...',BusinessNo='...')"
+
+        // Construit un BindingContext sur la cible
+        const oTargetCtx = oMainModel.createBindingContext(sKeyPath);
+
+        // 👉 Laisse Fiori Elements faire la nav (remplace l’URL pour éviter l’empilement “Back” cassé)
+        this._getExtensionAPI().navigateTo(oTargetCtx, /* bReplace */ true);
     }
   });
 });

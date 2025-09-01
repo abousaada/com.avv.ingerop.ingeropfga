@@ -10,7 +10,7 @@ sap.ui.define(
         "./helpers/BudgetPxAutre",
         "./helpers/BudgetPxSubContracting",
         "./helpers/BudgetPxRecetteExt",
-        "./helpers/Synthese"
+        "./helpers/Synthese",
     ],
     function (
         ControllerExtension,
@@ -26,7 +26,7 @@ sap.ui.define(
         Synthese
     ) {
         "use strict";
-
+        var PROJET_TYPE = null;
         return ControllerExtension.extend("com.avv.ingerop.ingeropfga.ext.controller.extendOP", {
             Formatter: Formatter,
             // Override or add custom methods here
@@ -219,6 +219,8 @@ sap.ui.define(
                     const oModel = this.getInterface().getModel();
                     oModel.setProperty(e.context + "/Percent", "%");
                 }
+
+                PROJET_TYPE = e.context ? e.context.getProperty("Type") : null;
 
                 //1. if create
                 if (bCreateMode) { utilitiesModel.reInit(); return }
@@ -734,13 +736,24 @@ sap.ui.define(
                 oTable.getRows().forEach((oRow) => {
                     const idx = oRow.getIndex();
                     if (idx === iBefore) {
-                    handleRow(oRow, "Impact super projet ajustement");
+                        if (PROJET_TYPE === "Z0"){
+                            handleRow(oRow, "Impact super projet ajustement");
+                        } 
+                        else if (PROJET_TYPE === "Z1"){
+                            handleRow(oRow, "Impact projet ajustement");
+                        }
                     }
                     if (idx === iLast) {
-                    handleRow(oRow, "Impact super projet PAT");
+                        if (PROJET_TYPE === "Z0"){
+                            handleRow(oRow, "Impact super projet PAT");
+                        } 
+                        else if (PROJET_TYPE === "Z1"){
+                            handleRow(oRow, "Impact projet PAT");
+                        }
                     }
                 });
             },
+
             parseCellNumber: function (svalue) {
                 return parseFloat(
                     String(svalue)
