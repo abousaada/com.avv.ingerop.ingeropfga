@@ -157,6 +157,7 @@ sap.ui.define(
                 Object.keys(mPendingChanges).forEach(function (sPath) {
                     oModel.resetChanges([`/${sPath}`]);
                 });
+                oModel.refresh(true);
             },
 
             _resetViewSetUp(){
@@ -165,7 +166,7 @@ sap.ui.define(
                 const Percent = context.getProperty("Percent");
                 if (Percent === "P1" || Percent === "PI" || !Percent) {
                     const oModel = this.base.getView().getModel();
-                    oModel.setProperty(context + "/Percent", "%");
+                    oModel.setProperty(context.getPath() + "/Percent", "%");
                 }
             },
 
@@ -217,7 +218,7 @@ sap.ui.define(
                 const Percent = e.context.getProperty("Percent");
                 if (Percent === "P1" || Percent === "PI" || !Percent) {
                     const oModel = this.getInterface().getModel();
-                    oModel.setProperty(e.context + "/Percent", "%");
+                    oModel.setProperty(e.context.getPath() + "/Percent", "%");
                 }
 
                 //1. if create
