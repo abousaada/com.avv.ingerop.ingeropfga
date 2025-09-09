@@ -10,6 +10,7 @@ sap.ui.define(
         "./helpers/BudgetPxAutre",
         "./helpers/BudgetPxSubContracting",
         "./helpers/BudgetPxRecetteExt",
+        "./helpers/BudgetPxMainOeuvre",
         "./helpers/Synthese",
     ],
     function (
@@ -23,6 +24,7 @@ sap.ui.define(
         BudgetPxAutre,
         BudgetPxSubContracting,
         BudgetPxRecetteExt,
+        BudgetPxMainOeuvre,
         Synthese
     ) {
         "use strict";
@@ -64,6 +66,10 @@ sap.ui.define(
 
                     this._budgetPxRecetteExt = new BudgetPxRecetteExt();
                     this._budgetPxRecetteExt.oView = this.getView();
+
+                    this._budgetMainOeuvre = new BudgetPxMainOeuvre();
+                    this._budgetMainOeuvre.oView = this.getView();
+                    
 
                     this._extendOPUiManage = new ExtendOPUiManage();
                     this._extendOPUiManage.oView = this.getView();
@@ -112,7 +118,7 @@ sap.ui.define(
                             const formattedPxAutre = utilitiesModel.getFormattedPxAutre();
                             const formattedPxSubContractingExt = utilitiesModel.formattedPxSubContractingExt();
                             const formattedPxRecetteExt = utilitiesModel.formattedPxRecetteExt();
-                            const formattedMainOeuvre = [];
+                            const formattedMainOeuvre = utilitiesModel.formattedPxMainOeuvre();
                             const oPayload = Helper.extractPlainData({
                                 ...oContext.getObject(),
                                 "to_Missions": formattedMissions,
@@ -289,6 +295,7 @@ sap.ui.define(
                     this.preparePxAutreTreeData();
                     this.preparePxSubContractingTreeData();
                     this.preparePxRecetteExtTreeData();
+                    this.preparePxMainOeuvreTreeData();
                 }
                 else {
 
@@ -390,10 +397,6 @@ sap.ui.define(
                 this._budgetPxAutre.preparePxAutreTreeData();
             },
 
-            preparePxRecetteExtTreeData: function () {
-                this._budgetPxRecetteExt.preparePxRecetteExtTreeData();
-            },
-
             onPxAutreSubmit: function (oEvent) {
                 if (!this._budgetPxAutre) {
                     this._budgetPxAutre = new BudgetPxAutre();
@@ -441,6 +444,28 @@ sap.ui.define(
                 }
 
                 this._budgetPxRecetteExt.reCalcRecetteTable();
+            },
+
+            preparePxRecetteExtTreeData: function () {
+                this._budgetPxRecetteExt.preparePxRecetteExtTreeData();
+            },
+
+            // ===========================================================
+            // Handle Budget Px TAB - Budget Px Main d'oeuvre Section
+            // Handles preparation and submition budget items 
+            // in the mission  process
+            // ===========================================================
+            onChangeMainOeuvreMontant(oEvent) {
+                if (!this._budgetPxRecetteExt) {
+                    this._budgetPxRecetteExt = new BudgetPxRecetteExt();
+                    this._budgetPxRecetteExt.oView = this.oView;
+                }
+
+                this._budgetPxRecetteExt.reCalcMainOeuvreTable();
+            },
+
+            preparePxMainOeuvreTreeData: function () {
+                this._budgetMainOeuvre.preparePxMainOeuvreTreeData();
             },
 
             // ==============================================
