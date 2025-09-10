@@ -101,6 +101,7 @@ sap.ui.define([
                     new sap.m.Label({ text: "{i18n>budget.main.oeuvre.jours.conso}" }),
                     new sap.m.Label({ text: profilDescription }),
                     new sap.m.Label(),
+                    new sap.m.Label(),
                 ],
                 template: new sap.m.HBox({
                     items: [
@@ -126,6 +127,7 @@ sap.ui.define([
                     new sap.m.Label({ text: "{i18n>budget.main.oeuvre.jours.rest}" }),
                     new sap.m.Label({ text: profilDescription }),
                     new sap.m.Label({ text: tjm }),
+                    new sap.m.Label(),
                 ],
                 template: new sap.m.HBox({
                     items: [
@@ -163,6 +165,7 @@ sap.ui.define([
                 multiLabels: [
                     new sap.m.Label(),
                     new sap.m.Label(),
+                    new sap.m.Label(),
                     new sap.m.Label({ text: "{i18n>budget.main.oeuvre.avenir}" }),
                 ],
                 template: new sap.m.HBox({
@@ -188,6 +191,7 @@ sap.ui.define([
                 multiLabels: [
                     new sap.m.Label({ text: "{i18n>budget.main.oeuvre.budget}" }),
                     new sap.m.Label({ text: profilDescription }),
+                    new sap.m.Label(),
                     new sap.m.Label(),
                 ],
                 template: new sap.m.HBox({
@@ -222,6 +226,7 @@ sap.ui.define([
                 multiLabels: [
                     new sap.m.Label(),
                     new sap.m.Label(),
+                    new sap.m.Label(),
                     new sap.m.Label({ text: "{i18n>budget.main.oeuvre.fin.affaire}" }),
                 ],
                 template: new sap.m.HBox({
@@ -253,6 +258,7 @@ sap.ui.define([
                 multiLabels: [
                     new sap.m.Label({ text: "{i18n>budget.main.oeuvre.avancement}" }),
                     new sap.m.Label(),
+                    new sap.m.Label(),
                     new sap.m.Label({ text: "{i18n>budget.main.oeuvre.real}" }),
                 ],
                 template: new sap.m.HBox({
@@ -276,6 +282,7 @@ sap.ui.define([
                 hAlign: "Center",
                 multiLabels: [
                     new sap.m.Label({ text: "{i18n>budget.main.oeuvre.avancement}" }),
+                    new sap.m.Label(),
                     new sap.m.Label(),
                     new sap.m.Label({ text: "{i18n>budget.main.oeuvre.physique}" }),
                 ],
@@ -316,6 +323,7 @@ sap.ui.define([
                 hAlign: "Center",
                 multiLabels: [
                     new sap.m.Label({ text: "{i18n>budget.main.oeuvre.avancement}" }),
+                    new sap.m.Label(),
                     new sap.m.Label(),
                     new sap.m.Label({ text: "{i18n>budget.main.oeuvre.ecart}" }),
                 ],

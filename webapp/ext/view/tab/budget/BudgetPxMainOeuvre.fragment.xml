@@ -47,6 +47,7 @@
                 <table:multiLabels>
                     <Label text="" />
                     <Label text="" />
+                    <Label text="" />
                     <Label text="{i18n>budget.main.oeuvre.missionHiearchie}" />
                 </table:multiLabels>
                 <table:template>
@@ -60,6 +61,7 @@
                 <table:multiLabels>
                     <Label text="" />
                     <Label text="" />
+                    <Label text="" />
                     <Label text="{i18n>budget.main.oeuvre.missionCode}" />
                 </table:multiLabels>
                 <table:template>
@@ -71,6 +73,7 @@
                 <table:multiLabels>
                     <Label text="" />
                     <Label text="" />
+                    <Label text="" />
                     <Label text="{i18n>budget.main.oeuvre.missionLibelle}" />
                 </table:multiLabels>
                 <table:template>
@@ -79,6 +82,7 @@
             </table:Column>
             <table:Column width="4rem" headerSpan="6,1" hAlign= "Center">
                 <table:multiLabels>
+                    <Label text="" />
                     <Label text="" />
                     <Label text="" />
                     <Label text="{i18n>budget.main.oeuvre.missionStatus}" />
@@ -109,6 +113,7 @@
                 <table:multiLabels>
                     <Label text="" />
                     <Label text="" />
+                    <Label text="" />
                     <Label text="{i18n>budget.main.oeuvre.startDate}" />
                 </table:multiLabels>
                 <table:template>
@@ -129,6 +134,7 @@
             </table:Column>
             <table:Column width="6rem" headerSpan="6,1" hAlign= "Center">
                 <table:multiLabels>
+                    <Label text="" />
                     <Label text="" />
                     <Label text="" />
                     <Label text="{i18n>budget.main.oeuvre.endDate}" />
@@ -155,6 +161,7 @@
                 <table:multiLabels>
                     <Label text="" />
                     <Label text="" />
+                    <Label text="" />
                     <Label text="{i18n>budget.main.oeuvre.nbMois}" />
                 </table:multiLabels>
                 <table:template>
@@ -173,6 +180,7 @@
             <!-- Cumul -->
             <table:Column width="8rem" headerSpan="1,1,1" hAlign= "End">
                 <table:multiLabels>
+                    <Label text="" />
                     <Label text="{i18n>budget.main.oeuvre.profil}" />
                     <Label text="{i18n>budget.main.oeuvre.tx.journ}" />
                     <Label text="{i18n>budget.main.oeuvre.cumul}" />
