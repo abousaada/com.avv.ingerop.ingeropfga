@@ -145,15 +145,15 @@ sap.ui.define([], function () {
               globalTotal[prop] += (parseFloat(child[prop]|| 0) );
               totalLine[prop]   += (parseFloat(child[prop]|| 0) );
             });
-            Object.keys(treeHeader).forEach(columnId => { 
+            Object.values(treeHeader).forEach(({ columnId, tjm }) => { 
               const restColumnId  = columnId + this._CONSTANT_COLUMN_REST;
               const consoColumnId = columnId + this._CONSTANT_COLUMN_CONSO;
 
-              globalTotal[restColumnId] += (parseFloat(child[restColumnId]|| 0) );
-              totalLine[restColumnId]   += (parseFloat(child[restColumnId]|| 0) );
+              globalTotal[restColumnId] += (parseFloat(child[restColumnId]|| 0) * ( tjm || 0 ) );
+              totalLine[restColumnId]   += (parseFloat(child[restColumnId]|| 0) * ( tjm || 0 ) );
 
-              globalTotal[consoColumnId] += (parseFloat(child[consoColumnId]|| 0) );
-              totalLine[consoColumnId]   += (parseFloat(child[consoColumnId]|| 0) );
+              globalTotal[consoColumnId] += (parseFloat(child[consoColumnId]|| 0) * ( tjm || 0 ) );
+              totalLine[consoColumnId]   += (parseFloat(child[consoColumnId]|| 0) * ( tjm || 0 ) );
             });
           }
         }
@@ -200,10 +200,10 @@ sap.ui.define([], function () {
             globalTotal[prop] += (parseFloat(child[prop] || 0) );
           });
 
-          treeHeader.forEach(({ columnId }) => { 
+          treeHeader.forEach(({ columnId, tjm }) => { 
             const prop = columnId + this._CONSTANT_COLUMN_REST
-            totalLine[prop]   += (parseFloat(child[prop] || 0) );
-            globalTotal[prop] += (parseFloat(child[prop] || 0) );
+            totalLine[prop]   += (parseFloat(child[prop] || 0) * ( tjm || 0 ) );
+            globalTotal[prop] += (parseFloat(child[prop] || 0) * ( tjm || 0 ));
           });
 
         }

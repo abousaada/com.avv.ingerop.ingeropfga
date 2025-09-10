@@ -355,10 +355,20 @@ sap.ui.define([
             if (!rowData) { return; }
             if (!rowData.isBudget && !rowData.isTotal) { return; }
             const header = this.getUtilitiesModel().getPxMainOeuvreHeader();
-            return header.reduce((acc, cur) => {
-                const prop = cur.columnId + this._CONSTANT_COLUMN_REST;
-                return acc + parseFloat(rowData[prop] || 0) * parseFloat(cur.tjm || 0);
-            }, 0);
+            if(rowData.isBudget){
+                return header.reduce((acc, cur) => {
+                    const prop = cur.columnId + this._CONSTANT_COLUMN_REST;
+                    return acc + parseFloat(rowData[prop] || 0) * parseFloat(cur.tjm || 0);
+                }, 0);
+            }
+
+            if(rowData.isTotal){
+                return header.reduce((acc, cur) => {
+                    const prop = cur.columnId + this._CONSTANT_COLUMN_REST;
+                    return acc + parseFloat(rowData[prop] || 0);
+                }, 0);
+            }
+            
         },
 
         formatFinAffaire(rowData) {

@@ -60,13 +60,13 @@ sap.ui.define([
       status: "Statut",
       startDate: "StartDate",
       endDate: "EndDate",
-      nbJoursConso: "NbJoursConso",
-      nbJoursRest: "NbJoursRest",
-      physique: "Physique",
-      tjm: "Tjm",
+      nbJoursConso: ({ NbJoursConso })   => parseFloat(NbJoursConso || 0).toString(),
+      nbJoursRest: ({ NbJoursRest })   => parseFloat(NbJoursRest || 0).toString(),
+      physique:  ({ Physique })   => parseFloat(Physique || 0).toString(),
+      tjm: ({ Tjm })   => parseFloat(Tjm || 0).toString(),
       profil: "Profil",
       profilDescription: "ProfilDescription",
-      cumul : "Cumul"
+      cumul : ({ Cumul })   => parseFloat(Cumul || 0).toString(),
     }),
     
     //Formatter Out
@@ -110,13 +110,13 @@ sap.ui.define([
       Regroupement: "regroupement",
       StartDate: "startDate",
       Statut: "status",
-      NbJoursConso : "nbJoursConso",
-      NbJoursRest : "nbJoursRest",
-      Physique : "physique",
-      Tjm : "tjm",
+      NbJoursConso  :  ({ nbJoursConso })   => parseFloat(nbJoursConso || 0).toString(),
+      NbJoursRest   :  ({ nbJoursRest })    => parseFloat(nbJoursRest || 0).toString(),
+      Physique      :  ({ physique })       => parseFloat(physique || 0).toString(),
+      Tjm           :  ({ tjm })            => parseFloat(tjm || 0).toString(),
       Profil: "profil",
       ProfilDescription: "profilDescription",
-      Cumul : "cumul"
+      Cumul : ({ cumul })       => parseFloat(cumul || 0).toString(),
     }),
   };
 });
