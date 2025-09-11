@@ -7,10 +7,10 @@
     xmlns:rm="sap.ui.table.rowmodes"
 >
     <table:TreeTable
-        class="budgetRecetteExtTab"
-        id="BudgetPxRecettesTreeTableId"
+        class="budgetMainOeuvreTab"
+        id="BudgetPxMainOeuvreTreeTableId"
         rows="{
-            path: 'utilities>/pxRecetteExtHierarchy',
+            path: 'utilities>/pxMainOeuvreHierarchy',
             parameters: {
                 arrayNames: ['children'],
                 numberOfExpandedLevels: 3
@@ -20,7 +20,7 @@
         ariaLabelledBy="title"
         enableColumnReordering="false"
         fixedColumnCount="1"
-        rowsUpdated="onRowsUpdatedBudgetPXRecetteTab"
+        rowsUpdated="onRowsUpdatedBudgetPXMainOeuvreTab"
     >
         <table:rowMode>
             <rm:Auto minRowCount= "{localModel>/tableSettings/minRowCount}" />
@@ -46,7 +46,9 @@
             <table:Column width="17rem" hAlign= "Center" >
                 <table:multiLabels>
                     <Label text="" />
-                    <Label text="{i18n>budget.recette.missionHiearchie}" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.main.oeuvre.missionHiearchie}" />
                 </table:multiLabels>
                 <table:template>
                     <VBox>
@@ -57,8 +59,10 @@
 
             <table:Column width="4rem" headerSpan="6,1" hAlign= "Center">
                 <table:multiLabels>
-                    <Label text="{i18n>budget.recette.extern.contract}" />
-                    <Label text="{i18n>budget.recette.missionCode}" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.main.oeuvre.missionCode}" />
                 </table:multiLabels>
                 <table:template>
                     <Text text="{utilities>code}" />
@@ -67,8 +71,10 @@
 
             <table:Column width="5rem" headerSpan="6,1" hAlign= "Center">
                 <table:multiLabels>
-                    <Label text="{i18n>budget.recette.extern.contract}" />
-                    <Label text="{i18n>budget.recette.missionLibelle}" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.main.oeuvre.missionLibelle}" />
                 </table:multiLabels>
                 <table:template>
                     <Text text="{utilities>libelle}" />
@@ -76,18 +82,20 @@
             </table:Column>
             <table:Column width="4rem" headerSpan="6,1" hAlign= "Center">
                 <table:multiLabels>
-                    <Label text="{i18n>budget.recette.extern.contract}" />
-                    <Label text="{i18n>budget.recette.missionStatus}" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.main.oeuvre.missionStatus}" />
                 </table:multiLabels>
                 <table:template>
                     <Text text="{utilities>status}" />
                 </table:template>
             </table:Column>
 
-            <table:Column width="7rem" headerSpan="6,1" hAlign= "Center">
+            <!-- <table:Column width="7rem" headerSpan="6,1" hAlign= "Center">
                 <table:multiLabels>
-                    <Label text="{i18n>budget.recette.extern.contract}" />
-                    <Label text="{i18n>budget.recette.montant}" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.main.oeuvre.montant}" />
                 </table:multiLabels>
                 <table:template>
                 <HBox visible="{= !!${utilities>isBudget} || !!${utilities>isTotal} }">
@@ -99,12 +107,14 @@
                     />
                 </HBox>
                 </table:template>
-            </table:Column>
+            </table:Column> -->
 
             <table:Column width="6rem" headerSpan="6,1" hAlign= "Center">
                 <table:multiLabels>
-                    <Label text="{i18n>budget.recette.extern.contract}" />
-                    <Label text="{i18n>budget.recette.startDate}" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.main.oeuvre.startDate}" />
                 </table:multiLabels>
                 <table:template>
                     <HBox>
@@ -124,8 +134,10 @@
             </table:Column>
             <table:Column width="6rem" headerSpan="6,1" hAlign= "Center">
                 <table:multiLabels>
-                    <Label text="{i18n>budget.recette.extern.contract}" />
-                    <Label text="{i18n>budget.recette.endDate}" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.main.oeuvre.endDate}" />
                 </table:multiLabels>
                 <table:template>
                     <HBox>
@@ -144,42 +156,61 @@
                 </table:template>
             </table:Column>
 
-            <table:Column width="7rem" headerSpan="4,1" hAlign= "Center">
+            <!-- Nombre Mois -->
+            <table:Column width="7rem" headerSpan="6,1" hAlign= "Center">
                 <table:multiLabels>
-                    <Label text="{i18n>budget.recette.acquise}" />
-                    <Label text="{i18n>budget.recette.externe}" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.main.oeuvre.nbMois}" />
                 </table:multiLabels>
                 <table:template>
                 <HBox>
-                    <Text 
-                        text="{
-                            parts: [
-                                { path: 'utilities>montant' },
-                                { path: 'utilities>groupe' }
-                            ], 
-                            formatter:'.Formatter.formatExterne' 
-                        }"
-                        visible="{= !!${utilities>isBudget} || !!${utilities>isTotal} }"/>
+                    <Text text="{
+                        parts: [
+                            { path: 'utilities>startDate' },
+                            { path: 'utilities>endDate' }
+                        ], 
+                        formatter:'.Formatter.formatNbMois' 
+                    }" />
                 </HBox>
                 </table:template>
             </table:Column>
 
-            <table:Column width="7rem" headerSpan="4,1" hAlign= "Center">
+            <!-- Cumul -->
+            <table:Column width="8rem" headerSpan="1,1,1" hAlign= "End">
                 <table:multiLabels>
-                    <Label text="{i18n>budget.recette.acquise}" />
-                    <Label text="{i18n>budget.recette.groupe}" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.main.oeuvre.profil}" />
+                    <Label text="{i18n>budget.main.oeuvre.tx.journ}" />
+                    <Label text="{i18n>budget.main.oeuvre.cumul}" />
+                </table:multiLabels>
+                <table:template>
+                <HBox>
+                    <Text text="{utilities>cumul}"/>
+                </HBox>
+                </table:template>
+            </table:Column>
+
+            <!-- Avenir
+            <table:Column width="7rem" headerSpan="1,1,1" hAlign= "Center">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.main.oeuvre.avenir}" />
                 </table:multiLabels>
                 <table:template>
                     <HBox>
-                        <Text   text="{utilities>groupe}"/>
+                        <Text   text="{utilities>avenir}"/>
                     </HBox>
                 </table:template>
             </table:Column>
 
-            <table:Column width="7rem" headerSpan="4,1" hAlign= "Center">
+            <table:Column width="7rem" headerSpan="1,1,1" hAlign= "Center">
                 <table:multiLabels>
-                    <Label text="{i18n>budget.recette.acquise}" />
-                    <Label text="{i18n>budget.recette.interUFO}" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.main.oeuvre.fin.affaire}" />
                 </table:multiLabels>
                 <table:template>
                     <HBox>
@@ -188,10 +219,11 @@
                 </table:template>
             </table:Column>
 
-            <table:Column width="7rem" headerSpan="4,1" hAlign= "Center">
+            <table:Column width="7rem" headerSpan="3,1,1" hAlign= "Center">
                 <table:multiLabels>
-                    <Label text="{i18n>budget.recette.acquise}" />
-                    <Label text="{i18n>budget.recette.intraUFO}" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.main.oeuvre.real}" />
                 </table:multiLabels>
                 <table:template>
                     <HBox>
@@ -200,10 +232,11 @@
                 </table:template>
             </table:Column>
 
-            <table:Column width="7rem" headerSpan="3,1" hAlign= "Center">
+            <table:Column width="7rem" headerSpan="3,1,1" hAlign= "Center">
                 <table:multiLabels>
-                    <Label text="{i18n>budget.recette.fact.extern.m}" />
-                    <Label text="{i18n>budget.recette.cumuleEur}" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.main.oeuvre.physique}" />  
                 </table:multiLabels>
                 <table:template>
                     <HBox>
@@ -212,10 +245,11 @@
                 </table:template>
             </table:Column>
 
-            <table:Column width="7rem" headerSpan="3,1" hAlign= "Center">
+            <table:Column width="7rem" headerSpan="3,1,1" hAlign= "Center">
                 <table:multiLabels>
-                    <Label text="{i18n>budget.recette.fact.extern.m}" />
-                    <Label text="{i18n>budget.recette.cumulePercent}" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.main.oeuvre.ecart}" />
                 </table:multiLabels>
                 <table:template>
                     <HBox>
@@ -230,27 +264,7 @@
                             visible="{= !!${utilities>isBudget} || !!${utilities>isTotal} }"/>
                     </HBox>
                 </table:template>
-            </table:Column>
-
-            <table:Column width="7rem" headerSpan="3,1" hAlign= "Center">
-                <table:multiLabels>
-                    <Label text="{i18n>budget.recette.fact.extern.m}" />
-                    <Label text="{i18n>budget.recette.aVenir}" />
-                </table:multiLabels>
-                <table:template>
-                    <HBox>
-                        <Text   
-                            text="{
-                                parts: [
-                                    { path: 'utilities>montant' },
-                                    { path: 'utilities>cumuleEur' }
-                                ], 
-                                formatter:'.Formatter.formatAVenir' 
-                            }"
-                            visible="{= !!${utilities>isBudget} || !!${utilities>isTotal} }" />
-                    </HBox>
-                </table:template>
-            </table:Column>
+            </table:Column> -->
 
         </table:columns>
     </table:TreeTable>

@@ -1,5 +1,6 @@
 sap.ui.define([
-], function () {
+    "./helper",
+], function (Helper) {
     "use strict";
 
     return {
@@ -27,6 +28,10 @@ sap.ui.define([
             montant     = parseFloat(montant || 0);
             cumuleEur   = parseFloat(cumuleEur || 0);
             return montant - cumuleEur
+        },
+        formatNbMois:function(startDate, endDate ) {
+            if(!startDate || !endDate){ return ; }
+            return Helper.diffEnMois(new Date(startDate), new Date(endDate));
         },
         setNegativeRedValue: function (value, vIsFooter) {
             const isFooter = (vIsFooter === true || vIsFooter === 'X' || vIsFooter === 1 || vIsFooter === '1');

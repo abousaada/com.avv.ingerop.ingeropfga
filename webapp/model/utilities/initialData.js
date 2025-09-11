@@ -23,6 +23,15 @@ sap.ui.define([], function() {
             subContractorPartner  : "SubContractorPartner",
           }*/
         ],
+        "pxMainOeuvre": [],
+        "pxMainOeuvreHierarchy": [],
+        "pxMainOeuvreHeader": [
+          /*{
+            subContractorId       : "SubContractor",
+            subContractorName     : "SubContractorName",
+            subContractorPartner  : "SubContractorPartner",
+          }*/
+        ],
         "Notes": '',
         "sfgp": [],
         "missionTypes": [

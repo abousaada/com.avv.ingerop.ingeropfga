@@ -501,7 +501,7 @@ sap.ui.define([
 
         onMissionCodeChange: function (oEvent) {
             var oComboBox = oEvent.getSource();
-            var sKey = oComboBox.getSelectedKey(); // 🔑 this is the "code" from missionTypes
+            var sKey = oComboBox.getSelectedKey(); 
 
             var sValue = oComboBox.getValue();
             var oBindingContext = oComboBox.getBindingContext("utilities");

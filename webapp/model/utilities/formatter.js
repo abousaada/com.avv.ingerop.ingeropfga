@@ -7,35 +7,15 @@ sap.ui.define([
     getMissionsNumber: function (missionArraySize) {
       return String(missionArraySize || 1).padStart(2, '0');
     },
-    reverseFormatBudgetSubContracting: Helper.buildObjectKeysMapper({
-      BusinessNo: "businessNo",
-      EndDate: "endDate",
-      MissionCode: "code",
-      MissionId: "name",
-      Regroupement: "regroupement",
-      StartDate: "startDate",
-      Statut: "status",
-      Budget: ({subContractorBudget}) => subContractorBudget?.toString(),
-      SubContractor: "subContractorId",
-      SubContractorName: "subContractorName",
-      SubContractorPartner: "subContractorPartner",
-      SubContractorCoef : ({subContractorCoef}) => subContractorCoef?.toString(),
-      Cumul: ({subContractorCumul}) => subContractorCumul?.toString(),
-    }),
 
-    reverseFormatBudgetRecetteExt: Helper.buildObjectKeysMapper({
-      BusinessNo: "businessNo",
-      EndDate: "endDate",
-      MissionCode: "code",
-      MissionId: "name",
-      Regroupement: "regroupement",
-      StartDate: "startDate",
-      Statut: "status",
-      Montant :   ({ montant })   => parseFloat(montant || 0).toString(),
-      Groupe :    ({ groupe })    => parseFloat(groupe || 0).toString(),
-      InterUFO :  ({ interUfo })  => parseFloat(interUfo || 0).toString(),
-      IntraUFO :  ({ intraUfo })  => parseFloat(intraUfo || 0).toString(),
-      CumuleEUR : ({ cumuleEur }) => parseFloat(cumuleEur || 0).toString(),
+    //Formatter In
+
+    formatSupplier: Helper.buildObjectKeysMapper({
+      subContractorPartner: "CompanyPartner",
+      subContractorName: "Name",
+      subContractorId: "SupplierNo",
+      subContractorCoef : ({ SubContractorCoef }) => Number.parseFloat(SubContractorCoef) ? SubContractorCoef : 1,
+      subContractorPartner: "SubContractorPartner"
     }),
 
     formatBudgetSubContracting: Helper.buildObjectKeysMapper({
@@ -71,12 +51,72 @@ sap.ui.define([
       cumuleEur: ({CumuleEUR}) => parseFloat(CumuleEUR),
     }),
 
-    formatSupplier: Helper.buildObjectKeysMapper({
-      subContractorPartner: "CompanyPartner",
-      subContractorName: "Name",
-      subContractorId: "SupplierNo",
-      subContractorCoef : ({ SubContractorCoef }) => Number.parseFloat(SubContractorCoef) ? SubContractorCoef : 1,
-      subContractorPartner: "SubContractorPartner"
+    formatBudgetPxMainOeuvre: Helper.buildObjectKeysMapper({
+      businessNo: "BusinessNo",
+      regroupement: "Regroupement",
+      name: "MissionId",
+      libelle: "Libelle",
+      code: "MissionCode",
+      status: "Statut",
+      startDate: "StartDate",
+      endDate: "EndDate",
+      nbJoursConso: ({ NbJoursConso })   => parseFloat(NbJoursConso || 0).toString(),
+      nbJoursRest: ({ NbJoursRest })   => parseFloat(NbJoursRest || 0).toString(),
+      physique:  ({ Physique })   => parseFloat(Physique || 0).toString(),
+      tjm: ({ Tjm })   => parseFloat(Tjm || 0).toString(),
+      profil: "Profil",
+      profilDescription: "ProfilDescription",
+      cumul : ({ Cumul })   => parseFloat(Cumul || 0).toString(),
+    }),
+    
+    //Formatter Out
+
+    reverseFormatBudgetSubContracting: Helper.buildObjectKeysMapper({
+      BusinessNo: "businessNo",
+      EndDate: "endDate",
+      MissionCode: "code",
+      MissionId: "name",
+      Regroupement: "regroupement",
+      StartDate: "startDate",
+      Statut: "status",
+      Budget: ({subContractorBudget}) => subContractorBudget?.toString(),
+      SubContractor: "subContractorId",
+      SubContractorName: "subContractorName",
+      SubContractorPartner: "subContractorPartner",
+      SubContractorCoef : ({subContractorCoef}) => subContractorCoef?.toString(),
+      Cumul: ({subContractorCumul}) => subContractorCumul?.toString(),
+    }),
+
+    reverseFormatBudgetRecetteExt: Helper.buildObjectKeysMapper({
+      BusinessNo: "businessNo",
+      EndDate: "endDate",
+      MissionCode: "code",
+      MissionId: "name",
+      Regroupement: "regroupement",
+      StartDate: "startDate",
+      Statut: "status",
+      Montant :   ({ montant })   => parseFloat(montant || 0).toString(),
+      Groupe :    ({ groupe })    => parseFloat(groupe || 0).toString(),
+      InterUFO :  ({ interUfo })  => parseFloat(interUfo || 0).toString(),
+      IntraUFO :  ({ intraUfo })  => parseFloat(intraUfo || 0).toString(),
+      CumuleEUR : ({ cumuleEur }) => parseFloat(cumuleEur || 0).toString(),
+    }),
+
+    reverseFormatBudgetMainOeuvre: Helper.buildObjectKeysMapper({
+      BusinessNo: "businessNo",
+      EndDate: "endDate",
+      MissionCode: "code",
+      MissionId: "name",
+      Regroupement: "regroupement",
+      StartDate: "startDate",
+      Statut: "status",
+      NbJoursConso  :  ({ nbJoursConso })   => parseFloat(nbJoursConso || 0).toString(),
+      NbJoursRest   :  ({ nbJoursRest })    => parseFloat(nbJoursRest || 0).toString(),
+      Physique      :  ({ physique })       => parseFloat(physique || 0).toString(),
+      Tjm           :  ({ tjm })            => parseFloat(tjm || 0).toString(),
+      Profil: "profil",
+      ProfilDescription: "profilDescription",
+      Cumul : ({ cumul })       => parseFloat(cumul || 0).toString(),
     }),
   };
 });

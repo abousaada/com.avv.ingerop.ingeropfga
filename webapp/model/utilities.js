@@ -5,11 +5,12 @@ sap.ui.define([
     "./utilities/filter",
     "./utilities/subContracting",
     "./utilities/recetteExt",
+    "./utilities/mainOeuvre",
     "../util/constant",
     "../util/helper",
     "../ext/controller/helpers/Missions",
 ],
-    function (BaseModel, InitialData, Formatter, Filter, SubContracting, RecetteExt, Constant, Helper,Missions) {
+    function (BaseModel, InitialData, Formatter, Filter, SubContracting, RecetteExt, MainOeuvre, Constant, Helper,Missions) {
         "use strict";
 
         return BaseModel.extend("com.avv.ingerop.ingeropfga.model.utilities", {
@@ -19,6 +20,7 @@ sap.ui.define([
                 this.initModel(oModel);
                 this.oSubContracting    = new SubContracting(this);
                 this.oRecetteExt        = new RecetteExt(this);
+                this.oMainOeuvre        = new MainOeuvre(this);
             },
 
             setView(oView){
@@ -44,17 +46,27 @@ sap.ui.define([
                 this.setPxRecetteExtHierarchy(treeData);
             },
 
+            buildPxMainOeuvreTreeData(){
+                const { treeData, treeHeader } = this.oMainOeuvre.buildTreeData();
+                this.setPxMainOeuvreHierarchy(treeData);
+                this.setPxMainOeuvreHeader(treeHeader);
+            },
+
             reCalcRecetteTable(){
                 return this.oRecetteExt.reCalcRecetteTable();
             },
 
+            reCalcMainOeuvreTable(){
+                return this.oMainOeuvre.reCalcMainOeuvreTable();
+            },
+
             async getBEDatas() {
                 try {
-                    const [missions, previsions, recaps, opport, charts, chartsadddata, pxRecettes, pxAutres, pxSubContracting, notes, sfgp] = await Promise.all([
+                    const [missions, previsions, /* recaps, */ opport, charts, chartsadddata, pxRecettes, pxAutres, pxSubContracting, pxMainOeuvre, notes, sfgp] = await Promise.all([
 
                         this.getBEMissions(),
                         this.getBEPrevisions(),
-                        this.getBERecaps(),
+                        // this.getBERecaps(),
                         this.getBEOpport(),
                         this.getBECharts(),
                         this.getBEChartsAdditionalData(),
@@ -63,6 +75,7 @@ sap.ui.define([
                         this.getBEPxRecettes(),
                         this.getBEPxAutres(),
                         this.getBEPxExtSubContracting(),
+                        this.getBEPxMainOeuvre(),
 
                         //Notes
                         this.getBENotes(),
@@ -70,7 +83,7 @@ sap.ui.define([
                     ]);
 
                     this.setMissions(missions || []);
-                    this.setRecaps(recaps || []);
+                    // this.setRecaps(recaps || []);
                     this.setPrevisions(previsions || []);
                     this.setOpport(opport || []);
                     this.setCharts(charts || []);
@@ -81,8 +94,10 @@ sap.ui.define([
                     this.setPxRecetteExt(pxRecettes || []);
 
                     this.setPxSousTraitance(pxSubContracting || []);
+                    this.setPxMainOeuvre(pxMainOeuvre || []);
+
                     // A REMETTRE PROPRE
-                    this.onCalculChartsData(previsions, recaps, charts, chartsadddata);
+                    // this.onCalculChartsData(previsions, recaps, charts, chartsadddata);
                 //Notes
                     this.setNotes(notes);
 
@@ -590,6 +605,24 @@ sap.ui.define([
                 }
             },
 
+            async getBEPxMainOeuvre(){
+                try {
+                    this.setTabBusy(true);
+                    const businessNo = this.getBusinessNo();
+                    const period = this.getPeriod();
+                    const urlBusinessNo = encodeURIComponent(businessNo);
+                    const urlPeriod = encodeURIComponent(period);
+                    const sPath = `/ZC_FGASet(BusinessNo='${urlBusinessNo}',p_period='${urlPeriod}')/to_BudgetPxMainOeuvre`;
+                    console.log(`retrieve main d'oeuvre with period: ${period} and BusinessNo: ${businessNo}`);
+                    const pxMainOeuvre = await this.read(sPath);
+                    this.setTabBusy(false);
+                    return (pxMainOeuvre?.results || []).map(Formatter.formatBudgetPxMainOeuvre);
+                } catch (error) {
+                    this.setTabBusy(false);
+                    console.log(error);
+                }
+            },
+
             async getBESfgp() {
                 try {
                     this.setChartBusy(true);
@@ -678,7 +711,6 @@ sap.ui.define([
                 });
             },
 
-
             getFormattedPxAutre() {
                 return this.getPxAutres();
             },
@@ -693,6 +725,12 @@ sap.ui.define([
                 return this.oRecetteExt
                            .formattedPxRecetteExt()
                            .map(Formatter.reverseFormatBudgetRecetteExt);
+            },
+
+            formattedPxMainOeuvre(){
+                return this.oMainOeuvre
+                           .formattedPxMainOeuvre()
+                           .map(Formatter.reverseFormatBudgetMainOeuvre);
             }
         });
 

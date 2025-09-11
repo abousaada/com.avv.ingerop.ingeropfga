@@ -12,6 +12,10 @@
             <IconTabFilter key="RecetteTab" text="{i18n>synt.tab.budget.recettes}">
                 <core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.budget.BudgetPxRecettes" type="XML" />
             </IconTabFilter>
+
+            <IconTabFilter key="MainOeuvreTab" text="{i18n>synt.tab.budget.mainOeuvre}">
+                <core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.budget.BudgetPxMainOeuvre" type="XML" />
+            </IconTabFilter>
             
             <!--IconTabFilter key="INVIncomeTab" text="{i18n>synt.tab.budget.invoice}" >
                 <core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.budget.INVIncome" type="XML" />
