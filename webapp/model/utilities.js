@@ -62,11 +62,11 @@ sap.ui.define([
 
             async getBEDatas() {
                 try {
-                    const [missions, previsions, /* recaps, */ opport, charts, chartsadddata, pxRecettes, pxAutres, pxSubContracting, pxMainOeuvre, notes, sfgp] = await Promise.all([
+                    const [missions, previsions, recaps, opport, charts, chartsadddata, pxRecettes, pxAutres, pxSubContracting, pxMainOeuvre, notes, sfgp] = await Promise.all([
 
                         this.getBEMissions(),
                         this.getBEPrevisions(),
-                        // this.getBERecaps(),
+                        this.getBERecaps(),
                         this.getBEOpport(),
                         this.getBECharts(),
                         this.getBEChartsAdditionalData(),
@@ -83,7 +83,7 @@ sap.ui.define([
                     ]);
 
                     this.setMissions(missions || []);
-                    // this.setRecaps(recaps || []);
+                    this.setRecaps(recaps || []);
                     this.setPrevisions(previsions || []);
                     this.setOpport(opport || []);
                     this.setCharts(charts || []);
@@ -97,7 +97,7 @@ sap.ui.define([
                     this.setPxMainOeuvre(pxMainOeuvre || []);
 
                     // A REMETTRE PROPRE
-                    // this.onCalculChartsData(previsions, recaps, charts, chartsadddata);
+                    this.onCalculChartsData(previsions, recaps, charts, chartsadddata);
                 //Notes
                     this.setNotes(notes);
 
