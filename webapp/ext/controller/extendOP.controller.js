@@ -70,6 +70,20 @@ sap.ui.define(
 
                     window.addEventListener("popstate", this._cleanModification.bind(this));
                     window.addEventListener("onbeforeunload", this._cleanModification.bind(this));
+
+                    
+                    this._resetRecapMerge      = this._resetRecapMerge.bind(this);
+                    this._styleMergedRecapRow  = this._styleMergedRecapRow.bind(this);
+
+                    const oTable = this.getView().byId("idRecapTable");
+                    if (oTable) {
+                        oTable.addEventDelegate({
+                            onAfterRendering: () => {
+                                this._resetRecapMerge();
+                                this._styleMergedRecapRow();
+                            }
+                        }, this);
+                    }
                 },
 
                 // onCancel:function(oEvent){
@@ -569,8 +583,10 @@ sap.ui.define(
             onRowsUpdatedRecapTab: function () {
                 var stableName = "idRecapTable";
                 this.onRecapUpdated(stableName);
+                this._resetRecapMerge();
                 this._styleMergedRecapRow();
             },
+
             onRecapUpdated: function (stableName) {
                 const oTable = this.oView.byId(stableName);
                 if (!oTable) {
@@ -639,120 +655,136 @@ sap.ui.define(
 
             },
 
+            // remet la ligne "propre" (annule toute fusion précédente)
+            _resetRecapMerge: function () {
+                const oTable = this.oView.byId("idRecapTable");
+                const dom = oTable && oTable.getDomRef();
+                if (!dom) return;
+
+                // retire nos styles sur TOUTES les lignes rendues
+                jQuery(dom).find('.sapUiTableTr:not(.sapUiTableHeaderRow)').each(function () {
+                    const $tr = jQuery(this);
+                    const $cells = $tr.find('td[data-sap-ui-colid]');
+                    $cells.each((_, td) => {
+                    td.style.background = "";
+                    const inner = td.querySelector(".sapMText, .sapMLnk");
+                    if (inner) {
+                        inner.style.visibility = "";
+                        inner.style.color = "";
+                        inner.style.fontWeight = "";
+                        inner.style.textAlign = "";
+                    }
+                    });
+                });
+            },
+
             _styleMergedRecapRow: function () {
                 const oTable   = this.oView.byId("idRecapTable");
                 const oBinding = oTable && oTable.getBinding("rows");
                 if (!oBinding) return;
 
-                const iLast   = oBinding.getLength() - 1; // dernière ligne
-                const iBefore = iLast - 1;                // avant-dernière ligne
-                if (iLast < 0) return;
+                // on ne garde que les lignes rendues qui ont un vrai contexte (ignore les lignes de remplissage)
+                const aRowsWithCtx = oTable.getRows().filter(r => !!r.getBindingContext("utilities"));
+                if (aRowsWithCtx.length < 2) {
+                    setTimeout(() => this._styleMergedRecapRow(), 50);
+                    return;
+                }
 
+                // repère l'index de la colonne "Cumul N-1"
                 const norm = s => (s || "").trim().toLowerCase();
+                let idxCumulN1 = -1;
+                oTable.getColumns().forEach((c, i) => {
+                    const t = c.getLabel && c.getLabel().getText && c.getLabel().getText();
+                    if (norm(t) === "cumul n-1") idxCumulN1 = i;
+                });
+                if (idxCumulN1 < 1) idxCumulN1 = 3; // fallback raisonnable
 
-                // Map colId -> label normalisé
-                const aCols = oTable.getColumns();
-                const idToLabel = new Map(
-                    aCols.map(c => [c.getId(), norm(c.getLabel && c.getLabel().getText ? c.getLabel().getText() : "")])
-                );
+                // textes selon type de projet
+                const txtBefore = (PROJET_TYPE === "Z0") ? "[SFGP] Impact super projet ajustement"
+                                : (PROJET_TYPE === "Z1") ? "[SFGP] Impact projet ajustement"
+                                : "[SFGP] Impact projet ajustement";
+                const txtLast   = (PROJET_TYPE === "Z0") ? "[SFGP] Impact super projet PAT"
+                                : (PROJET_TYPE === "Z1") ? "[SFGP] Impact projet PAT"
+                                : "[SFGP] Impact projet PAT";
 
-                const handleRow = (oRow, customText) => {
+                // ------------------------------------------------------------------
+                // Helper : applique la fusion VISUELLE (fond bleu + overlay centré)
+                // ------------------------------------------------------------------
+                const paintRow = (oRow, labelText) => {
                     const $row = oRow.$();
                     if (!$row.length) return;
 
-                    setTimeout(() => {
-                    const tdSel = "td[data-sap-ui-colid]";
-                    let $cells = $row.find(tdSel);
-                    if (!$cells.length) return;
+                    // toutes les cellules de la ligne (fixe + scroll sont renvoyées ensemble par jQuery ici)
+                    const $cells = $row.find('td[data-sap-ui-colid]');
+                    if (!$cells.length) { setTimeout(() => this._styleMergedRecapRow(), 50); return; }
 
-                    // indices repères
-                    const colIds = $cells.map((i, td) => td.getAttribute("data-sap-ui-colid")).get();
-                    let idxCumulN1 = -1, idxAnneeEnCours = -1;
-                    for (let i = 0; i < colIds.length; i++) {
-                        const lbl = idToLabel.get(colIds[i]) || "";
-                        if (lbl === "cumul n-1") idxCumulN1 = i;
-                        if (lbl === "année en cours") idxAnneeEnCours = i;
+                    // 0) reset minimal (retire un éventuel overlay précédent)
+                    $row.find('.sfgpOverlay').remove();
+                    $cells.each((_, td) => {
+                    td.style.background = "";
+                    td.style.position = "";
+                    td.style.overflow = "";
+                    const inner = td.querySelector(".sapMText, .sapMLnk");
+                    if (inner) {
+                        inner.style.visibility = "";
+                        inner.style.color = "";
+                        inner.style.fontWeight = "";
+                        inner.style.textAlign = "";
                     }
-                    if (idxCumulN1 < 1 && idxAnneeEnCours < 0) return;
+                    });
 
-                    // ========= Fusion DROITE (fond blanc classique) =========
-                    if (idxAnneeEnCours >= 0 && idxAnneeEnCours < $cells.length) {
-                        $cells = $row.find(tdSel);
-                        const spanRight = $cells.length - idxAnneeEnCours;
-                        if (spanRight > 1) {
-                        const $start = $cells.eq(idxAnneeEnCours);
-                        $start
-                            .attr("colspan", spanRight)
-                            .css({
-                            "text-align": "center",
-                            "vertical-align": "middle",
-                            "background-color": "#fff",
-                            "color": "#000"
-                            });
-
-                        $row.find(tdSel).slice(idxAnneeEnCours + 1).remove();
-
-                        $start.find(".sapMText, .sapMLnk").css({ "display": "none" });
-                        }
+                    // 1) peint en bleu toutes les cellules 0..idxCumulN1 et cache leur contenu (sauf la première)
+                    $cells.each((i, td) => {
+                    if (i <= idxCumulN1) {
+                        td.style.background = "#333399";
+                        const inner = td.querySelector(".sapMText, .sapMLnk");
+                        if (inner) inner.style.visibility = (i === 0) ? "" : "hidden";
                     }
+                    });
 
-                    // ========= Fusion GAUCHE (fond bleu, texte blanc) =========
-                    if (idxCumulN1 >= 1) {
-                        $cells = $row.find(tdSel); // refresh
-
-                        const colIdsNow = $cells.map((i, td) => td.getAttribute("data-sap-ui-colid")).get();
-                        let idxCumulN1Now = -1;
-                        for (let i = 0; i < colIdsNow.length; i++) {
-                        const lbl = idToLabel.get(colIdsNow[i]) || "";
-                        if (lbl === "cumul n-1") { idxCumulN1Now = i; break; }
-                        }
-
-                        if (idxCumulN1Now >= 1) {
-                        const spanLeft = idxCumulN1Now + 1;
-                        const $c0 = $cells.eq(0);
-                        $c0
-                            .attr("colspan", spanLeft)
-                            .css({
-                            "text-align": "center",
-                            "vertical-align": "middle",
-                            "background-color": "#333399",
-                            "color": "#fff"
-                            });
-
-                        $row.find(tdSel).slice(1, idxCumulN1Now + 1).remove();
-
-                        // 👉 injecte texte + classe de style
-                        const $content = $c0.find(".sapMText, .sapMLnk");
-                        if ($content.length) {
-                            $content.text(customText)
-                                    .addClass("sfgpMergedText");
-                        } else {
-                            $c0.text(customText).addClass("sfgpMergedText");
-                        }
-                        }
+                    // 2) calcule la largeur totale du bloc fusionné (somme des largeurs des cellules 0..idxCumulN1)
+                    let totalW = 0;
+                    for (let i = 0; i <= idxCumulN1 && i < $cells.length; i++) {
+                    const td = $cells.get(i);
+                    const w  = td.getBoundingClientRect().width;
+                    totalW  += (isFinite(w) ? w : 0);
                     }
-                    }, 0);
+                    if (totalW <= 0) { setTimeout(() => this._styleMergedRecapRow(), 50); return; }
+
+                    // 3) pose un overlay centré qui couvre visuellement toutes ces colonnes
+                    const td0 = $cells.get(0);
+                    td0.style.position = "relative";
+                    td0.style.overflow = "visible";
+
+                    const overlay = document.createElement("div");
+                    overlay.className = "sfgpOverlay";
+                    overlay.textContent = labelText;
+
+                    Object.assign(overlay.style, {
+                    position: "absolute",
+                    left: "0",
+                    top: "0",
+                    width: totalW + "px",
+                    height: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "#fff",
+                    fontWeight: "600",
+                    fontSize: "0.9rem",
+                    backgroundColor: "#333399",
+                    pointerEvents: "none", // pour ne pas gêner les interactions éventuelles
+                    zIndex: 2
+                    });
+
+                    td0.appendChild(overlay);
                 };
 
-                oTable.getRows().forEach((oRow) => {
-                    const idx = oRow.getIndex();
-                    if (idx === iBefore) {
-                        if (PROJET_TYPE === "Z0"){
-                            handleRow(oRow, "Impact super projet ajustement");
-                        } 
-                        else if (PROJET_TYPE === "Z1"){
-                            handleRow(oRow, "Impact projet ajustement");
-                        }
-                    }
-                    if (idx === iLast) {
-                        if (PROJET_TYPE === "Z0"){
-                            handleRow(oRow, "Impact super projet PAT");
-                        } 
-                        else if (PROJET_TYPE === "Z1"){
-                            handleRow(oRow, "Impact projet PAT");
-                        }
-                    }
-                });
+                const rBefore = aRowsWithCtx[aRowsWithCtx.length - 2];
+                const rLast   = aRowsWithCtx[aRowsWithCtx.length - 1];
+
+                paintRow(rBefore, txtBefore);
+                paintRow(rLast,   txtLast);
             },
 
             parseCellNumber: function (svalue) {

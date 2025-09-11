@@ -273,11 +273,11 @@
 }
 
 
-/* #RecapTable */
 .sfgpMergedText {
-  font-weight: bold !important;
-  color: #fff !important;        /* texte blanc */
-  text-align: center !important;
-  width: 100% !important;
-  display: block !important;
+  font-size: .875rem;
+  font-weight: 600;
+  text-align: center;
+  display: block;
+  line-height: 1.8rem;
+  color: #fff !important;
 }
