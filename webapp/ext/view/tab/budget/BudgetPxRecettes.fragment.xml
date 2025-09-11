@@ -84,7 +84,7 @@
                 </table:template>
             </table:Column>
 
-            <table:Column width="7rem" headerSpan="6,1" hAlign= "Center">
+            <table:Column width="7rem" headerSpan="6,1" hAlign= "Center" visible="{IsAffaireMere}">
                 <table:multiLabels>
                     <Label text="{i18n>budget.recette.extern.contract}" />
                     <Label text="{i18n>budget.recette.montant}" />
@@ -144,7 +144,7 @@
                 </table:template>
             </table:Column>
 
-            <table:Column width="7rem" headerSpan="4,1" hAlign= "Center">
+            <!-- <table:Column width="7rem" headerSpan="4,1" hAlign= "Center">
                 <table:multiLabels>
                     <Label text="{i18n>budget.recette.acquise}" />
                     <Label text="{i18n>budget.recette.externe}" />
@@ -162,9 +162,9 @@
                         visible="{= !!${utilities>isBudget} || !!${utilities>isTotal} }"/>
                 </HBox>
                 </table:template>
-            </table:Column>
+            </table:Column> -->
 
-            <table:Column width="7rem" headerSpan="4,1" hAlign= "Center">
+            <table:Column width="7rem" headerSpan="3,1" hAlign= "Center" visible="{= !${IsAffaireMere} }">
                 <table:multiLabels>
                     <Label text="{i18n>budget.recette.acquise}" />
                     <Label text="{i18n>budget.recette.groupe}" />
@@ -176,7 +176,7 @@
                 </table:template>
             </table:Column>
 
-            <table:Column width="7rem" headerSpan="4,1" hAlign= "Center">
+            <table:Column width="7rem" headerSpan="3,1" hAlign= "Center" visible="{= !${IsAffaireMere} }">
                 <table:multiLabels>
                     <Label text="{i18n>budget.recette.acquise}" />
                     <Label text="{i18n>budget.recette.interUFO}" />
@@ -188,7 +188,7 @@
                 </table:template>
             </table:Column>
 
-            <table:Column width="7rem" headerSpan="4,1" hAlign= "Center">
+            <table:Column width="7rem" headerSpan="3,1" hAlign= "Center" visible="{= !${IsAffaireMere} }">
                 <table:multiLabels>
                     <Label text="{i18n>budget.recette.acquise}" />
                     <Label text="{i18n>budget.recette.intraUFO}" />
@@ -200,7 +200,7 @@
                 </table:template>
             </table:Column>
 
-            <table:Column width="7rem" headerSpan="3,1" hAlign= "Center">
+            <table:Column width="7rem" headerSpan="3,1" hAlign= "Center" visible="{IsAffaireMere}">
                 <table:multiLabels>
                     <Label text="{i18n>budget.recette.fact.extern.m}" />
                     <Label text="{i18n>budget.recette.cumuleEur}" />
@@ -212,7 +212,7 @@
                 </table:template>
             </table:Column>
 
-            <table:Column width="7rem" headerSpan="3,1" hAlign= "Center">
+            <table:Column width="7rem" headerSpan="3,1" hAlign= "Center" visible="{IsAffaireMere}">
                 <table:multiLabels>
                     <Label text="{i18n>budget.recette.fact.extern.m}" />
                     <Label text="{i18n>budget.recette.cumulePercent}" />
@@ -232,7 +232,7 @@
                 </table:template>
             </table:Column>
 
-            <table:Column width="7rem" headerSpan="3,1" hAlign= "Center">
+            <table:Column width="7rem" headerSpan="3,1" hAlign= "Center" visible="{IsAffaireMere}">
                 <table:multiLabels>
                     <Label text="{i18n>budget.recette.fact.extern.m}" />
                     <Label text="{i18n>budget.recette.aVenir}" />
