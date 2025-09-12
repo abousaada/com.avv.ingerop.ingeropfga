@@ -856,7 +856,7 @@ sap.ui.define(
 
             },
             // ===================================================
-            // Table Design  BudgetPXSub Cont Budgets Section !!!!
+            // Table Design  BudgetPXSub Contr Budgets Section !!!
             // ===================================================
             onRowsUpdatedBudgetPXSubCTab: function () {
                 var stableName = "BudgetPxSubContractingTreeTableId";
@@ -911,6 +911,16 @@ sap.ui.define(
                     console.error("onBudgetPXUpdated failed:", err);
                 }
 
+            },
+
+            onRowsUpdatedBudgetPXMainOeuvreTab(){
+                var stableName = "BudgetPxMainOeuvreTreeTableId";
+                this.onBudgetPXSubCUpdated(stableName);
+            },
+
+            onRowsUpdatedBudgetPXRecetteTab(){
+                var stableName = "BudgetPxRecettesTreeTableId";
+                this.onBudgetPXSubCUpdated(stableName);
             }
 
         });
