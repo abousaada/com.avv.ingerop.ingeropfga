@@ -11,6 +11,7 @@ sap.ui.define(
         "./helpers/BudgetPxSubContracting",
         "./helpers/BudgetPxRecetteExt",
         "./helpers/BudgetPxMainOeuvre",
+        "./helpers/BudgetPxSTI",
         "./helpers/Synthese",
     ],
     function (
@@ -25,6 +26,7 @@ sap.ui.define(
         BudgetPxSubContracting,
         BudgetPxRecetteExt,
         BudgetPxMainOeuvre,
+        BudgetPxSTI,
         Synthese
     ) {
         "use strict";
@@ -74,6 +76,9 @@ sap.ui.define(
                     this._extendOPUiManage = new ExtendOPUiManage();
                     this._extendOPUiManage.oView = this.getView();
 
+                    this._budgetPxSTI = new BudgetPxSTI();
+                    this._budgetPxSTI.oView = this.getView();
+
                     window.addEventListener("popstate", this._cleanModification.bind(this));
                     window.addEventListener("onbeforeunload", this._cleanModification.bind(this));
                 },
@@ -119,6 +124,7 @@ sap.ui.define(
                             const formattedPxSubContractingExt = utilitiesModel.formattedPxSubContractingExt();
                             const formattedPxRecetteExt = utilitiesModel.formattedPxRecetteExt();
                             const formattedMainOeuvre = utilitiesModel.formattedPxMainOeuvre();
+                            const formattedPxSTI = utilitiesModel.getFormattedPxSTI();
                             const oPayload = Helper.extractPlainData({
                                 ...oContext.getObject(),
                                 "to_Missions": formattedMissions,
@@ -126,6 +132,7 @@ sap.ui.define(
                                 "to_BudgetPxSubContracting": formattedPxSubContractingExt,
                                 "to_BudgetPxRecetteExt": formattedPxRecetteExt,
                                 "to_BudgetPxMainOeuvre": formattedMainOeuvre,
+                                "to_BudgetPxSTI": formattedPxSTI,
                             });
 
                             try {
@@ -296,6 +303,7 @@ sap.ui.define(
                     this.preparePxSubContractingTreeData();
                     this.preparePxRecetteExtTreeData();
                     this.preparePxMainOeuvreTreeData();
+                    this.preparePxSTITreeData();
                 }
                 else {
 
@@ -466,6 +474,33 @@ sap.ui.define(
 
             preparePxMainOeuvreTreeData: function () {
                 this._budgetMainOeuvre.preparePxMainOeuvreTreeData();
+            },
+
+            // ==============================================
+            // Handle Budget Px TAB - Budget Px STI Section
+            // Handles preparation and submition budget items 
+            // in the mission  process
+            // ==============================================
+
+            // Delegates submit logic to specialized handler : Budget Px Autres
+            preparePxSTITreeData: function () {
+                this._budgetPxSTI.preparePxSTITreeData();
+            },
+
+            onPxSTISubmit: function (oEvent) {
+                if (!this._budgetPxSTI) {
+                    this._budgetPxSTI = new BudgetPxSTI();
+                    this._budgetPxSTI.oView = this.oView;
+                }
+                this._budgetPxSTI.onSubmit(oEvent);
+            },
+
+            onCumuleClick: function (oEvent) {
+                if (!this._budgetPxSTI) {
+                    this._budgetPxSTI = new BudgetPxSTI();
+                    this._budgetPxSTI.oView = this.oView;
+                }
+                this._budgetPxSTI.onCumuleClick(oEvent);
             },
 
             // ==============================================

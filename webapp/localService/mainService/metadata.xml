@@ -294,9 +294,9 @@
                 <Property Name="Activity" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="Activité" sap:quickinfo="FGA Business activity" sap:value-list="fixed-values"/>
                 <Property Name="CDG" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Centre de profit" sap:quickinfo="FGA Profit Center" sap:value-list="standard"/>
                 <Property Name="Branche" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Branche" sap:value-list="fixed-values"/>
-                <Property Name="PROJM" Type="Edm.String" MaxLength="25" sap:label="Chef de projet" sap:quickinfo="Responsable (chef de projet)" sap:value-list="standard"/>
+                <Property Name="PROJM" Type="Edm.String" MaxLength="8" sap:display-format="NonNegative" sap:label="Chef de projet" sap:quickinfo="Numéro du responsable (chef de projet)" sap:value-list="standard"/>
                 <Property Name="STILinkedCount" Type="Edm.Int32" sap:label=""/>
-                <Property Name="BusinessType" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Type" sap:quickinfo="FGA Business Type"/>
+                <Property Name="BusinessType" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Type" sap:quickinfo="FGA Business Type" sap:value-list="fixed-values"/>
                 <Property Name="BusinessStatus" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Statut de l'affaire" sap:quickinfo="Elément de données Statut pour FGA" sap:value-list="fixed-values"/>
                 <Property Name="Soufam" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Sous famille" sap:quickinfo="Elément de donnée pour Soufam" sap:value-list="fixed-values"/>
                 <Property Name="Rgfact" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Règle de facturation" sap:quickinfo="élément de donnée pour RTFACT"/>
@@ -370,11 +370,16 @@
                 <Property Name="DailyAvgRate" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Taux moyen journalier" sap:quickinfo="Zone de 10 caractères"/>
                 <Property Name="LastUpdate" Type="Edm.String" MaxLength="20" sap:display-format="UpperCase" sap:label="Dernière mise à jour" sap:quickinfo="Char 20"/>
                 <Property Name="GrpConvention" Type="Edm.String" MaxLength="50" sap:label="Convention de groupe" sap:quickinfo="Zone de texte"/>
-                <Property Name="Notes" Type="Edm.String" MaxLength="1250" sap:display-format="UpperCase" sap:label="Notes" sap:heading="" sap:quickinfo="Champ pour les commentaires"/>
+                <Property Name="Notes" Type="Edm.String" MaxLength="1333" sap:label=""/>
+                <Property Name="ModifyBy" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Modifié par" sap:heading="" sap:quickinfo="Nom de la personne qui a modifié cet objet"/>
+                <Property Name="ModifyDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Modifié le" sap:heading="" sap:quickinfo="Date de dernière modification d'un objet"/>
+                <Property Name="IsAffaireMere" Type="Edm.Boolean" sap:label="Actif" sap:heading="" sap:quickinfo="Booléen"/>
                 <Property Name="DataSource" Type="Edm.String" MaxLength="4" sap:label="#DataSource"/>
                 <Property Name="HeaderDescription" Type="Edm.String" MaxLength="31"/>
                 <NavigationProperty Name="to_BudgetPxAutre" Relationship="ZFGA_SRV.assoc_E414682AC737A1471EE64CE372D268CB" FromRole="FromRole_assoc_E414682AC737A1471EE64CE372D268CB" ToRole="ToRole_assoc_E414682AC737A1471EE64CE372D268CB"/>
+                <NavigationProperty Name="to_BudgetPxMainOeuvre" Relationship="ZFGA_SRV.assoc_E3F15DA2DB3C1A5E6E7A9025DEC17B6E" FromRole="FromRole_assoc_E3F15DA2DB3C1A5E6E7A9025DEC17B6E" ToRole="ToRole_assoc_E3F15DA2DB3C1A5E6E7A9025DEC17B6E"/>
                 <NavigationProperty Name="to_BudgetPxRecetteExt" Relationship="ZFGA_SRV.assoc_E6F51C48FA56CB78A3D3BB6BDB09FA49" FromRole="FromRole_assoc_E6F51C48FA56CB78A3D3BB6BDB09FA49" ToRole="ToRole_assoc_E6F51C48FA56CB78A3D3BB6BDB09FA49"/>
+                <NavigationProperty Name="to_BudgetPxSTI" Relationship="ZFGA_SRV.assoc_EFFDDDFC883D7FA56DD238F3514A8B40" FromRole="FromRole_assoc_EFFDDDFC883D7FA56DD238F3514A8B40" ToRole="ToRole_assoc_EFFDDDFC883D7FA56DD238F3514A8B40"/>
                 <NavigationProperty Name="to_BudgetPxSubContracting" Relationship="ZFGA_SRV.assoc_733945962AA43335851B4AB0A78DD1C7" FromRole="FromRole_assoc_733945962AA43335851B4AB0A78DD1C7" ToRole="ToRole_assoc_733945962AA43335851B4AB0A78DD1C7"/>
                 <NavigationProperty Name="to_Missions" Relationship="ZFGA_SRV.assoc_C3CEBB4F914AE5B0F6B34A7D0ECC717D" FromRole="FromRole_assoc_C3CEBB4F914AE5B0F6B34A7D0ECC717D" ToRole="ToRole_assoc_C3CEBB4F914AE5B0F6B34A7D0ECC717D"/>
                 <NavigationProperty Name="Parameters" Relationship="ZFGA_SRV.assoc_FBAFCCB8228F35F33FFA98CD63EBFA5B" FromRole="ToRole_assoc_FBAFCCB8228F35F33FFA98CD63EBFA5B" ToRole="FromRole_assoc_FBAFCCB8228F35F33FFA98CD63EBFA5B" sap:filterable="false"/>
@@ -580,6 +585,29 @@
                 <Property Name="GLAccountFinAffaire" Type="Edm.String" MaxLength="255"/>
                 <Property Name="Regroupement" Type="Edm.String" MaxLength="40" sap:label="Regroupement mission"/>
             </EntityType>
+            <EntityType Name="ZC_FGA_PxMainOeuvreType" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="BusinessNo"/>
+                    <PropertyRef Name="MissionId"/>
+                    <PropertyRef Name="Profil"/>
+                </Key>
+                <Property Name="BusinessNo" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Numéro de business" sap:quickinfo="FGA Numéro de business"/>
+                <Property Name="MissionId" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Texte 24" sap:quickinfo="Zone de caractères de longueur 24"/>
+                <Property Name="Profil" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase" sap:label="Type d'activité" sap:heading=""/>
+                <Property Name="costCenter" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Centre émetteur" sap:heading="" sap:quickinfo="Centre de coûts émetteur"/>
+                <Property Name="ProfilDescription" Type="Edm.String" MaxLength="20" sap:label="Nom" sap:heading="" sap:quickinfo="Nom général"/>
+                <Property Name="MissionCode" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Zone d'une longueur de 3 octets" sap:heading=""/>
+                <Property Name="StartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date" sap:heading="" sap:quickinfo="Zone de type DATS"/>
+                <Property Name="EndDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date" sap:heading="" sap:quickinfo="Zone de type DATS"/>
+                <Property Name="Libelle" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="description" sap:heading="" sap:quickinfo="Description Mission"/>
+                <Property Name="Statut" Type="Edm.String" MaxLength="1" sap:label="Statut mission" sap:heading=""/>
+                <Property Name="Regroupement" Type="Edm.String" MaxLength="40" sap:label="Regroupement mission"/>
+                <Property Name="Tjm" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
+                <Property Name="Cumul" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
+                <Property Name="NbJoursConso" Type="Edm.Decimal" Precision="15" Scale="3" sap:label=""/>
+                <Property Name="NbJoursRest" Type="Edm.Decimal" Precision="15" Scale="3" sap:label="Nombre(unité mesure)" sap:heading="" sap:quickinfo="Feuille de saisie des tps : nombre relatif à unité de mesure"/>
+                <Property Name="Physique" Type="Edm.Decimal" Precision="15" Scale="3" sap:label=""/>
+            </EntityType>
             <EntityType Name="ZC_FGA_PxRecetteExtType" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="BusinessNo"/>
@@ -598,6 +626,30 @@
                 <Property Name="InterUFO" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
                 <Property Name="IntraUFO" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
                 <Property Name="CumuleEUR" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
+            </EntityType>
+            <EntityType Name="ZC_FGA_PxstintType" sap:label="FGA Missions Budget" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="MissionId"/>
+                    <PropertyRef Name="BusinessNo"/>
+                </Key>
+                <Property Name="MissionId" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Texte 24" sap:quickinfo="Zone de caractères de longueur 24"/>
+                <Property Name="BusinessNo" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Numéro de business" sap:quickinfo="FGA Numéro de business"/>
+                <Property Name="MissionCode" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Mission Code" sap:quickinfo="Zone d'une longueur de 3 octets"/>
+                <Property Name="Libelle" Type="Edm.String" MaxLength="40" sap:label="Libelle" sap:quickinfo="PS: désignation (première ligne de texte)"/>
+                <Property Name="Statut" Type="Edm.String" MaxLength="60" sap:label="Statut" sap:quickinfo="Statut mission (Descr.)"/>
+                <Property Name="StartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Start Date" sap:quickinfo="Zone de type DATS"/>
+                <Property Name="EndDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="End Date" sap:quickinfo="Zone de type DATS"/>
+                <Property Name="InterUFO" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="XXX Inter UFO"/>
+                <Property Name="IntraUFO" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="XXX Intra UFO"/>
+                <Property Name="Intercompagnie" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="XXX Intercompagnie"/>
+                <Property Name="InterUFOBudget" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Inter UFO"/>
+                <Property Name="IntraUFOBudget" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Intra UFO"/>
+                <Property Name="IntercompagnieBudget" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Intercompagnie"/>
+                <Property Name="BudgetSTI" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Budget STI"/>
+                <Property Name="CumulComptabilise" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Cumulé comptabilisé"/>
+                <Property Name="PourcentageComptabilise" Type="Edm.Decimal" Precision="5" Scale="2" sap:label="% comptabilisé"/>
+                <Property Name="Reste" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Reste"/>
+                <Property Name="Regroupement" Type="Edm.String" MaxLength="40" sap:label="Regroupement mission"/>
             </EntityType>
             <EntityType Name="ZC_FGA_SFGP_REPORTType" sap:content-version="1">
                 <Key>
@@ -938,9 +990,17 @@
                 <End Type="ZFGA_SRV.ZC_FGAType" Multiplicity="1" Role="FromRole_assoc_E414682AC737A1471EE64CE372D268CB"/>
                 <End Type="ZFGA_SRV.ZC_FGA_PxAutreType" Multiplicity="*" Role="ToRole_assoc_E414682AC737A1471EE64CE372D268CB"/>
             </Association>
+            <Association Name="assoc_E3F15DA2DB3C1A5E6E7A9025DEC17B6E" sap:content-version="1">
+                <End Type="ZFGA_SRV.ZC_FGAType" Multiplicity="1" Role="FromRole_assoc_E3F15DA2DB3C1A5E6E7A9025DEC17B6E"/>
+                <End Type="ZFGA_SRV.ZC_FGA_PxMainOeuvreType" Multiplicity="*" Role="ToRole_assoc_E3F15DA2DB3C1A5E6E7A9025DEC17B6E"/>
+            </Association>
             <Association Name="assoc_E6F51C48FA56CB78A3D3BB6BDB09FA49" sap:content-version="1">
                 <End Type="ZFGA_SRV.ZC_FGAType" Multiplicity="1" Role="FromRole_assoc_E6F51C48FA56CB78A3D3BB6BDB09FA49"/>
                 <End Type="ZFGA_SRV.ZC_FGA_PxRecetteExtType" Multiplicity="*" Role="ToRole_assoc_E6F51C48FA56CB78A3D3BB6BDB09FA49"/>
+            </Association>
+            <Association Name="assoc_EFFDDDFC883D7FA56DD238F3514A8B40" sap:content-version="1">
+                <End Type="ZFGA_SRV.ZC_FGAType" Multiplicity="1" Role="FromRole_assoc_EFFDDDFC883D7FA56DD238F3514A8B40"/>
+                <End Type="ZFGA_SRV.ZC_FGA_PxstintType" Multiplicity="*" Role="ToRole_assoc_EFFDDDFC883D7FA56DD238F3514A8B40"/>
             </Association>
             <Association Name="assoc_733945962AA43335851B4AB0A78DD1C7" sap:content-version="1">
                 <End Type="ZFGA_SRV.ZC_FGAType" Multiplicity="1" Role="FromRole_assoc_733945962AA43335851B4AB0A78DD1C7"/>
@@ -1042,7 +1102,9 @@
                 <EntitySet Name="ZC_FGA_PREVISIONSSet" EntityType="ZFGA_SRV.ZC_FGA_PREVISIONSType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:addressable="false" sap:content-version="1"/>
                 <EntitySet Name="ZC_FGA_PREVISIONS" EntityType="ZFGA_SRV.ZC_FGA_PREVISIONSParameters" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
                 <EntitySet Name="ZC_FGA_PxAutre" EntityType="ZFGA_SRV.ZC_FGA_PxAutreType" sap:content-version="1"/>
+                <EntitySet Name="ZC_FGA_PxMainOeuvre" EntityType="ZFGA_SRV.ZC_FGA_PxMainOeuvreType" sap:content-version="1"/>
                 <EntitySet Name="ZC_FGA_PxRecetteExt" EntityType="ZFGA_SRV.ZC_FGA_PxRecetteExtType" sap:content-version="1"/>
+                <EntitySet Name="ZC_FGA_Pxstint" EntityType="ZFGA_SRV.ZC_FGA_PxstintType" sap:content-version="1"/>
                 <EntitySet Name="ZC_FGA_SFGP_REPORTSet" EntityType="ZFGA_SRV.ZC_FGA_SFGP_REPORTType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:addressable="false" sap:content-version="1"/>
                 <EntitySet Name="ZC_FGA_SFGP_REPORT" EntityType="ZFGA_SRV.ZC_FGA_SFGP_REPORTParameters" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
                 <EntitySet Name="ZC_FGA_SubContractorBudget" EntityType="ZFGA_SRV.ZC_FGA_SubContractorBudgetType" sap:content-version="1"/>
@@ -1110,6 +1172,10 @@
                     <End EntitySet="ZC_FGA_SFGP_REPORT" Role="FromRole_assoc_E6994698C16013590FF9BB15479C0926"/>
                     <End EntitySet="ZC_FGA_SFGP_REPORTSet" Role="ToRole_assoc_E6994698C16013590FF9BB15479C0926"/>
                 </AssociationSet>
+                <AssociationSet Name="assoc_EFFDDDFC883D7FA56DD238F3514A8B40" Association="ZFGA_SRV.assoc_EFFDDDFC883D7FA56DD238F3514A8B40" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="ZC_FGASet" Role="FromRole_assoc_EFFDDDFC883D7FA56DD238F3514A8B40"/>
+                    <End EntitySet="ZC_FGA_Pxstint" Role="ToRole_assoc_EFFDDDFC883D7FA56DD238F3514A8B40"/>
+                </AssociationSet>
                 <AssociationSet Name="assoc_E6F51C48FA56CB78A3D3BB6BDB09FA49" Association="ZFGA_SRV.assoc_E6F51C48FA56CB78A3D3BB6BDB09FA49" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
                     <End EntitySet="ZC_FGASet" Role="FromRole_assoc_E6F51C48FA56CB78A3D3BB6BDB09FA49"/>
                     <End EntitySet="ZC_FGA_PxRecetteExt" Role="ToRole_assoc_E6F51C48FA56CB78A3D3BB6BDB09FA49"/>
@@ -1129,6 +1195,10 @@
                 <AssociationSet Name="assoc_BC39B087465F974A895526BF7592B66D" Association="ZFGA_SRV.assoc_BC39B087465F974A895526BF7592B66D" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
                     <End EntitySet="ZC_FGA_PREVISIONS" Role="FromRole_assoc_BC39B087465F974A895526BF7592B66D"/>
                     <End EntitySet="ZC_FGA_PREVISIONSSet" Role="ToRole_assoc_BC39B087465F974A895526BF7592B66D"/>
+                </AssociationSet>
+                <AssociationSet Name="assoc_E3F15DA2DB3C1A5E6E7A9025DEC17B6E" Association="ZFGA_SRV.assoc_E3F15DA2DB3C1A5E6E7A9025DEC17B6E" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="ZC_FGASet" Role="FromRole_assoc_E3F15DA2DB3C1A5E6E7A9025DEC17B6E"/>
+                    <End EntitySet="ZC_FGA_PxMainOeuvre" Role="ToRole_assoc_E3F15DA2DB3C1A5E6E7A9025DEC17B6E"/>
                 </AssociationSet>
                 <AssociationSet Name="assoc_7DB828901AD03000D4E43C4DDBB5C308" Association="ZFGA_SRV.assoc_7DB828901AD03000D4E43C4DDBB5C308" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
                     <End EntitySet="zc_fga_opport" Role="FromRole_assoc_7DB828901AD03000D4E43C4DDBB5C308"/>
@@ -1431,6 +1501,27 @@
                         </PropertyValue>
                     </Record>
                 </Annotation>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGAType/BusinessType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.ValueList">
+                    <Record>
+                        <PropertyValue Property="Label" String="Aide à la recherche Type d''affaire"/>
+                        <PropertyValue Property="CollectionPath" String="ZI_FGA_TYPE_VH"/>
+                        <PropertyValue Property="SearchSupported" Bool="true"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="BusinessType"/>
+                                    <PropertyValue Property="ValueListProperty" String="Type"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="description"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Common.ValueListWithFixedValues"/>
             </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_FGAType/BusinessStatus" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Common.ValueList">
@@ -1957,7 +2048,13 @@
             <Annotations Target="ZFGA_SRV.ZC_FGAType/to_BudgetPxAutre" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Common.Composition"/>
             </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGAType/to_BudgetPxMainOeuvre" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.Composition"/>
+            </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_FGAType/to_BudgetPxRecetteExt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.Composition"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGAType/to_BudgetPxSTI" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Common.Composition"/>
             </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_FGAType/to_BudgetPxSubContracting" xmlns="http://docs.oasis-open.org/odata/ns/edm">
@@ -2324,7 +2421,23 @@
                                     </PropertyValue>
                                 </Record>
                                 <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_BudgetPxMainOeuvre"/>
+                                    <PropertyValue Property="InsertRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Insertable" Bool="true"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
+                                <Record>
                                     <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_BudgetPxRecetteExt"/>
+                                    <PropertyValue Property="InsertRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Insertable" Bool="true"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_BudgetPxSTI"/>
                                     <PropertyValue Property="InsertRestrictions">
                                         <Record>
                                             <PropertyValue Property="Insertable" Bool="true"/>

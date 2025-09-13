@@ -62,7 +62,7 @@ sap.ui.define([
 
             async getBEDatas() {
                 try {
-                    const [missions, previsions, recaps, opport, charts, chartsadddata, pxRecettes, pxAutres, pxSubContracting, pxMainOeuvre, notes, sfgp] = await Promise.all([
+                    const [missions, previsions, recaps, opport, charts, chartsadddata, pxRecettes, pxAutres, pxSubContracting, pxMainOeuvre, pxSTI, notes, sfgp] = await Promise.all([
 
                         this.getBEMissions(),
                         this.getBEPrevisions(),
@@ -76,6 +76,7 @@ sap.ui.define([
                         this.getBEPxAutres(),
                         this.getBEPxExtSubContracting(),
                         this.getBEPxMainOeuvre(),
+                        this.getBEPxSTI(),
 
                         //Notes
                         this.getBENotes(),
@@ -95,6 +96,7 @@ sap.ui.define([
 
                     this.setPxSousTraitance(pxSubContracting || []);
                     this.setPxMainOeuvre(pxMainOeuvre || []);
+                    this.setPxSTI(pxSTI || []);
 
                     // A REMETTRE PROPRE
                     this.onCalculChartsData(previsions, recaps, charts, chartsadddata);
@@ -506,6 +508,25 @@ sap.ui.define([
                 }
             },
 
+            async getBEPxSTI() {
+                try {
+                    this.setTabBusy(true);
+                    const businessNo = this.getBusinessNo();
+                    const period = this.getPeriod();
+                    const urlBusinessNo = encodeURIComponent(businessNo);
+                    const urlPeriod = encodeURIComponent(period);
+
+                    const sPath = `/ZC_FGASet(BusinessNo='${urlBusinessNo}',p_period='${urlPeriod}')/to_BudgetPxSTI`;
+                    console.log(`retrieve Budget Px STI with period: ${period} and BusinessNo: ${businessNo}`);
+                    const pxSTI = await this.read(sPath);
+                    this.setTabBusy(false);
+                    return pxSTI?.results || [];
+                } catch (error) {
+                    this.setTabBusy(false);
+                    console.log(error);
+                }
+            },
+
             async getBEPxExtSubContracting() {
                 try {
                     this.setTabBusy(true);
@@ -713,6 +734,10 @@ sap.ui.define([
 
             getFormattedPxAutre() {
                 return this.getPxAutres();
+            },
+
+            getFormattedPxSTI() {
+                return this.getPxSTI();
             },
 
             formattedPxSubContractingExt() {
