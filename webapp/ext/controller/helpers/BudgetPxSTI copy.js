@@ -1,230 +1,37 @@
 
 sap.ui.define([
-    "sap/ui/core/mvc/Controller",
-    "sap/m/Text",
-    "sap/m/HBox",
-    "sap/ui/table/Column",
-    "sap/m/Label"
-], function (Controller, Text, HBox, Column, Label) {
+    "sap/ui/core/mvc/Controller"
+], function (Controller) {
     "use strict";
 
     return Controller.extend("com.avv.ingerop.ingeropfga.ext.controller.BudgetPxSTI", {
-        
+        // Fragment-specific methods
+
         onInit: function () {
-            this._dynamicColumns = [];
-            this._pSTIBusinessNos = [];
+            // Initialize dynamic columns when controller is initialized
+            this.initializeDynamicColumns();
         },
 
+        initializeDynamicColumns: function () {
+            var oModel = this.getView().getModel("utilities");
+            var pSTIs = oModel.getProperty("/pSTI");
 
-        _getUniqueBusinessNos: function (pSTIs) {
-            var uniqueBusinessNos = [];
-            if (!pSTIs) return uniqueBusinessNos;
+            if (!pSTIs || pSTIs.length === 0) return;
 
-            pSTIs.forEach(function (item) {
-                if (item.business_no_p && !uniqueBusinessNos.includes(item.business_no_p)) {
-                    uniqueBusinessNos.push(item.business_no_p);
-                }
+            // Get unique business_no_p values
+            var uniqueBusinessNos = [...new Set(pSTIs.map(item => item.business_no_p))];
+
+            // Store dynamic column configuration
+            var aDynamicColumns = uniqueBusinessNos.map(function (businessNo, index) {
+                return {
+                    id: "col_business_no_" + index,
+                    label: businessNo,
+                    businessNo: businessNo,
+                    visible: true
+                };
             });
 
-            return uniqueBusinessNos;
-        },
-
-        _createDynamicColumns: function () {
-            var treeTable = this.byId("com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--budgets--BudgetPxSTITreeTable");
-            if (!treeTable) {
-                console.error("TreeTable not found");
-                return;
-            }
-
-            // Remove existing dynamic columns
-            this._removeDynamicColumns();
-
-            // Create new dynamic columns
-            this._pSTIBusinessNos.forEach(function (businessNo) {
-                var column = new Column({
-                    width: "13rem",
-                    template: new HBox({
-                        items: [
-                            new Text({
-                                text: {
-                                    path: 'utilities>dynamicColumns/' + businessNo,
-                                    formatter: function (value) {
-                                        return value || "0";
-                                    }
-                                },
-                                visible: "{= !${utilities>isNode} && !${utilities>isTotalRow}}"
-                            })
-                        ]
-                    }),
-                    label: new Label({
-                        text: businessNo
-                    })
-                });
-
-                this._dynamicColumns.push(column);
-                treeTable.addColumn(column);
-            }.bind(this));
-            this._addStaticColumns(treeTable);
-        },
-
-        _addStaticColumns: function (treeTable) {
-            // Inter UFO Column
-            var interUfoColumn = new Column({
-                width: "5rem",
-                template: new HBox({
-                    items: [
-                        new Text({
-                            text: "{utilities>InterUFOBudget}",
-                            visible: "{= !${utilities>isNode} && !${utilities>isTotalRow}}"
-                        })
-                    ]
-                }),
-                label: new Label({
-                    text: "Inter UFO"
-                })
-            });
-
-            // Intra UFO Column
-            var intraUfoColumn = new Column({
-                width: "5rem",
-                template: new HBox({
-                    items: [
-                        new Text({
-                            text: "{utilities>IntraUFOBudget}",
-                            visible: "{= !${utilities>isNode} && !${utilities>isTotalRow}}"
-                        })
-                    ]
-                }),
-                label: new Label({
-                    text: "Intra UFO"
-                })
-            });
-
-            // Intercompagnie Column
-            var intercompagnieColumn = new Column({
-                width: "8rem",
-                template: new HBox({
-                    items: [
-                        new Text({
-                            text: "{utilities>IntercompagnieBudget}",
-                            visible: "{= !${utilities>isNode} && !${utilities>isTotalRow}}"
-                        })
-                    ]
-                }),
-                label: new Label({
-                    text: "Intercompagnie"
-                })
-            });
-
-            // Add static columns to tree table
-            treeTable.addColumn(interUfoColumn);
-            treeTable.addColumn(intraUfoColumn);
-            treeTable.addColumn(intercompagnieColumn);
-
-            // Store references for cleanup if needed
-            this._staticColumns = [interUfoColumn, intraUfoColumn, intercompagnieColumn];
-        },
-
-        _removeDynamicColumns: function () {
-            var treeTable = this.byId("com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--budgets--BudgetPxSTITreeTable");
-            if (!treeTable) return;
-
-            /*this._dynamicColumns.forEach(function (column) {
-                treeTable.removeColumn(column);
-                column.destroy();
-            });*/
-
-            this._dynamicColumns = [];
-        },
-
-        _addDynamicColumnValues: function (item, pSTIs) {
-            if (!item.dynamicColumns) {
-                item.dynamicColumns = {};
-            }
-
-            // Initialize all dynamic columns with 0
-            this._pSTIBusinessNos.forEach(function (businessNo) {
-                item.dynamicColumns[businessNo] = "0";
-            });
-
-            // If this item has a matching business_no_p, set the value
-            if (item.business_no_p) {
-                item.dynamicColumns[item.business_no_p] = "1"; // Or whatever value you want
-            }
-        },
-
-        // Update your existing methods to handle dynamic columns
-        createRegroupementTotalRow: function (totals, regroupementName) {
-            var row = {
-                name: "Total " + regroupementName,
-                isTotalRow: true,
-                isNode: false,
-                isRegroupementTotal: true,
-                VoyageDeplacement: totals.VoyageDeplacement,
-                AutresFrais: totals.AutresFrais,
-                CreancesDouteuses: totals.CreancesDouteuses,
-                EtudesTravaux: totals.EtudesTravaux,
-                SinistreContentieux: totals.SinistreContentieux,
-                AleasDivers: totals.AleasDivers,
-                FinAffaire: totals.FinAffaire,
-                dynamicColumns: {}
-            };
-
-            // Initialize dynamic columns for total row
-            this._pSTIBusinessNos.forEach(function (businessNo) {
-                row.dynamicColumns[businessNo] = "0";
-            });
-
-            return row;
-        },
-
-        calculateGlobalTotals: function (items) {
-
-            // Add dynamic columns to totals
-            this._pSTIBusinessNos.forEach(function (businessNo) {
-                totals.totalAcquis[businessNo] = 0;
-                totals.cumule[businessNo] = 0;
-            });
-
-            var sumValues = function (node) {
-                if (node.children) {
-                    // Your existing logic...
-                } else if (!node.isNode) {
-                    // Your existing logic...
-
-                    // Sum dynamic columns
-                    this._pSTIBusinessNos.forEach(function (businessNo) {
-                        totals.totalAcquis[businessNo] += Number(node.dynamicColumns[businessNo]) || 0;
-                        totals.cumule[businessNo] += 0; // Set to 0 as per requirement
-                    });
-                }
-            }.bind(this);
-
-        },
-
-        createSummaryRow: function (name, values, isPercentage) {
-            var row = {
-                name: name,
-                isTotalRow: true,
-                isNode: false,
-                VoyageDeplacement: isPercentage ? values.VoyageDeplacement.toFixed(2) + "%" : values.VoyageDeplacement,
-                AutresFrais: isPercentage ? values.AutresFrais.toFixed(2) + "%" : values.AutresFrais,
-                CreancesDouteuses: isPercentage ? values.CreancesDouteuses.toFixed(2) + "%" : values.CreancesDoubtful,
-                EtudesTravaux: isPercentage ? values.EtudesTravaux.toFixed(2) + "%" : values.EtudesTravaux,
-                SinistreContentieux: isPercentage ? values.SinistreContentieux.toFixed(2) + "%" : values.SinistreContentieux,
-                AleasDivers: isPercentage ? values.AleasDivers.toFixed(2) + "%" : values.AleasDivers,
-                FinAffaire: isPercentage ? values.FinAffaire.toFixed(2) + "%" : values.FinAffaire,
-                dynamicColumns: {}
-            };
-
-            // Add dynamic columns to summary row
-            this._pSTIBusinessNos.forEach(function (businessNo) {
-                row.dynamicColumns[businessNo] = isPercentage ?
-                    (values[businessNo] || 0).toFixed(2) + "%" :
-                    values[businessNo] || 0;
-            });
-
-            return row;
+            oModel.setProperty("/dynamicColumns", aDynamicColumns);
         },
 
         preparePxSTITreeData: function () {
@@ -233,9 +40,6 @@ sap.ui.define([
 
             var pSTIs = this.getView().getModel("utilities").getProperty("/pSTI");
 
-            // Extract unique business_no_p values for dynamic columns
-            this._pSTIBusinessNos = this._getUniqueBusinessNos(pSTIs);
-            
             var buildTree = function (items) {
                 var treeData = [];
                 var fgaGroups = {};
@@ -244,10 +48,6 @@ sap.ui.define([
 
                 items.forEach(function (item) {
                     item.isTotalRow = false;
-
-                    if (!item.isNode && !item.isTotalRow) {
-                        self._addDynamicColumnValues(item, pSTIs);
-                    }
 
                     // Calculate FinAffaire as sum of other columns for each line
                     item.FinAffaire = (Number(item.VoyageDeplacement) || 0) +
@@ -320,9 +120,6 @@ sap.ui.define([
 
                 return treeData;
             };
-
-            // Create dynamic columns
-            this._createDynamicColumns();
 
             // Build trees 
             var PxSTIsTreeData = buildTree(PxSTIs);

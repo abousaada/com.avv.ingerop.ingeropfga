@@ -33,6 +33,7 @@ sap.ui.define([], function() {
           }*/
         ],
         "pxSTI": [],
+        "pSTI": [],
         "Notes": '',
         "sfgp": [],
         "missionTypes": [

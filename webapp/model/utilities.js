@@ -62,7 +62,7 @@ sap.ui.define([
 
             async getBEDatas() {
                 try {
-                    const [missions, previsions, recaps, opport, charts, chartsadddata, pxRecettes, pxAutres, pxSubContracting, pxMainOeuvre, pxSTI, notes, sfgp] = await Promise.all([
+                    const [missions, previsions, recaps, opport, charts, chartsadddata, pxRecettes, pxAutres, pxSubContracting, pxMainOeuvre, pxSTI, pSTI, notes, sfgp] = await Promise.all([
 
                         this.getBEMissions(),
                         this.getBEPrevisions(),
@@ -77,6 +77,7 @@ sap.ui.define([
                         this.getBEPxExtSubContracting(),
                         this.getBEPxMainOeuvre(),
                         this.getBEPxSTI(),
+                        this.getBEPSTI(),
 
                         //Notes
                         this.getBENotes(),
@@ -97,6 +98,7 @@ sap.ui.define([
                     this.setPxSousTraitance(pxSubContracting || []);
                     this.setPxMainOeuvre(pxMainOeuvre || []);
                     this.setPxSTI(pxSTI || []);
+                    this.setPSTI(pSTI || []);
 
                     // A REMETTRE PROPRE
                     this.onCalculChartsData(previsions, recaps, charts, chartsadddata);
@@ -521,6 +523,25 @@ sap.ui.define([
                     const pxSTI = await this.read(sPath);
                     this.setTabBusy(false);
                     return pxSTI?.results || [];
+                } catch (error) {
+                    this.setTabBusy(false);
+                    console.log(error);
+                }
+            },
+
+            async getBEPSTI() {
+                try {
+                    this.setTabBusy(true);
+                    const businessNo = this.getBusinessNo();
+                    const period = this.getPeriod();
+                    const urlBusinessNo = encodeURIComponent(businessNo);
+                    const urlPeriod = encodeURIComponent(period);
+
+                    const sPath = `/ZC_STI?$filter=business_no_e eq '${urlBusinessNo}'`;
+                    console.log(`retrieve STI with period: ${period} and BusinessNo: ${businessNo}`);
+                    const pSTI = await this.read(sPath);
+                    this.setTabBusy(false);
+                    return pSTI?.results || [];
                 } catch (error) {
                     this.setTabBusy(false);
                     console.log(error);
