@@ -133,6 +133,7 @@ sap.ui.define(
                                 "to_BudgetPxRecetteExt": formattedPxRecetteExt,
                                 "to_BudgetPxMainOeuvre": formattedMainOeuvre,
                                 // "to_BudgetPxSTI": formattedPxSTI,
+                                "to_BudgetPxSTI": []
                             });
 
                             try {
