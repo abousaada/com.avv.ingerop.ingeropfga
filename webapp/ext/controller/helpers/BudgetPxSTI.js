@@ -139,6 +139,64 @@ sap.ui.define([
             this._staticColumns = [interUfoColumn, intraUfoColumn, intercompagnieColumn];
         },
 
+        _addStaticColumns1: function (treeTable) {
+            // Inter UFO Column
+            var interUfoColumn = new Column({
+                width: "5rem",
+                template: new HBox({
+                    items: [
+                        new Text({
+                            text: "{utilities>InterUFOBudget}",
+                            visible: "{= !${utilities>isNode} && !${utilities>isTotalRow}}"
+                        })
+                    ]
+                }),
+                label: new Label({
+                    text: "Inter UFO"
+                })
+            });
+
+            // Intra UFO Column
+            var intraUfoColumn = new Column({
+                width: "5rem",
+                template: new HBox({
+                    items: [
+                        new Text({
+                            text: "{utilities>IntraUFOBudget}",
+                            visible: "{= !${utilities>isNode} && !${utilities>isTotalRow}}"
+                        })
+                    ]
+                }),
+                label: new Label({
+                    text: "Intra UFO"
+                })
+            });
+
+            // Intercompagnie Column
+            var intercompagnieColumn = new Column({
+                width: "8rem",
+                template: new HBox({
+                    items: [
+                        new Text({
+                            text: "{utilities>IntercompagnieBudget}",
+                            visible: "{= !${utilities>isNode} && !${utilities>isTotalRow}}"
+                        })
+                    ]
+                }),
+                label: new Label({
+                    text: "Intercompagnie"
+                })
+            });
+
+            // Add static columns to tree table
+            treeTable.addColumn(interUfoColumn);
+            treeTable.addColumn(intraUfoColumn);
+            treeTable.addColumn(intercompagnieColumn);
+
+            // Store references for cleanup if needed
+            this._staticColumns = [interUfoColumn, intraUfoColumn, intercompagnieColumn];
+        },
+
         _removeDynamicColumns: function () {
             var treeTable = this.byId("com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--budgets--BudgetPxSTITreeTable");
             if (!treeTable || !this._dynamicColumns) return; // Add null check
@@ -164,7 +222,6 @@ sap.ui.define([
         },
 
         _addDynamicColumnValues: function (item, pSTIs) {
-            
             if (!item.dynamicColumns) {
                 item.dynamicColumns = {};
             }
@@ -174,12 +231,17 @@ sap.ui.define([
                 item.dynamicColumns[businessNo] = "0";
             });
 
+            // Initialize static column sums as numbers
+            var interUfoSum = 0;
+            var intraUfoSum = 0;
+            var intercompanySum = 0;
+
             // Find matching pSTI items for this item's MissionId
             var matchingPSTIs = pSTIs.filter(function (pSTI) {
                 return pSTI.business_no_p && this._pSTIBusinessNos.includes(pSTI.business_no_p);
             }.bind(this));
 
-            // Set the values from matching pSTI items
+            // Set the values from matching pSTI items and calculate sums based on TypeBudg
             matchingPSTIs.forEach(function (pSTI) {
                 if (pSTI.to_budg) {
                     // Find the specific to_budg item that matches this MissionId
@@ -188,59 +250,146 @@ sap.ui.define([
                     });
 
                     if (matchingBudg && matchingBudg.BudgetAlloue) {
-                        item.dynamicColumns[pSTI.business_no_p] = matchingBudg.BudgetAlloue;
+                        var budgetValue = Number(matchingBudg.BudgetAlloue) || 0;
+                        item.dynamicColumns[pSTI.business_no_p] = budgetValue.toString();
+
+                        // Distribute the sum based on TypeBudg
+                        switch (pSTI.TypeBudg) {
+                            case "intraUFO":
+                                intraUfoSum += budgetValue;
+                                break;
+                            case "interCO":
+                                intercompanySum += budgetValue;
+                                break;
+                            case "interUFO":
+                            default:
+                                interUfoSum += budgetValue;
+                                break;
+                        }
                     }
                 }
             }.bind(this));
+
+            // Convert sums to strings for display
+            item.InterUFOBudget = interUfoSum.toString();
+            item.IntraUFOBudget = intraUfoSum.toString();
+            item.IntercompagnieBudget = intercompanySum.toString();
         },
 
-        // Update your existing methods to handle dynamic columns
+        _addDynamicColumnValues1: function (item, pSTIs) {
+            if (!item.dynamicColumns) {
+                item.dynamicColumns = {};
+            }
+
+            // Initialize all dynamic columns with 0
+            this._pSTIBusinessNos.forEach(function (businessNo) {
+                item.dynamicColumns[businessNo] = "0";
+            });
+
+            // Initialize InterUFO sum as number, not string
+            var interUfoSum = 0;
+
+            // Find matching pSTI items for this item's MissionId
+            var matchingPSTIs = pSTIs.filter(function (pSTI) {
+                return pSTI.business_no_p && this._pSTIBusinessNos.includes(pSTI.business_no_p);
+            }.bind(this));
+
+            // Set the values from matching pSTI items and calculate sum
+            matchingPSTIs.forEach(function (pSTI) {
+                if (pSTI.to_budg) {
+                    // Find the specific to_budg item that matches this MissionId
+                    var matchingBudg = pSTI.to_budg.find(function (budg) {
+                        return budg.Mission_e === item.MissionId;
+                    });
+
+                    if (matchingBudg && matchingBudg.BudgetAlloue) {
+                        var budgetValue = Number(matchingBudg.BudgetAlloue) || 0;
+                        item.dynamicColumns[pSTI.business_no_p] = budgetValue.toString();
+                        interUfoSum += budgetValue; // Add as number
+                    }
+                }
+            }.bind(this));
+
+            // Convert InterUFO sum to string for display
+            item.InterUFOBudget = interUfoSum.toString();
+        },
+
         createRegroupementTotalRow: function (totals, regroupementName) {
             var row = {
                 name: "Total " + regroupementName,
                 isTotalRow: true,
                 isNode: false,
                 isRegroupementTotal: true,
-                VoyageDeplacement: totals.VoyageDeplacement,
-                AutresFrais: totals.AutresFrais,
-                CreancesDouteuses: totals.CreancesDouteuses,
-                EtudesTravaux: totals.EtudesTravaux,
-                SinistreContentieux: totals.SinistreContentieux,
-                AleasDivers: totals.AleasDivers,
-                FinAffaire: totals.FinAffaire,
-                dynamicColumns: {}
+                dynamicColumns: totals.dynamicColumns || {},
+                InterUFOBudget: totals.InterUFOBudget || "0",
+                IntraUFOBudget: totals.IntraUFOBudget || "0",
+                IntercompagnieBudget: totals.IntercompagnieBudget || "0"
             };
 
-            // Initialize dynamic columns for total row
+            // Ensure all dynamic columns are present
             this._pSTIBusinessNos.forEach(function (businessNo) {
-                row.dynamicColumns[businessNo] = "0";
+                if (!row.dynamicColumns[businessNo]) {
+                    row.dynamicColumns[businessNo] = "0";
+                }
             });
 
             return row;
         },
 
         calculateGlobalTotals: function (items) {
+            var totals = {
+                totalAcquis: {},
+                cumule: {},
+                pourcentage: {},
+                rad: {}
+            };
 
-            // Add dynamic columns to totals
+            // Initialize dynamic columns in totals
             this._pSTIBusinessNos.forEach(function (businessNo) {
                 totals.totalAcquis[businessNo] = 0;
                 totals.cumule[businessNo] = 0;
+                totals.pourcentage[businessNo] = 0;
+                totals.rad[businessNo] = 0;
             });
 
-            var sumValues = function (node) {
-                if (node.children) {
-                    // Your existing logic...
-                } else if (!node.isNode) {
-                    // Your existing logic...
+            // Initialize InterUFO totals
+            totals.totalAcquis.InterUFOBudget = 0;
+            totals.cumule.InterUFOBudget = 0;
+            totals.pourcentage.InterUFOBudget = 0;
+            totals.rad.InterUFOBudget = 0;
 
-                    // Sum dynamic columns
+            // Recursive function to sum values from all nodes
+            var sumValues = function (node) {
+                if (node.children && Array.isArray(node.children)) {
+                    // If it's a node with children, process each child
+                    node.children.forEach(function (child) {
+                        sumValues(child);
+                    });
+                } else if (!node.isNode && !node.isTotalRow && !node.isRegroupementTotal) {
+                    // Only sum values from actual data rows (not totals or nodes)
                     this._pSTIBusinessNos.forEach(function (businessNo) {
                         totals.totalAcquis[businessNo] += Number(node.dynamicColumns[businessNo]) || 0;
-                        totals.cumule[businessNo] += 0; // Set to 0 as per requirement
                     });
+                    totals.totalAcquis.InterUFOBudget += Number(node.InterUFOBudget) || 0;
                 }
             }.bind(this);
 
+            // Process all items
+            items.forEach(sumValues);
+
+            // Calculate percentages and RAD for dynamic columns
+            this._pSTIBusinessNos.forEach(function (businessNo) {
+                totals.pourcentage[businessNo] = totals.totalAcquis[businessNo] > 0 ?
+                    (totals.cumule[businessNo] / totals.totalAcquis[businessNo] * 100) : 0;
+                totals.rad[businessNo] = totals.totalAcquis[businessNo] - totals.cumule[businessNo];
+            });
+
+            // Calculate percentages and RAD for InterUFO column
+            totals.pourcentage.InterUFOBudget = totals.totalAcquis.InterUFOBudget > 0 ?
+                (totals.cumule.InterUFOBudget / totals.totalAcquis.InterUFOBudget * 100) : 0;
+            totals.rad.InterUFOBudget = totals.totalAcquis.InterUFOBudget - totals.cumule.InterUFOBudget;
+
+            return totals;
         },
 
         createSummaryRow: function (name, values, isPercentage) {
@@ -248,22 +397,22 @@ sap.ui.define([
                 name: name,
                 isTotalRow: true,
                 isNode: false,
-                VoyageDeplacement: isPercentage ? values.VoyageDeplacement.toFixed(2) + "%" : values.VoyageDeplacement,
-                AutresFrais: isPercentage ? values.AutresFrais.toFixed(2) + "%" : values.AutresFrais,
-                CreancesDouteuses: isPercentage ? values.CreancesDouteuses.toFixed(2) + "%" : values.CreancesDoubtful,
-                EtudesTravaux: isPercentage ? values.EtudesTravaux.toFixed(2) + "%" : values.EtudesTravaux,
-                SinistreContentieux: isPercentage ? values.SinistreContentieux.toFixed(2) + "%" : values.SinistreContentieux,
-                AleasDivers: isPercentage ? values.AleasDivers.toFixed(2) + "%" : values.AleasDivers,
-                FinAffaire: isPercentage ? values.FinAffaire.toFixed(2) + "%" : values.FinAffaire,
                 dynamicColumns: {}
             };
 
             // Add dynamic columns to summary row
             this._pSTIBusinessNos.forEach(function (businessNo) {
+                var value = values[businessNo] || 0;
                 row.dynamicColumns[businessNo] = isPercentage ?
-                    (values[businessNo] || 0).toFixed(2) + "%" :
-                    values[businessNo] || 0;
+                    value.toFixed(2) + "%" :
+                    value.toString();
             });
+
+            // Add InterUFO column to summary row
+            var interUfoValue = values.InterUFOBudget || 0;
+            row.InterUFOBudget = isPercentage ?
+                interUfoValue.toFixed(2) + "%" :
+                interUfoValue.toString();
 
             return row;
         },
@@ -271,7 +420,6 @@ sap.ui.define([
         preparePxSTITreeData: function () {
             var self = this;
             var PxSTIs = this.getView().getModel("utilities").getProperty("/pxSTI");
-
             var pSTIs = this.getView().getModel("utilities").getProperty("/pSTI");
 
             // Extract unique business_no_p values for dynamic columns
@@ -290,14 +438,6 @@ sap.ui.define([
                         self._addDynamicColumnValues(item, pSTIs);
                     }
 
-                    // Calculate FinAffaire as sum of other columns for each line
-                    item.FinAffaire = (Number(item.VoyageDeplacement) || 0) +
-                        (Number(item.AutresFrais) || 0) +
-                        (Number(item.CreancesDouteuses) || 0) +
-                        (Number(item.EtudesTravaux) || 0) +
-                        (Number(item.SinistreContentieux) || 0) +
-                        (Number(item.AleasDivers) || 0);
-
                     if (!fgaGroups[item.BusinessNo]) {
                         fgaGroups[item.BusinessNo] = {
                             name: item.BusinessNo,
@@ -309,47 +449,64 @@ sap.ui.define([
 
                     if (!fgaGroups[item.BusinessNo].children[item.Regroupement]) {
                         fgaGroups[item.BusinessNo].children[item.Regroupement] = {
-                            name: item.Regroupement, // Store the regroupement name here
+                            name: item.Regroupement,
                             isNode: true,
                             isL0: false,
                             children: [],
                             totals: {
-                                VoyageDeplacement: 0,
-                                AutresFrais: 0,
-                                CreancesDouteuses: 0,
-                                EtudesTravaux: 0,
-                                SinistreContentieux: 0,
-                                AleasDivers: 0,
-                                FinAffaire: 0
+                                dynamicColumns: {},
+                                InterUFOBudget: 0,
+                                IntraUFOBudget: 0,
+                                IntercompagnieBudget: 0
                             }
                         };
+
+                        // Initialize dynamic columns in totals
+                        self._pSTIBusinessNos.forEach(function (businessNo) {
+                            fgaGroups[item.BusinessNo].children[item.Regroupement].totals.dynamicColumns[businessNo] = 0;
+                        });
                     }
 
                     var regroupement = fgaGroups[item.BusinessNo].children[item.Regroupement];
                     regroupement.children.push(item);
 
-                    // Accumulate totals for the Regroupement
-                    regroupement.totals.VoyageDeplacement += Number(item.VoyageDeplacement) || 0;
-                    regroupement.totals.AutresFrais += Number(item.AutresFrais) || 0;
-                    regroupement.totals.CreancesDouteuses += Number(item.CreancesDouteuses) || 0;
-                    regroupement.totals.EtudesTravaux += Number(item.EtudesTravaux) || 0;
-                    regroupement.totals.SinistreContentieux += Number(item.SinistreContentieux) || 0;
-                    regroupement.totals.AleasDivers += Number(item.AleasDivers) || 0;
-                    regroupement.totals.FinAffaire += Number(item.FinAffaire) || 0;
+                    // Accumulate totals for the Regroupement - dynamic columns
+                    self._pSTIBusinessNos.forEach(function (businessNo) {
+                        var value = Number(item.dynamicColumns[businessNo]) || 0;
+                        regroupement.totals.dynamicColumns[businessNo] += value;
+                    });
+
+                    // Accumulate all static column totals
+                    regroupement.totals.InterUFOBudget += Number(item.InterUFOBudget) || 0;
+                    regroupement.totals.IntraUFOBudget += Number(item.IntraUFOBudget) || 0;
+                    regroupement.totals.IntercompagnieBudget += Number(item.IntercompagnieBudget) || 0;
                 });
 
                 // Convert children objects to arrays while preserving names
                 for (var fga in fgaGroups) {
                     var fgaGroup = fgaGroups[fga];
-
-                    // Convert children object to array of regroupements with their names
                     var regroupementArray = [];
+
                     for (var regroupementKey in fgaGroup.children) {
                         if (fgaGroup.children.hasOwnProperty(regroupementKey)) {
                             var regroupement = fgaGroup.children[regroupementKey];
+
+                            // Create totals object for the regroupement row
+                            var totalsForRow = {
+                                dynamicColumns: {},
+                                InterUFOBudget: regroupement.totals.InterUFOBudget.toString(),
+                                IntraUFOBudget: regroupement.totals.IntraUFOBudget.toString(),
+                                IntercompagnieBudget: regroupement.totals.IntercompagnieBudget.toString()
+                            };
+
+                            // Convert dynamic column totals to strings
+                            self._pSTIBusinessNos.forEach(function (businessNo) {
+                                totalsForRow.dynamicColumns[businessNo] = regroupement.totals.dynamicColumns[businessNo].toString();
+                            });
+
                             // Add total row with the regroupement's name
                             regroupement.children.push(
-                                self.createRegroupementTotalRow(regroupement.totals, regroupement.name)
+                                self.createRegroupementTotalRow(totalsForRow, regroupement.name)
                             );
                             regroupementArray.push(regroupement);
                         }
@@ -373,10 +530,10 @@ sap.ui.define([
 
             // Create flat summary rows (level 0)
             var summaryRows = [
-                this.createSummaryRow("Total Acquis", globalTotals.totalAcquis, false),
-                this.createSummaryRow("Cumule", globalTotals.cumule, false),
+                this.createSummaryRow("Budget STI", globalTotals.totalAcquis, false),
+                this.createSummaryRow("Cumulé comptabilisé", globalTotals.cumule, false),
                 this.createSummaryRow("Pourcentage", globalTotals.pourcentage, true),
-                this.createSummaryRow("RAD", globalTotals.rad, false)
+                this.createSummaryRow("Reste", globalTotals.rad, false)
             ];
 
             // Add summary rows directly to the root array (as level 0 items)
@@ -386,422 +543,127 @@ sap.ui.define([
             this.getView().getModel("utilities").setProperty("/PxSTIHierarchyWithTotals", PxSTIsTreeData);
         },
 
-        onSubmit: function (oEvent) {
+        preparePxSTITreeData1: function () {
+            var self = this;
+            var PxSTIs = this.getView().getModel("utilities").getProperty("/pxSTI");
+            var pSTIs = this.getView().getModel("utilities").getProperty("/pSTI");
 
-            //this.oView.setBusy(true);
+            // Extract unique business_no_p values for dynamic columns
+            this._pSTIBusinessNos = this._getUniqueBusinessNos(pSTIs);
 
-            const oModel = this.oView.getModel("utilities");
-            const oInput = oEvent.getSource();
-            const oBindingContext = oInput.getBindingContext("utilities");
+            var buildTree = function (items) {
+                var treeData = [];
+                var fgaGroups = {};
 
-            try {
-                oModel.checkUpdate(true);
+                if (!items) return treeData;
 
-                // Use arrow function to maintain 'this' context
-                setTimeout(() => {
-                    this.updateTotals();
-                }, 50);
-            } catch (error) {
-                console.error("Update failed:", error);
-                //this.oView.setBusy(false);
-            }
+                items.forEach(function (item) {
+                    item.isTotalRow = false;
 
-            //this.oView.setBusy(false);
-        },
+                    if (!item.isNode && !item.isTotalRow) {
+                        self._addDynamicColumnValues(item, pSTIs);
+                    }
 
-        updateTotals: function () {
-            var oModel = this.oView.getModel("utilities");
-            var aData = oModel.getProperty("/PxSTIHierarchyWithTotals");
+                    if (!fgaGroups[item.BusinessNo]) {
+                        fgaGroups[item.BusinessNo] = {
+                            name: item.BusinessNo,
+                            isNode: true,
+                            isL0: true,
+                            children: {}
+                        };
+                    }
 
-            var aTreeData = aData.filter(function (oItem) {
-                return !oItem.isTotalRow;
-            });
+                    if (!fgaGroups[item.BusinessNo].children[item.Regroupement]) {
+                        fgaGroups[item.BusinessNo].children[item.Regroupement] = {
+                            name: item.Regroupement,
+                            isNode: true,
+                            isL0: false,
+                            children: [],
+                            totals: {
+                                dynamicColumns: {},
+                                InterUFOBudget: 0
+                            }
+                        };
 
-            aTreeData.forEach(function (fgaGroup) {
-
-                var regroupementEntries = [];
-
-                for (var regroupementKey in fgaGroup.children) {
-                    if (fgaGroup.children.hasOwnProperty(regroupementKey)) {
-                        var regroupement = fgaGroup.children[regroupementKey];
-                        regroupementEntries.push({
-                            name: regroupement.name,
-                            data: regroupement
+                        // Initialize dynamic columns in totals
+                        self._pSTIBusinessNos.forEach(function (businessNo) {
+                            fgaGroups[item.BusinessNo].children[item.Regroupement].totals.dynamicColumns[businessNo] = 0;
                         });
                     }
-                }
 
-                // Now process each regroupement
-                fgaGroup.children = regroupementEntries.map(function (entry) {
-                    var regroupement = entry.data;
+                    var regroupement = fgaGroups[item.BusinessNo].children[item.Regroupement];
+                    regroupement.children.push(item);
 
-                    // Reset totals
-                    regroupement.totals = {
-                        isNode: false,
-                        VoyageDeplacement: 0,
-                        AutresFrais: 0,
-                        CreancesDouteuses: 0,
-                        EtudesTravaux: 0,
-                        SinistreContentieux: 0,
-                        AleasDivers: 0,
-                        FinAffaire: 0
-                    };
-
-                    // Recalculate totals
-                    regroupement.children.forEach(function (item) {
-                        if (!item.isTotalRow) {
-
-                            item.FinAffaire = (Number(item.VoyageDeplacement) || 0) +
-                                (Number(item.AutresFrais) || 0) +
-                                (Number(item.CreancesDouteuses) || 0) +
-                                (Number(item.EtudesTravaux) || 0) +
-                                (Number(item.SinistreContentieux) || 0) +
-                                (Number(item.AleasDivers) || 0);
-
-                            regroupement.totals.VoyageDeplacement += Number(item.VoyageDeplacement) || 0;
-                            regroupement.totals.AutresFrais += Number(item.AutresFrais) || 0;
-                            regroupement.totals.CreancesDouteuses += Number(item.CreancesDouteuses) || 0;
-                            regroupement.totals.EtudesTravaux += Number(item.EtudesTravaux) || 0;
-                            regroupement.totals.SinistreContentieux += Number(item.SinistreContentieux) || 0;
-                            regroupement.totals.AleasDivers += Number(item.AleasDivers) || 0;
-                            regroupement.totals.FinAffaire += Number(item.FinAffaire) || 0;
-                        }
+                    // Accumulate totals for the Regroupement - dynamic columns
+                    self._pSTIBusinessNos.forEach(function (businessNo) {
+                        var value = Number(item.dynamicColumns[businessNo]) || 0;
+                        regroupement.totals.dynamicColumns[businessNo] += value;
                     });
 
-                    // Update the regroupement total row
-                    var existingTotalIndex = regroupement.children.findIndex(function (child) {
-                        return child.isRegroupementTotal;
-                    });
-
-                    var totalRow = this.createRegroupementTotalRow(regroupement.totals, entry.name);
-
-                    if (existingTotalIndex >= 0) {
-                        regroupement.children[existingTotalIndex] = totalRow;
-                    } else {
-                        regroupement.children.push(totalRow);
-                    }
-
-                    return regroupement;
-                }.bind(this));
-            }.bind(this));
-
-            // Calculate new global totals
-            var globalTotals = this.calculateGlobalTotals(aTreeData);
-
-            // Create new summary rows
-            var summaryRows = [
-                this.createSummaryRow("Total Acquis", globalTotals.totalAcquis, false),
-                this.createSummaryRow("Cumule", globalTotals.cumule, false),
-                this.createSummaryRow("Pourcentage", globalTotals.pourcentage, true),
-                this.createSummaryRow("RAD", globalTotals.rad, false)
-            ];
-
-            // Update the model
-            oModel.setProperty("/PxSTIHierarchyWithTotals", aTreeData.concat(summaryRows));
-        },
-
-        createRegroupementTotalRow: function (totals, regroupementName) {
-            return {
-                name: "Total " + regroupementName,
-                isTotalRow: true,
-                isNode: false,
-                isRegroupementTotal: true,
-                VoyageDeplacement: totals.VoyageDeplacement,
-                AutresFrais: totals.AutresFrais,
-                CreancesDouteuses: totals.CreancesDouteuses,
-                EtudesTravaux: totals.EtudesTravaux,
-                SinistreContentieux: totals.SinistreContentieux,
-                AleasDivers: totals.AleasDivers,
-                FinAffaire: totals.FinAffaire
-            };
-        },
-
-        calculateGlobalTotals: function (items) {
-            var totals = {
-                totalAcquis: {
-                    VoyageDeplacement: 0,
-                    AutresFrais: 0,
-                    CreancesDouteuses: 0,
-                    EtudesTravaux: 0,
-                    SinistreContentieux: 0,
-                    AleasDivers: 0,
-                    FinAffaire: 0
-                },
-                cumule: {
-                    VoyageDeplacement: 0,
-                    AutresFrais: 0,
-                    CreancesDouteuses: 0,
-                    EtudesTravaux: 0,
-                    SinistreContentieux: 0,
-                    AleasDivers: 0,
-                    FinAffaire: 0,
-
-                    GLAccountVoyageDeplacement: '',
-                    GLAccountAutresFrais: '',
-                    GLAccountCreancesDouteuses: '',
-                    GLAccountEtudesTravaux: '',
-                    GLAccountSinistreContentieux: '',
-                    GLAccountAleasDivers: '',
-                    GLAccountFinAffaire: ''
-
-                }
-            };
-
-            var sumValues = function (node) {
-                if (node.children) {
-                    if (node.isNode) {
-                        node.children.forEach(function (child) {
-                            if (!child.isTotalRow && !child.isRegroupementTotal) {
-                                sumValues(child);
-                            }
-                        });
-                    }
-                } else if (!node.isNode) {
-                    totals.totalAcquis.VoyageDeplacement += Number(node.VoyageDeplacement) || 0;
-                    totals.totalAcquis.AutresFrais += Number(node.AutresFrais) || 0;
-                    totals.totalAcquis.CreancesDouteuses += Number(node.CreancesDouteuses) || 0;
-                    totals.totalAcquis.EtudesTravaux += Number(node.EtudesTravaux) || 0;
-                    totals.totalAcquis.SinistreContentieux += Number(node.SinistreContentieux) || 0;
-                    totals.totalAcquis.AleasDivers += Number(node.AleasDivers) || 0;
-                    totals.totalAcquis.FinAffaire += Number(node.FinAffaire) || 0;
-
-                    // Read cumulé from entity
-                    totals.cumule.VoyageDeplacement = Number(node.CumulVoyageDeplacement) || 0;
-                    totals.cumule.AutresFrais = Number(node.CumulAutresFrais) || 0;
-                    totals.cumule.CreancesDouteuses = Number(node.CumulCreancesDouteuses) || 0;
-                    totals.cumule.EtudesTravaux = Number(node.CumulEtudesTravaux) || 0;
-                    totals.cumule.SinistreContentieux = Number(node.CumulSinistreContentieux) || 0;
-                    totals.cumule.AleasDivers = Number(node.CumulAleasDivers) || 0;
-                    totals.cumule.FinAffaire = Number(node.CumulFinAffaire) || 0;
-
-                    // Read GlAccounts from entity
-                    totals.cumule.GLAccountVoyageDeplacement = node.GLAccountVoyageDeplacement;
-                    totals.cumule.GLAccountAutresFrais = node.GLAccountAutresFrais;
-                    totals.cumule.GLAccountCreancesDouteuses = node.GLAccountCreancesDouteuses;
-                    totals.cumule.GLAccountEtudesTravaux = node.GLAccountEtudesTravaux;
-                    totals.cumule.GLAccountSinistreContentieux = node.GLAccountSinistreContentieux;
-                    totals.cumule.GLAccountAleasDivers = node.GLAccountAleasDivers;
-                    totals.cumule.GLAccountFinAffaire = node.GLAccountFinAffaire;
-                }
-            };
-
-            items.forEach(sumValues);
-
-
-            // Calculate percentages
-            totals.pourcentage = {
-                VoyageDeplacement: totals.totalAcquis.VoyageDeplacement > 0 ?
-                    (totals.cumule.VoyageDeplacement / totals.totalAcquis.VoyageDeplacement * 100) : 0,
-                AutresFrais: totals.totalAcquis.AutresFrais > 0 ?
-                    (totals.cumule.AutresFrais / totals.totalAcquis.AutresFrais * 100) : 0,
-                CreancesDouteuses: totals.totalAcquis.CreancesDouteuses > 0 ?
-                    (totals.cumule.CreancesDouteuses / totals.totalAcquis.CreancesDouteuses * 100) : 0,
-                EtudesTravaux: totals.totalAcquis.EtudesTravaux > 0 ?
-                    (totals.cumule.EtudesTravaux / totals.totalAcquis.EtudesTravaux * 100) : 0,
-                SinistreContentieux: totals.totalAcquis.SinistreContentieux > 0 ?
-                    (totals.cumule.SinistreContentieux / totals.totalAcquis.SinistreContentieux * 100) : 0,
-                AleasDivers: totals.totalAcquis.AleasDivers > 0 ?
-                    (totals.cumule.AleasDivers / totals.totalAcquis.AleasDivers * 100) : 0,
-                FinAffaire: totals.totalAcquis.FinAffaire > 0 ?
-                    (totals.cumule.FinAffaire / totals.totalAcquis.FinAffaire * 100) : 0
-            };
-
-            // Calculate RAD values
-            totals.rad = {
-                VoyageDeplacement: totals.totalAcquis.VoyageDeplacement - totals.cumule.VoyageDeplacement,
-                AutresFrais: totals.totalAcquis.AutresFrais - totals.cumule.AutresFrais,
-                CreancesDouteuses: totals.totalAcquis.CreancesDouteuses - totals.cumule.CreancesDouteuses,
-                EtudesTravaux: totals.totalAcquis.EtudesTravaux - totals.cumule.EtudesTravaux,
-                SinistreContentieux: totals.totalAcquis.SinistreContentieux - totals.cumule.SinistreContentieux,
-                AleasDivers: totals.totalAcquis.AleasDivers - totals.cumule.AleasDivers,
-                FinAffaire: totals.totalAcquis.FinAffaire - totals.cumule.FinAffaire
-            };
-
-            return totals;
-        },
-
-        createSummaryRow: function (name, values, isPercentage) {
-            var row = {
-                name: name,
-                isTotalRow: true,
-                isNode: false,
-                VoyageDeplacement: isPercentage ? values.VoyageDeplacement.toFixed(2) + "%" : values.VoyageDeplacement,
-                AutresFrais: isPercentage ? values.AutresFrais.toFixed(2) + "%" : values.AutresFrais,
-                CreancesDouteuses: isPercentage ? values.CreancesDouteuses.toFixed(2) + "%" : values.CreancesDouteuses,
-                EtudesTravaux: isPercentage ? values.EtudesTravaux.toFixed(2) + "%" : values.EtudesTravaux,
-                SinistreContentieux: isPercentage ? values.SinistreContentieux.toFixed(2) + "%" : values.SinistreContentieux,
-                AleasDivers: isPercentage ? values.AleasDivers.toFixed(2) + "%" : values.AleasDivers,
-                FinAffaire: isPercentage ? values.FinAffaire.toFixed(2) + "%" : values.FinAffaire,
-
-                GLAccountVoyageDeplacement: values.GLAccountVoyageDeplacement,
-                GLAccountAutresFrais: values.GLAccountAutresFrais,
-                GLAccountCreancesDouteuses: values.GLAccountCreancesDouteuses,
-                GLAccountEtudesTravaux: values.GLAccountEtudesTravaux,
-                GLAccountSinistreContentieux: values.GLAccountSinistreContentieux,
-                GLAccountAleasDivers: values.GLAccountAleasDivers,
-                GLAccountFinAffaire: values.GLAccountFinAffaire,
-            };
-
-            return row;
-        },
-
-
-
-        onCumuleClick: async function (oEvent) {
-            var oItem = oEvent.getSource().getBindingContext("utilities").getObject();
-            var oView = this.getView();
-
-            var oItem = oEvent.getSource().getBindingContext("utilities").getObject();
-            var sColumnId = oEvent.getSource().data("columnId"); // from BudgetPx view
-
-            // Determine which GLAccount to show based on the clicked column
-            var sGLAccount = "";
-
-            switch (sColumnId) {
-                case "VoyageDeplacement":
-                    sGLAccount = oItem.GLAccountVoyageDeplacement;
-                    break;
-                case "AutresFrais":
-                    sGLAccount = oItem.GLAccountAutresFrais;
-                    break;
-                case "CreancesDouteuses":
-                    sGLAccount = oItem.GLAccountCreancesDouteuses;
-                    break;
-                case "EtudesTravaux":
-                    sGLAccount = oItem.GLAccountEtudesTravaux;
-                    break;
-                case "SinistreContentieux":
-                    sGLAccount = oItem.GLAccountSinistreContentieux;
-                    break;
-                case "AleasDivers":
-                    sGLAccount = oItem.GLAccountAleasDivers;
-                    break;
-                case "FinAffaire":
-                    sGLAccount = oItem.GLAccountFinAffaire;
-                    break;
-                default:
-                    sGLAccount = "GL Account not set";
-            }
-
-            //sap.m.MessageToast.show("GLAccount: " + sGLAccount);
-
-
-            var period = this.getView().getModel("utilities").getProperty("/period");
-
-            try {
-
-                const oLink = oEvent.getSource();
-
-                // 2. Get GL Accounts
-                const oContext = oLink.getBindingContext("utilities");
-                const oData = oContext.getObject();
-
-
-                const glAccounts = sGLAccount
-                    ? sGLAccount.split(";").map(a => a.trim()).filter(a => a.length > 0)
-                    : [];
-
-                if (glAccounts.length === 0) {
-                    sap.m.MessageToast.show("GLAccount non disponible.");
-                    return;
-                }
-
-                // 3. Get Date range
-                const month = period.substring(0, 2);
-                const year = period.substring(2);
-
-                // 4. Get missions
-                let missions = [];
-                try {
-                    missions = oLink.getModel('utilities').getMissions();
-
-                } catch (error) {
-                    console.error("Failed to fetch missions:", error);
-                    throw error;
-                }
-
-                const wbsElements = [oData.business_no];
-                if (missions && missions.length > 0) {
-                    // Add missions to the WBS elements array
-                    wbsElements.push(...missions.map(mission => mission.MissionId));
-                }
-
-                // 5. Create navigation
-                /*const oComponent = sap.ui.core.Component.getOwnerComponentFor(this.oView);
-                const oAppStateService = sap.ushell.Container.getService("AppState");
-                const oSelectionVariant = new sap.ui.generic.app.navigation.service.SelectionVariant();
-
-                const oAppState = await oAppStateService.createEmptyAppState(oComponent);
-                oAppState.setData(oSelectionVariant.toJSONString());
-                await oAppState.save();
-
-                const sAppStateKey = oAppState.getKey();*/
-                const oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
-
-                // Construct the URL parameters
-                /*var params = {
-                    FiscalYearPeriod: `${year}0${month}`,
-                    GLAccount: glAccounts,
-                    WBSElementExternalID: wbsElements
-                };*/
-
-                var params = {
-                    FiscalYearPeriod: `${year}0${month}`,
-                    GLAccount: glAccounts,
-                    WBSElementExternalID: wbsElements
-                };
-
-                // Get the base URL for the target app
-                const sHash = oCrossAppNavigator.hrefForExternal({
-                    target: {
-                        semanticObject: "GLAccount",
-                        action: "displayGLLineItemReportingView"
-                    },
-                    params: Object.fromEntries(
-                        Object.entries(params).map(([key, value]) => {
-                            if (Array.isArray(value)) {
-                                return [key, value.map(v => encodeURIComponent(v))];
-                            }
-                            return [key, encodeURIComponent(value)];
-                        })
-                    )
+                    // Accumulate InterUFO total - convert to number before adding
+                    regroupement.totals.InterUFOBudget += Number(item.InterUFOBudget) || 0;
                 });
 
-                // Open in new window
-                window.open(sHash, "_blank", "noopener,noreferrer");
+                // Convert children objects to arrays while preserving names
+                for (var fga in fgaGroups) {
+                    var fgaGroup = fgaGroups[fga];
+                    var regroupementArray = [];
 
-                /*
-                        // Convert params to URL string
-                        const sParams = Object.entries(params)
-                            .map(([key, value]) => {
-                                if (Array.isArray(value)) {
-                                    return value.map(v => `${key}=${encodeURIComponent(v)}`).join('&');
-                                }
-                                return `${key}=${encodeURIComponent(value)}`;
-                            })
-                            .join('&');
-        
-                        // Get the base URL for the target app
-                        const sHash = oCrossAppNavigator.hrefForExternal({
-                            target: {
-                                semanticObject: "GLAccount",
-                                action: "displayGLLineItemReportingView"
-                            }
-                        });
-        
-                        // Get the FLP base URL
-                        const sBaseUrl = window.location.origin + window.location.pathname;
-        
-                        // Construct the full URL
-                        const sUrl = `${sBaseUrl}#${sHash}&${sParams}`;
-        
-                        // Open in new window
-                        window.open(sUrl, "_blank", "noopener,noreferrer");*/
+                    for (var regroupementKey in fgaGroup.children) {
+                        if (fgaGroup.children.hasOwnProperty(regroupementKey)) {
+                            var regroupement = fgaGroup.children[regroupementKey];
 
-            } catch (err) {
-                console.error("Error during navigation:", err);
-            }
+                            // Convert the totals object to the format expected by createRegroupementTotalRow
+                            var totalsForRow = {
+                                dynamicColumns: {},
+                                InterUFOBudget: regroupement.totals.InterUFOBudget.toString()
+                            };
+
+                            // Convert dynamic column totals to strings
+                            self._pSTIBusinessNos.forEach(function (businessNo) {
+                                totalsForRow.dynamicColumns[businessNo] = regroupement.totals.dynamicColumns[businessNo].toString();
+                            });
+
+                            // Add total row with the regroupement's name
+                            regroupement.children.push(
+                                self.createRegroupementTotalRow(totalsForRow, regroupement.name)
+                            );
+                            regroupementArray.push(regroupement);
+                        }
+                    }
+
+                    fgaGroup.children = regroupementArray;
+                    treeData.push(fgaGroup);
+                }
+
+                return treeData;
+            }.bind(this);
+
+            // Create dynamic columns
+            this._createDynamicColumns();
+
+            // Build trees 
+            var PxSTIsTreeData = buildTree(PxSTIs);
+
+            // Calculate global totals
+            var globalTotals = this.calculateGlobalTotals(PxSTIsTreeData);
+
+            // Create flat summary rows (level 0)
+            var summaryRows = [
+                this.createSummaryRow("Budget STI", globalTotals.totalAcquis, false),
+                this.createSummaryRow("Cumulé comptabilisé", globalTotals.cumule, false),
+                this.createSummaryRow("Pourcentage", globalTotals.pourcentage, true),
+                this.createSummaryRow("Reste", globalTotals.rad, false)
+            ];
+
+            // Add summary rows directly to the root array (as level 0 items)
+            PxSTIsTreeData = PxSTIsTreeData.concat(summaryRows);
+
+            // Set tree
+            this.getView().getModel("utilities").setProperty("/PxSTIHierarchyWithTotals", PxSTIsTreeData);
         },
+
+
     });
 });
 

@@ -837,6 +837,7 @@
                 <Property Name="stidescr" Type="Edm.String" MaxLength="50" sap:display-format="UpperCase" sap:label="Description du formulaire" sap:quickinfo="DESCRIPTION STI"/>
                 <Property Name="business_p_mail" Type="Edm.String" MaxLength="50" sap:label="Email  Affaire partenaire" sap:quickinfo="Zone de texte"/>
                 <Property Name="BudgetAlloue" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="TypeBudg" Type="Edm.String" MaxLength="8"/>
                 <NavigationProperty Name="to_BUDG" Relationship="ZFGA_SRV.assoc_4C440054DA86EB6EA9AA53AAC97FFE9D" FromRole="FromRole_assoc_4C440054DA86EB6EA9AA53AAC97FFE9D" ToRole="ToRole_assoc_4C440054DA86EB6EA9AA53AAC97FFE9D"/>
             </EntityType>
             <EntityType Name="ZC_STI_BUDGType" sap:label="ZC_STI_BUDG" sap:content-version="1">
@@ -857,7 +858,6 @@
                 <Property Name="BudgetAlloue" Type="Edm.Int64" sap:label="BUDGET ALLOUE" sap:heading=""/>
                 <Property Name="Currency" Type="Edm.String" MaxLength="5" sap:display-format="UpperCase" sap:label="Devise" sap:quickinfo="Clé de devise" sap:semantics="currency-code"/>
                 <Property Name="Regroupement" Type="Edm.String" MaxLength="40" sap:label="Regroupement mission"/>
-                <Property Name="TypeBudg" Type="Edm.String" MaxLength="8"/>
                 <NavigationProperty Name="to_STI" Relationship="ZFGA_SRV.assoc_333E6DC35A0196A751DFF12F791D6481" FromRole="FromRole_assoc_333E6DC35A0196A751DFF12F791D6481" ToRole="ToRole_assoc_333E6DC35A0196A751DFF12F791D6481"/>
             </EntityType>
             <EntityType Name="ZI_FGA_ACTIVITY_VHType" sap:value-list="true" sap:content-version="1">
