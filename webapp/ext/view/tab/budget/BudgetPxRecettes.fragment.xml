@@ -91,9 +91,27 @@
                 </table:multiLabels>
                 <table:template>
                 <HBox visible="{= !!${utilities>isBudget} || !!${utilities>isTotal} }">
-                    <Text   text="{utilities>montant}" visible="{= !${ui>/editable} || !!${utilities>isTotal} }"/>
+                    <Text   text="{
+                        path : 'utilities>montant',
+                        type: 'sap.ui.model.type.Float', 
+                        formatOptions: { 
+                            minFractionDigits: 2, 
+                            maxFractionDigits: 2, 
+                            groupingEnabled: true, 
+                            decimalSeparator: ',' 
+                        }
+                    }" visible="{= !${ui>/editable} || !!${utilities>isTotal} }"/>
                     <Input  
-                        value="{utilities>montant}" 
+                        value="{
+                            path: 'utilities>montant',
+                            type: 'sap.ui.model.type.Float', 
+                            formatOptions: { 
+                                minFractionDigits: 2, 
+                                maxFractionDigits: 2, 
+                                groupingEnabled: true, 
+                                decimalSeparator: ',' 
+                            }
+                        }" 
                         visible="{= ${ui>/editable} &amp;&amp; !!${utilities>isBudget} }"
                         change="onChangeRecetteExtMontant"
                     />
@@ -171,7 +189,16 @@
                 </table:multiLabels>
                 <table:template>
                     <HBox>
-                        <Text   text="{utilities>groupe}"/>
+                        <Text   text="{
+                            path: 'utilities>groupe',
+                            type: 'sap.ui.model.type.Float', 
+                            formatOptions: { 
+                                minFractionDigits: 2, 
+                                maxFractionDigits: 2, 
+                                groupingEnabled: true, 
+                                decimalSeparator: ',' 
+                            }
+                        }"/>
                     </HBox>
                 </table:template>
             </table:Column>
@@ -183,7 +210,16 @@
                 </table:multiLabels>
                 <table:template>
                     <HBox>
-                        <Text   text="{utilities>interUfo}"/>
+                        <Text text="{
+                            path: 'utilities>interUfo',
+                            type: 'sap.ui.model.type.Float', 
+                            formatOptions: { 
+                                minFractionDigits: 2, 
+                                maxFractionDigits: 2, 
+                                groupingEnabled: true, 
+                                decimalSeparator: ',' 
+                            }
+                        }"/>
                     </HBox>
                 </table:template>
             </table:Column>
@@ -195,7 +231,16 @@
                 </table:multiLabels>
                 <table:template>
                     <HBox>
-                        <Text   text="{utilities>intraUfo}"/>
+                        <Text   text="{
+                            path: 'utilities>intraUfo',
+                            type: 'sap.ui.model.type.Float', 
+                            formatOptions: { 
+                                minFractionDigits: 2, 
+                                maxFractionDigits: 2, 
+                                groupingEnabled: true, 
+                                decimalSeparator: ',' 
+                            }
+                        }"/>
                     </HBox>
                 </table:template>
             </table:Column>
@@ -207,7 +252,16 @@
                 </table:multiLabels>
                 <table:template>
                     <HBox>
-                        <Text   text="{utilities>cumuleEur}"/>
+                        <Text   text="{
+                            path: 'utilities>cumuleEur',
+                            type: 'sap.ui.model.type.Float', 
+                            formatOptions: { 
+                                minFractionDigits: 2, 
+                                maxFractionDigits: 2, 
+                                groupingEnabled: true, 
+                                decimalSeparator: ',' 
+                            }
+                        }"/>
                     </HBox>
                 </table:template>
             </table:Column>
@@ -224,7 +278,7 @@
                                 parts: [
                                     { path: 'utilities>montant' },
                                     { path: 'utilities>cumuleEur' }
-                                ], 
+                                ],
                                 formatter:'.Formatter.formatCumulePercent' 
                             }"
                             visible="{= !!${utilities>isBudget} || !!${utilities>isTotal} }"/>
@@ -244,7 +298,7 @@
                                 parts: [
                                     { path: 'utilities>montant' },
                                     { path: 'utilities>cumuleEur' }
-                                ], 
+                                ],
                                 formatter:'.Formatter.formatAVenir' 
                             }"
                             visible="{= !!${utilities>isBudget} || !!${utilities>isTotal} }" />

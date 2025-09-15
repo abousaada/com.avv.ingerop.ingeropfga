@@ -187,10 +187,20 @@
                 </table:multiLabels>
                 <table:template>
                 <HBox>
-                    <Text text="{utilities>cumul}"/>
+                    <Text text="{
+                        path: 'utilities>cumul',
+                        type: 'sap.ui.model.type.Float', 
+                        formatOptions: { 
+                            minFractionDigits: 2, 
+                            maxFractionDigits: 2, 
+                            groupingEnabled: true, 
+                            decimalSeparator: ',' 
+                        }
+                    }"/>
                 </HBox>
                 </table:template>
             </table:Column>
+            
 
             <!-- Avenir
             <table:Column width="7rem" headerSpan="1,1,1" hAlign= "Center">
