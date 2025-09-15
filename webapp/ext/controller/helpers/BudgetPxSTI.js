@@ -9,7 +9,7 @@ sap.ui.define([
     "use strict";
 
     return Controller.extend("com.avv.ingerop.ingeropfga.ext.controller.BudgetPxSTI", {
-        
+
         onInit: function () {
             this._dynamicColumns = [];
             this._pSTIBusinessNos = [];
@@ -38,6 +38,20 @@ sap.ui.define([
 
             // Remove existing dynamic columns
             this._removeDynamicColumns();
+            this._removeStaticColumns();
+
+            if (!this._dynamicColumns) {
+                this._dynamicColumns = [];
+            }
+
+            if (!this._staticColumns) {
+                this._staticColumns = [];
+            }
+
+            // Ensure _pSTIBusinessNos is initialized
+            if (!this._pSTIBusinessNos) {
+                this._pSTIBusinessNos = [];
+            }
 
             // Create new dynamic columns
             this._pSTIBusinessNos.forEach(function (businessNo) {
@@ -127,17 +141,30 @@ sap.ui.define([
 
         _removeDynamicColumns: function () {
             var treeTable = this.byId("com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--budgets--BudgetPxSTITreeTable");
-            if (!treeTable) return;
+            if (!treeTable || !this._dynamicColumns) return; // Add null check
 
-            /*this._dynamicColumns.forEach(function (column) {
+            this._dynamicColumns.forEach(function (column) {
                 treeTable.removeColumn(column);
                 column.destroy();
-            });*/
+            });
 
             this._dynamicColumns = [];
         },
 
+        _removeStaticColumns: function () {
+            var treeTable = this.byId("com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--budgets--BudgetPxSTITreeTable");
+            if (!treeTable || !this._staticColumns) return; // Add null check
+
+            this._staticColumns.forEach(function (column) {
+                treeTable.removeColumn(column);
+                column.destroy();
+            });
+
+            this._staticColumns = [];
+        },
+
         _addDynamicColumnValues: function (item, pSTIs) {
+            
             if (!item.dynamicColumns) {
                 item.dynamicColumns = {};
             }
@@ -147,10 +174,24 @@ sap.ui.define([
                 item.dynamicColumns[businessNo] = "0";
             });
 
-            // If this item has a matching business_no_p, set the value
-            if (item.business_no_p) {
-                item.dynamicColumns[item.business_no_p] = "1"; // Or whatever value you want
-            }
+            // Find matching pSTI items for this item's MissionId
+            var matchingPSTIs = pSTIs.filter(function (pSTI) {
+                return pSTI.business_no_p && this._pSTIBusinessNos.includes(pSTI.business_no_p);
+            }.bind(this));
+
+            // Set the values from matching pSTI items
+            matchingPSTIs.forEach(function (pSTI) {
+                if (pSTI.to_budg) {
+                    // Find the specific to_budg item that matches this MissionId
+                    var matchingBudg = pSTI.to_budg.find(function (budg) {
+                        return budg.Mission_e === item.MissionId;
+                    });
+
+                    if (matchingBudg && matchingBudg.BudgetAlloue) {
+                        item.dynamicColumns[pSTI.business_no_p] = matchingBudg.BudgetAlloue;
+                    }
+                }
+            }.bind(this));
         },
 
         // Update your existing methods to handle dynamic columns
@@ -235,7 +276,7 @@ sap.ui.define([
 
             // Extract unique business_no_p values for dynamic columns
             this._pSTIBusinessNos = this._getUniqueBusinessNos(pSTIs);
-            
+
             var buildTree = function (items) {
                 var treeData = [];
                 var fgaGroups = {};
