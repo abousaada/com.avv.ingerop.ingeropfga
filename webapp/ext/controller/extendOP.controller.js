@@ -124,7 +124,7 @@ sap.ui.define(
                             const formattedPxSubContractingExt = utilitiesModel.formattedPxSubContractingExt();
                             const formattedPxRecetteExt = utilitiesModel.formattedPxRecetteExt();
                             const formattedMainOeuvre = utilitiesModel.formattedPxMainOeuvre();
-                            const formattedPxSTI = utilitiesModel.getFormattedPxSTI();
+                            // const formattedPxSTI = utilitiesModel.getFormattedPxSTI();
                             const oPayload = Helper.extractPlainData({
                                 ...oContext.getObject(),
                                 "to_Missions": formattedMissions,
@@ -132,7 +132,7 @@ sap.ui.define(
                                 "to_BudgetPxSubContracting": formattedPxSubContractingExt,
                                 "to_BudgetPxRecetteExt": formattedPxRecetteExt,
                                 "to_BudgetPxMainOeuvre": formattedMainOeuvre,
-                                "to_BudgetPxSTI": formattedPxSTI,
+                                // "to_BudgetPxSTI": formattedPxSTI,
                             });
 
                             try {
