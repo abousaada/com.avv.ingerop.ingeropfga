@@ -43,8 +43,8 @@
                 <Key>
                     <PropertyRef Name="ClientNo"/>
                 </Key>
-                <Property Name="Secteur" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Branche" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="ClientNo" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Client" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Secteur" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Branche" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Country" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Clé de pays/région" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Name1" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="Nom" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Name2" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="Nom 2" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
@@ -54,8 +54,8 @@
                 <Key>
                     <PropertyRef Name="SupplierNo"/>
                 </Key>
-                <Property Name="Cumul" Type="Edm.Decimal" Nullable="false" Precision="24" Scale="3" sap:unicode="false" sap:label="Mtt dev. transaction" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="SupplierNo" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Fournisseur" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Cumul" Type="Edm.Decimal" Nullable="false" Precision="24" Scale="3" sap:unicode="false" sap:label="Mtt dev. transaction" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="SupplierCoef" Type="Edm.Decimal" Nullable="false" Precision="4" Scale="2" sap:unicode="false" sap:label="Coef fournisseur" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Country" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Clé de pays/région" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="Nom" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
@@ -288,7 +288,7 @@
                     <PropertyRef Name="BusinessNo"/>
                 </Key>
                 <Property Name="p_period" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase" sap:label="Période MMYYYY"/>
-                <Property Name="BusinessNo" Type="Edm.String" Nullable="false" MaxLength="24" sap:text="BusinessName" sap:label="N°Affaire"/>
+                <Property Name="BusinessNo" Type="Edm.String" Nullable="false" MaxLength="24" sap:label="N°Affaire"/>
                 <Property Name="BusinessName" Type="Edm.String" MaxLength="40" sap:label="Libellé" sap:quickinfo="PS: désignation (première ligne de texte)"/>
                 <Property Name="UFOName" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="UFO Délégué" sap:quickinfo="Nom de set" sap:value-list="standard"/>
                 <Property Name="Activity" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="Activité" sap:quickinfo="FGA Business activity" sap:value-list="fixed-values"/>
