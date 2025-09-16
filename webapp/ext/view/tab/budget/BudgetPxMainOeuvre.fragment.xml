@@ -25,18 +25,18 @@
         <table:rowMode>
             <rm:Auto minRowCount= "{localModel>/tableSettings/minRowCount}" />
         </table:rowMode>
-        <!-- <table:extension>
+        <table:extension>
             <Toolbar class="sapMTBHeader-CTX">
                 <ToolbarSpacer />
                 <Button
-                    text="{i18n>btn.addSubContractor}"
+                    text="{i18n>btn.addMOProfil}"
                     icon="sap-icon://add"
-                    press="onBtnAddSubContractorPress"
+                    press="onBtnAddMOProfilPress"
                     type="Emphasized"
                     visible="{ui>/editable}"
                 />
             </Toolbar>
-        </table:extension> -->
+        </table:extension>
         <!-- <table:rowSettingsTemplate>
             <table:RowSettings
                 highlight="{= ${budget>Status} === 'Non acquis' ? 'Error' : 'None'}"

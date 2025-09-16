@@ -465,12 +465,21 @@ sap.ui.define(
             // in the mission  process
             // ===========================================================
             onChangeMainOeuvreMontant(oEvent) {
-                if (!this._budgetPxRecetteExt) {
-                    this._budgetPxRecetteExt = new BudgetPxRecetteExt();
-                    this._budgetPxRecetteExt.oView = this.oView;
+                if (!this._budgetMainOeuvre) {
+                    this._budgetMainOeuvre = new BudgetPxMainOeuvre();
+                    this._budgetMainOeuvre.oView = this.oView;
                 }
 
-                this._budgetPxRecetteExt.reCalcMainOeuvreTable();
+                this._budgetMainOeuvre.reCalcMainOeuvreTable();
+            },
+
+            onBtnAddMOProfilPress: function (oEvent) {
+                if (!this._budgetMainOeuvre) {
+                    this._budgetMainOeuvre = new BudgetPxMainOeuvre();
+                    this._budgetMainOeuvre.oView = this.oView;
+                }
+
+                this._budgetMainOeuvre.addNewMOProfil();
             },
 
             preparePxMainOeuvreTreeData: function () {

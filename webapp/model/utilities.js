@@ -749,6 +749,19 @@ sap.ui.define([
                     console.log(error);
                 }
             },
+
+            async getBEProfilById(ProfilNo){
+                try {
+                    const BusinessNo = this.getBusinessNo();
+                    const Period = this.getPeriod();
+                    const options = { urlParameters: { ProfilNo, BusinessNo, Period } };
+                    const profil = await this.callFunction("/GetProfil", options);
+                    return Formatter.formatProfil(profil);
+                } catch (error) {
+                    console.log(error);
+                }
+            },
+
             //Notes
             async getBENotes() {
                 try {

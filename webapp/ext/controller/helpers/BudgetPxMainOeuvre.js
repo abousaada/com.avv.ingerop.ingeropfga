@@ -469,6 +469,66 @@ sap.ui.define([
                 minFractionDigits: 2,
                 maxFractionDigits: 2,
             }).format(value);
+        },
+
+        async addNewMOProfil(oEvent){
+            try {
+                const newProfil     = await this.getNewProfilId();
+                const newProfilData = await this.getUtilitiesModel().getBEProfilById(newProfil);
+                this.addNewProfilById(newProfilData);
+                return;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        async getNewProfilId(){
+            return new Promise((resolve, reject) => {
+                // ValueHelpDialog
+                var oVHD = new sap.ui.comp.valuehelpdialog.ValueHelpDialog({
+                    supportMultiselect: false,
+                    key: "Profil",
+                    descriptionKey: "Description",
+                    title: "Select a Profil",
+                    ok: function (oEvt) {
+                        var aTokens = oEvt.getParameter("tokens");
+                        if (aTokens.length) { resolve(aTokens[0].getKey()); }
+                        oVHD.close();
+                    }.bind(this),
+                    cancel: function () {
+                        reject();
+                        oVHD.close();
+                    }
+                });
+
+                // Table interne
+                const tableBinding = [
+                    { label: "ID", template: "Profil" },
+                    { label: "Name", template: "Description" }
+                ];
+
+                tableBinding.map(({ label, template }) =>
+                    oVHD.getTable().addColumn(new sap.ui.table.Column({
+                        label: new sap.m.Label({ text: label }),
+                        template: new sap.m.Text({ text: `{${template}}` })
+                    }))
+                );
+                // Binding sur I_SUPPLIER_VH (la ValueHelp CDS)
+                oVHD.getTable().setModel(this.oView.getModel());
+                oVHD.getTable().bindRows("/ZI_FGA_MO_ACTIVITY_VH");
+                oVHD.open();
+            });
+        },
+
+        addNewProfilById({ tjm, profilDescription, profil }){
+            const columnId = this._CONSTANT_DYNAMIC_PREFIX + profil;
+            const profilHeader = { tjm, profilDescription, profil, columnId };
+            const header = this.getUtilitiesModel().getPxMainOeuvreHeader();
+            if(!header.some(h => h.profil === profil)){
+                const newHeader = [...header, profilHeader];
+                this.getUtilitiesModel().setPxMainOeuvreHeader(newHeader);
+                this.refreshTableColumns();
+            }
         }
     });
 });
