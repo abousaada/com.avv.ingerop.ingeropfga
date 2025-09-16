@@ -43,8 +43,8 @@
                 <Key>
                     <PropertyRef Name="ClientNo"/>
                 </Key>
-                <Property Name="ClientNo" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Client" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Secteur" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Branche" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ClientNo" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Client" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Country" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Clé de pays/région" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Name1" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="Nom" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Name2" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="Nom 2" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
@@ -54,12 +54,20 @@
                 <Key>
                     <PropertyRef Name="SupplierNo"/>
                 </Key>
-                <Property Name="SupplierNo" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Fournisseur" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Cumul" Type="Edm.Decimal" Nullable="false" Precision="24" Scale="3" sap:unicode="false" sap:label="Mtt dev. transaction" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="SupplierNo" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Fournisseur" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="SupplierCoef" Type="Edm.Decimal" Nullable="false" Precision="4" Scale="2" sap:unicode="false" sap:label="Coef fournisseur" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Country" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Clé de pays/région" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="Nom" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="CompanyPartner" Type="Edm.String" Nullable="false" MaxLength="6" sap:unicode="false" sap:label="Sté S/L parten." sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="Profil" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="ProfilNo"/>
+                </Key>
+                <Property Name="ProfilNo" Type="Edm.String" Nullable="false" MaxLength="6" sap:unicode="false" sap:label="Type d'activité" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Description" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Nom" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Tjm" Type="Edm.Decimal" Nullable="false" Precision="15" Scale="2" sap:unicode="false" sap:label="Taux journalier" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
             </EntityType>
             <EntityType Name="C_ProjectTypeVHType" sap:label="Aide à la saisie pour type de projet" sap:content-version="1">
                 <Key>
@@ -838,7 +846,7 @@
                 <Property Name="stidescr" Type="Edm.String" MaxLength="50" sap:display-format="UpperCase" sap:label="Description du formulaire" sap:quickinfo="DESCRIPTION STI"/>
                 <Property Name="business_p_mail" Type="Edm.String" MaxLength="50" sap:label="Email  Affaire partenaire" sap:quickinfo="Zone de texte"/>
                 <Property Name="BudgetAlloue" Type="Edm.Decimal" Precision="15" Scale="2"/>
-                <Property Name="TypeBudg" Type="Edm.String" MaxLength="8"/>
+                <Property Name="TypeBudg" Type="Edm.String" MaxLength="8" sap:display-format="UpperCase" sap:label="char8" sap:quickinfo="Zone de caractères, long.8"/>
                 <NavigationProperty Name="to_BUDG" Relationship="ZFGA_SRV.assoc_4C440054DA86EB6EA9AA53AAC97FFE9D" FromRole="FromRole_assoc_4C440054DA86EB6EA9AA53AAC97FFE9D" ToRole="ToRole_assoc_4C440054DA86EB6EA9AA53AAC97FFE9D"/>
             </EntityType>
             <EntityType Name="ZC_STI_BUDGType" sap:label="ZC_STI_BUDG" sap:content-version="1">
@@ -992,6 +1000,19 @@
                 <Property Name="Modalr" Type="Edm.String" Nullable="false" MaxLength="1" sap:display-format="UpperCase" sap:text="description" sap:label="Caractère 1" sap:quickinfo="Code à 1 caractère"/>
                 <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Code langue"/>
                 <Property Name="description" Type="Edm.String" MaxLength="50" sap:label="c" sap:quickinfo="Commentaire"/>
+            </EntityType>
+            <EntityType Name="ZI_FGA_MO_ACTIVITY_VHType" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="spras"/>
+                    <PropertyRef Name="kokrs"/>
+                    <PropertyRef Name="Profil"/>
+                    <PropertyRef Name="datbi"/>
+                </Key>
+                <Property Name="spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Code langue"/>
+                <Property Name="kokrs" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:label="Périmètre analytique"/>
+                <Property Name="Profil" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase" sap:text="Description" sap:label="Type d'activité"/>
+                <Property Name="datbi" Type="Edm.DateTime" Nullable="false" Precision="0" sap:display-format="Date" sap:label="Fin de validité" sap:quickinfo="Date de fin de validité"/>
+                <Property Name="Description" Type="Edm.String" MaxLength="20" sap:label="Nom" sap:quickinfo="Nom général"/>
             </EntityType>
             <EntityType Name="ZI_FGA_NATIONAL_VHType" sap:value-list="true" sap:content-version="1">
                 <Key>
@@ -1225,6 +1246,7 @@
                 <EntitySet Name="CompanyCollection" EntityType="ZFGA_SRV.Company" sap:content-version="1"/>
                 <EntitySet Name="ClientCollection" EntityType="ZFGA_SRV.Client" sap:content-version="1"/>
                 <EntitySet Name="SupplierCollection" EntityType="ZFGA_SRV.Supplier" sap:content-version="1"/>
+                <EntitySet Name="ProfilCollection" EntityType="ZFGA_SRV.Profil" sap:content-version="1"/>
                 <EntitySet Name="C_ProjectTypeVH" EntityType="ZFGA_SRV.C_ProjectTypeVHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
                 <EntitySet Name="I_BusinessPartnerVH" EntityType="ZFGA_SRV.I_BusinessPartnerVHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
                 <EntitySet Name="I_ChartOfAccounts" EntityType="ZFGA_SRV.I_ChartOfAccountsType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
@@ -1277,6 +1299,7 @@
                 <EntitySet Name="ZI_FGA_MISSION_VH" EntityType="ZFGA_SRV.ZI_FGA_MISSION_VHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
                 <EntitySet Name="ZI_FGA_MODALF_VH" EntityType="ZFGA_SRV.ZI_FGA_MODALF_VHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
                 <EntitySet Name="ZI_FGA_MODALR_VH" EntityType="ZFGA_SRV.ZI_FGA_MODALR_VHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
+                <EntitySet Name="ZI_FGA_MO_ACTIVITY_VH" EntityType="ZFGA_SRV.ZI_FGA_MO_ACTIVITY_VHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
                 <EntitySet Name="ZI_FGA_NATIONAL_VH" EntityType="ZFGA_SRV.ZI_FGA_NATIONAL_VHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
                 <EntitySet Name="ZI_FGA_PERCENT_VH" EntityType="ZFGA_SRV.ZI_FGA_PERCENT_VHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
                 <EntitySet Name="ZI_FGA_PROFITCENTER_VH" EntityType="ZFGA_SRV.ZI_FGA_PROFITCENTER_VHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
@@ -1378,6 +1401,9 @@
                 </FunctionImport>
                 <FunctionImport Name="GetClient" ReturnType="ZFGA_SRV.Client" EntitySet="ClientCollection" m:HttpMethod="GET" sap:label="GetClient" sap:action-for="ZFGA_SRV.Client">
                     <Parameter Name="ClientNo" Type="Edm.String" Mode="In" MaxLength="10" sap:label="ClientNo"/>
+                </FunctionImport>
+                <FunctionImport Name="GetProfil" ReturnType="ZFGA_SRV.Profil" EntitySet="ProfilCollection" m:HttpMethod="GET" sap:label="GetProfil" sap:action-for="ZFGA_SRV.Profil">
+                    <Parameter Name="ProfilNo" Type="Edm.String" Mode="In" MaxLength="6" sap:label="Profil"/>
                 </FunctionImport>
             </EntityContainer>
             <Annotation Term="Core.SchemaVersion" String="1.0.0" xmlns="http://docs.oasis-open.org/odata/ns/edm"/>

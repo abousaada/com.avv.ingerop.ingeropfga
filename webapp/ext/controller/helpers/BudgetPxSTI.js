@@ -202,13 +202,13 @@ sap.ui.define([
 
                         // Distribute the sum based on TypeBudg
                         switch (pSTI.TypeBudg) {
-                            case "intraUFO":
+                            case "INTRAUFO":
                                 intraUfoSum += budgetValue;
                                 break;
-                            case "interCO":
+                            case "INTERCO":
                                 intercompanySum += budgetValue;
                                 break;
-                            case "interUFO":
+                            case "INTERUFO":
                             default:
                                 interUfoSum += budgetValue;
                                 break;

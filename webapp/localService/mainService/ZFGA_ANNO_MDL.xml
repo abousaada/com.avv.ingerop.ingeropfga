@@ -1090,6 +1090,15 @@
             <Annotations Target="ZFGA_SRV.ZI_FGA_MODALR_VHType/Spras">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_FGA_MO_ACTIVITY_VHType/spras">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_FGA_MO_ACTIVITY_VHType/kokrs">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_FGA_MO_ACTIVITY_VHType/datbi">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
             <Annotations Target="ZFGA_SRV.ZI_FGA_NATIONAL_VHType/Spras">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
