@@ -124,17 +124,19 @@ sap.ui.define(
                             const formattedPxSubContractingExt = utilitiesModel.formattedPxSubContractingExt();
                             const formattedPxRecetteExt = utilitiesModel.formattedPxRecetteExt();
                             const formattedMainOeuvre = utilitiesModel.formattedPxMainOeuvre();
-                            const formattedPxSTI = utilitiesModel.getFormattedPxSTI();
+                            //const formattedPxSTI = utilitiesModel.getFormattedPxSTI();
                             const oPayload = Helper.extractPlainData({
                                 ...oContext.getObject(),
                                 "to_Missions": formattedMissions,
                                 "to_BudgetPxAutre": formattedPxAutre,
                                 "to_BudgetPxSubContracting": formattedPxSubContractingExt,
                                 "to_BudgetPxRecetteExt": formattedPxRecetteExt,
-                                "to_BudgetPxMainOeuvre": formattedMainOeuvre,
-                                "to_BudgetPxSTI": formattedPxSTI,
+                                "to_BudgetPxMainOeuvre": formattedMainOeuvre
+                                //"to_BudgetPxSTI": formattedPxSTI,
                             });
 
+                            delete oPayload.to_BudgetPxSTI;
+                            
                             try {
                                 oPayload.VAT = oPayload.VAT ? oPayload.VAT.toString() : oPayload.VAT;
                                 const updatedFGA = await utilitiesModel.deepUpsertFGA(oPayload);
@@ -949,7 +951,7 @@ sap.ui.define(
             },
 
             // ================================================
-            // Table Design  BudgetPXAutre Budgets Section !!!!
+            // Table Design  BudgetPXSTI Budgets Section !!!!
             // ================================================
             onRowsUpdatedBudgetPXSTITab: function () {
                 var stableName = "BudgetPxSTITreeTable";
@@ -996,7 +998,7 @@ sap.ui.define(
                                 // total/sub-total rules
                                 if (bIsTotal) {
                                     // main total (dark blue + white text)
-                                    if (sName === "total acquis") {
+                                    if (sName === "Budget STI") {
                                         oRow.addStyleClass("pxTotalRow");
                                     } else {
                                         if (sName.startsWith("total")) {
