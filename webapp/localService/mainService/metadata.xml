@@ -294,7 +294,8 @@
                 <Property Name="Activity" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="Activité" sap:quickinfo="FGA Business activity" sap:value-list="fixed-values"/>
                 <Property Name="CDG" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Centre de profit" sap:quickinfo="FGA Profit Center" sap:value-list="standard"/>
                 <Property Name="Branche" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Branche" sap:value-list="fixed-values"/>
-                <Property Name="PROJM" Type="Edm.String" MaxLength="8" sap:display-format="NonNegative" sap:label="Chef de projet" sap:quickinfo="Numéro du responsable (chef de projet)" sap:value-list="standard"/>
+                <Property Name="PROJM" Type="Edm.String" MaxLength="8" sap:display-format="NonNegative" sap:text="PROJM_Text" sap:label="Chef de projet" sap:quickinfo="Numéro du responsable (chef de projet)" sap:value-list="standard"/>
+                <Property Name="PROJM_Text" Type="Edm.String" MaxLength="25" sap:label="Responsable (nom)" sap:heading="" sap:quickinfo="Responsable (chef de projet)"/>
                 <Property Name="STILinkedCount" Type="Edm.Int32" sap:label=""/>
                 <Property Name="BusinessType" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Type" sap:quickinfo="FGA Business Type" sap:value-list="fixed-values"/>
                 <Property Name="BusinessStatus" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Statut de l'affaire" sap:quickinfo="Elément de données Statut pour FGA" sap:value-list="fixed-values"/>
@@ -1020,8 +1021,8 @@
                 <Key>
                     <PropertyRef Name="UsrId"/>
                 </Key>
-                <Property Name="UsrId" Type="Edm.String" Nullable="false" MaxLength="8" sap:display-format="NonNegative" sap:text="description" sap:label="Matricule"/>
-                <Property Name="description" Type="Edm.String" MaxLength="81"/>
+                <Property Name="UsrId" Type="Edm.String" Nullable="false" MaxLength="8" sap:display-format="NonNegative" sap:text="description" sap:label="Responsable" sap:quickinfo="Numéro du responsable (chef de projet)"/>
+                <Property Name="description" Type="Edm.String" MaxLength="25" sap:label="Responsable (nom)" sap:quickinfo="Responsable (chef de projet)"/>
             </EntityType>
             <EntityType Name="ZI_FGA_RECAPType" sap:label="ZI_FGA_RECAP" sap:content-version="1">
                 <Key>
