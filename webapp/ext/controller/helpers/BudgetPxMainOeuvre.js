@@ -220,7 +220,7 @@ sap.ui.define([
                                         groupingEnabled: true,
                                         minFractionDigits: 0,
                                         maxFractionDigits: 0,
-                                    }).format(value);
+                                    });
                                     return floatInstance.format(budget);
                                 }.bind(this)
                             },
@@ -284,7 +284,7 @@ sap.ui.define([
                         new sap.m.Text({
                             text: {
                                 parts,
-                                formatter: this.formatReel.bind(this)
+                                formatter: this.formatReelDisplay.bind(this)
                             },
                             visible: "{= !!${utilities>isTotal} || !!${utilities>isBudget} }"
                         })
@@ -313,7 +313,8 @@ sap.ui.define([
                                     minFractionDigits: 2,
                                     maxFractionDigits: 2,
                                     groupingEnabled: true,
-                                })
+                                }),
+                                formatter: this.formatPhysique.bind(this)
                             },
                             visible: "{= !!${utilities>isTotal} || !${ui>/editable} }"
                         }),
@@ -426,12 +427,24 @@ sap.ui.define([
             return this.formatExt(cumul / (avenir + cumul));
         },
 
+        formatReelDisplay(rowData){
+            let reel = this.formatReel(rowData);
+            if (!reel) { return; }
+            reel = parseFloat(reel);
+            return this.formatExt( reel * 100 ) + "%"; 
+        },
+
+        formatPhysique(physique){
+            if(!physique){ return }
+            return this.formatExt(parseFloat(physique)); + "%";
+        },
+
         formatEcart(rowData) {
             if (!rowData) { return; }
             if (!rowData.isBudget && !rowData.isTotal) { return; }
             const reel = parseFloat(this.formatReel(rowData));
             const finAffaire = parseFloat(this.formatFinAffaire(rowData));
-            const physique = parseFloat(rowData.physique || 0);
+            const physique = parseFloat(rowData.physique || 0) / 100;
 
             const ecart = Math.abs((reel - physique) * finAffaire);
             
