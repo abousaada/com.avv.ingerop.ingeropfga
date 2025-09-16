@@ -185,7 +185,7 @@ sap.ui.define([
                         new sap.m.Text({
                             text: {
                                 parts,
-                                formatter: this.formatAvenir.bind(this)
+                                formatter: this.formatAvenirDisplay.bind(this)
                             },
                             visible: "{= !!${utilities>isTotal} || !!${utilities>isBudget} }"
                         })
@@ -252,7 +252,7 @@ sap.ui.define([
                         new sap.m.Text({
                             text: {
                                 parts,
-                                formatter: this.formatFinAffaire.bind(this)
+                                formatter: this.formatFinAffaireDisplay.bind(this)
                             },
                             visible: "{= !!${utilities>isTotal} || !!${utilities>isBudget} }"
                         })
@@ -286,7 +286,8 @@ sap.ui.define([
                                 parts,
                                 formatter: this.formatReelDisplay.bind(this)
                             },
-                            visible: "{= !!${utilities>isTotal} || !!${utilities>isBudget} }"
+                            // visible: "{= !!${utilities>isTotal} || !!${utilities>isBudget} }"
+                            visible: "{= !!${utilities>isBudget} }"
                         })
                     ]
                 }),
@@ -316,7 +317,8 @@ sap.ui.define([
                                 }),
                                 formatter: this.formatPhysique.bind(this)
                             },
-                            visible: "{= !!${utilities>isTotal} || !${ui>/editable} }"
+                            visible: "{= ${utilities>isBudget} && !${ui>/editable} }"
+                            // visible: "{= !!${utilities>isTotal} || !${ui>/editable} }"
                         }),
                         new sap.m.Input({
                             value: {
@@ -361,7 +363,8 @@ sap.ui.define([
                                 parts,
                                 formatter: this.formatEcart.bind(this)
                             },
-                            visible: "{= !!${utilities>isTotal} || !!${utilities>isBudget} }"
+                            // visible: "{= !!${utilities>isTotal} || !!${utilities>isBudget} }"
+                            visible: "{= !!${utilities>isBudget} }"
                         })
                     ]
                 }),
@@ -392,27 +395,37 @@ sap.ui.define([
             const header = this.getUtilitiesModel().getPxMainOeuvreHeader();
 
             if(rowData.isBudget){
-                const budget = header.reduce((acc, cur) => {
+                return header.reduce((acc, cur) => {
                     const prop = cur.columnId + this._CONSTANT_COLUMN_REST;
                     return acc + parseFloat(rowData[prop] || 0) * parseFloat(cur.tjm || 0);
                 }, 0);
-                return this.formatExt(budget);
             }
 
             if(rowData.isTotal){
-                const total = header.reduce((acc, cur) => {
+                return header.reduce((acc, cur) => {
                     const prop = cur.columnId + this._CONSTANT_COLUMN_REST;
                     return acc + parseFloat(rowData[prop] || 0);
                 }, 0);
-                return this.formatExt(total);
             }
+        },
+
+        formatAvenirDisplay(rowData){
+            if (!rowData) { return; }
+            if (!rowData.isBudget && !rowData.isTotal) { return; }
+            const avenir = this.formatAvenir(rowData);
+            return this.formatExt(avenir);
         },
 
         formatFinAffaire(rowData) {
             if (!rowData) { return; }
             if (!rowData.isBudget && !rowData.isTotal) { return; }
-            const finAffaire = parseFloat(this.formatAvenir(rowData)) + parseFloat(rowData.cumul || 0);
-            
+            return parseFloat(this.formatAvenir(rowData)) + parseFloat(rowData.cumul || 0);
+        },
+
+        formatFinAffaireDisplay(rowData){
+            if (!rowData) { return; }
+            if (!rowData.isBudget && !rowData.isTotal) { return; }
+            const finAffaire = this.formatFinAffaire(rowData);
             return this.formatExt(finAffaire);
         },
 
@@ -423,8 +436,7 @@ sap.ui.define([
             const cumul = parseFloat(rowData.cumul || 0);
             if(!cumul) { return  0;}
             if(!avenir && !cumul){  return  0;}
-           
-            return this.formatExt(cumul / (avenir + cumul));
+           return parseFloat(cumul / (avenir + cumul)) ;
         },
 
         formatReelDisplay(rowData){
@@ -436,7 +448,7 @@ sap.ui.define([
 
         formatPhysique(physique){
             if(!physique){ return }
-            return this.formatExt(parseFloat(physique)); + "%";
+            return this.formatExt(parseFloat(physique)) + "%";
         },
 
         formatEcart(rowData) {
