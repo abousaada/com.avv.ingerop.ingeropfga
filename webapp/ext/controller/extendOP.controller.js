@@ -71,7 +71,7 @@ sap.ui.define(
 
                     this._budgetMainOeuvre = new BudgetPxMainOeuvre();
                     this._budgetMainOeuvre.oView = this.getView();
-                    
+
 
                     this._extendOPUiManage = new ExtendOPUiManage();
                     this._extendOPUiManage.oView = this.getView();
@@ -135,13 +135,13 @@ sap.ui.define(
                             });
 
                             delete oPayload.to_BudgetPxSTI;
-                            
+
                             try {
                                 oPayload.VAT = oPayload.VAT ? oPayload.VAT.toString() : oPayload.VAT;
                                 const updatedFGA = await utilitiesModel.deepUpsertFGA(oPayload);
                                 this._setBusy(false);
                                 if (updatedFGA) {
-                                    Helper.validMessage("FGA updated: " + updatedFGA.BusinessNo, this.getView(), this.onNavBack.bind(this));
+                                    Helper.validMessage("FGA updated: " + updatedFGA.BusinessNo, this.getView(), this.onAfterSaveAction.bind(this));
                                 }
 
                             } catch (error) {
@@ -174,7 +174,7 @@ sap.ui.define(
                 oModel.refresh(true);
             },
 
-            _resetViewSetUp(){
+            _resetViewSetUp() {
                 const context = this.base.getView().getBindingContext();
                 this._extendOPUiManage._setOPView(context);
                 const Percent = context.getProperty("Percent");
@@ -208,6 +208,21 @@ sap.ui.define(
 
                 if (sPreviousHash !== undefined) { window.history.go(-1); }
                 else { window.location.hash = ""; }
+            },
+
+            onAfterSaveAction() {
+                this._cleanModification();
+                const oUIModel = this.base.templateBaseExtension.getView().getModel("ui");
+                if (oUIModel) {
+                    // Forcer le retour en display mode
+                    oUIModel.setProperty("/editable", false);
+                }
+
+                // Optionnel : si tu veux rafraîchir l'entité depuis le backend
+                setTimeout(function () {
+                    this.base.templateBaseExtension.getExtensionAPI().refresh();
+                }.bind(this), 100); //
+                // this.base.templateBaseExtension.getExtensionAPI().refresh();
             },
 
             async _getTabsData() {
@@ -394,7 +409,7 @@ sap.ui.define(
             onMissionCodeChange: function (oEvent) {
                 this._missionsTab.onMissionCodeChange(oEvent);
             },
-            
+
             // ==============================================
             // Handle Budget Px TAB - Budget Px Autres Section
             // Handles preparation and submition budget items 
@@ -710,11 +725,11 @@ sap.ui.define(
             },
 
             _styleMergedRecapRow: function () {
-                const oTable   = this.oView.byId("idRecapTable");
+                const oTable = this.oView.byId("idRecapTable");
                 const oBinding = oTable && oTable.getBinding("rows");
                 if (!oBinding) return;
 
-                const iLast   = oBinding.getLength() - 1; // dernière ligne
+                const iLast = oBinding.getLength() - 1; // dernière ligne
                 const iBefore = iLast - 1;                // avant-dernière ligne
                 if (iLast < 0) return;
 
@@ -731,94 +746,94 @@ sap.ui.define(
                     if (!$row.length) return;
 
                     setTimeout(() => {
-                    const tdSel = "td[data-sap-ui-colid]";
-                    let $cells = $row.find(tdSel);
-                    if (!$cells.length) return;
+                        const tdSel = "td[data-sap-ui-colid]";
+                        let $cells = $row.find(tdSel);
+                        if (!$cells.length) return;
 
-                    // indices repères
-                    const colIds = $cells.map((i, td) => td.getAttribute("data-sap-ui-colid")).get();
-                    let idxCumulN1 = -1, idxAnneeEnCours = -1;
-                    for (let i = 0; i < colIds.length; i++) {
-                        const lbl = idToLabel.get(colIds[i]) || "";
-                        if (lbl === "cumul n-1") idxCumulN1 = i;
-                        if (lbl === "année en cours") idxAnneeEnCours = i;
-                    }
-                    if (idxCumulN1 < 1 && idxAnneeEnCours < 0) return;
-
-                    // ========= Fusion DROITE (fond blanc classique) =========
-                    if (idxAnneeEnCours >= 0 && idxAnneeEnCours < $cells.length) {
-                        $cells = $row.find(tdSel);
-                        const spanRight = $cells.length - idxAnneeEnCours;
-                        if (spanRight > 1) {
-                        const $start = $cells.eq(idxAnneeEnCours);
-                        $start
-                            .attr("colspan", spanRight)
-                            .css({
-                            "text-align": "center",
-                            "vertical-align": "middle",
-                            "background-color": "#fff",
-                            "color": "#000"
-                            });
-
-                        $row.find(tdSel).slice(idxAnneeEnCours + 1).remove();
-
-                        $start.find(".sapMText, .sapMLnk").css({ "display": "none" });
+                        // indices repères
+                        const colIds = $cells.map((i, td) => td.getAttribute("data-sap-ui-colid")).get();
+                        let idxCumulN1 = -1, idxAnneeEnCours = -1;
+                        for (let i = 0; i < colIds.length; i++) {
+                            const lbl = idToLabel.get(colIds[i]) || "";
+                            if (lbl === "cumul n-1") idxCumulN1 = i;
+                            if (lbl === "année en cours") idxAnneeEnCours = i;
                         }
-                    }
+                        if (idxCumulN1 < 1 && idxAnneeEnCours < 0) return;
 
-                    // ========= Fusion GAUCHE (fond bleu, texte blanc) =========
-                    if (idxCumulN1 >= 1) {
-                        $cells = $row.find(tdSel); // refresh
+                        // ========= Fusion DROITE (fond blanc classique) =========
+                        if (idxAnneeEnCours >= 0 && idxAnneeEnCours < $cells.length) {
+                            $cells = $row.find(tdSel);
+                            const spanRight = $cells.length - idxAnneeEnCours;
+                            if (spanRight > 1) {
+                                const $start = $cells.eq(idxAnneeEnCours);
+                                $start
+                                    .attr("colspan", spanRight)
+                                    .css({
+                                        "text-align": "center",
+                                        "vertical-align": "middle",
+                                        "background-color": "#fff",
+                                        "color": "#000"
+                                    });
 
-                        const colIdsNow = $cells.map((i, td) => td.getAttribute("data-sap-ui-colid")).get();
-                        let idxCumulN1Now = -1;
-                        for (let i = 0; i < colIdsNow.length; i++) {
-                        const lbl = idToLabel.get(colIdsNow[i]) || "";
-                        if (lbl === "cumul n-1") { idxCumulN1Now = i; break; }
+                                $row.find(tdSel).slice(idxAnneeEnCours + 1).remove();
+
+                                $start.find(".sapMText, .sapMLnk").css({ "display": "none" });
+                            }
                         }
 
-                        if (idxCumulN1Now >= 1) {
-                        const spanLeft = idxCumulN1Now + 1;
-                        const $c0 = $cells.eq(0);
-                        $c0
-                            .attr("colspan", spanLeft)
-                            .css({
-                            "text-align": "center",
-                            "vertical-align": "middle",
-                            "background-color": "#333399",
-                            "color": "#fff"
-                            });
+                        // ========= Fusion GAUCHE (fond bleu, texte blanc) =========
+                        if (idxCumulN1 >= 1) {
+                            $cells = $row.find(tdSel); // refresh
 
-                        $row.find(tdSel).slice(1, idxCumulN1Now + 1).remove();
+                            const colIdsNow = $cells.map((i, td) => td.getAttribute("data-sap-ui-colid")).get();
+                            let idxCumulN1Now = -1;
+                            for (let i = 0; i < colIdsNow.length; i++) {
+                                const lbl = idToLabel.get(colIdsNow[i]) || "";
+                                if (lbl === "cumul n-1") { idxCumulN1Now = i; break; }
+                            }
 
-                        // 👉 injecte texte + classe de style
-                        const $content = $c0.find(".sapMText, .sapMLnk");
-                        if ($content.length) {
-                            $content.text(customText)
-                                    .addClass("sfgpMergedText");
-                        } else {
-                            $c0.text(customText).addClass("sfgpMergedText");
+                            if (idxCumulN1Now >= 1) {
+                                const spanLeft = idxCumulN1Now + 1;
+                                const $c0 = $cells.eq(0);
+                                $c0
+                                    .attr("colspan", spanLeft)
+                                    .css({
+                                        "text-align": "center",
+                                        "vertical-align": "middle",
+                                        "background-color": "#333399",
+                                        "color": "#fff"
+                                    });
+
+                                $row.find(tdSel).slice(1, idxCumulN1Now + 1).remove();
+
+                                // 👉 injecte texte + classe de style
+                                const $content = $c0.find(".sapMText, .sapMLnk");
+                                if ($content.length) {
+                                    $content.text(customText)
+                                        .addClass("sfgpMergedText");
+                                } else {
+                                    $c0.text(customText).addClass("sfgpMergedText");
+                                }
+                            }
                         }
-                        }
-                    }
                     }, 0);
                 };
 
                 oTable.getRows().forEach((oRow) => {
                     const idx = oRow.getIndex();
                     if (idx === iBefore) {
-                        if (PROJET_TYPE === "Z0"){
+                        if (PROJET_TYPE === "Z0") {
                             handleRow(oRow, "Impact super projet ajustement");
-                        } 
-                        else if (PROJET_TYPE === "Z1"){
+                        }
+                        else if (PROJET_TYPE === "Z1") {
                             handleRow(oRow, "Impact projet ajustement");
                         }
                     }
                     if (idx === iLast) {
-                        if (PROJET_TYPE === "Z0"){
+                        if (PROJET_TYPE === "Z0") {
                             handleRow(oRow, "Impact super projet PAT");
-                        } 
-                        else if (PROJET_TYPE === "Z1"){
+                        }
+                        else if (PROJET_TYPE === "Z1") {
                             handleRow(oRow, "Impact projet PAT");
                         }
                     }
@@ -1025,12 +1040,12 @@ sap.ui.define(
 
             },
 
-            onRowsUpdatedBudgetPXMainOeuvreTab(){
+            onRowsUpdatedBudgetPXMainOeuvreTab() {
                 var stableName = "BudgetPxMainOeuvreTreeTableId";
                 this.onBudgetPXSubCUpdated(stableName);
             },
 
-            onRowsUpdatedBudgetPXRecetteTab(){
+            onRowsUpdatedBudgetPXRecetteTab() {
                 var stableName = "BudgetPxRecettesTreeTableId";
                 this.onBudgetPXSubCUpdated(stableName);
             }
