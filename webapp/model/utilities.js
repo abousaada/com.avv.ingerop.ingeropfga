@@ -541,17 +541,25 @@ sap.ui.define([
                     const sPath = `/ZC_STI?$filter=business_no_e eq '${urlBusinessNo}'`;
                     console.log(`retrieve STI with period: ${period} and BusinessNo: ${businessNo}`);
 
-                    const pSTI = await this.read(sPath);
+                    //const pSTI = await this.read(sPath);
+
+                    const pSTI = await this.read("/ZC_STI", {
+                        urlParameters: {
+                            "$filter": `business_no_e eq '${businessNo}'`
+                        }
+                    });
+
                     const results = pSTI?.results || [];
 
                     // Load deferred to_budg association for each result
                     const resultsWithBudget = await Promise.all(
                         results.map(async (sti) => {
                             try {
-                                // Properly encode the ID for OData URL
                                 const encodedId = encodeURIComponent(sti.id_formulaire);
-                                const budgetPath = `/ZC_STI(id_formulaire='${encodedId}',business_no_e='${urlBusinessNo}')/to_BUDG`;
-                                console.log(`Loading budget for ID: ${sti.id_formulaire}, Path: ${budgetPath}`);
+                                const encodedBusinessNo = encodeURIComponent(sti.business_no_e);
+
+                                const budgetPath = `/ZC_STI(id_formulaire='${encodedId}',business_no_e='${encodedBusinessNo}')/to_BUDG`;
+                                console.log(`Loading budget for ID: ${sti.id_formulaire}, BusinessNo: ${sti.business_no_e}, Path: ${budgetPath}`);
 
                                 const budgetResponse = await this.read(budgetPath);
                                 return {
@@ -574,28 +582,6 @@ sap.ui.define([
                     this.setTabBusy(false);
                     console.log(error);
                     return [];
-                }
-            },
-
-            async getBEPSTI1() {
-                try {
-                    this.setTabBusy(true);
-                    const businessNo = this.getBusinessNo();
-                    const period = this.getPeriod();
-                    const urlBusinessNo = encodeURIComponent(businessNo);
-                    const urlPeriod = encodeURIComponent(period);
-
-                    //const sPath = `/ZC_STI?$filter=business_no_e eq '${urlBusinessNo}'`;
-
-                    const sPath = `/ZC_STI?$filter=business_no_e eq '${urlBusinessNo}'&$expand=_BUDG`;
-
-                    console.log(`retrieve STI with period: ${period} and BusinessNo: ${businessNo}`);
-                    const pSTI = await this.read(sPath);
-                    this.setTabBusy(false);
-                    return pSTI?.results || [];
-                } catch (error) {
-                    this.setTabBusy(false);
-                    console.log(error);
                 }
             },
 

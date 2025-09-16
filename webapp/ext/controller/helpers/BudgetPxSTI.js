@@ -143,7 +143,7 @@ sap.ui.define([
             this._staticColumns = [interUfoColumn, intraUfoColumn, intercompagnieColumn];
         },
 
-        
+
         _removeDynamicColumns: function () {
             var treeTable = this.byId("com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--budgets--BudgetPxSTITreeTable");
             if (!treeTable || !this._dynamicColumns) return; // Add null check
@@ -494,7 +494,6 @@ sap.ui.define([
             var PxSTIs = this.getView().getModel("utilities").getProperty("/pxSTI");
             var pSTIs = this.getView().getModel("utilities").getProperty("/pSTI");
 
-            // Extract unique business_no_p values for dynamic columns
             this._pSTIBusinessNos = this._getUniqueBusinessNos(pSTIs);
 
             var buildTree = function (items) {
@@ -637,126 +636,6 @@ sap.ui.define([
             } else {
                 console.error("TreeTable NOT found!");
             }
-        },
-
-        preparePxSTITreeData1: function () {
-            var self = this;
-            var PxSTIs = this.getView().getModel("utilities").getProperty("/pxSTI");
-            var pSTIs = this.getView().getModel("utilities").getProperty("/pSTI");
-
-            // Extract unique business_no_p values for dynamic columns
-            this._pSTIBusinessNos = this._getUniqueBusinessNos(pSTIs);
-
-            var buildTree = function (items) {
-                var treeData = [];
-                var fgaGroups = {};
-
-                if (!items) return treeData;
-
-                items.forEach(function (item) {
-                    item.isTotalRow = false;
-
-                    if (!item.isNode && !item.isTotalRow) {
-                        self._addDynamicColumnValues(item, pSTIs);
-                    }
-
-                    if (!fgaGroups[item.BusinessNo]) {
-                        fgaGroups[item.BusinessNo] = {
-                            name: item.BusinessNo,
-                            isNode: true,
-                            isL0: true,
-                            children: {}
-                        };
-                    }
-
-                    if (!fgaGroups[item.BusinessNo].children[item.Regroupement]) {
-                        fgaGroups[item.BusinessNo].children[item.Regroupement] = {
-                            name: item.Regroupement,
-                            isNode: true,
-                            isL0: false,
-                            children: [],
-                            totals: {
-                                dynamicColumns: {},
-                                InterUFOBudget: 0
-                            }
-                        };
-
-                        // Initialize dynamic columns in totals
-                        self._pSTIBusinessNos.forEach(function (businessNo) {
-                            fgaGroups[item.BusinessNo].children[item.Regroupement].totals.dynamicColumns[businessNo] = 0;
-                        });
-                    }
-
-                    var regroupement = fgaGroups[item.BusinessNo].children[item.Regroupement];
-                    regroupement.children.push(item);
-
-                    // Accumulate totals for the Regroupement - dynamic columns
-                    self._pSTIBusinessNos.forEach(function (businessNo) {
-                        var value = Number(item.dynamicColumns[businessNo]) || 0;
-                        regroupement.totals.dynamicColumns[businessNo] += value;
-                    });
-
-                    // Accumulate InterUFO total - convert to number before adding
-                    regroupement.totals.InterUFOBudget += Number(item.InterUFOBudget) || 0;
-                });
-
-                // Convert children objects to arrays while preserving names
-                for (var fga in fgaGroups) {
-                    var fgaGroup = fgaGroups[fga];
-                    var regroupementArray = [];
-
-                    for (var regroupementKey in fgaGroup.children) {
-                        if (fgaGroup.children.hasOwnProperty(regroupementKey)) {
-                            var regroupement = fgaGroup.children[regroupementKey];
-
-                            // Convert the totals object to the format expected by createRegroupementTotalRow
-                            var totalsForRow = {
-                                dynamicColumns: {},
-                                InterUFOBudget: regroupement.totals.InterUFOBudget.toString()
-                            };
-
-                            // Convert dynamic column totals to strings
-                            self._pSTIBusinessNos.forEach(function (businessNo) {
-                                totalsForRow.dynamicColumns[businessNo] = regroupement.totals.dynamicColumns[businessNo].toString();
-                            });
-
-                            // Add total row with the regroupement's name
-                            regroupement.children.push(
-                                self.createRegroupementTotalRow(totalsForRow, regroupement.name)
-                            );
-                            regroupementArray.push(regroupement);
-                        }
-                    }
-
-                    fgaGroup.children = regroupementArray;
-                    treeData.push(fgaGroup);
-                }
-
-                return treeData;
-            }.bind(this);
-
-            // Create dynamic columns
-            this._createDynamicColumns();
-
-            // Build trees 
-            var PxSTIsTreeData = buildTree(PxSTIs);
-
-            // Calculate global totals
-            var globalTotals = this.calculateGlobalTotals(PxSTIsTreeData);
-
-            // Create flat summary rows (level 0)
-            var summaryRows = [
-                this.createSummaryRow("Budget STI", globalTotals.totalAcquis, false),
-                this.createSummaryRow("Cumulé comptabilisé", globalTotals.cumule, false),
-                this.createSummaryRow("Pourcentage", globalTotals.pourcentage, true),
-                this.createSummaryRow("Reste", globalTotals.rad, false)
-            ];
-
-            // Add summary rows directly to the root array (as level 0 items)
-            PxSTIsTreeData = PxSTIsTreeData.concat(summaryRows);
-
-            // Set tree
-            this.getView().getModel("utilities").setProperty("/PxSTIHierarchyWithTotals", PxSTIsTreeData);
         },
 
 
