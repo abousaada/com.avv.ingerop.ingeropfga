@@ -84,16 +84,34 @@
                 </table:template>
             </table:Column>
 
-            <table:Column width="7rem" headerSpan="6,1" hAlign= "Center">
+            <table:Column width="7rem" headerSpan="6,1" hAlign= "Center" visible="{IsAffaireMere}">
                 <table:multiLabels>
                     <Label text="{i18n>budget.recette.extern.contract}" />
                     <Label text="{i18n>budget.recette.montant}" />
                 </table:multiLabels>
                 <table:template>
                 <HBox visible="{= !!${utilities>isBudget} || !!${utilities>isTotal} }">
-                    <Text   text="{utilities>montant}" visible="{= !${ui>/editable} || !!${utilities>isTotal} }"/>
+                    <Text   text="{
+                        path : 'utilities>montant',
+                        type: 'sap.ui.model.type.Float', 
+                        formatOptions: { 
+                            minFractionDigits: 2, 
+                            maxFractionDigits: 2, 
+                            groupingEnabled: true, 
+                            decimalSeparator: ',' 
+                        }
+                    }" visible="{= !${ui>/editable} || !!${utilities>isTotal} }"/>
                     <Input  
-                        value="{utilities>montant}" 
+                        value="{
+                            path: 'utilities>montant',
+                            type: 'sap.ui.model.type.Float', 
+                            formatOptions: { 
+                                minFractionDigits: 2, 
+                                maxFractionDigits: 2, 
+                                groupingEnabled: true, 
+                                decimalSeparator: ',' 
+                            }
+                        }" 
                         visible="{= ${ui>/editable} &amp;&amp; !!${utilities>isBudget} }"
                         change="onChangeRecetteExtMontant"
                     />
@@ -144,7 +162,7 @@
                 </table:template>
             </table:Column>
 
-            <table:Column width="7rem" headerSpan="4,1" hAlign= "Center">
+            <!-- <table:Column width="7rem" headerSpan="4,1" hAlign= "Center">
                 <table:multiLabels>
                     <Label text="{i18n>budget.recette.acquise}" />
                     <Label text="{i18n>budget.recette.externe}" />
@@ -162,57 +180,93 @@
                         visible="{= !!${utilities>isBudget} || !!${utilities>isTotal} }"/>
                 </HBox>
                 </table:template>
-            </table:Column>
+            </table:Column> -->
 
-            <table:Column width="7rem" headerSpan="4,1" hAlign= "Center">
+            <table:Column width="7rem" headerSpan="3,1" hAlign= "Center" visible="{= !${IsAffaireMere} }">
                 <table:multiLabels>
                     <Label text="{i18n>budget.recette.acquise}" />
                     <Label text="{i18n>budget.recette.groupe}" />
                 </table:multiLabels>
                 <table:template>
                     <HBox>
-                        <Text   text="{utilities>groupe}"/>
+                        <Text   text="{
+                            path: 'utilities>groupe',
+                            type: 'sap.ui.model.type.Float', 
+                            formatOptions: { 
+                                minFractionDigits: 2, 
+                                maxFractionDigits: 2, 
+                                groupingEnabled: true, 
+                                decimalSeparator: ',' 
+                            }
+                        }"/>
                     </HBox>
                 </table:template>
             </table:Column>
 
-            <table:Column width="7rem" headerSpan="4,1" hAlign= "Center">
+            <table:Column width="7rem" headerSpan="3,1" hAlign= "Center" visible="{= !${IsAffaireMere} }">
                 <table:multiLabels>
                     <Label text="{i18n>budget.recette.acquise}" />
                     <Label text="{i18n>budget.recette.interUFO}" />
                 </table:multiLabels>
                 <table:template>
                     <HBox>
-                        <Text   text="{utilities>interUfo}"/>
+                        <Text text="{
+                            path: 'utilities>interUfo',
+                            type: 'sap.ui.model.type.Float', 
+                            formatOptions: { 
+                                minFractionDigits: 2, 
+                                maxFractionDigits: 2, 
+                                groupingEnabled: true, 
+                                decimalSeparator: ',' 
+                            }
+                        }"/>
                     </HBox>
                 </table:template>
             </table:Column>
 
-            <table:Column width="7rem" headerSpan="4,1" hAlign= "Center">
+            <table:Column width="7rem" headerSpan="3,1" hAlign= "Center" visible="{= !${IsAffaireMere} }">
                 <table:multiLabels>
                     <Label text="{i18n>budget.recette.acquise}" />
                     <Label text="{i18n>budget.recette.intraUFO}" />
                 </table:multiLabels>
                 <table:template>
                     <HBox>
-                        <Text   text="{utilities>intraUfo}"/>
+                        <Text   text="{
+                            path: 'utilities>intraUfo',
+                            type: 'sap.ui.model.type.Float', 
+                            formatOptions: { 
+                                minFractionDigits: 2, 
+                                maxFractionDigits: 2, 
+                                groupingEnabled: true, 
+                                decimalSeparator: ',' 
+                            }
+                        }"/>
                     </HBox>
                 </table:template>
             </table:Column>
 
-            <table:Column width="7rem" headerSpan="3,1" hAlign= "Center">
+            <table:Column width="7rem" headerSpan="3,1" hAlign= "Center" visible="{IsAffaireMere}">
                 <table:multiLabels>
                     <Label text="{i18n>budget.recette.fact.extern.m}" />
                     <Label text="{i18n>budget.recette.cumuleEur}" />
                 </table:multiLabels>
                 <table:template>
                     <HBox>
-                        <Text   text="{utilities>cumuleEur}"/>
+                        <Text   text="{
+                            path: 'utilities>cumuleEur',
+                            type: 'sap.ui.model.type.Float', 
+                            formatOptions: { 
+                                minFractionDigits: 2, 
+                                maxFractionDigits: 2, 
+                                groupingEnabled: true, 
+                                decimalSeparator: ',' 
+                            }
+                        }"/>
                     </HBox>
                 </table:template>
             </table:Column>
 
-            <table:Column width="7rem" headerSpan="3,1" hAlign= "Center">
+            <table:Column width="7rem" headerSpan="3,1" hAlign= "Center" visible="{IsAffaireMere}">
                 <table:multiLabels>
                     <Label text="{i18n>budget.recette.fact.extern.m}" />
                     <Label text="{i18n>budget.recette.cumulePercent}" />
@@ -224,7 +278,7 @@
                                 parts: [
                                     { path: 'utilities>montant' },
                                     { path: 'utilities>cumuleEur' }
-                                ], 
+                                ],
                                 formatter:'.Formatter.formatCumulePercent' 
                             }"
                             visible="{= !!${utilities>isBudget} || !!${utilities>isTotal} }"/>
@@ -232,7 +286,7 @@
                 </table:template>
             </table:Column>
 
-            <table:Column width="7rem" headerSpan="3,1" hAlign= "Center">
+            <table:Column width="7rem" headerSpan="3,1" hAlign= "Center" visible="{IsAffaireMere}">
                 <table:multiLabels>
                     <Label text="{i18n>budget.recette.fact.extern.m}" />
                     <Label text="{i18n>budget.recette.aVenir}" />
@@ -244,7 +298,7 @@
                                 parts: [
                                     { path: 'utilities>montant' },
                                     { path: 'utilities>cumuleEur' }
-                                ], 
+                                ],
                                 formatter:'.Formatter.formatAVenir' 
                             }"
                             visible="{= !!${utilities>isBudget} || !!${utilities>isTotal} }" />

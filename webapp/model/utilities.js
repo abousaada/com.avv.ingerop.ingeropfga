@@ -10,7 +10,7 @@ sap.ui.define([
     "../util/helper",
     "../ext/controller/helpers/Missions",
 ],
-    function (BaseModel, InitialData, Formatter, Filter, SubContracting, RecetteExt, MainOeuvre, Constant, Helper,Missions) {
+    function (BaseModel, InitialData, Formatter, Filter, SubContracting, RecetteExt, MainOeuvre, Constant, Helper, Missions) {
         "use strict";
 
         return BaseModel.extend("com.avv.ingerop.ingeropfga.model.utilities", {
@@ -18,16 +18,16 @@ sap.ui.define([
             init: function (oModel) {
                 this.setData({ ...InitialData });
                 this.initModel(oModel);
-                this.oSubContracting    = new SubContracting(this);
-                this.oRecetteExt        = new RecetteExt(this);
-                this.oMainOeuvre        = new MainOeuvre(this);
+                this.oSubContracting = new SubContracting(this);
+                this.oRecetteExt = new RecetteExt(this);
+                this.oMainOeuvre = new MainOeuvre(this);
             },
 
-            setView(oView){
+            setView(oView) {
                 this.oView = oView;
             },
 
-            getView(){
+            getView() {
                 return this.oView;
             },
 
@@ -41,32 +41,32 @@ sap.ui.define([
                 this.setPxSubContractingHeader(treeHeader);
             },
 
-            buildPxRecetteExtTreeData(){
+            buildPxRecetteExtTreeData() {
                 const treeData = this.oRecetteExt.buildTreeData();
                 this.setPxRecetteExtHierarchy(treeData);
             },
 
-            buildPxMainOeuvreTreeData(){
+            buildPxMainOeuvreTreeData() {
                 const { treeData, treeHeader } = this.oMainOeuvre.buildTreeData();
                 this.setPxMainOeuvreHierarchy(treeData);
                 this.setPxMainOeuvreHeader(treeHeader);
             },
 
-            reCalcRecetteTable(){
+            reCalcRecetteTable() {
                 return this.oRecetteExt.reCalcRecetteTable();
             },
 
-            reCalcMainOeuvreTable(){
+            reCalcMainOeuvreTable() {
                 return this.oMainOeuvre.reCalcMainOeuvreTable();
             },
 
             async getBEDatas() {
                 try {
-                    const [missions, previsions, /* recaps, */ opport, charts, chartsadddata, pxRecettes, pxAutres, pxSubContracting, pxMainOeuvre, notes, sfgp] = await Promise.all([
+                    const [missions, previsions, recaps, opport, charts, chartsadddata, pxRecettes, pxAutres, pxSubContracting, pxMainOeuvre, pxSTI, pSTI, notes, sfgp] = await Promise.all([
 
                         this.getBEMissions(),
                         this.getBEPrevisions(),
-                        // this.getBERecaps(),
+                        this.getBERecaps(),
                         this.getBEOpport(),
                         this.getBECharts(),
                         this.getBEChartsAdditionalData(),
@@ -76,6 +76,8 @@ sap.ui.define([
                         this.getBEPxAutres(),
                         this.getBEPxExtSubContracting(),
                         this.getBEPxMainOeuvre(),
+                        this.getBEPxSTI(),
+                        this.getBEPSTI(),
 
                         //Notes
                         this.getBENotes(),
@@ -83,22 +85,24 @@ sap.ui.define([
                     ]);
 
                     this.setMissions(missions || []);
-                    // this.setRecaps(recaps || []);
+                    this.setRecaps(recaps || []);
                     this.setPrevisions(previsions || []);
                     this.setOpport(opport || []);
                     this.setCharts(charts || []);
                     this.setChartsAdditionalData(chartsadddata || []);
-                 
+
                     //Bugets PX
                     this.setPxAutres(pxAutres || []);
                     this.setPxRecetteExt(pxRecettes || []);
 
                     this.setPxSousTraitance(pxSubContracting || []);
                     this.setPxMainOeuvre(pxMainOeuvre || []);
+                    this.setPxSTI(pxSTI || []);
+                    this.setPSTI(pSTI || []);
 
                     // A REMETTRE PROPRE
-                    // this.onCalculChartsData(previsions, recaps, charts, chartsadddata);
-                //Notes
+                    this.onCalculChartsData(previsions, recaps, charts, chartsadddata);
+                    //Notes
                     this.setNotes(notes);
 
                     this.setSfgp(sfgp || []);
@@ -237,7 +241,7 @@ sap.ui.define([
                         }
                     }
                     if (oModelAdditionnalChart[g].line_item === "JH") {
-                        if (oModelAdditionnalChart[g].Type=== "Realised") {
+                        if (oModelAdditionnalChart[g].Type === "Realised") {
                             var oItem = {
                                 Categorie: oModelAdditionnalChart[g].description,
                                 Type: "Réalisé",
@@ -266,22 +270,22 @@ sap.ui.define([
                 var oCharges = oModelChart.find(obj => obj.line_item === "CHARGES");
 
                 if (oRecettes && oCharges) {
-                    const totalMonths = 12; 
+                    const totalMonths = 12;
 
                     const [endMonth, endYear] = oRecettes.period.split("/").map(Number);
-                    
+
                     let startMonth = endMonth;
                     let startYear = endYear;
 
-                    var aDataChart = []; 
+                    var aDataChart = [];
 
                     for (let i = 0; i < totalMonths; i++) {
                         let realMonth = startMonth - i;
                         let realYear = startYear;
-                        
+
                         if (realMonth <= 0) {
                             realMonth += 12;
-                            realYear -= 1; 
+                            realYear -= 1;
                         }
 
                         const label = String(realMonth).padStart(2, "0") + "/" + realYear;
@@ -340,22 +344,22 @@ sap.ui.define([
 
             // Validate missions
             validMissions(oView) {
-                if(oView.getModel("ui").getProperty("/createMode")){
+                if (oView.getModel("ui").getProperty("/createMode")) {
                     return true;
                 }
-                    
+
                 this._missionsTab = new Missions();
                 return this._missionsTab.validateMissionsTreeRequiredFields(oView);
 
             },
 
-            getViewField(identifier, field){
+            getViewField(identifier, field) {
                 return this.oView.byId(Helper.headerFieldIdBySectionAndFieldName(identifier, field));
             },
 
             validFGAHeaderFields() {
                 let isValid = true;
-                Helper.getHeaderFieldList().map(({identifier, field}) => {
+                Helper.getHeaderFieldList().map(({ identifier, field }) => {
                     const champ = this.getViewField(identifier, field);
                     if (champ?.getVisible() && champ?.getMandatory() && !champ?.getValue()) {
                         champ?.setValueState("Error");
@@ -506,6 +510,81 @@ sap.ui.define([
                 }
             },
 
+            async getBEPxSTI() {
+                try {
+                    this.setTabBusy(true);
+                    const businessNo = this.getBusinessNo();
+                    const period = this.getPeriod();
+                    const urlBusinessNo = encodeURIComponent(businessNo);
+                    const urlPeriod = encodeURIComponent(period);
+
+                    const sPath = `/ZC_FGASet(BusinessNo='${urlBusinessNo}',p_period='${urlPeriod}')/to_BudgetPxSTI`;
+                    console.log(`retrieve Budget Px STI with period: ${period} and BusinessNo: ${businessNo}`);
+                    const pxSTI = await this.read(sPath);
+                    this.setTabBusy(false);
+                    return pxSTI?.results || [];
+                } catch (error) {
+                    this.setTabBusy(false);
+                    console.log(error);
+                }
+            },
+
+
+            async getBEPSTI() {
+                try {
+                    this.setTabBusy(true);
+                    const businessNo = this.getBusinessNo();
+                    const period = this.getPeriod();
+                    const urlBusinessNo = encodeURIComponent(businessNo);
+
+                    // First get the main STI data
+                    const sPath = `/ZC_STI?$filter=business_no_e eq '${urlBusinessNo}'`;
+                    console.log(`retrieve STI with period: ${period} and BusinessNo: ${businessNo}`);
+
+                    //const pSTI = await this.read(sPath);
+
+                    const pSTI = await this.read("/ZC_STI", {
+                        urlParameters: {
+                            "$filter": `business_no_e eq '${businessNo}'`
+                        }
+                    });
+
+                    const results = pSTI?.results || [];
+
+                    // Load deferred to_budg association for each result
+                    const resultsWithBudget = await Promise.all(
+                        results.map(async (sti) => {
+                            try {
+                                const encodedId = encodeURIComponent(sti.id_formulaire);
+                                const encodedBusinessNo = encodeURIComponent(sti.business_no_e);
+
+                                const budgetPath = `/ZC_STI(id_formulaire='${encodedId}',business_no_e='${encodedBusinessNo}')/to_BUDG`;
+                                console.log(`Loading budget for ID: ${sti.id_formulaire}, BusinessNo: ${sti.business_no_e}, Path: ${budgetPath}`);
+
+                                const budgetResponse = await this.read(budgetPath);
+                                return {
+                                    ...sti,
+                                    to_budg: budgetResponse?.results || []
+                                };
+                            } catch (error) {
+                                console.log(`Error loading budget for STI ${sti.id_formulaire}:`, error);
+                                return {
+                                    ...sti,
+                                    to_budg: []
+                                };
+                            }
+                        })
+                    );
+
+                    this.setTabBusy(false);
+                    return resultsWithBudget;
+                } catch (error) {
+                    this.setTabBusy(false);
+                    console.log(error);
+                    return [];
+                }
+            },
+
             async getBEPxExtSubContracting() {
                 try {
                     this.setTabBusy(true);
@@ -605,7 +684,7 @@ sap.ui.define([
                 }
             },
 
-            async getBEPxMainOeuvre(){
+            async getBEPxMainOeuvre() {
                 try {
                     this.setTabBusy(true);
                     const businessNo = this.getBusinessNo();
@@ -672,26 +751,26 @@ sap.ui.define([
             },
             //Notes
             async getBENotes() {
-                try {     
-                     const businessNo = this.getBusinessNo();
-                     const period = this.getPeriod();
-                     const urlBusinessNo = encodeURIComponent(businessNo);
-                     const urlPeriod = encodeURIComponent(period);
-                     const sPath = `/ZC_FGASet(BusinessNo='${urlBusinessNo}',p_period='${urlPeriod}')/Notes`;
-                     const notes = await this.read(sPath);
-                     return notes.Notes;
-                    
+                try {
+                    const businessNo = this.getBusinessNo();
+                    const period = this.getPeriod();
+                    const urlBusinessNo = encodeURIComponent(businessNo);
+                    const urlPeriod = encodeURIComponent(period);
+                    const sPath = `/ZC_FGASet(BusinessNo='${urlBusinessNo}',p_period='${urlPeriod}')/Notes`;
+                    const notes = await this.read(sPath);
+                    return notes.Notes;
+
                 } catch (error) {
                     console.log(error);
                 }
             },
 
-            setTabBusy(isBusy){
+            setTabBusy(isBusy) {
                 const tabId = Helper.getTabId();
                 this.oView.byId(tabId).setBusy(isBusy);
             },
 
-            setChartBusy(isBusy){
+            setChartBusy(isBusy) {
                 const graphId = Helper.getGraphicId();
                 this.oView.byId(graphId).setBusy(isBusy);
             },
@@ -715,22 +794,26 @@ sap.ui.define([
                 return this.getPxAutres();
             },
 
+            getFormattedPxSTI() {
+                return this.getPxSTI();
+            },
+
             formattedPxSubContractingExt() {
                 return this.oSubContracting
-                           .formattedPxSubContractingExt()
-                           .map(Formatter.reverseFormatBudgetSubContracting);
+                    .formattedPxSubContractingExt()
+                    .map(Formatter.reverseFormatBudgetSubContracting);
             },
 
-            formattedPxRecetteExt(){
+            formattedPxRecetteExt() {
                 return this.oRecetteExt
-                           .formattedPxRecetteExt()
-                           .map(Formatter.reverseFormatBudgetRecetteExt);
+                    .formattedPxRecetteExt()
+                    .map(Formatter.reverseFormatBudgetRecetteExt);
             },
 
-            formattedPxMainOeuvre(){
+            formattedPxMainOeuvre() {
                 return this.oMainOeuvre
-                           .formattedPxMainOeuvre()
-                           .map(Formatter.reverseFormatBudgetMainOeuvre);
+                    .formattedPxMainOeuvre()
+                    .map(Formatter.reverseFormatBudgetMainOeuvre);
             }
         });
 

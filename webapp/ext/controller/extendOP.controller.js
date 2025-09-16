@@ -11,6 +11,7 @@ sap.ui.define(
         "./helpers/BudgetPxSubContracting",
         "./helpers/BudgetPxRecetteExt",
         "./helpers/BudgetPxMainOeuvre",
+        "./helpers/BudgetPxSTI",
         "./helpers/Synthese",
     ],
     function (
@@ -25,6 +26,7 @@ sap.ui.define(
         BudgetPxSubContracting,
         BudgetPxRecetteExt,
         BudgetPxMainOeuvre,
+        BudgetPxSTI,
         Synthese
     ) {
         "use strict";
@@ -73,6 +75,9 @@ sap.ui.define(
 
                     this._extendOPUiManage = new ExtendOPUiManage();
                     this._extendOPUiManage.oView = this.getView();
+
+                    this._budgetPxSTI = new BudgetPxSTI();
+                    this._budgetPxSTI.oView = this.getView();
 
                     window.addEventListener("popstate", this._cleanModification.bind(this));
                     window.addEventListener("onbeforeunload", this._cleanModification.bind(this));
@@ -139,9 +144,12 @@ sap.ui.define(
                                 "to_BudgetPxAutre": formattedPxAutre,
                                 "to_BudgetPxSubContracting": formattedPxSubContractingExt,
                                 "to_BudgetPxRecetteExt": formattedPxRecetteExt,
-                                "to_BudgetPxMainOeuvre": formattedMainOeuvre,
+                                "to_BudgetPxSTI": [],
+                                "to_BudgetPxMainOeuvre": formattedMainOeuvre
                             });
 
+                            delete oPayload.to_BudgetPxSTI;
+                            
                             try {
                                 oPayload.VAT = oPayload.VAT ? oPayload.VAT.toString() : oPayload.VAT;
                                 const updatedFGA = await utilitiesModel.deepUpsertFGA(oPayload);
@@ -310,6 +318,7 @@ sap.ui.define(
                     this.preparePxSubContractingTreeData();
                     this.preparePxRecetteExtTreeData();
                     this.preparePxMainOeuvreTreeData();
+                    this.preparePxSTITreeData();
                 }
                 else {
 
@@ -480,6 +489,33 @@ sap.ui.define(
 
             preparePxMainOeuvreTreeData: function () {
                 this._budgetMainOeuvre.preparePxMainOeuvreTreeData();
+            },
+
+            // ==============================================
+            // Handle Budget Px TAB - Budget Px STI Section
+            // Handles preparation and submition budget items 
+            // in the mission  process
+            // ==============================================
+
+            // Delegates submit logic to specialized handler : Budget Px Autres
+            preparePxSTITreeData: function () {
+                this._budgetPxSTI.preparePxSTITreeData();
+            },
+
+            onPxSTISubmit: function (oEvent) {
+                if (!this._budgetPxSTI) {
+                    this._budgetPxSTI = new BudgetPxSTI();
+                    this._budgetPxSTI.oView = this.oView;
+                }
+                this._budgetPxSTI.onSubmit(oEvent);
+            },
+
+            onCumuleClick: function (oEvent) {
+                if (!this._budgetPxSTI) {
+                    this._budgetPxSTI = new BudgetPxSTI();
+                    this._budgetPxSTI.oView = this.oView;
+                }
+                this._budgetPxSTI.onCumuleClick(oEvent);
             },
 
             // ==============================================
@@ -888,7 +924,7 @@ sap.ui.define(
 
             },
             // ===================================================
-            // Table Design  BudgetPXSub Cont Budgets Section !!!!
+            // Table Design  BudgetPXSub Contr Budgets Section !!!
             // ===================================================
             onRowsUpdatedBudgetPXSubCTab: function () {
                 var stableName = "BudgetPxSubContractingTreeTableId";
@@ -943,6 +979,83 @@ sap.ui.define(
                     console.error("onBudgetPXUpdated failed:", err);
                 }
 
+            },
+
+            // ================================================
+            // Table Design  BudgetPXSTI Budgets Section !!!!
+            // ================================================
+            onRowsUpdatedBudgetPXSTITab: function () {
+                var stableName = "BudgetPxSTITreeTable";
+                this.onBudgetPXSTIUpdated(stableName);
+            },
+            onBudgetPXSTIUpdated: function (stableName) {
+                try {
+                    var sViewId = this.oView.sId;
+                    const oTable = sap.ui.getCore().byId(
+                        sViewId + "--" + stableName);
+                    if (oTable) {
+                        const oDomRef = oTable.getDomRef();
+                        if (!oDomRef) {
+                            console.warn("DOM ref not ready for table:", stableName);
+                            return;
+                        }
+                        const aRows = oTable.getRows();
+                        const aExclure = new Set(["cumule", "cumulé", "pourcentage", "rad"]);
+
+                        aRows.forEach(oRow => {
+
+                            // Header cell (color whole header cell, not just the label)
+                            oDomRef.querySelectorAll(".sapUiTableColHdrTr.pxHeader")
+                                .forEach(tr => tr.classList.remove("pxHeader"));
+                            const aHeaderRows = oDomRef.querySelectorAll(".sapUiTableColHdrTr");
+                            const oLast = aHeaderRows[aHeaderRows.length - 1];
+                            const oFirst = aHeaderRows[aHeaderRows.length / 2 - 1];
+                            if (oLast && oFirst) {
+                                oFirst.classList.add("pxHeader");
+                                oLast.classList.add("pxHeader");
+
+                            }
+                            const oContext = oRow.getBindingContext("utilities");
+                            if (oContext) {
+                                const bIsTotal = !!oContext.getProperty("isTotalRow");
+                                const bIsNode = !!oContext.getProperty("isNode");
+                                const sName = String(oContext.getProperty("name") || "").trim().toLowerCase();
+                                const $row = oRow.$();
+                                // Enlever les anciens styles
+                                $row.removeClass("pxTotalRow pxSubTotalRow");
+                                if (aExclure.has(sName)) {
+                                    return;
+                                }
+                                // total/sub-total rules
+                                if (bIsTotal) {
+                                    // main total (dark blue + white text)
+                                    if (sName === "Budget STI") {
+                                        oRow.addStyleClass("pxTotalRow");
+                                    } else {
+                                        if (sName.startsWith("total")) {
+                                            // Sous-total (violet clair + texte noir)
+                                            oRow.addStyleClass("pxSubTotalRow");
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    }
+
+                } catch (err) {
+                    console.error("onBudgetPXSTIUpdated failed:", err);
+                }
+
+            },
+
+            onRowsUpdatedBudgetPXMainOeuvreTab(){
+                var stableName = "BudgetPxMainOeuvreTreeTableId";
+                this.onBudgetPXSubCUpdated(stableName);
+            },
+
+            onRowsUpdatedBudgetPXRecetteTab(){
+                var stableName = "BudgetPxRecettesTreeTableId";
+                this.onBudgetPXSubCUpdated(stableName);
             }
 
         });

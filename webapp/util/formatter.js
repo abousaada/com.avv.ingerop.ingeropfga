@@ -11,23 +11,47 @@ sap.ui.define([
             };
         },
         formatTotal: function(total, percent){
-			return percent ? total + "%": total;
+            const formatInstance = sap.ui.core.format.NumberFormat.getFloatInstance({
+                groupingEnabled: true,
+                minFractionDigits: 2,
+                maxFractionDigits: 2,
+            });
+            const retTotal = formatInstance.format(total);
+			return percent ? retTotal + "%": retTotal;
 		},
         formatExterne:function(montant = 0, groupe = 0){
             montant = parseFloat(montant || 0);
             groupe  = parseFloat(groupe || 0);
-            return montant - groupe;
+
+            const formatInstance = sap.ui.core.format.NumberFormat.getFloatInstance({
+                groupingEnabled: true,
+                minFractionDigits: 2,
+                maxFractionDigits: 2,
+            });
+            return formatInstance.format(montant - groupe);
         },
         formatCumulePercent:function(montant = 0, cumuleEur = 0){
             montant     = parseFloat(montant || 0);
             cumuleEur   = parseFloat(cumuleEur || 0);
             if(!montant || !cumuleEur){ return "0 %"; }
-            return (parseFloat( cumuleEur / montant * 100 ).toFixed(2)).toString() + "%";
+
+            const formatInstance = sap.ui.core.format.NumberFormat.getFloatInstance({
+                groupingEnabled: true,
+                minFractionDigits: 2,
+                maxFractionDigits: 2,
+            });
+            return formatInstance.format(parseFloat( cumuleEur / montant * 100 )) + "%";
+
         },
         formatAVenir:function(montant = 0, cumuleEur = 0){
             montant     = parseFloat(montant || 0);
             cumuleEur   = parseFloat(cumuleEur || 0);
-            return montant - cumuleEur
+            const formatInstance = sap.ui.core.format.NumberFormat.getFloatInstance({
+                groupingEnabled: true,
+                minFractionDigits: 2,
+                maxFractionDigits: 2,
+            });
+            return formatInstance.format(montant - cumuleEur);
         },
         formatNbMois:function(startDate, endDate ) {
             if(!startDate || !endDate){ return ; }

@@ -177,7 +177,7 @@
                             parts: [
                                 { path: 'utilities>budgetHorsFrais' },
                                 { path: 'utilities>isPercent' }
-                            ], 
+                            ],
                             formatter:'.Formatter.formatTotal' 
                         }"
                     />
@@ -197,7 +197,7 @@
                             parts: [
                                 { path: 'utilities>budgetYCFrais' },
                                 { path: 'utilities>isPercent' }
-                            ], 
+                            ],
                             formatter:'.Formatter.formatTotal' 
                         }"
                     />

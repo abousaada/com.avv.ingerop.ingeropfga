@@ -32,6 +32,8 @@ sap.ui.define([], function() {
             subContractorPartner  : "SubContractorPartner",
           }*/
         ],
+        "pxSTI": [],
+        "pSTI": [],
         "Notes": '',
         "sfgp": [],
         "missionTypes": [

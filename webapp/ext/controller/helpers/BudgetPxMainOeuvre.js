@@ -108,7 +108,11 @@ sap.ui.define([
                         new sap.m.Text({
                             text: {
                                 path: "utilities>" + sColumnId,
-                                type: new sap.ui.model.type.Float({ minFractionDigits: 0 })
+                                type: new sap.ui.model.type.Float({ 
+                                    minFractionDigits: 0,
+                                    maxFractionDigits: 0,
+                                    groupingEnabled: true,
+                                })
                             },
                             visible: "{= !!${utilities>isTotal} || !!${utilities>isBudget} }"
                         })
@@ -134,14 +138,22 @@ sap.ui.define([
                         new sap.m.Text({
                             text: {
                                 path: "utilities>" + sColumnId,
-                                type: new sap.ui.model.type.Float({ minFractionDigits: 2 })
+                                type: new sap.ui.model.type.Float({ 
+                                    minFractionDigits: 0,
+                                    maxFractionDigits: 0,
+                                    groupingEnabled: true,
+                                })
                             },
                             visible: "{= !!${utilities>isTotal} || !${ui>/editable} }"
                         }),
                         new sap.m.Input({
                             value: {
                                 path: "utilities>" + sColumnId,
-                                type: new sap.ui.model.type.Float({ minFractionDigits: 2 })
+                                type: new sap.ui.model.type.Float({ 
+                                    minFractionDigits: 0,
+                                    maxFractionDigits: 0,
+                                    groupingEnabled: true,
+                                })
                             },
                             visible: "{= ${ui>/editable} && ${utilities>isBudget} }",
                             change: this.onMainOeuvreJoursRestantChange.bind(this)
@@ -173,7 +185,7 @@ sap.ui.define([
                         new sap.m.Text({
                             text: {
                                 parts,
-                                formatter: this.formatAvenir.bind(this)
+                                formatter: this.formatAvenirDisplay.bind(this)
                             },
                             visible: "{= !!${utilities>isTotal} || !!${utilities>isBudget} }"
                         })
@@ -203,8 +215,14 @@ sap.ui.define([
                                     { path: "utilities>" + columnId + this._CONSTANT_COLUMN_REST }
                                 ],
                                 formatter: function (conso, rest) {
-                                    return parseFloat(conso || 0) + parseFloat(rest || 0);
-                                }
+                                    const budget = parseFloat(conso || 0) + parseFloat(rest || 0);
+                                    const floatInstance = sap.ui.core.format.NumberFormat.getFloatInstance({
+                                        groupingEnabled: true,
+                                        minFractionDigits: 0,
+                                        maxFractionDigits: 0,
+                                    });
+                                    return floatInstance.format(budget);
+                                }.bind(this)
                             },
                             visible: "{= !!${utilities>isTotal} || !!${utilities>isBudget} }"
                         })
@@ -234,7 +252,7 @@ sap.ui.define([
                         new sap.m.Text({
                             text: {
                                 parts,
-                                formatter: this.formatFinAffaire.bind(this)
+                                formatter: this.formatFinAffaireDisplay.bind(this)
                             },
                             visible: "{= !!${utilities>isTotal} || !!${utilities>isBudget} }"
                         })
@@ -266,9 +284,10 @@ sap.ui.define([
                         new sap.m.Text({
                             text: {
                                 parts,
-                                formatter: this.formatReel.bind(this)
+                                formatter: this.formatReelDisplay.bind(this)
                             },
-                            visible: "{= !!${utilities>isTotal} || !!${utilities>isBudget} }"
+                            // visible: "{= !!${utilities>isTotal} || !!${utilities>isBudget} }"
+                            visible: "{= !!${utilities>isBudget} }"
                         })
                     ]
                 }),
@@ -291,14 +310,24 @@ sap.ui.define([
                         new sap.m.Text({
                             text: {
                                 path: "utilities>physique",
-                                type: new sap.ui.model.type.Float({ minFractionDigits: 2 })
+                                type: new sap.ui.model.type.Float({ 
+                                    minFractionDigits: 2,
+                                    maxFractionDigits: 2,
+                                    groupingEnabled: true,
+                                }),
+                                formatter: this.formatPhysique.bind(this)
                             },
-                            visible: "{= !!${utilities>isTotal} || !${ui>/editable} }"
+                            visible: "{= ${utilities>isBudget} && !${ui>/editable} }"
+                            // visible: "{= !!${utilities>isTotal} || !${ui>/editable} }"
                         }),
                         new sap.m.Input({
                             value: {
                                 path: "utilities>physique",
-                                type: new sap.ui.model.type.Float({ minFractionDigits: 2 })
+                                type: new sap.ui.model.type.Float({ 
+                                    minFractionDigits: 2,
+                                    maxFractionDigits: 2,
+                                    groupingEnabled: true,
+                                })
                             },
                             visible: "{= ${ui>/editable} && ${utilities>isBudget} }",
                             change: this.onMainOeuvrePhysiqueChange.bind(this)
@@ -334,7 +363,8 @@ sap.ui.define([
                                 parts,
                                 formatter: this.formatEcart.bind(this)
                             },
-                            visible: "{= !!${utilities>isTotal} || !!${utilities>isBudget} }"
+                            // visible: "{= !!${utilities>isTotal} || !!${utilities>isBudget} }"
+                            visible: "{= !!${utilities>isBudget} }"
                         })
                     ]
                 }),
@@ -363,6 +393,7 @@ sap.ui.define([
             if (!rowData) { return; }
             if (!rowData.isBudget && !rowData.isTotal) { return; }
             const header = this.getUtilitiesModel().getPxMainOeuvreHeader();
+
             if(rowData.isBudget){
                 return header.reduce((acc, cur) => {
                     const prop = cur.columnId + this._CONSTANT_COLUMN_REST;
@@ -376,32 +407,68 @@ sap.ui.define([
                     return acc + parseFloat(rowData[prop] || 0);
                 }, 0);
             }
-            
+        },
+
+        formatAvenirDisplay(rowData){
+            if (!rowData) { return; }
+            if (!rowData.isBudget && !rowData.isTotal) { return; }
+            const avenir = this.formatAvenir(rowData);
+            return this.formatExt(avenir);
         },
 
         formatFinAffaire(rowData) {
             if (!rowData) { return; }
             if (!rowData.isBudget && !rowData.isTotal) { return; }
-            return  this.formatAvenir(rowData) + parseFloat(rowData.cumul || 0);
+            return parseFloat(this.formatAvenir(rowData)) + parseFloat(rowData.cumul || 0);
+        },
+
+        formatFinAffaireDisplay(rowData){
+            if (!rowData) { return; }
+            if (!rowData.isBudget && !rowData.isTotal) { return; }
+            const finAffaire = this.formatFinAffaire(rowData);
+            return this.formatExt(finAffaire);
         },
 
         formatReel(rowData) {
             if (!rowData) { return; }
             if (!rowData.isBudget && !rowData.isTotal) { return; }
-            const avenir = this.formatAvenir(rowData);
-            if (!avenir) { return 0; }
+            const avenir = parseFloat(this.formatAvenir(rowData));
             const cumul = parseFloat(rowData.cumul || 0);
-            return cumul / (avenir + cumul);
+            if(!cumul) { return  0;}
+            if(!avenir && !cumul){  return  0;}
+           return parseFloat(cumul / (avenir + cumul)) ;
+        },
+
+        formatReelDisplay(rowData){
+            let reel = this.formatReel(rowData);
+            if (!reel) { return; }
+            reel = parseFloat(reel);
+            return this.formatExt( reel * 100 ) + "%"; 
+        },
+
+        formatPhysique(physique){
+            if(!physique){ return }
+            return this.formatExt(parseFloat(physique)) + "%";
         },
 
         formatEcart(rowData) {
             if (!rowData) { return; }
             if (!rowData.isBudget && !rowData.isTotal) { return; }
-            const reel = this.formatReel(rowData);
-            const finAffaire = this.formatFinAffaire(rowData);
+            const reel = parseFloat(this.formatReel(rowData));
+            const finAffaire = parseFloat(this.formatFinAffaire(rowData));
+            const physique = parseFloat(rowData.physique || 0) / 100;
 
-            return Math.abs((reel - parseFloat(rowData.physique || 0)) * finAffaire);
+            const ecart = Math.abs((reel - physique) * finAffaire);
             
+            return this.formatExt(ecart);
+        },
+
+        formatExt(value){
+            return sap.ui.core.format.NumberFormat.getFloatInstance({
+                groupingEnabled: true,
+                minFractionDigits: 2,
+                maxFractionDigits: 2,
+            }).format(value);
         }
     });
 });

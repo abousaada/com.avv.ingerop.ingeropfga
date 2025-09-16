@@ -1,0 +1,112 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:table="sap.ui.table"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:rm="sap.ui.table.rowmodes"
+>
+    <table:TreeTable
+        id="BudgetPxSTITreeTable"
+        width="100%"
+            rowsUpdated="onRowsUpdatedBudgetPXSTITab"
+        rows="{
+                path: 'utilities>/PxSTIHierarchyWithTotals',
+                parameters: {
+                    arrayNames: ['children'],
+                    numberOfExpandedLevels: 3
+                }
+                
+            }"
+        selectionMode="None"
+        ariaLabelledBy="title"
+        enableColumnReordering="false"
+        enableColumnFreeze="true"
+        fixedColumnCount="1"
+    >
+        <table:columns>
+            <!-- Hierarchy Column -->
+            <table:Column width="17rem">
+                <Label text="Hierarchy/Mission" />
+                <table:template>
+                    <Text
+                        text="{= ${utilities>isTotalRow} ? ${utilities>name} : 
+                                 ${utilities>isNode} ? ${utilities>name} : 
+                                 ${utilities>MissionId}}"
+                    />
+                </table:template>
+            </table:Column>
+
+            <!-- Libelle Column -->
+            <table:Column width="5rem">
+                <Label text="Libellé" />
+                <table:template>
+                    <HBox>
+                        <Text
+                            text="{utilities>Libelle}"
+                            visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
+                        />
+                    </HBox>
+                </table:template>
+            </table:Column>
+
+            <!-- Statut Column -->
+            <table:Column width="5rem">
+                <Label text="Statut" />
+                <table:template>
+                    <HBox>
+                        <Text
+                            text="{utilities>Statut}"
+                            visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
+                        />
+                    </HBox>
+                </table:template>
+            </table:Column>
+
+            <!-- Start Date Column -->
+            <table:Column width="6rem">
+                <Label text="Date début" />
+                <table:template>
+                    <HBox>
+                        <Text
+                            text="{
+                                    path: 'utilities>StartDate',
+                                    type: 'sap.ui.model.type.Date',
+                                    formatOptions: { 
+                                        style: 'short',
+                                        strictParsing: true
+                                    }
+                                }"
+                            visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
+                        />
+                    </HBox>
+                </table:template>
+            </table:Column>
+
+            <!-- End Date Column -->
+            <table:Column width="6rem">
+                <Label text="Date fin" />
+                <table:template>
+                    <HBox>
+                        <Text
+                            text="{
+                                    path: 'utilities>EndDate',
+                                    type: 'sap.ui.model.type.Date',
+                                    formatOptions: { 
+                                        style: 'short',
+                                        strictParsing: true
+                                    }
+                                }"
+                            visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
+                        />
+                    </HBox>
+                </table:template>
+            </table:Column>
+
+        </table:columns>
+
+        <table:rowMode>
+            <rm:Auto minRowCount= "{localModel>/tableSettings/minRowCount}" />
+        </table:rowMode>
+    </table:TreeTable>
+</core:FragmentDefinition>

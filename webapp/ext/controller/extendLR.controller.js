@@ -29,6 +29,7 @@ sap.ui.define(
                         },
                         params: {
                             business_no_e: aFAGs
+                            //id_formulaire: "0000000006"
                         }
                     });
 

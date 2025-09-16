@@ -8,7 +8,8 @@ sap.ui.define([], function () {
     }
 
     _totalProps = [
-      "cumul", "physique"
+      "cumul"
+      // ,"physique"
     ];
 
     _CONSTANT_COLUMN_PREFIXE  = "MO_";

@@ -61,6 +61,14 @@
                 <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="Nom" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="CompanyPartner" Type="Edm.String" Nullable="false" MaxLength="6" sap:unicode="false" sap:label="Sté S/L parten." sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
             </EntityType>
+            <EntityType Name="Profil" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="ProfilNo"/>
+                </Key>
+                <Property Name="ProfilNo" Type="Edm.String" Nullable="false" MaxLength="6" sap:unicode="false" sap:label="Type d'activité" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Description" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Nom" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Tjm" Type="Edm.Decimal" Nullable="false" Precision="15" Scale="2" sap:unicode="false" sap:label="Taux journalier" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
             <EntityType Name="C_ProjectTypeVHType" sap:label="Aide à la saisie pour type de projet" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="ProjectType"/>
@@ -288,15 +296,16 @@
                     <PropertyRef Name="BusinessNo"/>
                 </Key>
                 <Property Name="p_period" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase" sap:label="Période MMYYYY"/>
-                <Property Name="BusinessNo" Type="Edm.String" Nullable="false" MaxLength="24" sap:text="BusinessName" sap:label="N°Affaire"/>
+                <Property Name="BusinessNo" Type="Edm.String" Nullable="false" MaxLength="24" sap:label="N°Affaire"/>
                 <Property Name="BusinessName" Type="Edm.String" MaxLength="40" sap:label="Libellé" sap:quickinfo="PS: désignation (première ligne de texte)"/>
                 <Property Name="UFOName" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="UFO Délégué" sap:quickinfo="Nom de set" sap:value-list="standard"/>
                 <Property Name="Activity" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="Activité" sap:quickinfo="FGA Business activity" sap:value-list="fixed-values"/>
                 <Property Name="CDG" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Centre de profit" sap:quickinfo="FGA Profit Center" sap:value-list="standard"/>
                 <Property Name="Branche" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Branche" sap:value-list="fixed-values"/>
-                <Property Name="PROJM" Type="Edm.String" MaxLength="25" sap:label="Chef de projet" sap:quickinfo="Responsable (chef de projet)" sap:value-list="standard"/>
+                <Property Name="PROJM" Type="Edm.String" MaxLength="8" sap:display-format="NonNegative" sap:text="PROJM_Text" sap:label="Chef de projet" sap:quickinfo="Numéro du responsable (chef de projet)" sap:value-list="standard"/>
+                <Property Name="PROJM_Text" Type="Edm.String" MaxLength="25" sap:label="Responsable (nom)" sap:heading="" sap:quickinfo="Responsable (chef de projet)"/>
                 <Property Name="STILinkedCount" Type="Edm.Int32" sap:label=""/>
-                <Property Name="BusinessType" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Type" sap:quickinfo="FGA Business Type"/>
+                <Property Name="BusinessType" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Type" sap:quickinfo="FGA Business Type" sap:value-list="fixed-values"/>
                 <Property Name="BusinessStatus" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Statut de l'affaire" sap:quickinfo="Elément de données Statut pour FGA" sap:value-list="fixed-values"/>
                 <Property Name="Soufam" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Sous famille" sap:quickinfo="Elément de donnée pour Soufam" sap:value-list="fixed-values"/>
                 <Property Name="Rgfact" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Règle de facturation" sap:quickinfo="élément de donnée pour RTFACT"/>
@@ -370,11 +379,16 @@
                 <Property Name="DailyAvgRate" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Taux moyen journalier" sap:quickinfo="Zone de 10 caractères"/>
                 <Property Name="LastUpdate" Type="Edm.String" MaxLength="20" sap:display-format="UpperCase" sap:label="Dernière mise à jour" sap:quickinfo="Char 20"/>
                 <Property Name="GrpConvention" Type="Edm.String" MaxLength="50" sap:label="Convention de groupe" sap:quickinfo="Zone de texte"/>
-                <Property Name="Notes" Type="Edm.String" MaxLength="1250" sap:display-format="UpperCase" sap:label="Notes" sap:heading="" sap:quickinfo="Champ pour les commentaires"/>
+                <Property Name="Notes" Type="Edm.String" MaxLength="1333" sap:label=""/>
+                <Property Name="ModifyBy" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Modifié par" sap:heading="" sap:quickinfo="Nom de la personne qui a modifié cet objet"/>
+                <Property Name="ModifyDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Modifié le" sap:heading="" sap:quickinfo="Date de dernière modification d'un objet"/>
+                <Property Name="IsAffaireMere" Type="Edm.Boolean" sap:label="Actif" sap:heading="" sap:quickinfo="Booléen"/>
                 <Property Name="DataSource" Type="Edm.String" MaxLength="4" sap:label="#DataSource"/>
                 <Property Name="HeaderDescription" Type="Edm.String" MaxLength="31"/>
                 <NavigationProperty Name="to_BudgetPxAutre" Relationship="ZFGA_SRV.assoc_E414682AC737A1471EE64CE372D268CB" FromRole="FromRole_assoc_E414682AC737A1471EE64CE372D268CB" ToRole="ToRole_assoc_E414682AC737A1471EE64CE372D268CB"/>
+                <NavigationProperty Name="to_BudgetPxMainOeuvre" Relationship="ZFGA_SRV.assoc_E3F15DA2DB3C1A5E6E7A9025DEC17B6E" FromRole="FromRole_assoc_E3F15DA2DB3C1A5E6E7A9025DEC17B6E" ToRole="ToRole_assoc_E3F15DA2DB3C1A5E6E7A9025DEC17B6E"/>
                 <NavigationProperty Name="to_BudgetPxRecetteExt" Relationship="ZFGA_SRV.assoc_E6F51C48FA56CB78A3D3BB6BDB09FA49" FromRole="FromRole_assoc_E6F51C48FA56CB78A3D3BB6BDB09FA49" ToRole="ToRole_assoc_E6F51C48FA56CB78A3D3BB6BDB09FA49"/>
+                <NavigationProperty Name="to_BudgetPxSTI" Relationship="ZFGA_SRV.assoc_EFFDDDFC883D7FA56DD238F3514A8B40" FromRole="FromRole_assoc_EFFDDDFC883D7FA56DD238F3514A8B40" ToRole="ToRole_assoc_EFFDDDFC883D7FA56DD238F3514A8B40"/>
                 <NavigationProperty Name="to_BudgetPxSubContracting" Relationship="ZFGA_SRV.assoc_733945962AA43335851B4AB0A78DD1C7" FromRole="FromRole_assoc_733945962AA43335851B4AB0A78DD1C7" ToRole="ToRole_assoc_733945962AA43335851B4AB0A78DD1C7"/>
                 <NavigationProperty Name="to_Missions" Relationship="ZFGA_SRV.assoc_C3CEBB4F914AE5B0F6B34A7D0ECC717D" FromRole="FromRole_assoc_C3CEBB4F914AE5B0F6B34A7D0ECC717D" ToRole="ToRole_assoc_C3CEBB4F914AE5B0F6B34A7D0ECC717D"/>
                 <NavigationProperty Name="Parameters" Relationship="ZFGA_SRV.assoc_FBAFCCB8228F35F33FFA98CD63EBFA5B" FromRole="ToRole_assoc_FBAFCCB8228F35F33FFA98CD63EBFA5B" ToRole="FromRole_assoc_FBAFCCB8228F35F33FFA98CD63EBFA5B" sap:filterable="false"/>
@@ -580,6 +594,29 @@
                 <Property Name="GLAccountFinAffaire" Type="Edm.String" MaxLength="255"/>
                 <Property Name="Regroupement" Type="Edm.String" MaxLength="40" sap:label="Regroupement mission"/>
             </EntityType>
+            <EntityType Name="ZC_FGA_PxMainOeuvreType" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="BusinessNo"/>
+                    <PropertyRef Name="MissionId"/>
+                    <PropertyRef Name="Profil"/>
+                </Key>
+                <Property Name="BusinessNo" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Numéro de business" sap:quickinfo="FGA Numéro de business"/>
+                <Property Name="MissionId" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Texte 24" sap:quickinfo="Zone de caractères de longueur 24"/>
+                <Property Name="Profil" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase" sap:label="Type d'activité" sap:heading=""/>
+                <Property Name="costCenter" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Centre émetteur" sap:heading="" sap:quickinfo="Centre de coûts émetteur"/>
+                <Property Name="ProfilDescription" Type="Edm.String" MaxLength="20" sap:label="Nom" sap:heading="" sap:quickinfo="Nom général"/>
+                <Property Name="MissionCode" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Zone d'une longueur de 3 octets" sap:heading=""/>
+                <Property Name="StartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date" sap:heading="" sap:quickinfo="Zone de type DATS"/>
+                <Property Name="EndDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date" sap:heading="" sap:quickinfo="Zone de type DATS"/>
+                <Property Name="Libelle" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="description" sap:heading="" sap:quickinfo="Description Mission"/>
+                <Property Name="Statut" Type="Edm.String" MaxLength="1" sap:label="Statut mission" sap:heading=""/>
+                <Property Name="Regroupement" Type="Edm.String" MaxLength="40" sap:label="Regroupement mission"/>
+                <Property Name="Tjm" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
+                <Property Name="Cumul" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
+                <Property Name="NbJoursConso" Type="Edm.Decimal" Precision="15" Scale="3" sap:label=""/>
+                <Property Name="NbJoursRest" Type="Edm.Decimal" Precision="15" Scale="3" sap:label="Nombre(unité mesure)" sap:heading="" sap:quickinfo="Feuille de saisie des tps : nombre relatif à unité de mesure"/>
+                <Property Name="Physique" Type="Edm.Decimal" Precision="15" Scale="3" sap:label=""/>
+            </EntityType>
             <EntityType Name="ZC_FGA_PxRecetteExtType" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="BusinessNo"/>
@@ -598,6 +635,30 @@
                 <Property Name="InterUFO" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
                 <Property Name="IntraUFO" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
                 <Property Name="CumuleEUR" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
+            </EntityType>
+            <EntityType Name="ZC_FGA_PxstintType" sap:label="FGA Missions Budget" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="MissionId"/>
+                    <PropertyRef Name="BusinessNo"/>
+                </Key>
+                <Property Name="MissionId" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Texte 24" sap:quickinfo="Zone de caractères de longueur 24"/>
+                <Property Name="BusinessNo" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Numéro de business" sap:quickinfo="FGA Numéro de business"/>
+                <Property Name="MissionCode" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Mission Code" sap:quickinfo="Zone d'une longueur de 3 octets"/>
+                <Property Name="Libelle" Type="Edm.String" MaxLength="40" sap:label="Libelle" sap:quickinfo="PS: désignation (première ligne de texte)"/>
+                <Property Name="Statut" Type="Edm.String" MaxLength="60" sap:label="Statut" sap:quickinfo="Statut mission (Descr.)"/>
+                <Property Name="StartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Start Date" sap:quickinfo="Zone de type DATS"/>
+                <Property Name="EndDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="End Date" sap:quickinfo="Zone de type DATS"/>
+                <Property Name="InterUFO" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="XXX Inter UFO"/>
+                <Property Name="IntraUFO" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="XXX Intra UFO"/>
+                <Property Name="Intercompagnie" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="XXX Intercompagnie"/>
+                <Property Name="InterUFOBudget" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Inter UFO"/>
+                <Property Name="IntraUFOBudget" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Intra UFO"/>
+                <Property Name="IntercompagnieBudget" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Intercompagnie"/>
+                <Property Name="BudgetSTI" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Budget STI"/>
+                <Property Name="CumulComptabilise" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Cumulé comptabilisé"/>
+                <Property Name="PourcentageComptabilise" Type="Edm.Decimal" Precision="5" Scale="2" sap:label="% comptabilisé"/>
+                <Property Name="Reste" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Reste"/>
+                <Property Name="Regroupement" Type="Edm.String" MaxLength="40" sap:label="Regroupement mission"/>
             </EntityType>
             <EntityType Name="ZC_FGA_SFGP_REPORTType" sap:content-version="1">
                 <Key>
@@ -665,6 +726,148 @@
                 <Property Name="StartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date" sap:heading="" sap:quickinfo="Zone de type DATS"/>
                 <Property Name="EndDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date" sap:heading="" sap:quickinfo="Zone de type DATS"/>
                 <Property Name="Regroupement" Type="Edm.String" MaxLength="40" sap:label="Regroupement mission"/>
+            </EntityType>
+            <EntityType Name="ZC_FGA_VHType" sap:label="FGA" sap:value-list="true" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="BusinessNo"/>
+                </Key>
+                <Property Name="BusinessNo" Type="Edm.String" Nullable="false" MaxLength="24" sap:text="BusinessName" sap:label="Business Number"/>
+                <Property Name="BusinessName" Type="Edm.String" MaxLength="40" sap:label="Business Name" sap:quickinfo="PS: désignation (première ligne de texte)"/>
+                <Property Name="UFOName" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="UFO" sap:quickinfo="Nom de set"/>
+                <Property Name="Activity" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="Activity" sap:quickinfo="FGA Business activity"/>
+                <Property Name="CDG" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Profit Center" sap:quickinfo="FGA Profit Center"/>
+                <Property Name="Branche" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Branche"/>
+                <Property Name="PROJM" Type="Edm.String" MaxLength="8" sap:display-format="NonNegative" sap:label="Project Manager" sap:quickinfo="Numéro du responsable (chef de projet)"/>
+                <Property Name="STILinkedCount" Type="Edm.Int32" sap:label="Linked STIs"/>
+                <Property Name="BusinessType" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Type" sap:quickinfo="FGA Business Type"/>
+                <Property Name="BusinessStatus" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Status" sap:quickinfo="Elément de données Statut pour FGA"/>
+                <Property Name="Soufam" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Sous famille" sap:quickinfo="Elément de donnée pour Soufam"/>
+                <Property Name="Rgfact" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Règle de facturation" sap:quickinfo="élément de donnée pour RTFACT"/>
+                <Property Name="AncienNumero" Type="Edm.String" MaxLength="8" sap:display-format="UpperCase" sap:label="Ancien Numéro" sap:quickinfo="Ancien numéro"/>
+                <Property Name="Modalr" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Révisable / Actualisable" sap:quickinfo="Elément de donnée MODALR pour FGA"/>
+                <Property Name="Modalf" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Fofaitaire / Régie" sap:quickinfo="Elément de données MODALF pour FGA"/>
+                <Property Name="Avance" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Avance" sap:quickinfo="Elément de donnée avance pour FGA"/>
+                <Property Name="Rtgart" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Retenue de garantie" sap:quickinfo="Elément de donnée RTGART"/>
+                <Property Name="Percent" Type="Edm.String" MaxLength="3" sap:label="Percent" sap:quickinfo="Type Percent Unit" sap:semantics="unit-of-measure"/>
+                <Property Name="VAT" Type="Edm.Decimal" Precision="23" Scale="0" sap:unit="Percent" sap:label="VAT"/>
+                <Property Name="RateDevis" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Rate/Currency" sap:quickinfo="Zone de 10 caractères"/>
+                <Property Name="Currency" Type="Edm.String" MaxLength="5" sap:display-format="UpperCase" sap:label="Currency" sap:quickinfo="Clé de devise" sap:semantics="currency-code"/>
+                <Property Name="Reflet" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Affaire Reflet"/>
+                <Property Name="CurrencyHedging" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Couverture de change"/>
+                <Property Name="NClient" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Customer Number" sap:quickinfo="Elément de donnée NCLIENT"/>
+                <Property Name="CustomerName" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Customer Name" sap:quickinfo="Elément de donnée pour Client"/>
+                <Property Name="Scclt" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Customer Sector" sap:quickinfo="Elément de donnée SCCLT pour FGA"/>
+                <Property Name="Guarantee" Type="Edm.String" MaxLength="50" sap:label="Guarantee - Performance Bond" sap:quickinfo="Zone de texte"/>
+                <Property Name="CautGA" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Caution / Garantie à PD" sap:quickinfo="Elément de donnée CAUTGA"/>
+                <Property Name="Assurance" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Insurance" sap:quickinfo="Elément de donnée pour ASSUR"/>
+                <Property Name="Mission" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Mission" sap:quickinfo="Elément de donnée MISSION"/>
+                <Property Name="GroupM" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Groupement (O/N)" sap:quickinfo="Elément de donnée GROUPM pour FGA"/>
+                <Property Name="isMandataire" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Mandataire O/N"/>
+                <Property Name="Mandata" Type="Edm.String" MaxLength="80" sap:display-format="UpperCase" sap:label="Mandataire" sap:quickinfo="Char 80"/>
+                <Property Name="Mtctr" Type="Edm.Decimal" Precision="14" Scale="3" sap:label="Montant contrat KEUR"/>
+                <Property Name="Paring" Type="Edm.Decimal" Precision="14" Scale="3" sap:label="Part Ingerop KEUR"/>
+                <Property Name="Mttrvx" Type="Edm.Decimal" Precision="14" Scale="3" sap:label="Montant travaux KEUR"/>
+                <Property Name="Ingtrvx" Type="Edm.Decimal" Precision="23" Scale="0" sap:unit="Percent" sap:label="Ingénierie / Travaux"/>
+                <Property Name="Tmoyj" Type="Edm.String" MaxLength="10" sap:display-format="NonNegative" sap:label="Taux moyen journalier"/>
+                <Property Name="Datmaj" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Maj du" sap:quickinfo="Zone de type DATS"/>
+                <Property Name="Datcha" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Maj du" sap:quickinfo="Zone de type DATS"/>
+                <Property Name="StartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Start Date" sap:quickinfo="Élément d'OTP : date de début de base"/>
+                <Property Name="EndDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="End Date" sap:quickinfo="Élément d'OTP : date de fin de base"/>
+                <Property Name="NbOfMonth" Type="Edm.Int32" sap:label="Number of Months" sap:quickinfo="Nombre entier signé de 4 octets"/>
+                <Property Name="RemainingMonth" Type="Edm.Int32" sap:label="Remaining Months" sap:quickinfo="Nombre entier signé de 4 octets"/>
+                <Property Name="QuoteReview" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Quote Review" sap:quickinfo="Zone de 10 caractères"/>
+                <Property Name="ContractReview" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Contract Review" sap:quickinfo="Zone de 10 caractères"/>
+                <Property Name="EngagementCommittee" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Engagement Committee" sap:quickinfo="Zone de 10 caractères"/>
+                <Property Name="StartReview" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Start Review" sap:quickinfo="Zone de 10 caractères"/>
+                <Property Name="ProjectReview" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Project Review" sap:quickinfo="Zone de 10 caractères"/>
+                <Property Name="EndProjectReview" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="End of Project Review" sap:quickinfo="Zone de 10 caractères"/>
+                <Property Name="UrlCup" Type="Edm.String" MaxLength="255" sap:display-format="UpperCase" sap:label="URL" sap:quickinfo="char255"/>
+                <Property Name="CompanyCode" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Company" sap:quickinfo="Société de l'élément d'OTP" sap:value-list="standard"/>
+                <Property Name="ProfitCenter" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Profit Center" sap:quickinfo="Centre de profit"/>
+                <Property Name="Type" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Business Type" sap:quickinfo="Type de projet"/>
+                <Property Name="BusinessManager" Type="Edm.String" MaxLength="25" sap:label="Business Manager" sap:quickinfo="FGA Business Manager"/>
+                <Property Name="BusinessFactRule" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Billing Rule" sap:quickinfo="FGA Fact Rule"/>
+                <Property Name="RBACumulNm1" Type="Edm.Int32" sap:label="Cumulative RBA N-1"/>
+                <Property Name="RBACumulN" Type="Edm.Int32" sap:label="Cumulative RBA N"/>
+                <Property Name="RBAMonthM" Type="Edm.Int32" sap:label="RBA Month M"/>
+                <Property Name="ReviActu" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Revisable/Updatable" sap:quickinfo="Code à 1 caractère"/>
+                <Property Name="RBAForecast" Type="Edm.Int32" sap:label="End of Business RBA"/>
+                <Property Name="Criticality" Type="Edm.String" MaxLength="1" sap:display-format="NonNegative"/>
+                <Property Name="Site" Type="Edm.String" MaxLength="80" sap:display-format="UpperCase" sap:label="Site" sap:quickinfo="Site du FGA"/>
+                <Property Name="International" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="National/International" sap:quickinfo="International"/>
+                <Property Name="Country" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="France" sap:quickinfo="Pays"/>
+                <Property Name="CompanyCountry" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Clé de pays/région"/>
+                <Property Name="Siret" Type="Edm.String" MaxLength="14" sap:display-format="UpperCase" sap:label="SIRET" sap:quickinfo="Numéro de Siret"/>
+                <Property Name="plateformDemat" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Plateforme Dématérialisée"/>
+                <Property Name="nonAcquis" Type="Edm.Decimal" Precision="16" Scale="3" sap:label="Dont Non Acquis" sap:quickinfo="Dont non acquis TC/TO"/>
+                <Property Name="depenseCommercial" Type="Edm.Decimal" Precision="16" Scale="3" sap:label="Dépense Commercial"/>
+                <Property Name="membreGroupement" Type="Edm.String" MaxLength="50" sap:display-format="UpperCase" sap:label="Membre du Groupement" sap:quickinfo="Membre du groupement"/>
+                <Property Name="Business" Type="Edm.String" MaxLength="15" sap:display-format="UpperCase" sap:label="Business"/>
+                <Property Name="eligibleCir" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Eligible CIR"/>
+                <Property Name="NoClientMarche" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Client/Market Number" sap:quickinfo="Zone de 10 caractères"/>
+                <Property Name="ContractAmount" Type="Edm.Decimal" Precision="16" Scale="3" sap:label="Contract Amount" sap:quickinfo="Valeur nette dans la devise du document"/>
+                <Property Name="IngeropPart" Type="Edm.Decimal" Precision="16" Scale="3" sap:label="Ingerop Share" sap:quickinfo="Valeur nette dans la devise du document"/>
+                <Property Name="WorkAmount" Type="Edm.String" MaxLength="20" sap:display-format="UpperCase" sap:label="Work Amount" sap:quickinfo="Char 20"/>
+                <Property Name="Engineering" Type="Edm.String" MaxLength="20" sap:display-format="UpperCase" sap:label="Engineering/Works" sap:quickinfo="Char 20"/>
+                <Property Name="DailyAvgRate" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Average Daily Rate" sap:quickinfo="Zone de 10 caractères"/>
+                <Property Name="LastUpdate" Type="Edm.String" MaxLength="20" sap:display-format="UpperCase" sap:label="Last Update" sap:quickinfo="Char 20"/>
+                <Property Name="GrpConvention" Type="Edm.String" MaxLength="50" sap:label="Group Convention" sap:quickinfo="Zone de texte"/>
+                <Property Name="Notes" Type="Edm.String" MaxLength="1333" sap:label="Notes"/>
+                <Property Name="DataSource" Type="Edm.String" MaxLength="4"/>
+            </EntityType>
+            <EntityType Name="ZC_STIType" sap:label="STI" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="id_formulaire"/>
+                    <PropertyRef Name="business_no_e"/>
+                </Key>
+                <Property Name="id_formulaire" Type="Edm.String" Nullable="false" MaxLength="10" sap:display-format="UpperCase" sap:label="ID Formulaire" sap:quickinfo="ID FORM STI" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="business_no_e" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="N° Affaire Emettrice" sap:quickinfo="Zone de caractères de longueur 24" sap:value-list="standard"/>
+                <Property Name="Criticality" Type="Edm.Byte" sap:label="Criticality"/>
+                <Property Name="status" Type="Edm.String" MaxLength="14" sap:label="Status formulaire" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="business_e_t" Type="Edm.String" MaxLength="40" sap:label="Libellé Affaire Emettrice" sap:quickinfo="PS: désignation (première ligne de texte)" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="business_e_cmp" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Société Affaire Emettrice" sap:quickinfo="Société de l'élément d'OTP" sap:creatable="false" sap:updatable="false" sap:value-list="standard"/>
+                <Property Name="business_e_SDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Start Date" sap:quickinfo="Élément d'OTP : date de début de base"/>
+                <Property Name="business_e_EDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="End Date" sap:quickinfo="Élément d'OTP : date de fin de base"/>
+                <Property Name="business_e_currency" Type="Edm.String" MaxLength="3" sap:label="End Date"/>
+                <Property Name="business_e_ufo" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="UFO Affaire Emettrice" sap:quickinfo="Nom de set" sap:creatable="false" sap:updatable="false" sap:value-list="standard"/>
+                <Property Name="business_e_cdp" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Centre de profit Affaire Emettrice" sap:quickinfo="Centre de profit" sap:creatable="false" sap:updatable="false" sap:value-list="standard"/>
+                <Property Name="business_e_bm" Type="Edm.String" MaxLength="25" sap:label="Chef de projet Affaire Emettrice" sap:quickinfo="FGA Business Manager" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="business_e_clt" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Client" sap:quickinfo="Elément de donnée pour Client" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="business_e_curr" Type="Edm.String" MaxLength="5" sap:display-format="UpperCase" sap:label="Currency" sap:quickinfo="Clé de devise" sap:semantics="currency-code"/>
+                <Property Name="business_no_p" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="N°Affaire Partenaire (Fille ou petite)" sap:quickinfo="Zone de caractères de longueur 24" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="business_no_p_t" Type="Edm.String" MaxLength="40" sap:label="Libellé Affaire partenaire" sap:quickinfo="PS: désignation (première ligne de texte)"/>
+                <Property Name="business_p_ufo" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="UFO Affaire partenaire" sap:quickinfo="Nom de set" sap:value-list="standard"/>
+                <Property Name="business_p_cmp" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Société Affaire partenaire" sap:quickinfo="Société de l'élément d'OTP" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="business_p_cdp" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Centre de profit Affaire partenaire" sap:quickinfo="FGA Profit Center" sap:value-list="standard"/>
+                <Property Name="business_p_bm" Type="Edm.String" MaxLength="25" sap:label="Responsable Affaire partenaire" sap:quickinfo="FGA Business Manager"/>
+                <Property Name="business_p_mis" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Mission" sap:quickinfo="Elément de donnée MISSION"/>
+                <Property Name="business_p_projm" Type="Edm.String" MaxLength="8" sap:display-format="NonNegative" sap:label="Chef de projet" sap:quickinfo="Numéro du responsable (chef de projet)" sap:value-list="standard"/>
+                <Property Name="proprio_sti" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Propriétaire du formulaire" sap:quickinfo="PROPRIO STI" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="stidescr" Type="Edm.String" MaxLength="50" sap:display-format="UpperCase" sap:label="Description du formulaire" sap:quickinfo="DESCRIPTION STI"/>
+                <Property Name="business_p_mail" Type="Edm.String" MaxLength="50" sap:label="Email  Affaire partenaire" sap:quickinfo="Zone de texte"/>
+                <Property Name="BudgetAlloue" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="TypeBudg" Type="Edm.String" MaxLength="8" sap:display-format="UpperCase" sap:label="char8" sap:quickinfo="Zone de caractères, long.8"/>
+                <NavigationProperty Name="to_BUDG" Relationship="ZFGA_SRV.assoc_4C440054DA86EB6EA9AA53AAC97FFE9D" FromRole="FromRole_assoc_4C440054DA86EB6EA9AA53AAC97FFE9D" ToRole="ToRole_assoc_4C440054DA86EB6EA9AA53AAC97FFE9D"/>
+            </EntityType>
+            <EntityType Name="ZC_STI_BUDGType" sap:label="ZC_STI_BUDG" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="BUSINESS_NO_E"/>
+                    <PropertyRef Name="IdFormulaire"/>
+                    <PropertyRef Name="Mission_e"/>
+                    <PropertyRef Name="Mission_p"/>
+                </Key>
+                <Property Name="BUSINESS_NO_E" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Texte 24" sap:quickinfo="Zone de caractères de longueur 24"/>
+                <Property Name="IdFormulaire" Type="Edm.String" Nullable="false" MaxLength="10" sap:display-format="UpperCase" sap:label="ID FORM STI" sap:heading=""/>
+                <Property Name="Mission_e" Type="Edm.String" Nullable="false" MaxLength="40" sap:display-format="UpperCase" sap:label="Elément de donnée MISSION" sap:heading=""/>
+                <Property Name="Mission_p" Type="Edm.String" Nullable="false" MaxLength="40" sap:display-format="UpperCase" sap:label="Elément de donnée MISSION" sap:heading=""/>
+                <Property Name="business_no_p" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="Texte 24" sap:quickinfo="Zone de caractères de longueur 24"/>
+                <Property Name="StartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Début de base" sap:quickinfo="Élément d'OTP : date de début de base"/>
+                <Property Name="EndDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date de fin de base" sap:quickinfo="Élément d'OTP : date de fin de base"/>
+                <Property Name="Libelle" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="description" sap:quickinfo="Description Mission"/>
+                <Property Name="BudgetAlloue" Type="Edm.Int64" sap:label="BUDGET ALLOUE" sap:heading=""/>
+                <Property Name="Currency" Type="Edm.String" MaxLength="5" sap:display-format="UpperCase" sap:label="Devise" sap:quickinfo="Clé de devise" sap:semantics="currency-code"/>
+                <Property Name="Regroupement" Type="Edm.String" MaxLength="40" sap:label="Regroupement mission"/>
+                <NavigationProperty Name="to_STI" Relationship="ZFGA_SRV.assoc_333E6DC35A0196A751DFF12F791D6481" FromRole="FromRole_assoc_333E6DC35A0196A751DFF12F791D6481" ToRole="ToRole_assoc_333E6DC35A0196A751DFF12F791D6481"/>
             </EntityType>
             <EntityType Name="ZI_FGA_ACTIVITY_VHType" sap:value-list="true" sap:content-version="1">
                 <Key>
@@ -798,6 +1001,19 @@
                 <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Code langue"/>
                 <Property Name="description" Type="Edm.String" MaxLength="50" sap:label="c" sap:quickinfo="Commentaire"/>
             </EntityType>
+            <EntityType Name="ZI_FGA_MO_ACTIVITY_VHType" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="spras"/>
+                    <PropertyRef Name="kokrs"/>
+                    <PropertyRef Name="Profil"/>
+                    <PropertyRef Name="datbi"/>
+                </Key>
+                <Property Name="spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Code langue"/>
+                <Property Name="kokrs" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:label="Périmètre analytique"/>
+                <Property Name="Profil" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase" sap:text="Description" sap:label="Type d'activité"/>
+                <Property Name="datbi" Type="Edm.DateTime" Nullable="false" Precision="0" sap:display-format="Date" sap:label="Fin de validité" sap:quickinfo="Date de fin de validité"/>
+                <Property Name="Description" Type="Edm.String" MaxLength="20" sap:label="Nom" sap:quickinfo="Nom général"/>
+            </EntityType>
             <EntityType Name="ZI_FGA_NATIONAL_VHType" sap:value-list="true" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="IsNational"/>
@@ -826,8 +1042,8 @@
                 <Key>
                     <PropertyRef Name="UsrId"/>
                 </Key>
-                <Property Name="UsrId" Type="Edm.String" Nullable="false" MaxLength="8" sap:display-format="NonNegative" sap:text="description" sap:label="Matricule"/>
-                <Property Name="description" Type="Edm.String" MaxLength="81"/>
+                <Property Name="UsrId" Type="Edm.String" Nullable="false" MaxLength="8" sap:display-format="NonNegative" sap:text="description" sap:label="Responsable" sap:quickinfo="Numéro du responsable (chef de projet)"/>
+                <Property Name="description" Type="Edm.String" MaxLength="25" sap:label="Responsable (nom)" sap:quickinfo="Responsable (chef de projet)"/>
             </EntityType>
             <EntityType Name="ZI_FGA_RECAPType" sap:label="ZI_FGA_RECAP" sap:content-version="1">
                 <Key>
@@ -938,9 +1154,17 @@
                 <End Type="ZFGA_SRV.ZC_FGAType" Multiplicity="1" Role="FromRole_assoc_E414682AC737A1471EE64CE372D268CB"/>
                 <End Type="ZFGA_SRV.ZC_FGA_PxAutreType" Multiplicity="*" Role="ToRole_assoc_E414682AC737A1471EE64CE372D268CB"/>
             </Association>
+            <Association Name="assoc_E3F15DA2DB3C1A5E6E7A9025DEC17B6E" sap:content-version="1">
+                <End Type="ZFGA_SRV.ZC_FGAType" Multiplicity="1" Role="FromRole_assoc_E3F15DA2DB3C1A5E6E7A9025DEC17B6E"/>
+                <End Type="ZFGA_SRV.ZC_FGA_PxMainOeuvreType" Multiplicity="*" Role="ToRole_assoc_E3F15DA2DB3C1A5E6E7A9025DEC17B6E"/>
+            </Association>
             <Association Name="assoc_E6F51C48FA56CB78A3D3BB6BDB09FA49" sap:content-version="1">
                 <End Type="ZFGA_SRV.ZC_FGAType" Multiplicity="1" Role="FromRole_assoc_E6F51C48FA56CB78A3D3BB6BDB09FA49"/>
                 <End Type="ZFGA_SRV.ZC_FGA_PxRecetteExtType" Multiplicity="*" Role="ToRole_assoc_E6F51C48FA56CB78A3D3BB6BDB09FA49"/>
+            </Association>
+            <Association Name="assoc_EFFDDDFC883D7FA56DD238F3514A8B40" sap:content-version="1">
+                <End Type="ZFGA_SRV.ZC_FGAType" Multiplicity="1" Role="FromRole_assoc_EFFDDDFC883D7FA56DD238F3514A8B40"/>
+                <End Type="ZFGA_SRV.ZC_FGA_PxstintType" Multiplicity="*" Role="ToRole_assoc_EFFDDDFC883D7FA56DD238F3514A8B40"/>
             </Association>
             <Association Name="assoc_733945962AA43335851B4AB0A78DD1C7" sap:content-version="1">
                 <End Type="ZFGA_SRV.ZC_FGAType" Multiplicity="1" Role="FromRole_assoc_733945962AA43335851B4AB0A78DD1C7"/>
@@ -953,6 +1177,14 @@
             <Association Name="assoc_77B97FEC11941A669886CB8195BBB298" sap:content-version="1">
                 <End Type="ZFGA_SRV.I_BusinessPartnerVHType" Multiplicity="1" Role="FromRole_assoc_77B97FEC11941A669886CB8195BBB298"/>
                 <End Type="ZFGA_SRV.I_FormOfAddressTextType" Multiplicity="1" Role="ToRole_assoc_77B97FEC11941A669886CB8195BBB298"/>
+            </Association>
+            <Association Name="assoc_333E6DC35A0196A751DFF12F791D6481" sap:content-version="1">
+                <End Type="ZFGA_SRV.ZC_STI_BUDGType" Multiplicity="1" Role="FromRole_assoc_333E6DC35A0196A751DFF12F791D6481"/>
+                <End Type="ZFGA_SRV.ZC_STIType" Multiplicity="1" Role="ToRole_assoc_333E6DC35A0196A751DFF12F791D6481"/>
+            </Association>
+            <Association Name="assoc_4C440054DA86EB6EA9AA53AAC97FFE9D" sap:content-version="1">
+                <End Type="ZFGA_SRV.ZC_STIType" Multiplicity="1" Role="FromRole_assoc_4C440054DA86EB6EA9AA53AAC97FFE9D"/>
+                <End Type="ZFGA_SRV.ZC_STI_BUDGType" Multiplicity="*" Role="ToRole_assoc_4C440054DA86EB6EA9AA53AAC97FFE9D"/>
             </Association>
             <Association Name="assoc_7DB828901AD03000D4E43C4DDBB5C308" sap:content-version="1">
                 <End Type="ZFGA_SRV.zc_fga_opportParameters" Multiplicity="1" Role="FromRole_assoc_7DB828901AD03000D4E43C4DDBB5C308"/>
@@ -1014,6 +1246,7 @@
                 <EntitySet Name="CompanyCollection" EntityType="ZFGA_SRV.Company" sap:content-version="1"/>
                 <EntitySet Name="ClientCollection" EntityType="ZFGA_SRV.Client" sap:content-version="1"/>
                 <EntitySet Name="SupplierCollection" EntityType="ZFGA_SRV.Supplier" sap:content-version="1"/>
+                <EntitySet Name="ProfilCollection" EntityType="ZFGA_SRV.Profil" sap:content-version="1"/>
                 <EntitySet Name="C_ProjectTypeVH" EntityType="ZFGA_SRV.C_ProjectTypeVHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
                 <EntitySet Name="I_BusinessPartnerVH" EntityType="ZFGA_SRV.I_BusinessPartnerVHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
                 <EntitySet Name="I_ChartOfAccounts" EntityType="ZFGA_SRV.I_ChartOfAccountsType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
@@ -1042,10 +1275,15 @@
                 <EntitySet Name="ZC_FGA_PREVISIONSSet" EntityType="ZFGA_SRV.ZC_FGA_PREVISIONSType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:addressable="false" sap:content-version="1"/>
                 <EntitySet Name="ZC_FGA_PREVISIONS" EntityType="ZFGA_SRV.ZC_FGA_PREVISIONSParameters" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
                 <EntitySet Name="ZC_FGA_PxAutre" EntityType="ZFGA_SRV.ZC_FGA_PxAutreType" sap:content-version="1"/>
+                <EntitySet Name="ZC_FGA_PxMainOeuvre" EntityType="ZFGA_SRV.ZC_FGA_PxMainOeuvreType" sap:content-version="1"/>
                 <EntitySet Name="ZC_FGA_PxRecetteExt" EntityType="ZFGA_SRV.ZC_FGA_PxRecetteExtType" sap:content-version="1"/>
+                <EntitySet Name="ZC_FGA_Pxstint" EntityType="ZFGA_SRV.ZC_FGA_PxstintType" sap:content-version="1"/>
                 <EntitySet Name="ZC_FGA_SFGP_REPORTSet" EntityType="ZFGA_SRV.ZC_FGA_SFGP_REPORTType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:addressable="false" sap:content-version="1"/>
                 <EntitySet Name="ZC_FGA_SFGP_REPORT" EntityType="ZFGA_SRV.ZC_FGA_SFGP_REPORTParameters" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
                 <EntitySet Name="ZC_FGA_SubContractorBudget" EntityType="ZFGA_SRV.ZC_FGA_SubContractorBudgetType" sap:content-version="1"/>
+                <EntitySet Name="ZC_FGA_VH" EntityType="ZFGA_SRV.ZC_FGA_VHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
+                <EntitySet Name="ZC_STI" EntityType="ZFGA_SRV.ZC_STIType" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
+                <EntitySet Name="ZC_STI_BUDG" EntityType="ZFGA_SRV.ZC_STI_BUDGType" sap:searchable="true" sap:content-version="1"/>
                 <EntitySet Name="ZI_FGA_ACTIVITY_VH" EntityType="ZFGA_SRV.ZI_FGA_ACTIVITY_VHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
                 <EntitySet Name="ZI_FGA_ASSUR_VH" EntityType="ZFGA_SRV.ZI_FGA_ASSUR_VHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
                 <EntitySet Name="ZI_FGA_AVANCE_VH" EntityType="ZFGA_SRV.ZI_FGA_AVANCE_VHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
@@ -1061,6 +1299,7 @@
                 <EntitySet Name="ZI_FGA_MISSION_VH" EntityType="ZFGA_SRV.ZI_FGA_MISSION_VHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
                 <EntitySet Name="ZI_FGA_MODALF_VH" EntityType="ZFGA_SRV.ZI_FGA_MODALF_VHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
                 <EntitySet Name="ZI_FGA_MODALR_VH" EntityType="ZFGA_SRV.ZI_FGA_MODALR_VHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
+                <EntitySet Name="ZI_FGA_MO_ACTIVITY_VH" EntityType="ZFGA_SRV.ZI_FGA_MO_ACTIVITY_VHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
                 <EntitySet Name="ZI_FGA_NATIONAL_VH" EntityType="ZFGA_SRV.ZI_FGA_NATIONAL_VHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
                 <EntitySet Name="ZI_FGA_PERCENT_VH" EntityType="ZFGA_SRV.ZI_FGA_PERCENT_VHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
                 <EntitySet Name="ZI_FGA_PROFITCENTER_VH" EntityType="ZFGA_SRV.ZI_FGA_PROFITCENTER_VHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
@@ -1110,6 +1349,10 @@
                     <End EntitySet="ZC_FGA_SFGP_REPORT" Role="FromRole_assoc_E6994698C16013590FF9BB15479C0926"/>
                     <End EntitySet="ZC_FGA_SFGP_REPORTSet" Role="ToRole_assoc_E6994698C16013590FF9BB15479C0926"/>
                 </AssociationSet>
+                <AssociationSet Name="assoc_EFFDDDFC883D7FA56DD238F3514A8B40" Association="ZFGA_SRV.assoc_EFFDDDFC883D7FA56DD238F3514A8B40" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="ZC_FGASet" Role="FromRole_assoc_EFFDDDFC883D7FA56DD238F3514A8B40"/>
+                    <End EntitySet="ZC_FGA_Pxstint" Role="ToRole_assoc_EFFDDDFC883D7FA56DD238F3514A8B40"/>
+                </AssociationSet>
                 <AssociationSet Name="assoc_E6F51C48FA56CB78A3D3BB6BDB09FA49" Association="ZFGA_SRV.assoc_E6F51C48FA56CB78A3D3BB6BDB09FA49" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
                     <End EntitySet="ZC_FGASet" Role="FromRole_assoc_E6F51C48FA56CB78A3D3BB6BDB09FA49"/>
                     <End EntitySet="ZC_FGA_PxRecetteExt" Role="ToRole_assoc_E6F51C48FA56CB78A3D3BB6BDB09FA49"/>
@@ -1130,6 +1373,18 @@
                     <End EntitySet="ZC_FGA_PREVISIONS" Role="FromRole_assoc_BC39B087465F974A895526BF7592B66D"/>
                     <End EntitySet="ZC_FGA_PREVISIONSSet" Role="ToRole_assoc_BC39B087465F974A895526BF7592B66D"/>
                 </AssociationSet>
+                <AssociationSet Name="assoc_E3F15DA2DB3C1A5E6E7A9025DEC17B6E" Association="ZFGA_SRV.assoc_E3F15DA2DB3C1A5E6E7A9025DEC17B6E" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="ZC_FGASet" Role="FromRole_assoc_E3F15DA2DB3C1A5E6E7A9025DEC17B6E"/>
+                    <End EntitySet="ZC_FGA_PxMainOeuvre" Role="ToRole_assoc_E3F15DA2DB3C1A5E6E7A9025DEC17B6E"/>
+                </AssociationSet>
+                <AssociationSet Name="assoc_333E6DC35A0196A751DFF12F791D6481" Association="ZFGA_SRV.assoc_333E6DC35A0196A751DFF12F791D6481" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="ZC_STI_BUDG" Role="FromRole_assoc_333E6DC35A0196A751DFF12F791D6481"/>
+                    <End EntitySet="ZC_STI" Role="ToRole_assoc_333E6DC35A0196A751DFF12F791D6481"/>
+                </AssociationSet>
+                <AssociationSet Name="assoc_4C440054DA86EB6EA9AA53AAC97FFE9D" Association="ZFGA_SRV.assoc_4C440054DA86EB6EA9AA53AAC97FFE9D" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="ZC_STI" Role="FromRole_assoc_4C440054DA86EB6EA9AA53AAC97FFE9D"/>
+                    <End EntitySet="ZC_STI_BUDG" Role="ToRole_assoc_4C440054DA86EB6EA9AA53AAC97FFE9D"/>
+                </AssociationSet>
                 <AssociationSet Name="assoc_7DB828901AD03000D4E43C4DDBB5C308" Association="ZFGA_SRV.assoc_7DB828901AD03000D4E43C4DDBB5C308" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
                     <End EntitySet="zc_fga_opport" Role="FromRole_assoc_7DB828901AD03000D4E43C4DDBB5C308"/>
                     <End EntitySet="zc_fga_opportSet" Role="ToRole_assoc_7DB828901AD03000D4E43C4DDBB5C308"/>
@@ -1146,6 +1401,9 @@
                 </FunctionImport>
                 <FunctionImport Name="GetClient" ReturnType="ZFGA_SRV.Client" EntitySet="ClientCollection" m:HttpMethod="GET" sap:label="GetClient" sap:action-for="ZFGA_SRV.Client">
                     <Parameter Name="ClientNo" Type="Edm.String" Mode="In" MaxLength="10" sap:label="ClientNo"/>
+                </FunctionImport>
+                <FunctionImport Name="GetProfil" ReturnType="ZFGA_SRV.Profil" EntitySet="ProfilCollection" m:HttpMethod="GET" sap:label="GetProfil" sap:action-for="ZFGA_SRV.Profil">
+                    <Parameter Name="ProfilNo" Type="Edm.String" Mode="In" MaxLength="6" sap:label="Profil"/>
                 </FunctionImport>
             </EntityContainer>
             <Annotation Term="Core.SchemaVersion" String="1.0.0" xmlns="http://docs.oasis-open.org/odata/ns/edm"/>
@@ -1431,6 +1689,27 @@
                         </PropertyValue>
                     </Record>
                 </Annotation>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGAType/BusinessType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.ValueList">
+                    <Record>
+                        <PropertyValue Property="Label" String="Aide à la recherche Type d''affaire"/>
+                        <PropertyValue Property="CollectionPath" String="ZI_FGA_TYPE_VH"/>
+                        <PropertyValue Property="SearchSupported" Bool="true"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="BusinessType"/>
+                                    <PropertyValue Property="ValueListProperty" String="Type"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="description"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Common.ValueListWithFixedValues"/>
             </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_FGAType/BusinessStatus" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Common.ValueList">
@@ -1951,19 +2230,511 @@
                 </Annotation>
                 <Annotation Term="Common.ValueListWithFixedValues"/>
             </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGA_VHType/CompanyCode" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.ValueList">
+                    <Record>
+                        <PropertyValue Property="Label" String="Company Code"/>
+                        <PropertyValue Property="CollectionPath" String="I_CompanyCodeVH"/>
+                        <PropertyValue Property="SearchSupported" Bool="true"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="CompanyCode"/>
+                                    <PropertyValue Property="ValueListProperty" String="CompanyCode"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="CompanyCodeName"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="ControllingArea"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="CityName"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Country"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Currency"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Language"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="ChartOfAccounts"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="FiscalYearVariant"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Company"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="CreditControlArea"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="CountryChartOfAccounts"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="FinancialManagementArea"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_STIType/business_no_e" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.ValueList">
+                    <Record>
+                        <PropertyValue Property="Label" String="FGA"/>
+                        <PropertyValue Property="CollectionPath" String="ZC_FGA_VH"/>
+                        <PropertyValue Property="SearchSupported" Bool="true"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="business_no_e"/>
+                                    <PropertyValue Property="ValueListProperty" String="BusinessNo"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="business_e_t"/>
+                                    <PropertyValue Property="ValueListProperty" String="BusinessName"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="business_e_cmp"/>
+                                    <PropertyValue Property="ValueListProperty" String="CompanyCode"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="business_e_ufo"/>
+                                    <PropertyValue Property="ValueListProperty" String="UFOName"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="ProfitCenter"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="business_e_bm"/>
+                                    <PropertyValue Property="ValueListProperty" String="PROJM"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="STILinkedCount"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="RateDevis"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="VAT"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Percent"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Rtgart"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Avance"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Modalf"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Modalr"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="AncienNumero"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Rgfact"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Soufam"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="BusinessStatus"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="BusinessType"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Branche"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Activity"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="business_e_EDate"/>
+                                    <PropertyValue Property="ValueListProperty" String="EndDate"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="business_e_SDate"/>
+                                    <PropertyValue Property="ValueListProperty" String="StartDate"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="business_e_clt"/>
+                                    <PropertyValue Property="ValueListProperty" String="CustomerName"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="business_e_currency"/>
+                                    <PropertyValue Property="ValueListProperty" String="Currency"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Reflet"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="CurrencyHedging"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="NClient"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Scclt"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Guarantee"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="CautGA"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Assurance"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Mission"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="GroupM"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="isMandataire"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Mandata"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Mtctr"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Paring"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Mttrvx"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Ingtrvx"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Tmoyj"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Datmaj"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Datcha"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="NbOfMonth"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="business_e_cdp"/>
+                                    <PropertyValue Property="ValueListProperty" String="CDG"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="EngagementCommittee"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="StartReview"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="ContractReview"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="ProjectReview"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="EndProjectReview"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="QuoteReview"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="UrlCup"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="RemainingMonth"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Type"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="BusinessManager"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="BusinessFactRule"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="RBACumulNm1"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="RBACumulN"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="RBAMonthM"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="ReviActu"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="RBAForecast"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Criticality"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Site"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="International"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Country"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Siret"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="plateformDemat"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="nonAcquis"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="depenseCommercial"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="membreGroupement"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Business"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="eligibleCir"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="NoClientMarche"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="ContractAmount"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="IngeropPart"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="WorkAmount"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Engineering"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="DailyAvgRate"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="LastUpdate"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="GrpConvention"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Notes"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="DataSource"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_STIType/business_e_cmp" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.ValueList">
+                    <Record>
+                        <PropertyValue Property="Label" String="Company Code"/>
+                        <PropertyValue Property="CollectionPath" String="I_CompanyCodeVH"/>
+                        <PropertyValue Property="SearchSupported" Bool="true"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="business_e_cmp"/>
+                                    <PropertyValue Property="ValueListProperty" String="CompanyCode"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="CompanyCodeName"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="ControllingArea"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="CityName"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Country"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Currency"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Language"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="ChartOfAccounts"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="FiscalYearVariant"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="Company"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="CreditControlArea"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="CountryChartOfAccounts"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="FinancialManagementArea"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_STIType/business_e_ufo" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.ValueList">
+                    <Record>
+                        <PropertyValue Property="Label" String="Aide à la recherche d''UFO Délégué"/>
+                        <PropertyValue Property="CollectionPath" String="ZI_FGA_UFO_VH"/>
+                        <PropertyValue Property="SearchSupported" Bool="false"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="business_e_ufo"/>
+                                    <PropertyValue Property="ValueListProperty" String="UFO"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="description"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_STIType/business_e_cdp" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.ValueList">
+                    <Record>
+                        <PropertyValue Property="Label" String="Aide à la recherche Centre de profit"/>
+                        <PropertyValue Property="CollectionPath" String="ZI_FGA_PROFITCENTER_VH"/>
+                        <PropertyValue Property="SearchSupported" Bool="false"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="business_e_cdp"/>
+                                    <PropertyValue Property="ValueListProperty" String="ProfitCenter"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterIn">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="business_e_ufo"/>
+                                    <PropertyValue Property="ValueListProperty" String="UFO"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="description"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_STIType/business_p_ufo" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.ValueList">
+                    <Record>
+                        <PropertyValue Property="Label" String="Aide à la recherche d''UFO Délégué"/>
+                        <PropertyValue Property="CollectionPath" String="ZI_FGA_UFO_VH"/>
+                        <PropertyValue Property="SearchSupported" Bool="false"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="business_p_ufo"/>
+                                    <PropertyValue Property="ValueListProperty" String="UFO"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="description"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_STIType/business_p_cdp" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.ValueList">
+                    <Record>
+                        <PropertyValue Property="Label" String="Aide à la recherche Centre de profit"/>
+                        <PropertyValue Property="CollectionPath" String="ZI_FGA_PROFITCENTER_VH"/>
+                        <PropertyValue Property="SearchSupported" Bool="false"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="business_p_cdp"/>
+                                    <PropertyValue Property="ValueListProperty" String="ProfitCenter"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterIn">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="business_p_ufo"/>
+                                    <PropertyValue Property="ValueListProperty" String="UFO"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="description"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_STIType/business_p_projm" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.ValueList">
+                    <Record>
+                        <PropertyValue Property="Label" String="Value Help for Project Manager"/>
+                        <PropertyValue Property="CollectionPath" String="ZI_FGA_PROJM_VH"/>
+                        <PropertyValue Property="SearchSupported" Bool="true"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="business_p_projm"/>
+                                    <PropertyValue Property="ValueListProperty" String="UsrId"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="description"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
             <Annotations Target="ZFGA_SRV.ZFGA_SRV_Entities" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Common.ApplyMultiUnitBehaviorForSortingAndFiltering" Bool="true"/>
             </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_FGAType/to_BudgetPxAutre" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Common.Composition"/>
             </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGAType/to_BudgetPxMainOeuvre" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.Composition"/>
+            </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_FGAType/to_BudgetPxRecetteExt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.Composition"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGAType/to_BudgetPxSTI" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Common.Composition"/>
             </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_FGAType/to_BudgetPxSubContracting" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Common.Composition"/>
             </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_FGAType/to_Missions" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.Composition"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_STIType/to_BUDG" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Common.Composition"/>
             </Annotations>
             <Annotations Target="ZFGA_SRV.ZFGA_SRV_Entities/ZC_FGA" xmlns="http://docs.oasis-open.org/odata/ns/edm">
@@ -2324,7 +3095,23 @@
                                     </PropertyValue>
                                 </Record>
                                 <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_BudgetPxMainOeuvre"/>
+                                    <PropertyValue Property="InsertRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Insertable" Bool="true"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
+                                <Record>
                                     <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_BudgetPxRecetteExt"/>
+                                    <PropertyValue Property="InsertRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Insertable" Bool="true"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_BudgetPxSTI"/>
                                     <PropertyValue Property="InsertRestrictions">
                                         <Record>
                                             <PropertyValue Property="Insertable" Bool="true"/>
@@ -2341,6 +3128,42 @@
                                 </Record>
                                 <Record>
                                     <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_Missions"/>
+                                    <PropertyValue Property="InsertRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Insertable" Bool="true"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZFGA_SRV_Entities/ZC_STI" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Capabilities.NavigationRestrictions">
+                    <Record>
+                        <PropertyValue Property="RestrictedProperties">
+                            <Collection>
+                                <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_BUDG"/>
+                                    <PropertyValue Property="InsertRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Insertable" Bool="true"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZFGA_SRV_Entities/ZC_STI_BUDG" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Capabilities.NavigationRestrictions">
+                    <Record>
+                        <PropertyValue Property="RestrictedProperties">
+                            <Collection>
+                                <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_STI"/>
                                     <PropertyValue Property="InsertRestrictions">
                                         <Record>
                                             <PropertyValue Property="Insertable" Bool="true"/>
@@ -2370,6 +3193,13 @@
                 <Annotation Term="Common.SemanticKey">
                     <Collection>
                         <PropertyPath>BusinessNo</PropertyPath>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_STIType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.SemanticKey">
+                    <Collection>
+                        <PropertyPath>id_formulaire</PropertyPath>
                     </Collection>
                 </Annotation>
             </Annotations>
