@@ -776,7 +776,8 @@ sap.ui.define(
             },
 
             _styleMergedRecapRow: function () {
-                const oTable = this.oView.byId("idRecapTable");
+                if (PROJET_TYPE === "Z0" || PROJET_TYPE === "Z1") {
+                    const oTable = this.oView.byId("idRecapTable");
                 const oBinding = oTable && oTable.getBinding("rows");
                 if (!oBinding) return;
 
@@ -873,6 +874,7 @@ sap.ui.define(
                 if (idxCumulJour + 1 <= lastColIdx) {
                     paintBlock(rBefore, idxCumulJour + 1, lastColIdx, { bg: "#ffffff", className: "sfgpOverlayRight", showFirst: false });
                     paintBlock(rLast,   idxCumulJour + 1, lastColIdx, { bg: "#ffffff", className: "sfgpOverlayRight", showFirst: false });
+                }
                 }
             },
 
