@@ -531,11 +531,19 @@ sap.ui.define(
 
                 // Check if this should be a percentage value
                 if (row_type === "RBAPCT" || row_type === "AVANCE") {
-                    const formattedValue = parseFloat(value).toFixed(2);
-                    return `${formattedValue}%`;
+                    // const formattedValue = parseFloat(value).toFixed(2);
+                    // return `${formattedValue}%`;
+                    return `${parseFloat(String(value).replace(',', '.')).toFixed(2).replace('.', ',')}%`;
+                }
+                
+                if (row_type === "RBA") {
+
                 }
 
-                return value.toString();
+                // return value.toString();
+                var  intVal = Math.round(value);
+                // Formater avec séparateur "espace"
+                return intVal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
             },
 
             formatNumber: function (oValue) {
@@ -722,65 +730,9 @@ sap.ui.define(
                 const dom = oTable && oTable.getDomRef();
                 if (!dom) return;
 
-                // retire nos styles sur TOUTES les lignes rendues
                 jQuery(dom).find('.sapUiTableTr:not(.sapUiTableHeaderRow)').each(function () {
                     const $tr = jQuery(this);
                     const $cells = $tr.find('td[data-sap-ui-colid]');
-                    $cells.each((_, td) => {
-                    td.style.background = "";
-                    const inner = td.querySelector(".sapMText, .sapMLnk");
-                    if (inner) {
-                        inner.style.visibility = "";
-                        inner.style.color = "";
-                        inner.style.fontWeight = "";
-                        inner.style.textAlign = "";
-                    }
-                    });
-                });
-            },
-
-            _styleMergedRecapRow: function () {
-                const oTable   = this.oView.byId("idRecapTable");
-                const oBinding = oTable && oTable.getBinding("rows");
-                if (!oBinding) return;
-
-                // on ne garde que les lignes rendues qui ont un vrai contexte (ignore les lignes de remplissage)
-                const aRowsWithCtx = oTable.getRows().filter(r => !!r.getBindingContext("utilities"));
-                if (aRowsWithCtx.length < 2) {
-                    setTimeout(() => this._styleMergedRecapRow(), 50);
-                    return;
-                }
-
-                // repère l'index de la colonne "Cumul N-1"
-                const norm = s => (s || "").trim().toLowerCase();
-                let idxCumulN1 = -1;
-                oTable.getColumns().forEach((c, i) => {
-                    const t = c.getLabel && c.getLabel().getText && c.getLabel().getText();
-                    if (norm(t) === "cumul n-1") idxCumulN1 = i;
-                });
-                if (idxCumulN1 < 1) idxCumulN1 = 3; // fallback raisonnable
-
-                // textes selon type de projet
-                const txtBefore = (PROJET_TYPE === "Z0") ? "[SFGP] Impact super projet ajustement"
-                                : (PROJET_TYPE === "Z1") ? "[SFGP] Impact projet ajustement"
-                                : "[SFGP] Impact projet ajustement";
-                const txtLast   = (PROJET_TYPE === "Z0") ? "[SFGP] Impact super projet PAT"
-                                : (PROJET_TYPE === "Z1") ? "[SFGP] Impact projet PAT"
-                                : "[SFGP] Impact projet PAT";
-
-                // ------------------------------------------------------------------
-                // Helper : applique la fusion VISUELLE (fond bleu + overlay centré)
-                // ------------------------------------------------------------------
-                const paintRow = (oRow, labelText) => {
-                    const $row = oRow.$();
-                    if (!$row.length) return;
-
-                    // toutes les cellules de la ligne (fixe + scroll sont renvoyées ensemble par jQuery ici)
-                    const $cells = $row.find('td[data-sap-ui-colid]');
-                    if (!$cells.length) { setTimeout(() => this._styleMergedRecapRow(), 50); return; }
-
-                    // 0) reset minimal (retire un éventuel overlay précédent)
-                    $row.find('.sfgpOverlay').remove();
                     $cells.each((_, td) => {
                     td.style.background = "";
                     td.style.position = "";
@@ -793,34 +745,77 @@ sap.ui.define(
                         inner.style.textAlign = "";
                     }
                     });
+                });
 
-                    // 1) peint en bleu toutes les cellules 0..idxCumulN1 et cache leur contenu (sauf la première)
-                    $cells.each((i, td) => {
-                    if (i <= idxCumulN1) {
-                        td.style.background = "#333399";
-                        const inner = td.querySelector(".sapMText, .sapMLnk");
-                        if (inner) inner.style.visibility = (i === 0) ? "" : "hidden";
-                    }
-                    });
+                // ➜ enlève nos overlays
+                jQuery(dom).find('.sfgpOverlay, .sfgpOverlayRight').remove();
+            },
 
-                    // 2) calcule la largeur totale du bloc fusionné (somme des largeurs des cellules 0..idxCumulN1)
-                    let totalW = 0;
-                    for (let i = 0; i <= idxCumulN1 && i < $cells.length; i++) {
+            _styleMergedRecapRow: function () {
+                const oTable   = this.oView.byId("idRecapTable");
+                const oBinding = oTable && oTable.getBinding("rows");
+                if (!oBinding) return;
+
+                const aRowsWithCtx = oTable.getRows().filter(r => !!r.getBindingContext("utilities"));
+                if (aRowsWithCtx.length < 2) {
+                    setTimeout(() => this._styleMergedRecapRow(), 50);
+                    return;
+                }
+
+                const norm = s => (s || "").trim().toLowerCase();
+
+                // repères
+                let idxCumulN1 = -1;        // "Cumul N-1" (borne gauche bleue)
+                let idxCumulJour = -1;      // "Cumul à ce jour" (la SEULE cellule visible)
+                oTable.getColumns().forEach((c, i) => {
+                    const t = c.getLabel && c.getLabel().getText && c.getLabel().getText();
+                    const tl = norm(t);
+                    if (tl === "cumul n-1")       idxCumulN1   = i;
+                    if (tl === "cumul à ce jour") idxCumulJour = i;
+                });
+
+                if (idxCumulN1   < 0) idxCumulN1   = 3;                         // fallback
+                if (idxCumulJour < 0) idxCumulJour = idxCumulN1 + 1;            // juste après
+                const lastColIdx = oTable.getColumns().length - 1;
+
+                // libellés bleus (comme avant)
+                const txtBefore = (PROJET_TYPE === "Z0") ? "Impact super projet ajustement"
+                                : (PROJET_TYPE === "Z1") ? "Impact projet ajustement"
+                                : "Impact projet ajustement";
+                const txtLast   = (PROJET_TYPE === "Z0") ? "Impact super projet PAT"
+                                : (PROJET_TYPE === "Z1") ? "Impact projet PAT"
+                                : "Impact projet PAT";
+
+                // helpers
+                const paintBlock = (oRow, fromIdx, toIdx, opts) => {
+                    const $row = oRow.$();
+                    if (!$row.length) return;
+                    const $cells = $row.find('td[data-sap-ui-colid]');
+                    if (!$cells.length) { setTimeout(() => this._styleMergedRecapRow(), 50); return; }
+
+                    // colorer + masquer contenu (sauf 1ʳᵉ si showFirst)
+                    for (let i = fromIdx; i <= toIdx && i < $cells.length; i++) {
                     const td = $cells.get(i);
-                    const w  = td.getBoundingClientRect().width;
-                    totalW  += (isFinite(w) ? w : 0);
+                    td.style.background = opts.bg; // bleu ou blanc
+                    const inner = td.querySelector(".sapMText, .sapMLnk");
+                    if (inner) inner.style.visibility = (opts.showFirst && i === fromIdx) ? "" : "hidden";
+                    }
+
+                    // largeur du bloc
+                    let totalW = 0;
+                    for (let i = fromIdx; i <= toIdx && i < $cells.length; i++) {
+                    const w = $cells.get(i).getBoundingClientRect().width;
+                    totalW += (isFinite(w) ? w : 0);
                     }
                     if (totalW <= 0) { setTimeout(() => this._styleMergedRecapRow(), 50); return; }
 
-                    // 3) pose un overlay centré qui couvre visuellement toutes ces colonnes
-                    const td0 = $cells.get(0);
-                    td0.style.position = "relative";
-                    td0.style.overflow = "visible";
+                    const tdStart = $cells.get(fromIdx);
+                    tdStart.style.position = "relative";
+                    tdStart.style.overflow = "visible";
 
                     const overlay = document.createElement("div");
-                    overlay.className = "sfgpOverlay";
-                    overlay.textContent = labelText;
-
+                    overlay.className = opts.className;
+                    overlay.textContent = opts.text || "";
                     Object.assign(overlay.style, {
                     position: "absolute",
                     left: "0",
@@ -830,22 +825,31 @@ sap.ui.define(
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    color: "#fff",
-                    fontWeight: "600",
-                    fontSize: "0.9rem",
-                    backgroundColor: "#333399",
-                    pointerEvents: "none", // pour ne pas gêner les interactions éventuelles
+                    color: opts.text ? "#fff" : "transparent",   // texte blanc sur le bleu, rien sinon
+                    fontWeight: opts.text ? "600" : "normal",
+                    fontSize: "0.8rem",
+                    backgroundColor: opts.bg,
+                    pointerEvents: "none",
                     zIndex: 2
                     });
 
-                    td0.appendChild(overlay);
+                    tdStart.appendChild(overlay);
                 };
 
                 const rBefore = aRowsWithCtx[aRowsWithCtx.length - 2];
                 const rLast   = aRowsWithCtx[aRowsWithCtx.length - 1];
 
-                paintRow(rBefore, txtBefore);
-                paintRow(rLast,   txtLast);
+                // --- GAUCHE BLEU (0 → Cumul N-1), AVEC TEXTE (comme avant) ---
+                paintBlock(rBefore, 0, idxCumulN1,   { bg: "#333399", className: "sfgpOverlay", text: txtBefore, showFirst: true });
+                paintBlock(rLast,   0, idxCumulN1,   { bg: "#333399", className: "sfgpOverlay", text: txtLast,   showFirst: true });
+
+                // --- LAISSE "Cumul à ce jour" visible (aucune action) ---
+
+                // --- DROITE BLANCHE (après "Cumul à ce jour" → dernière), SANS TEXTE ---
+                if (idxCumulJour + 1 <= lastColIdx) {
+                    paintBlock(rBefore, idxCumulJour + 1, lastColIdx, { bg: "#ffffff", className: "sfgpOverlayRight", showFirst: false });
+                    paintBlock(rLast,   idxCumulJour + 1, lastColIdx, { bg: "#ffffff", className: "sfgpOverlayRight", showFirst: false });
+                }
             },
 
             parseCellNumber: function (svalue) {
