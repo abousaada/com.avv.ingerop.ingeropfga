@@ -209,7 +209,6 @@ sap.ui.define([
                                 intercompanySum += budgetValue;
                                 break;
                             case "INTERUFO":
-                            default:
                                 interUfoSum += budgetValue;
                                 break;
                         }
@@ -374,7 +373,6 @@ sap.ui.define([
                     totals.totalAcquis.IntraUFOBudget += Number(node.IntraUFOBudget) || 0;
                     totals.totalAcquis.IntercompagnieBudget += Number(node.IntercompagnieBudget) || 0;
 
-                    // TODO: You need similar logic here to populate cumule for static columns
                 }
             }.bind(this);
 
