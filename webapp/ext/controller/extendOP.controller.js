@@ -71,7 +71,7 @@ sap.ui.define(
 
                     this._budgetMainOeuvre = new BudgetPxMainOeuvre();
                     this._budgetMainOeuvre.oView = this.getView();
-                    
+
 
                     this._extendOPUiManage = new ExtendOPUiManage();
                     this._extendOPUiManage.oView = this.getView();
@@ -149,13 +149,13 @@ sap.ui.define(
                             });
 
                             delete oPayload.to_BudgetPxSTI;
-                            
+
                             try {
                                 oPayload.VAT = oPayload.VAT ? oPayload.VAT.toString() : oPayload.VAT;
                                 const updatedFGA = await utilitiesModel.deepUpsertFGA(oPayload);
                                 this._setBusy(false);
                                 if (updatedFGA) {
-                                    Helper.validMessage("FGA updated: " + updatedFGA.BusinessNo, this.getView(), this.onNavBack.bind(this));
+                                    Helper.validMessage("FGA updated: " + updatedFGA.BusinessNo, this.getView(), this.onAfterSaveAction.bind(this));
                                 }
 
                             } catch (error) {
@@ -188,7 +188,7 @@ sap.ui.define(
                 oModel.refresh(true);
             },
 
-            _resetViewSetUp(){
+            _resetViewSetUp() {
                 const context = this.base.getView().getBindingContext();
                 this._extendOPUiManage._setOPView(context);
                 const Percent = context.getProperty("Percent");
@@ -222,6 +222,21 @@ sap.ui.define(
 
                 if (sPreviousHash !== undefined) { window.history.go(-1); }
                 else { window.location.hash = ""; }
+            },
+
+            onAfterSaveAction() {
+                this._cleanModification();
+                const oUIModel = this.base.templateBaseExtension.getView().getModel("ui");
+                if (oUIModel) {
+                    // Forcer le retour en display mode
+                    oUIModel.setProperty("/editable", false);
+                }
+
+                // Optionnel : si tu veux rafraîchir l'entité depuis le backend
+                setTimeout(function () {
+                    this.base.templateBaseExtension.getExtensionAPI().refresh();
+                }.bind(this), 100); //
+                // this.base.templateBaseExtension.getExtensionAPI().refresh();
             },
 
             async _getTabsData() {
@@ -408,7 +423,7 @@ sap.ui.define(
             onMissionCodeChange: function (oEvent) {
                 this._missionsTab.onMissionCodeChange(oEvent);
             },
-            
+
             // ==============================================
             // Handle Budget Px TAB - Budget Px Autres Section
             // Handles preparation and submition budget items 
@@ -479,12 +494,21 @@ sap.ui.define(
             // in the mission  process
             // ===========================================================
             onChangeMainOeuvreMontant(oEvent) {
-                if (!this._budgetPxRecetteExt) {
-                    this._budgetPxRecetteExt = new BudgetPxRecetteExt();
-                    this._budgetPxRecetteExt.oView = this.oView;
+                if (!this._budgetMainOeuvre) {
+                    this._budgetMainOeuvre = new BudgetPxMainOeuvre();
+                    this._budgetMainOeuvre.oView = this.oView;
                 }
 
-                this._budgetPxRecetteExt.reCalcMainOeuvreTable();
+                this._budgetMainOeuvre.reCalcMainOeuvreTable();
+            },
+
+            onBtnAddMOProfilPress: function (oEvent) {
+                if (!this._budgetMainOeuvre) {
+                    this._budgetMainOeuvre = new BudgetPxMainOeuvre();
+                    this._budgetMainOeuvre.oView = this.oView;
+                }
+
+                this._budgetMainOeuvre.addNewMOProfil();
             },
 
             preparePxMainOeuvreTreeData: function () {
@@ -752,7 +776,7 @@ sap.ui.define(
             },
 
             _styleMergedRecapRow: function () {
-                const oTable   = this.oView.byId("idRecapTable");
+                const oTable = this.oView.byId("idRecapTable");
                 const oBinding = oTable && oTable.getBinding("rows");
                 if (!oBinding) return;
 
@@ -1052,12 +1076,12 @@ sap.ui.define(
 
             },
 
-            onRowsUpdatedBudgetPXMainOeuvreTab(){
+            onRowsUpdatedBudgetPXMainOeuvreTab() {
                 var stableName = "BudgetPxMainOeuvreTreeTableId";
                 this.onBudgetPXSubCUpdated(stableName);
             },
 
-            onRowsUpdatedBudgetPXRecetteTab(){
+            onRowsUpdatedBudgetPXRecetteTab() {
                 var stableName = "BudgetPxRecettesTreeTableId";
                 this.onBudgetPXSubCUpdated(stableName);
             }

@@ -18,6 +18,12 @@ sap.ui.define([
       subContractorPartner: "SubContractorPartner"
     }),
 
+    formatProfil: Helper.buildObjectKeysMapper({
+      profil: "ProfilNo",
+      profilDescription: "Description",
+      tjm: "Tjm",
+    }),
+
     formatBudgetSubContracting: Helper.buildObjectKeysMapper({
       businessNo: "BusinessNo",
       endDate: "EndDate",
