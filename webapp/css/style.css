@@ -240,6 +240,18 @@
     color: red !important;
     font-weight: bold !important;
 }
+
+/* RBA non-négatif → gras + noir */
+.rbaBold {
+  font-weight: bold !important;
+  color: #000 !important;
+}
+
+/* Colonne "Chiffre d'affaires" → toujours gras */
+.alwaysBold {
+  font-weight: bold !important;
+}
+
 /* ---------- STYLE POUR TABLE BUDGETPX AUTRE SECTION BUDGETS ---------- */
   /* ===== Main TOTAL row ===== */
   .sapUiTableTr.pxTotalRow .sapUiTableCell {

@@ -620,6 +620,7 @@ sap.ui.define([
 
             async getBERecaps() {
                 try {
+                    this.setTabBusy(true);
                     const businessNo = this.getBusinessNo();
                     const period = this.getPeriod();
                     const urlBusinessNo = encodeURIComponent(businessNo);
@@ -627,6 +628,7 @@ sap.ui.define([
                     const sPath = `/ZI_FGA_RECAP(p_businessno='${urlBusinessNo}',p_period='${urlPeriod}')/Set`;
                     console.log(`retrieve recaps with period: ${period} and BusinessNo: ${businessNo}`);
                     const recaps = await this.read(sPath);
+                    this.setTabBusy(false);
                     return recaps?.results || [];
                 } catch (error) {
                     console.log(error);
