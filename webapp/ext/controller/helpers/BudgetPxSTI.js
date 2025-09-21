@@ -13,6 +13,8 @@ sap.ui.define([
         onInit: function () {
             this._dynamicColumns = [];
             this._pSTIBusinessNos = [];
+
+            this._pSTICumulativeValues = {};
         },
 
 
@@ -203,446 +205,343 @@ sap.ui.define([
                         // Distribute the sum based on TypeBudg
                         switch (pSTI.TypeBudg) {
                             case "INTRAUFO":
-                            case "intraUFO":  
+                            case "intraUFO":
                                 intraUfoSum += budgetValue;
                                 break;
                             case "INTERCO":
-                            case "interCO":   
+                            case "interCO":
                                 intercompanySum += budgetValue;
                                 break;
                             case "INTERUFO":
-                            case "interUFO":  
+                            case "interUFO":
                                 interUfoSum += budgetValue;
                                 break;
                             default:
                                 //console.warn("Unknown TypeBudg value:", pSTI.TypeBudg, "for business_no_p:", pSTI.business_no_p);
                                 //unknownTypeSum += budgetValue;
                                 break;
-                        
+
+                        }
                     }
                 }
-            }
             }.bind(this));
 
-    // Convert sums to strings for display
-    item.InterUFOBudget = interUfoSum.toString();
-    item.IntraUFOBudget = intraUfoSum.toString();
-    item.IntercompagnieBudget = intercompanySum.toString();
-},
+            // Convert sums to strings for display
+            item.InterUFOBudget = interUfoSum.toString();
+            item.IntraUFOBudget = intraUfoSum.toString();
+            item.IntercompagnieBudget = intercompanySum.toString();
+        },
 
-    createRegroupementTotalRow: function (totals, regroupementName) {
-        var row = {
-            name: "Total " + regroupementName,
-            isTotalRow: true,
-            isNode: false,
-            isRegroupementTotal: true,
-            dynamicColumns: totals.dynamicColumns || {},
-            InterUFOBudget: totals.InterUFOBudget || "0",
-            IntraUFOBudget: totals.IntraUFOBudget || "0",
-            IntercompagnieBudget: totals.IntercompagnieBudget || "0"
-        };
+        createRegroupementTotalRow: function (totals, regroupementName) {
+            var row = {
+                name: "Total " + regroupementName,
+                isTotalRow: true,
+                isNode: false,
+                isRegroupementTotal: true,
+                dynamicColumns: totals.dynamicColumns || {},
+                InterUFOBudget: totals.InterUFOBudget || "0",
+                IntraUFOBudget: totals.IntraUFOBudget || "0",
+                IntercompagnieBudget: totals.IntercompagnieBudget || "0"
+            };
 
-        // Ensure all dynamic columns are present
-        this._pSTIBusinessNos.forEach(function (businessNo) {
-            if (!row.dynamicColumns[businessNo]) {
-                row.dynamicColumns[businessNo] = "0";
-            }
-        });
-
-        return row;
-    },
-
-    calculateGlobalTotals: function (items) {
-        var totals = {
-            totalAcquis: {},
-            cumule: {},
-            pourcentage: {},
-            rad: {}
-        };
-
-        // Init all dynamic columns
-        this._pSTIBusinessNos.forEach(function (businessNo) {
-            totals.totalAcquis[businessNo] = 0;
-            totals.cumule[businessNo] = 0;
-            totals.pourcentage[businessNo] = 0;
-            totals.rad[businessNo] = 0;
-        });
-
-        // Init static columns
-        var staticCols = ["InterUFOBudget", "IntraUFOBudget", "IntercompagnieBudget"];
-        staticCols.forEach(function (col) {
-            totals.totalAcquis[col] = 0;
-            totals.cumule[col] = 0;
-            totals.pourcentage[col] = 0;
-            totals.rad[col] = 0;
-        });
-
-        // Recursive sum
-        var sumValues = function (node) {
-            if (node.children && Array.isArray(node.children)) {
-                node.children.forEach(sumValues);
-            } else if (!node.isNode && !node.isTotalRow && !node.isRegroupementTotal) {
-                // ---- Dynamic columns ----
-                this._pSTIBusinessNos.forEach(function (businessNo) {
-                    totals.totalAcquis[businessNo] += Number(node.dynamicColumns[businessNo]) || 0;
-
-                    // If your row has cumulative values per businessNo
-                    if (node.cumule && node.cumule[businessNo] !== undefined) {
-                        totals.cumule[businessNo] += Number(node.cumule[businessNo]) || 0;
-                    }
-                });
-
-                // ---- Static columns ----
-                staticCols.forEach(function (col) {
-                    totals.totalAcquis[col] += Number(node[col]) || 0;
-
-                    // If your row has cumulative values for static columns
-                    if (node.cumule && node.cumule[col] !== undefined) {
-                        totals.cumule[col] += Number(node.cumule[col]) || 0;
-                    }
-                });
-            }
-        }.bind(this);
-
-        items.forEach(sumValues);
-
-        // ---- Calculate Pourcentage + Reste ----
-        this._pSTIBusinessNos.forEach(function (businessNo) {
-            totals.pourcentage[businessNo] = totals.totalAcquis[businessNo] > 0
-                ? (totals.cumule[businessNo] / totals.totalAcquis[businessNo] * 100)
-                : 0;
-            totals.rad[businessNo] = totals.totalAcquis[businessNo] - totals.cumule[businessNo];
-        });
-
-        staticCols.forEach(function (col) {
-            totals.pourcentage[col] = totals.totalAcquis[col] > 0
-                ? (totals.cumule[col] / totals.totalAcquis[col] * 100)
-                : 0;
-            totals.rad[col] = totals.totalAcquis[col] - totals.cumule[col];
-        });
-
-        return totals;
-    },
-
-
-    calculateGlobalTotals2: function (items) {
-        var totals = {
-            totalAcquis: {},
-            cumule: {},
-            pourcentage: {},
-            rad: {}
-        };
-
-        // Initialize all properties with 0
-        this._pSTIBusinessNos.forEach(function (businessNo) {
-            totals.totalAcquis[businessNo] = 0;
-            totals.cumule[businessNo] = 0;
-            totals.pourcentage[businessNo] = 0;
-            totals.rad[businessNo] = 0;
-        });
-
-        // Initialize InterUFO totals
-        totals.totalAcquis.InterUFOBudget = 0;
-        totals.cumule.InterUFOBudget = 0;
-        totals.pourcentage.InterUFOBudget = 0;
-        totals.rad.InterUFOBudget = 0;
-
-        // Initialize IntraUFO totals
-        totals.totalAcquis.IntraUFOBudget = 0;
-        totals.cumule.IntraUFOBudget = 0;
-        totals.pourcentage.IntraUFOBudget = 0;
-        totals.rad.IntraUFOBudget = 0;
-
-        // Initialize Intercompagnie totals
-        totals.totalAcquis.IntercompagnieBudget = 0;
-        totals.cumule.IntercompagnieBudget = 0;
-        totals.pourcentage.IntercompagnieBudget = 0;
-        totals.rad.IntercompagnieBudget = 0;
-
-        // Recursive function to sum values from all nodes
-        var sumValues = function (node) {
-            if (node.children && Array.isArray(node.children)) {
-                // If it's a node with children, process each child
-                node.children.forEach(function (child) {
-                    sumValues(child);
-                });
-            } else if (!node.isNode && !node.isTotalRow && !node.isRegroupementTotal) {
-                // Only sum values from actual data rows (not totals or nodes)
-
-                // Sum dynamic columns
-                this._pSTIBusinessNos.forEach(function (businessNo) {
-                    totals.totalAcquis[businessNo] += Number(node.dynamicColumns[businessNo]) || 0;
-                    // TODO: You need to add logic here to populate cumule[businessNo] with actual cumulative values
-                    // Currently cumule is always 0, which is why your percentages and RAD don't work
-                });
-
-                // Sum static columns
-                totals.totalAcquis.InterUFOBudget += Number(node.InterUFOBudget) || 0;
-                totals.totalAcquis.IntraUFOBudget += Number(node.IntraUFOBudget) || 0;
-                totals.totalAcquis.IntercompagnieBudget += Number(node.IntercompagnieBudget) || 0;
-
-            }
-        }.bind(this);
-
-        // Process all items
-        items.forEach(sumValues);
-
-        // Calculate percentages and RAD for dynamic columns
-        this._pSTIBusinessNos.forEach(function (businessNo) {
-            totals.pourcentage[businessNo] = totals.totalAcquis[businessNo] > 0 ?
-                (totals.cumule[businessNo] / totals.totalAcquis[businessNo] * 100) : 0;
-            totals.rad[businessNo] = totals.totalAcquis[businessNo] - totals.cumule[businessNo];
-        });
-
-        // Calculate percentages and RAD for static columns
-        totals.pourcentage.InterUFOBudget = totals.totalAcquis.InterUFOBudget > 0 ?
-            (totals.cumule.InterUFOBudget / totals.totalAcquis.InterUFOBudget * 100) : 0;
-        totals.rad.InterUFOBudget = totals.totalAcquis.InterUFOBudget - totals.cumule.InterUFOBudget;
-
-        totals.pourcentage.IntraUFOBudget = totals.totalAcquis.IntraUFOBudget > 0 ?
-            (totals.cumule.IntraUFOBudget / totals.totalAcquis.IntraUFOBudget * 100) : 0;
-        totals.rad.IntraUFOBudget = totals.totalAcquis.IntraUFOBudget - totals.cumule.IntraUFOBudget;
-
-        totals.pourcentage.IntercompagnieBudget = totals.totalAcquis.IntercompagnieBudget > 0 ?
-            (totals.cumule.IntercompagnieBudget / totals.totalAcquis.IntercompagnieBudget * 100) : 0;
-        totals.rad.IntercompagnieBudget = totals.totalAcquis.IntercompagnieBudget - totals.cumule.IntercompagnieBudget;
-
-        return totals;
-    },
-
-    calculateGlobalTotals1: function (items) {
-        var totals = {
-            totalAcquis: {},
-            cumule: {},
-            pourcentage: {},
-            rad: {}
-        };
-
-        // Initialize dynamic columns in totals
-        this._pSTIBusinessNos.forEach(function (businessNo) {
-            totals.totalAcquis[businessNo] = 0;
-            totals.cumule[businessNo] = 0;
-            totals.pourcentage[businessNo] = 0;
-            totals.rad[businessNo] = 0;
-        });
-
-        // Initialize InterUFO totals
-        totals.totalAcquis.InterUFOBudget = 0;
-        totals.cumule.InterUFOBudget = 0;
-        totals.pourcentage.InterUFOBudget = 0;
-        totals.rad.InterUFOBudget = 0;
-
-        // Recursive function to sum values from all nodes
-        var sumValues = function (node) {
-            if (node.children && Array.isArray(node.children)) {
-                // If it's a node with children, process each child
-                node.children.forEach(function (child) {
-                    sumValues(child);
-                });
-            } else if (!node.isNode && !node.isTotalRow && !node.isRegroupementTotal) {
-                // Only sum values from actual data rows (not totals or nodes)
-                this._pSTIBusinessNos.forEach(function (businessNo) {
-                    totals.totalAcquis[businessNo] += Number(node.dynamicColumns[businessNo]) || 0;
-                });
-                totals.totalAcquis.InterUFOBudget += Number(node.InterUFOBudget) || 0;
-            }
-        }.bind(this);
-
-        // Process all items
-        items.forEach(sumValues);
-
-        // Calculate percentages and RAD for dynamic columns
-        this._pSTIBusinessNos.forEach(function (businessNo) {
-            totals.pourcentage[businessNo] = totals.totalAcquis[businessNo] > 0 ?
-                (totals.cumule[businessNo] / totals.totalAcquis[businessNo] * 100) : 0;
-            totals.rad[businessNo] = totals.totalAcquis[businessNo] - totals.cumule[businessNo];
-        });
-
-        // Calculate percentages and RAD for InterUFO column
-        totals.pourcentage.InterUFOBudget = totals.totalAcquis.InterUFOBudget > 0 ?
-            (totals.cumule.InterUFOBudget / totals.totalAcquis.InterUFOBudget * 100) : 0;
-        totals.rad.InterUFOBudget = totals.totalAcquis.InterUFOBudget - totals.cumule.InterUFOBudget;
-
-        return totals;
-    },
-
-    createSummaryRow: function (name, values, isPercentage) {
-        var row = {
-            name: name,
-            isTotalRow: true,
-            isNode: false,
-            dynamicColumns: {},
-            children: []
-        };
-
-        // Add dynamic columns to summary row
-        this._pSTIBusinessNos.forEach(function (businessNo) {
-            var value = values[businessNo] || 0;
-            row.dynamicColumns[businessNo] = isPercentage ?
-                value.toFixed(2) + "%" :
-                value.toString();
-        });
-
-        // Add static columns to summary row
-        var staticColumns = ['InterUFOBudget', 'IntraUFOBudget', 'IntercompagnieBudget'];
-        staticColumns.forEach(function (column) {
-            var value = values[column] || 0;
-            row[column] = isPercentage ?
-                value.toFixed(2) + "%" :
-                value.toString();
-        });
-
-        return row;
-    },
-
-    preparePxSTITreeData: function () {
-        var self = this;
-        var PxSTIs = this.getView().getModel("utilities").getProperty("/pxSTI");
-        var pSTIs = this.getView().getModel("utilities").getProperty("/pSTI");
-
-        this._pSTIBusinessNos = this._getUniqueBusinessNos(pSTIs);
-
-        var buildTree = function (items) {
-            var treeData = [];
-            var fgaGroups = {};
-
-            if (!items) return treeData;
-
-            items.forEach(function (item) {
-                item.isTotalRow = false;
-
-                if (!item.isNode && !item.isTotalRow) {
-                    self._addDynamicColumnValues(item, pSTIs);
+            // Ensure all dynamic columns are present
+            this._pSTIBusinessNos.forEach(function (businessNo) {
+                if (!row.dynamicColumns[businessNo]) {
+                    row.dynamicColumns[businessNo] = "0";
                 }
-
-                if (!fgaGroups[item.BusinessNo]) {
-                    fgaGroups[item.BusinessNo] = {
-                        name: item.BusinessNo,
-                        isNode: true,
-                        isL0: true,
-                        children: {}
-                    };
-                }
-
-                if (!fgaGroups[item.BusinessNo].children[item.Regroupement]) {
-                    fgaGroups[item.BusinessNo].children[item.Regroupement] = {
-                        name: item.Regroupement,
-                        isNode: true,
-                        isL0: false,
-                        children: [],
-                        totals: {
-                            dynamicColumns: {},
-                            InterUFOBudget: 0,
-                            IntraUFOBudget: 0,
-                            IntercompagnieBudget: 0
-                        }
-                    };
-
-                    // Initialize dynamic columns in totals
-                    self._pSTIBusinessNos.forEach(function (businessNo) {
-                        fgaGroups[item.BusinessNo].children[item.Regroupement].totals.dynamicColumns[businessNo] = 0;
-                    });
-                }
-
-                var regroupement = fgaGroups[item.BusinessNo].children[item.Regroupement];
-                regroupement.children.push(item);
-
-                // Accumulate totals for the Regroupement - dynamic columns
-                self._pSTIBusinessNos.forEach(function (businessNo) {
-                    var value = Number(item.dynamicColumns[businessNo]) || 0;
-                    regroupement.totals.dynamicColumns[businessNo] += value;
-                });
-
-                // Accumulate all static column totals
-                regroupement.totals.InterUFOBudget += Number(item.InterUFOBudget) || 0;
-                regroupement.totals.IntraUFOBudget += Number(item.IntraUFOBudget) || 0;
-                regroupement.totals.IntercompagnieBudget += Number(item.IntercompagnieBudget) || 0;
             });
 
-            // Convert children objects to arrays while preserving names
-            for (var fga in fgaGroups) {
-                var fgaGroup = fgaGroups[fga];
-                var regroupementArray = [];
+            return row;
+        },
 
-                for (var regroupementKey in fgaGroup.children) {
-                    if (fgaGroup.children.hasOwnProperty(regroupementKey)) {
-                        var regroupement = fgaGroup.children[regroupementKey];
+        calculateGlobalTotals: function (items) {
+            var totals = {
+                totalAcquis: {},
+                cumule: {},
+                pourcentage: {},
+                rad: {}
+            };
 
-                        // Create totals object for the regroupement row
-                        var totalsForRow = {
-                            dynamicColumns: {},
-                            InterUFOBudget: regroupement.totals.InterUFOBudget.toString(),
-                            IntraUFOBudget: regroupement.totals.IntraUFOBudget.toString(),
-                            IntercompagnieBudget: regroupement.totals.IntercompagnieBudget.toString()
-                        };
+            // Init all dynamic columns
+            this._pSTIBusinessNos.forEach(function (businessNo) {
+                totals.cumule[businessNo] = this._pSTICumulativeValues[businessNo] || 0;
+                totals.totalAcquis[businessNo] = 0;
+                totals.pourcentage[businessNo] = 0;
+                totals.rad[businessNo] = 0;
+            }.bind(this));
 
-                        // Convert dynamic column totals to strings
-                        self._pSTIBusinessNos.forEach(function (businessNo) {
-                            totalsForRow.dynamicColumns[businessNo] = regroupement.totals.dynamicColumns[businessNo].toString();
-                        });
+            // Init static columns
+            var staticCols = ["InterUFOBudget", "IntraUFOBudget", "IntercompagnieBudget"];
+            staticCols.forEach(function (col) {
+                totals.totalAcquis[col] = 0;
+                totals.cumule[col] = 0;
+                totals.pourcentage[col] = 0;
+                totals.rad[col] = 0;
+            });
 
-                        // Add total row with the regroupement's name
-                        regroupement.children.push(
-                            self.createRegroupementTotalRow(totalsForRow, regroupement.name)
-                        );
-                        regroupementArray.push(regroupement);
+            var pSTIs = this.getView().getModel("utilities").getProperty("/pSTI");
+
+            // Calculate actual usage for static columns from pSTI data
+            if (pSTIs) {
+                pSTIs.forEach(function (pSTI) {
+                    if (pSTI.to_budg && pSTI.Cumul !== undefined) {
+                        var cumulValue = Number(pSTI.Cumul) || 0;
+
+                        // Distribute the cumulative value to the appropriate static column based on TypeBudg
+                        switch (pSTI.TypeBudg) {
+                            case "INTRAUFO":
+                            case "intraUFO":
+                                totals.cumule.IntraUFOBudget += cumulValue;
+                                break;
+                            case "INTERCO":
+                            case "interCO":
+                                totals.cumule.IntercompagnieBudget += cumulValue;
+                                break;
+                            case "INTERUFO":
+                            case "interUFO":
+                                totals.cumule.InterUFOBudget += cumulValue;
+                                break;
+                            default:
+                                // Handle unknown types or distribute evenly?
+                                break;
+                        }
                     }
-                }
-
-                fgaGroup.children = regroupementArray;
-                treeData.push(fgaGroup);
+                });
             }
 
-            return treeData;
-        };
+            // Recursive sum
+            var sumValues = function (node) {
+                if (node.children && Array.isArray(node.children)) {
+                    node.children.forEach(sumValues);
+                } else if (!node.isNode && !node.isTotalRow && !node.isRegroupementTotal) {
+                    // ---- Dynamic columns ----
+                    this._pSTIBusinessNos.forEach(function (businessNo) {
+                        totals.totalAcquis[businessNo] += Number(node.dynamicColumns[businessNo]) || 0;
 
-        // Create dynamic columns
-        this._createDynamicColumns();
+                    });
 
-        // Build trees 
-        var PxSTIsTreeData = buildTree(PxSTIs);
+                    // ---- Static columns ----
+                    staticCols.forEach(function (col) {
+                        totals.totalAcquis[col] += Number(node[col]) || 0;
 
-        // Calculate global totals
-        var globalTotals = this.calculateGlobalTotals(PxSTIsTreeData);
+                        //totals.cumule[col] += Number(node[col]) || 0;
 
-        // Create flat summary rows (level 0)
-        var summaryRows = [
-            this.createSummaryRow("Budget STI", globalTotals.totalAcquis, false),
-            this.createSummaryRow("Cumulé comptabilisé", globalTotals.cumule, false),
-            this.createSummaryRow("Pourcentage", globalTotals.pourcentage, true),
-            this.createSummaryRow("Reste", globalTotals.rad, false)
-        ];
+                    });
+                }
+            }.bind(this);
 
-        // Add summary rows directly to the root array (as level 0 items)
-        PxSTIsTreeData = PxSTIsTreeData.concat(summaryRows);
+            items.forEach(sumValues);
 
-        // Set tree
-        this.getView().getModel("utilities").setProperty("/PxSTIHierarchyWithTotals", PxSTIsTreeData);
+            // ---- Calculate Pourcentage + Reste ----
+            this._pSTIBusinessNos.forEach(function (businessNo) {
+                totals.pourcentage[businessNo] = totals.totalAcquis[businessNo] > 0
+                    ? (totals.cumule[businessNo] / totals.totalAcquis[businessNo] * 100)
+                    : 0;
+                totals.rad[businessNo] = totals.totalAcquis[businessNo] - totals.cumule[businessNo];
+            });
 
-        console.log("Model updated with tree data");
+            staticCols.forEach(function (col) {
+                totals.pourcentage[col] = totals.totalAcquis[col] > 0
+                    ? (totals.cumule[col] / totals.totalAcquis[col] * 100)
+                    : 0;
+                totals.rad[col] = totals.totalAcquis[col] - totals.cumule[col];
+            });
 
-        // Refresh the TreeTable - try different approaches
-        var treeTable = this.byId("com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--budgets--BudgetPxSTITreeTable");
+            return totals;
+        },
 
-        if (treeTable) {
-            console.log("TreeTable found");
 
-            // Try multiple refresh methods
-            setTimeout(function () {
-                if (treeTable.getBinding("rows")) {
-                    treeTable.getBinding("rows").refresh();
-                    console.log("Rows binding refreshed");
+        createSummaryRow: function (name, values, isPercentage) {
+            var row = {
+                name: name,
+                isTotalRow: true,
+                isNode: false,
+                dynamicColumns: {},
+                children: []
+            };
+
+            // Add dynamic columns to summary row
+            this._pSTIBusinessNos.forEach(function (businessNo) {
+                var value = values[businessNo] || 0;
+                row.dynamicColumns[businessNo] = isPercentage ?
+                    value.toFixed(2) + "%" :
+                    value.toString();
+            });
+
+            // Add static columns to summary row
+            var staticColumns = ['InterUFOBudget', 'IntraUFOBudget', 'IntercompagnieBudget'];
+            staticColumns.forEach(function (column) {
+                var value = values[column] || 0;
+                row[column] = isPercentage ?
+                    value.toFixed(2) + "%" :
+                    value.toString();
+            });
+
+            return row;
+        },
+
+        _extractCumulativeValues: function (pSTIs) {
+            this._pSTICumulativeValues = {};
+
+            if (!pSTIs) return;
+
+            pSTIs.forEach(function (pSTI) {
+                if (pSTI.business_no_p && pSTI.Cumul !== undefined) {
+                    this._pSTICumulativeValues[pSTI.business_no_p] = Number(pSTI.Cumul) || 0;
+                }
+            }.bind(this));
+        },
+
+        preparePxSTITreeData: function () {
+            var self = this;
+            var PxSTIs = this.getView().getModel("utilities").getProperty("/pxSTI");
+            var pSTIs = this.getView().getModel("utilities").getProperty("/pSTI");
+
+            this._pSTIBusinessNos = this._getUniqueBusinessNos(pSTIs);
+
+            this._extractCumulativeValues(pSTIs);
+
+            var buildTree = function (items) {
+                var treeData = [];
+                var fgaGroups = {};
+
+                if (!items) return treeData;
+
+                items.forEach(function (item) {
+                    item.isTotalRow = false;
+
+                    if (!item.isNode && !item.isTotalRow) {
+                        self._addDynamicColumnValues(item, pSTIs);
+                    }
+
+                    if (!fgaGroups[item.BusinessNo]) {
+                        fgaGroups[item.BusinessNo] = {
+                            name: item.BusinessNo,
+                            isNode: true,
+                            isL0: true,
+                            children: {}
+                        };
+                    }
+
+                    if (!fgaGroups[item.BusinessNo].children[item.Regroupement]) {
+                        fgaGroups[item.BusinessNo].children[item.Regroupement] = {
+                            name: item.Regroupement,
+                            isNode: true,
+                            isL0: false,
+                            children: [],
+                            totals: {
+                                dynamicColumns: {},
+                                InterUFOBudget: 0,
+                                IntraUFOBudget: 0,
+                                IntercompagnieBudget: 0
+                            }
+                        };
+
+                        // Initialize dynamic columns in totals
+                        self._pSTIBusinessNos.forEach(function (businessNo) {
+                            fgaGroups[item.BusinessNo].children[item.Regroupement].totals.dynamicColumns[businessNo] = 0;
+                        });
+                    }
+
+                    var regroupement = fgaGroups[item.BusinessNo].children[item.Regroupement];
+                    regroupement.children.push(item);
+
+                    // Accumulate totals for the Regroupement - dynamic columns
+                    self._pSTIBusinessNos.forEach(function (businessNo) {
+                        var value = Number(item.dynamicColumns[businessNo]) || 0;
+                        regroupement.totals.dynamicColumns[businessNo] += value;
+                    });
+
+                    // Accumulate all static column totals
+                    regroupement.totals.InterUFOBudget += Number(item.InterUFOBudget) || 0;
+                    regroupement.totals.IntraUFOBudget += Number(item.IntraUFOBudget) || 0;
+                    regroupement.totals.IntercompagnieBudget += Number(item.IntercompagnieBudget) || 0;
+                });
+
+                // Convert children objects to arrays while preserving names
+                for (var fga in fgaGroups) {
+                    var fgaGroup = fgaGroups[fga];
+                    var regroupementArray = [];
+
+                    for (var regroupementKey in fgaGroup.children) {
+                        if (fgaGroup.children.hasOwnProperty(regroupementKey)) {
+                            var regroupement = fgaGroup.children[regroupementKey];
+
+                            // Create totals object for the regroupement row
+                            var totalsForRow = {
+                                dynamicColumns: {},
+                                InterUFOBudget: regroupement.totals.InterUFOBudget.toString(),
+                                IntraUFOBudget: regroupement.totals.IntraUFOBudget.toString(),
+                                IntercompagnieBudget: regroupement.totals.IntercompagnieBudget.toString()
+                            };
+
+                            // Convert dynamic column totals to strings
+                            self._pSTIBusinessNos.forEach(function (businessNo) {
+                                totalsForRow.dynamicColumns[businessNo] = regroupement.totals.dynamicColumns[businessNo].toString();
+                            });
+
+                            // Add total row with the regroupement's name
+                            regroupement.children.push(
+                                self.createRegroupementTotalRow(totalsForRow, regroupement.name)
+                            );
+                            regroupementArray.push(regroupement);
+                        }
+                    }
+
+                    fgaGroup.children = regroupementArray;
+                    treeData.push(fgaGroup);
                 }
 
-                // Also try force refresh
-                treeTable.invalidate();
-                sap.ui.getCore().applyChanges();
-                console.log("UI forced refresh");
-            }, 100);
-        } else {
-            console.error("TreeTable NOT found!");
-        }
-    },
+                return treeData;
+            };
+
+            // Create dynamic columns
+            this._createDynamicColumns();
+
+            // Build trees 
+            var PxSTIsTreeData = buildTree(PxSTIs);
+
+            // Calculate global totals
+            var globalTotals = this.calculateGlobalTotals(PxSTIsTreeData);
+
+            // Create flat summary rows (level 0)
+            var summaryRows = [
+                this.createSummaryRow("Budget STI", globalTotals.totalAcquis, false),
+                this.createSummaryRow("Cumule comptabilisé", globalTotals.cumule, false),
+                this.createSummaryRow("Pourcentage", globalTotals.pourcentage, true),
+                this.createSummaryRow("Reste", globalTotals.rad, false)
+            ];
+
+            // Add summary rows directly to the root array (as level 0 items)
+            PxSTIsTreeData = PxSTIsTreeData.concat(summaryRows);
+
+            // Set tree
+            this.getView().getModel("utilities").setProperty("/PxSTIHierarchyWithTotals", PxSTIsTreeData);
+
+            console.log("Model updated with tree data");
+
+            // Refresh the TreeTable - try different approaches
+            var treeTable = this.byId("com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--budgets--BudgetPxSTITreeTable");
+
+            if (treeTable) {
+                console.log("TreeTable found");
+
+                // Try multiple refresh methods
+                setTimeout(function () {
+                    if (treeTable.getBinding("rows")) {
+                        treeTable.getBinding("rows").refresh();
+                        console.log("Rows binding refreshed");
+                    }
+
+                    // Also try force refresh
+                    treeTable.invalidate();
+                    sap.ui.getCore().applyChanges();
+                    console.log("UI forced refresh");
+                }, 100);
+            } else {
+                console.error("TreeTable NOT found!");
+            }
+        },
 
 
     });

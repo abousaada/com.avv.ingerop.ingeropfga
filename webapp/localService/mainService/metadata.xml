@@ -304,7 +304,7 @@
                 <Property Name="Branche" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Branche" sap:value-list="fixed-values"/>
                 <Property Name="PROJM" Type="Edm.String" MaxLength="8" sap:display-format="NonNegative" sap:text="PROJM_Text" sap:label="Chef de projet" sap:quickinfo="Numéro du responsable (chef de projet)" sap:value-list="standard"/>
                 <Property Name="PROJM_Text" Type="Edm.String" MaxLength="25" sap:label="Responsable (nom)" sap:heading="" sap:quickinfo="Responsable (chef de projet)"/>
-                <Property Name="STILinkedCount" Type="Edm.Int32" sap:label=""/>
+                <Property Name="STILinkedCount" Type="Edm.Int32" sap:label="STIs Liées"/>
                 <Property Name="BusinessType" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Type" sap:quickinfo="FGA Business Type" sap:value-list="fixed-values"/>
                 <Property Name="BusinessStatus" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Statut de l'affaire" sap:quickinfo="Elément de données Statut pour FGA" sap:value-list="fixed-values"/>
                 <Property Name="Soufam" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Sous famille" sap:quickinfo="Elément de donnée pour Soufam" sap:value-list="fixed-values"/>
@@ -379,10 +379,10 @@
                 <Property Name="DailyAvgRate" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Taux moyen journalier" sap:quickinfo="Zone de 10 caractères"/>
                 <Property Name="LastUpdate" Type="Edm.String" MaxLength="20" sap:display-format="UpperCase" sap:label="Dernière mise à jour" sap:quickinfo="Char 20"/>
                 <Property Name="GrpConvention" Type="Edm.String" MaxLength="50" sap:label="Convention de groupe" sap:quickinfo="Zone de texte"/>
-                <Property Name="Notes" Type="Edm.String" MaxLength="1333" sap:label=""/>
+                <Property Name="Notes" Type="Edm.String" MaxLength="1333" sap:label="Notes"/>
                 <Property Name="ModifyBy" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Modifié par" sap:heading="" sap:quickinfo="Nom de la personne qui a modifié cet objet"/>
                 <Property Name="ModifyDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Modifié le" sap:heading="" sap:quickinfo="Date de dernière modification d'un objet"/>
-                <Property Name="IsAffaireMere" Type="Edm.Boolean" sap:label="Actif" sap:heading="" sap:quickinfo="Booléen"/>
+                <Property Name="IsAffaireMere" Type="Edm.Boolean" sap:label="Est ce une affaire mère ?" sap:quickinfo="Booléen"/>
                 <Property Name="DataSource" Type="Edm.String" MaxLength="4" sap:label="#DataSource"/>
                 <Property Name="HeaderDescription" Type="Edm.String" MaxLength="31"/>
                 <NavigationProperty Name="to_BudgetPxAutre" Relationship="ZFGA_SRV.assoc_E414682AC737A1471EE64CE372D268CB" FromRole="FromRole_assoc_E414682AC737A1471EE64CE372D268CB" ToRole="ToRole_assoc_E414682AC737A1471EE64CE372D268CB"/>
@@ -846,6 +846,7 @@
                 <Property Name="stidescr" Type="Edm.String" MaxLength="50" sap:display-format="UpperCase" sap:label="Description du formulaire" sap:quickinfo="DESCRIPTION STI"/>
                 <Property Name="business_p_mail" Type="Edm.String" MaxLength="50" sap:label="Email  Affaire partenaire" sap:quickinfo="Zone de texte"/>
                 <Property Name="BudgetAlloue" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="Cumul" Type="Edm.Decimal" Precision="15" Scale="2"/>
                 <Property Name="TypeBudg" Type="Edm.String" MaxLength="8" sap:display-format="UpperCase" sap:label="char8" sap:quickinfo="Zone de caractères, long.8"/>
                 <NavigationProperty Name="to_BUDG" Relationship="ZFGA_SRV.assoc_4C440054DA86EB6EA9AA53AAC97FFE9D" FromRole="FromRole_assoc_4C440054DA86EB6EA9AA53AAC97FFE9D" ToRole="ToRole_assoc_4C440054DA86EB6EA9AA53AAC97FFE9D"/>
             </EntityType>
@@ -867,6 +868,7 @@
                 <Property Name="BudgetAlloue" Type="Edm.Int64" sap:label="BUDGET ALLOUE" sap:heading=""/>
                 <Property Name="Currency" Type="Edm.String" MaxLength="5" sap:display-format="UpperCase" sap:label="Devise" sap:quickinfo="Clé de devise" sap:semantics="currency-code"/>
                 <Property Name="Regroupement" Type="Edm.String" MaxLength="40" sap:label="Regroupement mission"/>
+                <Property Name="MissionCode" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Zone d'une longueur de 3 octets" sap:heading=""/>
                 <NavigationProperty Name="to_STI" Relationship="ZFGA_SRV.assoc_333E6DC35A0196A751DFF12F791D6481" FromRole="FromRole_assoc_333E6DC35A0196A751DFF12F791D6481" ToRole="ToRole_assoc_333E6DC35A0196A751DFF12F791D6481"/>
             </EntityType>
             <EntityType Name="ZI_FGA_ACTIVITY_VHType" sap:value-list="true" sap:content-version="1">
@@ -1404,6 +1406,8 @@
                 </FunctionImport>
                 <FunctionImport Name="GetProfil" ReturnType="ZFGA_SRV.Profil" EntitySet="ProfilCollection" m:HttpMethod="GET" sap:label="GetProfil" sap:action-for="ZFGA_SRV.Profil">
                     <Parameter Name="ProfilNo" Type="Edm.String" Mode="In" MaxLength="6" sap:label="Profil"/>
+                    <Parameter Name="Period" Type="Edm.String" Mode="In" MaxLength="6" sap:label="Period"/>
+                    <Parameter Name="BusinessNo" Type="Edm.String" Mode="In" MaxLength="24" sap:label="BusinessNo"/>
                 </FunctionImport>
             </EntityContainer>
             <Annotation Term="Core.SchemaVersion" String="1.0.0" xmlns="http://docs.oasis-open.org/odata/ns/edm"/>
