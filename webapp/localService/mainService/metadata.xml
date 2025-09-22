@@ -349,6 +349,8 @@
                 <Property Name="ProjectReview" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Revue de projet" sap:quickinfo="Zone de 10 caractères"/>
                 <Property Name="EndProjectReview" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Fin de revue projet" sap:quickinfo="Zone de 10 caractères"/>
                 <Property Name="UrlCup" Type="Edm.String" MaxLength="255" sap:display-format="UpperCase" sap:label="Lien CUP" sap:quickinfo="char255"/>
+                <Property Name="Recettes" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
+                <Property Name="Depenses" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
                 <Property Name="CompanyCode" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Société" sap:quickinfo="Société de l'élément d'OTP" sap:value-list="standard"/>
                 <Property Name="ProfitCenter" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Centre de profit" sap:value-list="standard"/>
                 <Property Name="Type" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Type d'affaire" sap:quickinfo="Type de projet" sap:value-list="fixed-values"/>
