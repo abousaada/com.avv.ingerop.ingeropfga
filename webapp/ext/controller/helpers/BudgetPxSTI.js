@@ -564,6 +564,7 @@ sap.ui.define([
             var oView = this.getView();
 
             var pSTIs = this.getView().getModel("utilities").getProperty("/pSTI");
+            var period = this.getView().getModel("utilities").getProperty("/period");
 
             try {
 
