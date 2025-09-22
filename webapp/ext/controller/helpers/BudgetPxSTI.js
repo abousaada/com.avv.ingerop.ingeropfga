@@ -557,18 +557,27 @@ sap.ui.define([
             }
         },
 
-        _onCumulativeLinkPress: async function (oEvent) {
-            var oItem = oEvent.getSource().getBindingContext("utilities").getObject();
+        _onCumulativeLinkPress: async function (businessNo, oEvent) {
+            var oLink = oEvent.getSource();
+            var oContext = oLink.getBindingContext("utilities");
+            var oItem = oContext.getObject();
             var oView = this.getView();
 
-            var oItem = oEvent.getSource().getBindingContext("utilities").getObject();
-            var sColumnId = oEvent.getSource().data("columnId"); // from BudgetPx view
-
-            var sGLAccount = oItem.glaccountPxSTI;
-
-            var period = this.getView().getModel("utilities").getProperty("/period");
+            var pSTIs = this.getView().getModel("utilities").getProperty("/pSTI");
 
             try {
+
+                var matchingPSTI = pSTIs.find(function (pSTI) {
+                    return pSTI.business_no_p === businessNo;
+                });
+
+                if (!matchingPSTI) {
+                    sap.m.MessageToast.show("Données pSTI non trouvées pour le business number: " + businessNo);
+                    return;
+                }
+
+                // Get GL Account from the pSTI item
+                var sGLAccount = matchingPSTI.glaccountPxSTI;
 
                 const oLink = oEvent.getSource();
 
