@@ -303,7 +303,7 @@
                 <Property Name="CDG" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Centre de profit" sap:quickinfo="FGA Profit Center" sap:value-list="standard"/>
                 <Property Name="Branche" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Branche" sap:value-list="fixed-values"/>
                 <Property Name="PROJM" Type="Edm.String" MaxLength="8" sap:display-format="NonNegative" sap:text="PROJM_Text" sap:label="Chef de projet" sap:quickinfo="Numéro du responsable (chef de projet)" sap:value-list="standard"/>
-                <Property Name="PROJM_Text" Type="Edm.String" MaxLength="25" sap:label="Responsable (nom)" sap:heading="" sap:quickinfo="Responsable (chef de projet)"/>
+                <Property Name="PROJM_Text" Type="Edm.String" MaxLength="25" sap:label="Nom du chef de projet" sap:quickinfo="Responsable (chef de projet)"/>
                 <Property Name="STILinkedCount" Type="Edm.Int32" sap:label="STIs Liées"/>
                 <Property Name="BusinessType" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Type" sap:quickinfo="FGA Business Type" sap:value-list="fixed-values"/>
                 <Property Name="BusinessStatus" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Statut de l'affaire" sap:quickinfo="Elément de données Statut pour FGA" sap:value-list="fixed-values"/>
@@ -349,8 +349,8 @@
                 <Property Name="ProjectReview" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Revue de projet" sap:quickinfo="Zone de 10 caractères"/>
                 <Property Name="EndProjectReview" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Fin de revue projet" sap:quickinfo="Zone de 10 caractères"/>
                 <Property Name="UrlCup" Type="Edm.String" MaxLength="255" sap:display-format="UpperCase" sap:label="Lien CUP" sap:quickinfo="char255"/>
-                <Property Name="Recettes" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
-                <Property Name="Depenses" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
+                <Property Name="Recettes" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Recettes"/>
+                <Property Name="Depenses" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Dépenses"/>
                 <Property Name="CompanyCode" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Société" sap:quickinfo="Société de l'élément d'OTP" sap:value-list="standard"/>
                 <Property Name="ProfitCenter" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Centre de profit" sap:value-list="standard"/>
                 <Property Name="Type" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Type d'affaire" sap:quickinfo="Type de projet" sap:value-list="fixed-values"/>
@@ -382,8 +382,8 @@
                 <Property Name="LastUpdate" Type="Edm.String" MaxLength="20" sap:display-format="UpperCase" sap:label="Dernière mise à jour" sap:quickinfo="Char 20"/>
                 <Property Name="GrpConvention" Type="Edm.String" MaxLength="50" sap:label="Convention de groupe" sap:quickinfo="Zone de texte"/>
                 <Property Name="Notes" Type="Edm.String" MaxLength="1333" sap:label="Notes"/>
-                <Property Name="ModifyBy" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Modifié par" sap:heading="" sap:quickinfo="Nom de la personne qui a modifié cet objet"/>
-                <Property Name="ModifyDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Modifié le" sap:heading="" sap:quickinfo="Date de dernière modification d'un objet"/>
+                <Property Name="ModifyBy" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Modifiée par" sap:quickinfo="Nom de la personne qui a modifié cet objet"/>
+                <Property Name="ModifyDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Modifiée le" sap:quickinfo="Date de dernière modification d'un objet"/>
                 <Property Name="IsAffaireMere" Type="Edm.Boolean" sap:label="Est ce une affaire mère ?" sap:quickinfo="Booléen"/>
                 <Property Name="DataSource" Type="Edm.String" MaxLength="4" sap:label="#DataSource"/>
                 <Property Name="HeaderDescription" Type="Edm.String" MaxLength="31"/>

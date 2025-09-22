@@ -258,7 +258,7 @@
                                         <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Qualite"/>
                                     </Record>
                                     <Record Type="UI.ReferenceFacet">
-                                        <PropertyValue Property="Label" String="Durée"/>
+                                        <PropertyValue Property="Label" String="Budget sur Objectif"/>
                                         <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#BudgetObjectif"/>
                                     </Record>
                                 </Collection>
