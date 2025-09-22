@@ -61,6 +61,19 @@ sap.ui.define([
                     width: "13rem",
                     template: new HBox({
                         items: [
+                            // Link for cumulative row only
+                            new sap.m.Link({
+                                text: {
+                                    path: 'utilities>dynamicColumns/' + businessNo,
+                                    formatter: function (value) {
+                                        return value || "0";
+                                    }
+                                },
+                                // Fixed visibility binding - check isCumulativeRow property
+                                visible: "{= ${utilities>isCumulativeRow} === true}",
+                                press: this._onCumulativeLinkPress.bind(this, businessNo)
+                            }),
+                            // Text for all other rows (non-cumulative)
                             new Text({
                                 text: {
                                     path: 'utilities>dynamicColumns/' + businessNo,
@@ -68,8 +81,8 @@ sap.ui.define([
                                         return value || "0";
                                     }
                                 },
-                                //visible: "{= !${utilities>isNode} && !${utilities>isTotalRow}}"
-                                visible: "{= !${isNode}}"
+                                // Show text for non-cumulative rows
+                                visible: "{= ${utilities>isCumulativeRow} !== true}"
                             })
                         ]
                     }),
@@ -356,6 +369,7 @@ sap.ui.define([
                 name: name,
                 isTotalRow: true,
                 isNode: false,
+                isCumulativeRow: (name === "Cumule comptabilisé"),
                 dynamicColumns: {},
                 children: []
             };
@@ -543,7 +557,88 @@ sap.ui.define([
             }
         },
 
+        _onCumulativeLinkPress: async function (oEvent) {
+            var oItem = oEvent.getSource().getBindingContext("utilities").getObject();
+            var oView = this.getView();
 
+            var oItem = oEvent.getSource().getBindingContext("utilities").getObject();
+            var sColumnId = oEvent.getSource().data("columnId"); // from BudgetPx view
+
+            var sGLAccount = oItem.glaccountPxSTI;
+
+            var period = this.getView().getModel("utilities").getProperty("/period");
+
+            try {
+
+                const oLink = oEvent.getSource();
+
+                // 2. Get GL Accounts
+                const oContext = oLink.getBindingContext("utilities");
+                const oData = oContext.getObject();
+
+
+                const glAccounts = sGLAccount
+                    ? sGLAccount.split(";").map(a => a.trim()).filter(a => a.length > 0)
+                    : [];
+
+                if (glAccounts.length === 0) {
+                    sap.m.MessageToast.show("GLAccount non disponible.");
+                    return;
+                }
+
+                // 3. Get Date range
+                const month = period.substring(0, 2);
+                const year = period.substring(2);
+
+                // 4. Get missions
+                let missions = [];
+                try {
+                    missions = oLink.getModel('utilities').getMissions();
+
+                } catch (error) {
+                    console.error("Failed to fetch missions:", error);
+                    throw error;
+                }
+
+                const wbsElements = [oData.business_no];
+                if (missions && missions.length > 0) {
+                    // Add missions to the WBS elements array
+                    wbsElements.push(...missions.map(mission => mission.MissionId));
+                }
+
+                // 5. Create navigation
+                const oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
+
+                var params = {
+                    FiscalYearPeriod: `${year}0${month}`,
+                    GLAccount: glAccounts,
+                    WBSElementExternalID: wbsElements
+                };
+
+                // Get the base URL for the target app
+                const sHash = oCrossAppNavigator.hrefForExternal({
+                    target: {
+                        semanticObject: "GLAccount",
+                        action: "displayGLLineItemReportingView"
+                    },
+                    params: Object.fromEntries(
+                        Object.entries(params).map(([key, value]) => {
+                            if (Array.isArray(value)) {
+                                return [key, value.map(v => encodeURIComponent(v))];
+                            }
+                            return [key, encodeURIComponent(value)];
+                        })
+                    )
+                });
+
+                // Open in new window
+                window.open(sHash, "_blank", "noopener,noreferrer");
+
+
+            } catch (err) {
+                console.error("Error during navigation:", err);
+            }
+        },
     });
 });
 

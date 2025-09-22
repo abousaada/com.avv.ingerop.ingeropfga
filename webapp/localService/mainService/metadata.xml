@@ -43,8 +43,8 @@
                 <Key>
                     <PropertyRef Name="ClientNo"/>
                 </Key>
-                <Property Name="Secteur" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Branche" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="ClientNo" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Client" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Secteur" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Branche" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Country" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Clé de pays/région" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Name1" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="Nom" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Name2" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="Nom 2" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
@@ -54,8 +54,8 @@
                 <Key>
                     <PropertyRef Name="SupplierNo"/>
                 </Key>
-                <Property Name="Cumul" Type="Edm.Decimal" Nullable="false" Precision="24" Scale="3" sap:unicode="false" sap:label="Mtt dev. transaction" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="SupplierNo" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Fournisseur" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Cumul" Type="Edm.Decimal" Nullable="false" Precision="24" Scale="3" sap:unicode="false" sap:label="Mtt dev. transaction" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="SupplierCoef" Type="Edm.Decimal" Nullable="false" Precision="4" Scale="2" sap:unicode="false" sap:label="Coef fournisseur" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Country" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Clé de pays/région" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="Nom" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
@@ -846,7 +846,8 @@
                 <Property Name="stidescr" Type="Edm.String" MaxLength="50" sap:display-format="UpperCase" sap:label="Description du formulaire" sap:quickinfo="DESCRIPTION STI"/>
                 <Property Name="business_p_mail" Type="Edm.String" MaxLength="50" sap:label="Email  Affaire partenaire" sap:quickinfo="Zone de texte"/>
                 <Property Name="BudgetAlloue" Type="Edm.Decimal" Precision="15" Scale="2"/>
-                <Property Name="Cumul" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="Cumul" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Montant" sap:quickinfo="Montant en devise de la pièce"/>
+                <Property Name="glaccountPxSTI" Type="Edm.String" MaxLength="255"/>
                 <Property Name="TypeBudg" Type="Edm.String" MaxLength="8" sap:display-format="UpperCase" sap:label="char8" sap:quickinfo="Zone de caractères, long.8"/>
                 <NavigationProperty Name="to_BUDG" Relationship="ZFGA_SRV.assoc_4C440054DA86EB6EA9AA53AAC97FFE9D" FromRole="FromRole_assoc_4C440054DA86EB6EA9AA53AAC97FFE9D" ToRole="ToRole_assoc_4C440054DA86EB6EA9AA53AAC97FFE9D"/>
             </EntityType>
@@ -1405,9 +1406,9 @@
                     <Parameter Name="ClientNo" Type="Edm.String" Mode="In" MaxLength="10" sap:label="ClientNo"/>
                 </FunctionImport>
                 <FunctionImport Name="GetProfil" ReturnType="ZFGA_SRV.Profil" EntitySet="ProfilCollection" m:HttpMethod="GET" sap:label="GetProfil" sap:action-for="ZFGA_SRV.Profil">
-                    <Parameter Name="ProfilNo" Type="Edm.String" Mode="In" MaxLength="6" sap:label="Profil"/>
-                    <Parameter Name="Period" Type="Edm.String" Mode="In" MaxLength="6" sap:label="Period"/>
                     <Parameter Name="BusinessNo" Type="Edm.String" Mode="In" MaxLength="24" sap:label="BusinessNo"/>
+                    <Parameter Name="Period" Type="Edm.String" Mode="In" MaxLength="6" sap:label="Period"/>
+                    <Parameter Name="ProfilNo" Type="Edm.String" Mode="In" MaxLength="6" sap:label="Profil"/>
                 </FunctionImport>
             </EntityContainer>
             <Annotation Term="Core.SchemaVersion" String="1.0.0" xmlns="http://docs.oasis-open.org/odata/ns/edm"/>
