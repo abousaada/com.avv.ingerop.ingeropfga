@@ -259,6 +259,15 @@ sap.ui.define([
                 identifier: "Qualite",
                 visible: false,
             },
+            Recettes: {
+                identifier: "BudgetObjectif",
+                visible: false,
+            },
+            // "BudgetObjectif"
+            Depenses: {
+                identifier: "BudgetObjectif",
+                visible: false,
+            },
         },
 
         //All header fields
@@ -697,6 +706,24 @@ sap.ui.define([
                 defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
+                mandatory: { type: [], default: false, create: true, modify: true },
+                action: null
+            },
+            // "BudgetObjectif"
+            Recettes: {
+                identifier: "BudgetObjectif",
+                defaultValue: { create: null, modify: null },
+                visible: { create: false, modify: true },
+                enabled: { create: false, modify: true },
+                mandatory: { type: [], default: false, create: true, modify: true },
+                action: null
+            },
+            // "BudgetObjectif"
+            Depenses: {
+                identifier: "BudgetObjectif",
+                defaultValue: { create: null, modify: null },
+                visible: { create: false, modify: true },
+                enabled: { create: false, modify: true },
                 mandatory: { type: [], default: false, create: true, modify: true },
                 action: null
             },

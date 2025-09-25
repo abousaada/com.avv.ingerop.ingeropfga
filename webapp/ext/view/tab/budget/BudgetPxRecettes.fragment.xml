@@ -189,16 +189,35 @@
                 </table:multiLabels>
                 <table:template>
                     <HBox>
-                        <Text   text="{
-                            path: 'utilities>groupe',
-                            type: 'sap.ui.model.type.Float', 
-                            formatOptions: { 
-                                minFractionDigits: 2, 
-                                maxFractionDigits: 2, 
-                                groupingEnabled: true, 
-                                decimalSeparator: ',' 
-                            }
-                        }"/>
+                        <Text   
+                            text="{
+                                path: 'utilities>groupe',
+                                type: 'sap.ui.model.type.Float', 
+                                formatOptions: { 
+                                    minFractionDigits: 2, 
+                                    maxFractionDigits: 2, 
+                                    groupingEnabled: true, 
+                                    decimalSeparator: ',' 
+                                }
+                            }"
+                            visible="{= !${ui>/editable} &amp;&amp; !!${utilities>isBudget} }"
+                        />
+
+                        <Input  
+                            value="{
+                                path: 'utilities>groupe',
+                                type: 'sap.ui.model.type.Float', 
+                                formatOptions: { 
+                                    minFractionDigits: 2, 
+                                    maxFractionDigits: 2, 
+                                    groupingEnabled: true, 
+                                    decimalSeparator: ',' 
+                                }
+                            }" 
+                            visible="{= ${ui>/editable} &amp;&amp; !!${utilities>isBudget} }"
+                            change="onChangeRecetteExtMontant"
+                        />
+
                     </HBox>
                 </table:template>
             </table:Column>
@@ -219,7 +238,24 @@
                                 groupingEnabled: true, 
                                 decimalSeparator: ',' 
                             }
-                        }"/>
+                        }"
+                        visible="{= !${ui>/editable} &amp;&amp; !!${utilities>isBudget} }"
+                        />
+
+                        <Input  
+                            value="{
+                                path: 'utilities>interUfo',
+                                type: 'sap.ui.model.type.Float', 
+                                formatOptions: { 
+                                    minFractionDigits: 2, 
+                                    maxFractionDigits: 2, 
+                                    groupingEnabled: true, 
+                                    decimalSeparator: ',' 
+                                }
+                            }" 
+                            visible="{= ${ui>/editable} &amp;&amp; !!${utilities>isBudget} }"
+                            change="onChangeRecetteExtMontant"
+                        />
                     </HBox>
                 </table:template>
             </table:Column>
@@ -240,7 +276,24 @@
                                 groupingEnabled: true, 
                                 decimalSeparator: ',' 
                             }
-                        }"/>
+                        }"
+                        visible="{= !${ui>/editable} &amp;&amp; !!${utilities>isBudget} }"
+                        />
+
+                        <Input  
+                            value="{
+                                path: 'utilities>intraUfo',
+                                type: 'sap.ui.model.type.Float', 
+                                formatOptions: { 
+                                    minFractionDigits: 2, 
+                                    maxFractionDigits: 2, 
+                                    groupingEnabled: true, 
+                                    decimalSeparator: ',' 
+                                }
+                            }" 
+                            visible="{= ${ui>/editable} &amp;&amp; !!${utilities>isBudget} }"
+                            change="onChangeRecetteExtMontant"
+                        />
                     </HBox>
                 </table:template>
             </table:Column>

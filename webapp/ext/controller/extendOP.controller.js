@@ -131,6 +131,13 @@ sap.ui.define(
                             });
                         }
 
+                        if (!this.getModel("utilities").validRecetteExtBeforeSave(oView)) {
+                            sap.m.MessageBox.error("Veuillez Répartir correctement les budgets");
+                            return new Promise((resolve, reject) => {
+                                reject();
+                            });
+                        }
+
                         this._setBusy(true);
                         return new Promise(async (resolve, reject) => {
                             const formattedMissions = utilitiesModel.getFormattedMissions();
