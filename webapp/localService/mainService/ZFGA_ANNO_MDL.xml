@@ -680,23 +680,6 @@
             <Annotations Target="ZFGA_SRV.ZC_FGA_PxstintType/Regroupement">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
-            <Annotations Target="ZFGA_SRV.ZC_FGA_REPORTType">
-                <Annotation Term="UI.HeaderInfo">
-                    <Record>
-                        <PropertyValue Property="TypeName" String="FGA"/>
-                        <PropertyValue Property="TypeNamePlural" String="FGAs"/>
-                    </Record>
-                </Annotation>
-                <Annotation Term="UI.PresentationVariant">
-                    <Record>
-                        <PropertyValue Property="RequestAtLeast">
-                            <Collection>
-                                <PropertyPath>BusinessNo</PropertyPath>
-                            </Collection>
-                        </PropertyValue>
-                    </Record>
-                </Annotation>
-            </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_FGA_SFGP_REPORTType/p_businessno">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>

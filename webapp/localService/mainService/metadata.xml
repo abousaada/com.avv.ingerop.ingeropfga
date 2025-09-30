@@ -524,6 +524,7 @@
                 <Property Name="Regroupement" Type="Edm.String" MaxLength="40" sap:label="Regroupement mission"/>
                 <Property Name="statutmission" Type="Edm.String" MaxLength="1" sap:label="Statut mission"/>
                 <Property Name="description" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="description" sap:quickinfo="Description Mission"/>
+                <Property Name="isSTI" Type="Edm.String" MaxLength="1"/>
             </EntityType>
             <EntityType Name="zc_fga_opportType" sap:label="zc_fga_opport" sap:content-version="1">
                 <Key>
@@ -710,23 +711,6 @@
                 <Property Name="PourcentageComptabilise" Type="Edm.Decimal" Precision="5" Scale="2" sap:label="% comptabilisé"/>
                 <Property Name="Reste" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Reste"/>
                 <Property Name="Regroupement" Type="Edm.String" MaxLength="40" sap:label="Regroupement mission"/>
-            </EntityType>
-            <EntityType Name="ZC_FGA_REPORTType" sap:content-version="1">
-                <Key>
-                    <PropertyRef Name="BusinessNo"/>
-                </Key>
-                <Property Name="BusinessNo" Type="Edm.String" Nullable="false" MaxLength="24" sap:creatable="false" sap:updatable="false"/>
-                <Property Name="BusinessName" Type="Edm.String" MaxLength="40" sap:label="Désignation" sap:quickinfo="PS: désignation (première ligne de texte)" sap:creatable="false" sap:updatable="false"/>
-                <Property Name="UFOName" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="Nom de set" sap:creatable="false" sap:updatable="false"/>
-                <Property Name="Activity" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="FGA Activity" sap:quickinfo="FGA Business activity" sap:creatable="false" sap:updatable="false"/>
-                <Property Name="CDG" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="FGA Profit Center" sap:creatable="false" sap:updatable="false"/>
-                <Property Name="NClient" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Elément de donnée NCLIENT" sap:heading="" sap:creatable="false" sap:updatable="false"/>
-                <Property Name="BusinessType" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="FGA Business Type" sap:creatable="false" sap:updatable="false"/>
-                <Property Name="BusinessStatus" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Elément de données Statut pour FGA" sap:heading="" sap:creatable="false" sap:updatable="false"/>
-                <Property Name="Mission" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Elément de donnée MISSION" sap:heading="" sap:creatable="false" sap:updatable="false"/>
-                <Property Name="EndDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date de fin de base" sap:quickinfo="Élément d'OTP : date de fin de base" sap:creatable="false" sap:updatable="false"/>
-                <Property Name="ProfitCenter" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Centre de profit" sap:creatable="false" sap:updatable="false"/>
-                <Property Name="RBACumulNm1" Type="Edm.Int32" sap:creatable="false" sap:updatable="false"/>
             </EntityType>
             <EntityType Name="ZC_FGA_SFGP_REPORTType" sap:content-version="1">
                 <Key>
@@ -1431,7 +1415,6 @@
                 <EntitySet Name="ZC_FGA_PxMainOeuvre" EntityType="ZFGA_SRV.ZC_FGA_PxMainOeuvreType" sap:content-version="1"/>
                 <EntitySet Name="ZC_FGA_PxRecetteExt" EntityType="ZFGA_SRV.ZC_FGA_PxRecetteExtType" sap:content-version="1"/>
                 <EntitySet Name="ZC_FGA_Pxstint" EntityType="ZFGA_SRV.ZC_FGA_PxstintType" sap:content-version="1"/>
-                <EntitySet Name="ZC_FGA_REPORT" EntityType="ZFGA_SRV.ZC_FGA_REPORTType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
                 <EntitySet Name="ZC_FGA_SFGP_REPORTSet" EntityType="ZFGA_SRV.ZC_FGA_SFGP_REPORTType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:addressable="false" sap:content-version="1"/>
                 <EntitySet Name="ZC_FGA_SFGP_REPORT" EntityType="ZFGA_SRV.ZC_FGA_SFGP_REPORTParameters" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
                 <EntitySet Name="ZC_FGA_SubContractorBudget" EntityType="ZFGA_SRV.ZC_FGA_SubContractorBudgetType" sap:content-version="1"/>
@@ -3644,13 +3627,6 @@
                 </Annotation>
             </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_FGAType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-                <Annotation Term="Common.SemanticKey">
-                    <Collection>
-                        <PropertyPath>BusinessNo</PropertyPath>
-                    </Collection>
-                </Annotation>
-            </Annotations>
-            <Annotations Target="ZFGA_SRV.ZC_FGA_REPORTType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Common.SemanticKey">
                     <Collection>
                         <PropertyPath>BusinessNo</PropertyPath>
