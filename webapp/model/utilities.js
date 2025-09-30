@@ -550,6 +550,7 @@ sap.ui.define([
                     const businessNo = this.getBusinessNo();
                     const period = this.getPeriod();
                     const urlBusinessNo = encodeURIComponent(businessNo);
+                    const urlPeriod = encodeURIComponent(period);
 
                     // First get the main STI data
                     const sPath = `/ZC_STI?$filter=business_no_e eq '${urlBusinessNo}'`;
@@ -559,7 +560,8 @@ sap.ui.define([
 
                     const pSTI = await this.read("/ZC_STI", {
                         urlParameters: {
-                            "$filter": `business_no_e eq '${businessNo}'`
+                           //"$filter": `business_no_e eq '${businessNo}' and p_period eq '${urlPeriod}'`
+                           "$filter": `business_no_e eq '${businessNo}' and p_period eq '${period}'`
                         }
                     });
 

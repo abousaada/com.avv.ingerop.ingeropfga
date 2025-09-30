@@ -680,6 +680,23 @@
             <Annotations Target="ZFGA_SRV.ZC_FGA_PxstintType/Regroupement">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGA_REPORTType">
+                <Annotation Term="UI.HeaderInfo">
+                    <Record>
+                        <PropertyValue Property="TypeName" String="FGA"/>
+                        <PropertyValue Property="TypeNamePlural" String="FGAs"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.PresentationVariant">
+                    <Record>
+                        <PropertyValue Property="RequestAtLeast">
+                            <Collection>
+                                <PropertyPath>BusinessNo</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_FGA_SFGP_REPORTType/p_businessno">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
@@ -994,6 +1011,9 @@
                             <PropertyValue Property="Value" Path="business_no_e"/>
                         </Record>
                         <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="business_no_p"/>
+                        </Record>
+                        <Record Type="UI.DataField">
                             <PropertyValue Property="Value" Path="business_e_t"/>
                         </Record>
                         <Record Type="UI.DataField">
@@ -1010,9 +1030,6 @@
                         </Record>
                         <Record Type="UI.DataField">
                             <PropertyValue Property="Value" Path="business_e_clt"/>
-                        </Record>
-                        <Record Type="UI.DataField">
-                            <PropertyValue Property="Value" Path="business_no_p"/>
                         </Record>
                         <Record Type="UI.DataField">
                             <PropertyValue Property="Value" Path="business_no_p_t"/>
@@ -1052,7 +1069,6 @@
                 </Annotation>
                 <Annotation Term="UI.SelectionFields">
                     <Collection>
-                        <PropertyPath>Criticality</PropertyPath>
                         <PropertyPath>id_formulaire</PropertyPath>
                         <PropertyPath>business_no_e</PropertyPath>
                         <PropertyPath>status</PropertyPath>
@@ -1069,6 +1085,33 @@
                         <PropertyPath>business_p_cdp</PropertyPath>
                         <PropertyPath>business_p_bm</PropertyPath>
                         <PropertyPath>business_p_mis</PropertyPath>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_STI_MISSIONType">
+                <Annotation Term="UI.LineItem">
+                    <Collection>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="MissionCode"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="StartDate"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="EndDate"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="GlobalBudget"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="BudgetInSTI"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="AvailableBudget"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="SubcontractedBudgetPercentage"/>
+                        </Record>
                     </Collection>
                 </Annotation>
             </Annotations>
@@ -1121,6 +1164,9 @@
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
             <Annotations Target="ZFGA_SRV.ZI_FGA_NATIONAL_VHType/Spras">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_FGA_PTYPE_VHType/spras">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
             <Annotations Target="ZFGA_SRV.ZI_FGA_RECAPType/p_businessno">
