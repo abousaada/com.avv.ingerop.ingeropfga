@@ -193,6 +193,7 @@ sap.ui.define([
                 EndDate: EndDate,
                 ExternalRevenue: 0,
                 LaborBudget: 0,
+                isSTI: '',
                 isNode: false
             };
 
@@ -501,7 +502,7 @@ sap.ui.define([
 
         onMissionCodeChange: function (oEvent) {
             var oComboBox = oEvent.getSource();
-            var sKey = oComboBox.getSelectedKey(); 
+            var sKey = oComboBox.getSelectedKey();
 
             var sValue = oComboBox.getValue();
             var oBindingContext = oComboBox.getBindingContext("utilities");
@@ -510,6 +511,8 @@ sap.ui.define([
                 oBindingContext.getModel().setProperty(oBindingContext.getPath() + "/MissionCode", sValue);
             }
         },
+
+
 
     });
 });
