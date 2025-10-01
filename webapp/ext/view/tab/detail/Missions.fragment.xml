@@ -67,7 +67,7 @@
                         <HBox>
                             <ComboBox
                                 selectedKey="{utilities>MissionCode}"
-                                value="{utilities>MissionCode}" 
+                                value="{utilities>MissionCode}"
                                 items="{
                                         path: 'utilities>/missionTypes',
                                         templateShareable: false
@@ -112,7 +112,13 @@
                         <HBox>
                             <Input
                                 value="{utilities>Regroupement}"
-                                editable="{ui>/editable}"
+                                editable="{
+                                    parts: [
+                                        {path: 'ui>/editable'},
+                                        {path: 'utilities>isSTI'}
+                                    ],
+                                    formatter: '.formatSTIEditable'
+                                }"
                                 width="100%"
                                 visible="{= !${utilities>isNode}}"
                                 change=".onRegroupementChange"
@@ -138,7 +144,13 @@
                                 path: 'utilities>/missionStatus',
                                 templateShareable: false
                             }"
-                                editable="{ui>/editable}"
+                                editable="{
+                                    parts: [
+                                        {path: 'ui>/editable'},
+                                        {path: 'utilities>isSTI'}
+                                    ],
+                                    formatter: '.formatSTIEditable'
+                                }"
                                 width="100%"
                                 visible="{= !${utilities>isNode}}"
                                 required="true"

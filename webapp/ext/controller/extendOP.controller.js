@@ -82,9 +82,9 @@ sap.ui.define(
                     window.addEventListener("popstate", this._cleanModification.bind(this));
                     window.addEventListener("onbeforeunload", this._cleanModification.bind(this));
 
-                    
-                    this._resetRecapMerge      = this._resetRecapMerge.bind(this);
-                    this._styleMergedRecapRow  = this._styleMergedRecapRow.bind(this);
+
+                    this._resetRecapMerge = this._resetRecapMerge.bind(this);
+                    this._styleMergedRecapRow = this._styleMergedRecapRow.bind(this);
 
                     const oTable = this.getView().byId("idRecapTable");
                     if (oTable) {
@@ -566,13 +566,13 @@ sap.ui.define(
                     // return `${formattedValue}%`;
                     return `${parseFloat(String(value).replace(',', '.')).toFixed(2).replace('.', ',')}%`;
                 }
-                
+
                 if (row_type === "RBA") {
 
                 }
 
                 // return value.toString();
-                var  intVal = Math.round(value);
+                var intVal = Math.round(value);
                 // Formater avec séparateur "espace"
                 return intVal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
             },
@@ -766,56 +766,56 @@ sap.ui.define(
 
                     // === (B) Lignes RBA : rouge+gras si négatif ; sinon gras+noir ===
                     oTable.getRows().forEach(oRow => {
-                    const oCtx = oRow.getBindingContext("utilities");
-                    if (!oCtx) return;
-                    if (oCtx.getProperty("row_type") !== "CA") return;
+                        const oCtx = oRow.getBindingContext("utilities");
+                        if (!oCtx) return;
+                        if (oCtx.getProperty("row_type") !== "CA") return;
 
-                    const $cells = oRow.$().find('td[data-sap-ui-colid]');
-                    $cells.each((i, td) => {
-                        if (i === 0) return; // ignore la colonne de description
-                        const el = td.querySelector(".sapMText, .sapMLnk, .sapMObjectNumberText, .sapMObjStatusText");
-                        if (!el) return;
+                        const $cells = oRow.$().find('td[data-sap-ui-colid]');
+                        $cells.each((i, td) => {
+                            if (i === 0) return; // ignore la colonne de description
+                            const el = td.querySelector(".sapMText, .sapMLnk, .sapMObjectNumberText, .sapMObjStatusText");
+                            if (!el) return;
 
-                        el.classList.add("alwaysBold");
-                        // Parse numérique (gère espaces, virgules, %)
-                        // const num = this.parseCellNumber(el.textContent || td.textContent);
+                            el.classList.add("alwaysBold");
+                            // Parse numérique (gère espaces, virgules, %)
+                            // const num = this.parseCellNumber(el.textContent || td.textContent);
 
-                        // if (!isNaN(num) && num < 0) {
-                        // // Négatif → rouge + gras
-                        // el.classList.add("negativeValue");
-                        // } else {
-                        // // Non négatif (y compris NaN) → gras + noir
-                        // el.classList.add("rbaBold");
-                        // }
-                    });
+                            // if (!isNaN(num) && num < 0) {
+                            // // Négatif → rouge + gras
+                            // el.classList.add("negativeValue");
+                            // } else {
+                            // // Non négatif (y compris NaN) → gras + noir
+                            // el.classList.add("rbaBold");
+                            // }
+                        });
                     });
 
                     // === (B) Lignes RBA : rouge+gras si négatif ; sinon gras+noir ===
                     oTable.getRows().forEach(oRow => {
-                    const oCtx = oRow.getBindingContext("utilities");
-                    if (!oCtx) return;
-                    if (oCtx.getProperty("row_type") !== "RBA") return;
+                        const oCtx = oRow.getBindingContext("utilities");
+                        if (!oCtx) return;
+                        if (oCtx.getProperty("row_type") !== "RBA") return;
 
-                    const $cells = oRow.$().find('td[data-sap-ui-colid]');
-                    $cells.each((i, td) => {
-                        if (i === 0) return; // ignore la colonne de description
-                        const el = td.querySelector(".sapMText, .sapMLnk, .sapMObjectNumberText, .sapMObjStatusText");
-                        if (!el) return;
+                        const $cells = oRow.$().find('td[data-sap-ui-colid]');
+                        $cells.each((i, td) => {
+                            if (i === 0) return; // ignore la colonne de description
+                            const el = td.querySelector(".sapMText, .sapMLnk, .sapMObjectNumberText, .sapMObjStatusText");
+                            if (!el) return;
 
-                        // Nettoie d'abord les styles précédents
-                        el.classList.remove("negativeValue", "rbaBold");
+                            // Nettoie d'abord les styles précédents
+                            el.classList.remove("negativeValue", "rbaBold");
 
-                        // Parse numérique (gère espaces, virgules, %)
-                        const num = this.parseCellNumber(el.textContent || td.textContent);
+                            // Parse numérique (gère espaces, virgules, %)
+                            const num = this.parseCellNumber(el.textContent || td.textContent);
 
-                        if (!isNaN(num) && num < 0) {
-                        // Négatif → rouge + gras
-                        el.classList.add("negativeValue");
-                        } else {
-                        // Non négatif (y compris NaN) → gras + noir
-                        el.classList.add("rbaBold");
-                        }
-                    });
+                            if (!isNaN(num) && num < 0) {
+                                // Négatif → rouge + gras
+                                el.classList.add("negativeValue");
+                            } else {
+                                // Non négatif (y compris NaN) → gras + noir
+                                el.classList.add("rbaBold");
+                            }
+                        });
                     });
 
 
@@ -835,16 +835,16 @@ sap.ui.define(
                     const $tr = jQuery(this);
                     const $cells = $tr.find('td[data-sap-ui-colid]');
                     $cells.each((_, td) => {
-                    td.style.background = "";
-                    td.style.position = "";
-                    td.style.overflow = "";
-                    const inner = td.querySelector(".sapMText, .sapMLnk");
-                    if (inner) {
-                        inner.style.visibility = "";
-                        inner.style.color = "";
-                        inner.style.fontWeight = "";
-                        inner.style.textAlign = "";
-                    }
+                        td.style.background = "";
+                        td.style.position = "";
+                        td.style.overflow = "";
+                        const inner = td.querySelector(".sapMText, .sapMLnk");
+                        if (inner) {
+                            inner.style.visibility = "";
+                            inner.style.color = "";
+                            inner.style.fontWeight = "";
+                            inner.style.textAlign = "";
+                        }
                     });
                 });
 
@@ -855,8 +855,7 @@ sap.ui.define(
             _styleMergedRecapRow: function () {
                 if (PROJET_TYPE === "Z0" || PROJET_TYPE === "Z1") {
 
-                    // sap.ui.core.BusyIndicator.show();
-                    const oTable = this.oView.byId("idRecapTable");
+                    const oTable   = this.oView.byId("idRecapTable");
                     const oBinding = oTable && oTable.getBinding("rows");
                     if (!oBinding) return;
 
@@ -868,48 +867,53 @@ sap.ui.define(
 
                     const norm = s => (s || "").trim().toLowerCase();
 
-                    // repères
-                    let idxCumulN1 = -1;        // "Cumul N-1" (borne gauche bleue)
-                    let idxCumulJour = -1;      // "Cumul à ce jour" (la SEULE cellule visible)
+                    // Indices colonnes clés
+                    let idxCumulN1 = -1;        // "Cumul N-1"
+                    let idxCumulJour = -1;      // "Cumul à ce jour"
+                    let idxAnnee = -1;          // "Année en cours"
+
                     oTable.getColumns().forEach((c, i) => {
                         const t = c.getLabel && c.getLabel().getText && c.getLabel().getText();
                         const tl = norm(t);
-                        if (tl === "cumul n-1")       idxCumulN1   = i;
-                        if (tl === "cumul à ce jour") idxCumulJour = i;
+                        if (tl === "cumul n-1")        idxCumulN1   = i;
+                        if (tl === "cumul à ce jour")  idxCumulJour = i;
+                        if (tl === "année en cours")   idxAnnee     = i;
                     });
 
-                    if (idxCumulN1   < 0) idxCumulN1   = 3;                         // fallback
-                    if (idxCumulJour < 0) idxCumulJour = idxCumulN1 + 1;            // juste après
+                    // Fallbacks prudents si libellés changent
+                    if (idxCumulN1   < 0) idxCumulN1   = 3;
+                    if (idxCumulJour < 0) idxCumulJour = idxCumulN1 + 1;
+                    if (idxAnnee     < 0) idxAnnee     = idxCumulJour + 1;
+
                     const lastColIdx = oTable.getColumns().length - 1;
 
-                    // libellés bleus (comme avant)
+                    // Textes existants pour l’overlay bleu de gauche
                     const txtBefore = (PROJET_TYPE === "Z0") ? "Impact super projet ajustement"
-                                    : (PROJET_TYPE === "Z1") ? "Impact projet ajustement"
-                                    : "Impact projet ajustement";
-                    const txtLast   = (PROJET_TYPE === "Z0") ? "Impact super projet PAT"
-                                    : (PROJET_TYPE === "Z1") ? "Impact projet PAT"
-                                    : "Impact projet PAT";
+                        : (PROJET_TYPE === "Z1") ? "Impact projet ajustement"
+                            : "Impact projet ajustement";
+                    const txtLast = (PROJET_TYPE === "Z0") ? "Impact super projet PAT"
+                        : (PROJET_TYPE === "Z1") ? "Impact projet PAT"
+                            : "Impact projet PAT";
 
-                    // helpers
+                    // Helper générique
                     const paintBlock = (oRow, fromIdx, toIdx, opts) => {
+                        if (toIdx < fromIdx) return; // rien à peindre
                         const $row = oRow.$();
                         if (!$row.length) return;
                         const $cells = $row.find('td[data-sap-ui-colid]');
                         if (!$cells.length) { setTimeout(() => this._styleMergedRecapRow(), 50); return; }
 
-                        // colorer + masquer contenu (sauf 1ʳᵉ si showFirst)
                         for (let i = fromIdx; i <= toIdx && i < $cells.length; i++) {
                         const td = $cells.get(i);
-                        td.style.background = opts.bg; // bleu ou blanc
+                        td.style.background = opts.bg;
                         const inner = td.querySelector(".sapMText, .sapMLnk");
                         if (inner) inner.style.visibility = (opts.showFirst && i === fromIdx) ? "" : "hidden";
                         }
 
-                        // largeur du bloc
                         let totalW = 0;
                         for (let i = fromIdx; i <= toIdx && i < $cells.length; i++) {
-                        const w = $cells.get(i).getBoundingClientRect().width;
-                        totalW += (isFinite(w) ? w : 0);
+                            const w = $cells.get(i).getBoundingClientRect().width;
+                            totalW += (isFinite(w) ? w : 0);
                         }
                         if (totalW <= 0) { setTimeout(() => this._styleMergedRecapRow(), 50); return; }
 
@@ -929,7 +933,7 @@ sap.ui.define(
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        color: opts.text ? "#fff" : "transparent",   // texte blanc sur le bleu, rien sinon
+                        color: opts.text ? "#fff" : "transparent",
                         fontWeight: opts.text ? "600" : "normal",
                         fontSize: "0.8rem",
                         backgroundColor: opts.bg,
@@ -941,18 +945,24 @@ sap.ui.define(
                     };
 
                     const rBefore = aRowsWithCtx[aRowsWithCtx.length - 2];
-                    const rLast   = aRowsWithCtx[aRowsWithCtx.length - 1];
+                    const rLast = aRowsWithCtx[aRowsWithCtx.length - 1];
 
-                    // --- GAUCHE BLEU (0 → Cumul N-1), AVEC TEXTE (comme avant) ---
-                    paintBlock(rBefore, 0, idxCumulN1,   { bg: "#333399", className: "sfgpOverlay", text: txtBefore, showFirst: true });
-                    paintBlock(rLast,   0, idxCumulN1,   { bg: "#333399", className: "sfgpOverlay", text: txtLast,   showFirst: true });
+                    // === FUSION GAUCHE BLEU ===
+                    // Désormais on s'arrête AVANT "Cumul N-1" → 3 premières colonnes (Desc + 2 budgets)
+                    const leftEnd = Math.max(0, idxCumulN1 - 1);
+                    paintBlock(rBefore, 0, leftEnd, { bg:"#333399", className:"sfgpOverlay",      text: txtBefore, showFirst:true });
+                    paintBlock(rLast,   0, leftEnd, { bg:"#333399", className:"sfgpOverlay",      text: txtLast,   showFirst:true });
 
-                    // --- LAISSE "Cumul à ce jour" visible (aucune action) ---
+                    // === COLONNES VISIBLES AU CENTRE ===
+                    // On laisse visibles : "Cumul N-1" (idxCumulN1), "Cumul à ce jour" (idxCumulJour), "Année en cours" (idxAnnee)
+                    // → rien à faire ici, on ne masque pas ces trois colonnes.
 
-                    // --- DROITE BLANCHE (après "Cumul à ce jour" → dernière), SANS TEXTE ---
-                    if (idxCumulJour + 1 <= lastColIdx) {
-                        paintBlock(rBefore, idxCumulJour + 1, lastColIdx, { bg: "#ffffff", className: "sfgpOverlayRight", showFirst: false });
-                        paintBlock(rLast,   idxCumulJour + 1, lastColIdx, { bg: "#ffffff", className: "sfgpOverlayRight", showFirst: false });
+                    // === FUSION DROITE BLANCHE ===
+                    // Elle démarre maintenant APRÈS "Année en cours"
+                    const rightStart = idxAnnee + 1;
+                    if (rightStart <= lastColIdx) {
+                        paintBlock(rBefore, rightStart, lastColIdx, { bg:"#ffffff", className:"sfgpOverlayRight", showFirst:false });
+                        paintBlock(rLast,   rightStart, lastColIdx, { bg:"#ffffff", className:"sfgpOverlayRight", showFirst:false });
                     }
                 }
             },
@@ -1165,8 +1175,11 @@ sap.ui.define(
             onRowsUpdatedBudgetPXRecetteTab() {
                 var stableName = "BudgetPxRecettesTreeTableId";
                 this.onBudgetPXSubCUpdated(stableName);
-            }
+            },
 
+            formatSTIEditable: function (bEditable, sIsSTI) {
+                return bEditable && sIsSTI !== "X";
+            }
         });
 
     });
