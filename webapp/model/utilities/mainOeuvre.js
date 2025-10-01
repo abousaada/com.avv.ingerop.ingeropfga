@@ -101,7 +101,7 @@ sap.ui.define([], function () {
         if (profil) {
           const columnId = this._CONSTANT_COLUMN_PREFIXE + profil;
           const profilHeader = { tjm, profilDescription, profil, columnId };
-          if (!treeHeader[columnId]) {
+          if (!treeHeader[columnId] || parseFloat(tjm)) {
             treeHeader[columnId] = { ...profilHeader };
           }
 
