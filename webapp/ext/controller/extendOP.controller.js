@@ -848,8 +848,7 @@ sap.ui.define(
             _styleMergedRecapRow: function () {
                 if (PROJET_TYPE === "Z0" || PROJET_TYPE === "Z1") {
 
-                    // sap.ui.core.BusyIndicator.show();
-                    const oTable = this.oView.byId("idRecapTable");
+                    const oTable   = this.oView.byId("idRecapTable");
                     const oBinding = oTable && oTable.getBinding("rows");
                     if (!oBinding) return;
 
@@ -861,21 +860,27 @@ sap.ui.define(
 
                     const norm = s => (s || "").trim().toLowerCase();
 
-                    // repères
-                    let idxCumulN1 = -1;        // "Cumul N-1" (borne gauche bleue)
-                    let idxCumulJour = -1;      // "Cumul à ce jour" (la SEULE cellule visible)
+                    // Indices colonnes clés
+                    let idxCumulN1 = -1;        // "Cumul N-1"
+                    let idxCumulJour = -1;      // "Cumul à ce jour"
+                    let idxAnnee = -1;          // "Année en cours"
+
                     oTable.getColumns().forEach((c, i) => {
                         const t = c.getLabel && c.getLabel().getText && c.getLabel().getText();
                         const tl = norm(t);
-                        if (tl === "cumul n-1")       idxCumulN1   = i;
-                        if (tl === "cumul à ce jour") idxCumulJour = i;
+                        if (tl === "cumul n-1")        idxCumulN1   = i;
+                        if (tl === "cumul à ce jour")  idxCumulJour = i;
+                        if (tl === "année en cours")   idxAnnee     = i;
                     });
 
-                    if (idxCumulN1   < 0) idxCumulN1   = 3;                         // fallback
-                    if (idxCumulJour < 0) idxCumulJour = idxCumulN1 + 1;            // juste après
+                    // Fallbacks prudents si libellés changent
+                    if (idxCumulN1   < 0) idxCumulN1   = 3;
+                    if (idxCumulJour < 0) idxCumulJour = idxCumulN1 + 1;
+                    if (idxAnnee     < 0) idxAnnee     = idxCumulJour + 1;
+
                     const lastColIdx = oTable.getColumns().length - 1;
 
-                    // libellés bleus (comme avant)
+                    // Textes existants pour l’overlay bleu de gauche
                     const txtBefore = (PROJET_TYPE === "Z0") ? "Impact super projet ajustement"
                                     : (PROJET_TYPE === "Z1") ? "Impact projet ajustement"
                                     : "Impact projet ajustement";
@@ -883,22 +888,21 @@ sap.ui.define(
                                     : (PROJET_TYPE === "Z1") ? "Impact projet PAT"
                                     : "Impact projet PAT";
 
-                    // helpers
+                    // Helper générique
                     const paintBlock = (oRow, fromIdx, toIdx, opts) => {
+                        if (toIdx < fromIdx) return; // rien à peindre
                         const $row = oRow.$();
                         if (!$row.length) return;
                         const $cells = $row.find('td[data-sap-ui-colid]');
                         if (!$cells.length) { setTimeout(() => this._styleMergedRecapRow(), 50); return; }
 
-                        // colorer + masquer contenu (sauf 1ʳᵉ si showFirst)
                         for (let i = fromIdx; i <= toIdx && i < $cells.length; i++) {
                         const td = $cells.get(i);
-                        td.style.background = opts.bg; // bleu ou blanc
+                        td.style.background = opts.bg;
                         const inner = td.querySelector(".sapMText, .sapMLnk");
                         if (inner) inner.style.visibility = (opts.showFirst && i === fromIdx) ? "" : "hidden";
                         }
 
-                        // largeur du bloc
                         let totalW = 0;
                         for (let i = fromIdx; i <= toIdx && i < $cells.length; i++) {
                         const w = $cells.get(i).getBoundingClientRect().width;
@@ -922,7 +926,7 @@ sap.ui.define(
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        color: opts.text ? "#fff" : "transparent",   // texte blanc sur le bleu, rien sinon
+                        color: opts.text ? "#fff" : "transparent",
                         fontWeight: opts.text ? "600" : "normal",
                         fontSize: "0.8rem",
                         backgroundColor: opts.bg,
@@ -936,16 +940,22 @@ sap.ui.define(
                     const rBefore = aRowsWithCtx[aRowsWithCtx.length - 2];
                     const rLast   = aRowsWithCtx[aRowsWithCtx.length - 1];
 
-                    // --- GAUCHE BLEU (0 → Cumul N-1), AVEC TEXTE (comme avant) ---
-                    paintBlock(rBefore, 0, idxCumulN1,   { bg: "#333399", className: "sfgpOverlay", text: txtBefore, showFirst: true });
-                    paintBlock(rLast,   0, idxCumulN1,   { bg: "#333399", className: "sfgpOverlay", text: txtLast,   showFirst: true });
+                    // === FUSION GAUCHE BLEU ===
+                    // Désormais on s'arrête AVANT "Cumul N-1" → 3 premières colonnes (Desc + 2 budgets)
+                    const leftEnd = Math.max(0, idxCumulN1 - 1);
+                    paintBlock(rBefore, 0, leftEnd, { bg:"#333399", className:"sfgpOverlay",      text: txtBefore, showFirst:true });
+                    paintBlock(rLast,   0, leftEnd, { bg:"#333399", className:"sfgpOverlay",      text: txtLast,   showFirst:true });
 
-                    // --- LAISSE "Cumul à ce jour" visible (aucune action) ---
+                    // === COLONNES VISIBLES AU CENTRE ===
+                    // On laisse visibles : "Cumul N-1" (idxCumulN1), "Cumul à ce jour" (idxCumulJour), "Année en cours" (idxAnnee)
+                    // → rien à faire ici, on ne masque pas ces trois colonnes.
 
-                    // --- DROITE BLANCHE (après "Cumul à ce jour" → dernière), SANS TEXTE ---
-                    if (idxCumulJour + 1 <= lastColIdx) {
-                        paintBlock(rBefore, idxCumulJour + 1, lastColIdx, { bg: "#ffffff", className: "sfgpOverlayRight", showFirst: false });
-                        paintBlock(rLast,   idxCumulJour + 1, lastColIdx, { bg: "#ffffff", className: "sfgpOverlayRight", showFirst: false });
+                    // === FUSION DROITE BLANCHE ===
+                    // Elle démarre maintenant APRÈS "Année en cours"
+                    const rightStart = idxAnnee + 1;
+                    if (rightStart <= lastColIdx) {
+                        paintBlock(rBefore, rightStart, lastColIdx, { bg:"#ffffff", className:"sfgpOverlayRight", showFirst:false });
+                        paintBlock(rLast,   rightStart, lastColIdx, { bg:"#ffffff", className:"sfgpOverlayRight", showFirst:false });
                     }
                 }
             },
