@@ -25,7 +25,7 @@
         <table:rowMode>
             <rm:Auto minRowCount= "{localModel>/tableSettings/minRowCount}" />
         </table:rowMode>
-        <table:extension>
+        <!-- <table:extension>
             <Toolbar class="sapMTBHeader-CTX">
                 <ToolbarSpacer />
                 <Button
@@ -36,7 +36,7 @@
                     visible="{ui>/editable}"
                 />
             </Toolbar>
-        </table:extension>
+        </table:extension> -->
         <!-- <table:rowSettingsTemplate>
             <table:RowSettings
                 highlight="{= ${budget>Status} === 'Non acquis' ? 'Error' : 'None'}"
