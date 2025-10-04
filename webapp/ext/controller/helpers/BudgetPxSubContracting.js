@@ -60,17 +60,17 @@ sap.ui.define([
 
         reCalcColumnTotalById(columnId) {
             // const columnId = this._CONSTANT_DYNAMIC_PREFIX + subContractorId;
-            const [root]  = this.getUtilitiesModel().getPxSubContractingHierarchy();
+            const [root] = this.getUtilitiesModel().getPxSubContractingHierarchy();
             const groupement = root.children.slice(0, -4);
             const globalTotal = root.children.at(-4);
-            let   cumulTotal = root.children.at(-3);
+            let cumulTotal = root.children.at(-3);
             const percentTotal = root.children.at(-2);
             const radTotal = root.children.at(-1);
 
             globalTotal[columnId] = 0;
             globalTotal["budgetHorsFrais"] = 0;
             globalTotal["budgetYCFrais"] = 0;
-            
+
             // 1. Recalculer chaque total de groupement
             for (const group of groupement) {
                 if (!group.isGroupe || !Array.isArray(group.children)) continue;
@@ -102,13 +102,13 @@ sap.ui.define([
             // cumulTotal["budgetYCFrais"]     = globalTotal["budgetYCFrais"] * 0.1;
             cumulTotal = this.calcNewTotalFinAffaire(cumulTotal);
 
-            percentTotal[columnId]          = globalTotal[columnId] > 0 ? ( cumulTotal[columnId] / globalTotal[columnId] ) : 0 ;
-            percentTotal["budgetHorsFrais"] = globalTotal["budgetHorsFrais"] > 0 ? ( cumulTotal["budgetHorsFrais"] / globalTotal["budgetHorsFrais"] ) : 0;
-            percentTotal["budgetYCFrais"]   = globalTotal["budgetYCFrais"] > 0 ? ( cumulTotal["budgetYCFrais"] / globalTotal["budgetYCFrais"] ) : 0;
+            percentTotal[columnId] = globalTotal[columnId] > 0 ? (cumulTotal[columnId] / globalTotal[columnId]) : 0;
+            percentTotal["budgetHorsFrais"] = globalTotal["budgetHorsFrais"] > 0 ? (cumulTotal["budgetHorsFrais"] / globalTotal["budgetHorsFrais"]) : 0;
+            percentTotal["budgetYCFrais"] = globalTotal["budgetYCFrais"] > 0 ? (cumulTotal["budgetYCFrais"] / globalTotal["budgetYCFrais"]) : 0;
 
-            radTotal[columnId]          = globalTotal[columnId] - cumulTotal[columnId];
+            radTotal[columnId] = globalTotal[columnId] - cumulTotal[columnId];
             radTotal["budgetHorsFrais"] = globalTotal["budgetHorsFrais"] - cumulTotal["budgetHorsFrais"];
-            radTotal["budgetYCFrais"]   = globalTotal["budgetYCFrais"] - cumulTotal["budgetYCFrais"];
+            radTotal["budgetYCFrais"] = globalTotal["budgetYCFrais"] - cumulTotal["budgetYCFrais"];
 
             root.children = [...groupement, globalTotal, cumulTotal, percentTotal, radTotal];
 
@@ -157,9 +157,9 @@ sap.ui.define([
             return subContractorPartner ? subContractorPartner : 1;
         },
 
-        navToGLAccount(oEvent){
+        navToGLAccount(oEvent) {
             var oItem = oEvent.getSource().getBindingContext("utilities").getObject();
-            
+
             var sColumnId = oEvent.getSource().data("columnId"); // from BudgetPx view
 
             // Determine which GLAccount to show based on the clicked column
@@ -223,8 +223,15 @@ sap.ui.define([
                     WBSElementExternalID: wbsElements
                 };*/
 
+                const fiscalPeriods = [];
+                for (let m = 1; m <= month; m++) {
+                    fiscalPeriods.push(`${year}0${m.toString().padStart(2, "0")}`);
+
+                }
+
                 var params = {
-                    FiscalYearPeriod: `${year}0${month}`,
+                    //FiscalYearPeriod: `${year}0${month}`,
+                    FiscalYearPeriod: fiscalPeriods,
                     GLAccount: glAccounts,
                     WBSElementExternalID: wbsElements
                 };
@@ -281,21 +288,21 @@ sap.ui.define([
             }
         },
 
-        isFloat(input){
+        isFloat(input) {
             const normalized = input.trim().replace(',', '.');
             // Regex : entier ou float avec max 2 décimales
             const regex = /^-?\d+(\.\d{1,2})?$/;
             return regex.test(normalized);
         },
 
-        onCoefChange(oEvent){
+        onCoefChange(oEvent) {
             const newValue = oEvent.getParameter("newValue");
-            if(this.isFloat(newValue)){
+            if (this.isFloat(newValue)) {
                 const subContractorCoef = Number.parseFloat(newValue);
                 const columnHeader = this.getUtilitiesModel().getPxSubContractingHeader();
                 const { columnId } = oEvent.getSource().data();
                 const newHeader = columnHeader.map(h => {
-                    if(h.columnId === columnId){ return {...h, subContractorCoef }; }
+                    if (h.columnId === columnId) { return { ...h, subContractorCoef }; }
                     return h;
                 });
                 this.getUtilitiesModel().setPxSubContractingHeader(newHeader);
@@ -303,7 +310,7 @@ sap.ui.define([
             }
         },
 
-        async onChangeSubContractor(oEvent){
+        async onChangeSubContractor(oEvent) {
             try {
                 const { columnId } = oEvent.getSource().data()
                 const newContractor = await this.getNewContractorId();
@@ -326,8 +333,8 @@ sap.ui.define([
                                 text: subContractorId,
                                 visible: "{= !${ui>/editable} }",
                             }),
-                            new sap.m.Input({ 
-                                value: subContractorId, 
+                            new sap.m.Input({
+                                value: subContractorId,
                                 showValueHelp: true,
                                 valueHelpOnly: true,
                                 visible: "{ui>/editable}",
@@ -343,8 +350,8 @@ sap.ui.define([
                                 visible: "{= !${ui>/editable} }",
                             }),
                             new sap.m.Input({
-                                value: subContractorCoef, 
-                                visible: "{ui>/editable}" ,
+                                value: subContractorCoef,
+                                visible: "{ui>/editable}",
                                 change: this.onCoefChange.bind(this)
                             }).data(this._CONSTANT_COLUMN_ID, sColumnId)
                         ]
@@ -359,8 +366,8 @@ sap.ui.define([
                                     { path: "utilities>" + columnId },
                                     { path: "utilities>isPercent" }
                                 ],
-                                formatter: function(total, percent) {
-                                    return percent ? total + "%": total;
+                                formatter: function (total, percent) {
+                                    return percent ? total + "%" : total;
                                 }
                             },
                             visible: "{= !!${utilities>isTotal} && !${utilities>isCumul} }"
@@ -447,14 +454,14 @@ sap.ui.define([
             SubContractingTree.insertColumn(oColumn, aColumns.length - 2);
         },
 
-        changeColumnContractorBydId(supplierData, columnId){
+        changeColumnContractorBydId(supplierData, columnId) {
             const oldPxSubContractingHeader = this.getUtilitiesModel().getPxSubContractingHeader();
             const filterSubContractingHeader = oldPxSubContractingHeader.filter(contractor => contractor.columnId != columnId);
             this.getUtilitiesModel().setPxSubContractingHeader([...filterSubContractingHeader, supplierData]);
-            
+
             const SubContractingTree = this.oView.byId(this._CONSTANT_EXT_CONTRACTOR_TABLE_ID);
-            const [selectedColumn] = SubContractingTree.getColumns().filter(column => column.data.columnId === columnId );
-            if(selectedColumn){
+            const [selectedColumn] = SubContractingTree.getColumns().filter(column => column.data.columnId === columnId);
+            if (selectedColumn) {
                 selectedColumn.data("columnId", supplierData.columnId);
             }
             this.reCalcColumnTotalById(columnId);

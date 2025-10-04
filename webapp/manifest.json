@@ -41,7 +41,8 @@
           "odataVersion": "2.0"
         }
       }
-    }
+    },
+    "description": "Application FGA"
   },
   "sap.ui": {
     "technology": "UI5",
@@ -419,7 +420,8 @@
             },
             "tableSettings": {
               "type": "AnalyticalTable",
-              "multiSelect": true
+              "multiSelect": true,
+              "copy": false
             },
             "dataLoadSettings": {
               "loadDataOnAppLaunch": "always"

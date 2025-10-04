@@ -619,8 +619,14 @@ sap.ui.define([
                 // 5. Create navigation
                 const oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
 
+                const fiscalPeriods = [];
+                for (let m = 1; m <= month; m++) {
+                    fiscalPeriods.push(`${year}0${m.toString().padStart(2, "0")}`);
+
+                }
                 var params = {
-                    FiscalYearPeriod: `${year}0${month}`,
+                    //FiscalYearPeriod: `${year}0${month}`,
+                    FiscalYearPeriod: fiscalPeriods,
                     GLAccount: glAccounts,
                     WBSElementExternalID: wbsElements
                 };
