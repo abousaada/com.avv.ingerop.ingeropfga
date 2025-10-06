@@ -566,6 +566,8 @@ sap.ui.define([
             var pSTIs = this.getView().getModel("utilities").getProperty("/pSTI");
             var period = this.getView().getModel("utilities").getProperty("/period");
 
+            var BusinessNo = this.getView().getModel("utilities").getBusinessNo();
+
             try {
 
                 var matchingPSTI = pSTIs.find(function (pSTI) {
@@ -610,7 +612,7 @@ sap.ui.define([
                     throw error;
                 }
 
-                const wbsElements = [oData.business_no];
+                const wbsElements = [BusinessNo];
                 if (missions && missions.length > 0) {
                     // Add missions to the WBS elements array
                     wbsElements.push(...missions.map(mission => mission.MissionId));
