@@ -405,7 +405,7 @@ sap.ui.define([
             Reflet: {
                 identifier: "Identification",
                 defaultValue: { create: null, modify: null },
-                visible: { create: true, modify: false },
+                visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
                 mandatory: { type: [], default: false, create: true, modify: true },
                 action: null
