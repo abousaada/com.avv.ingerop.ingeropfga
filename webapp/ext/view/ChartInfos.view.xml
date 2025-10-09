@@ -10,10 +10,32 @@
         defaultSpan="L4 M4 S12"
         id="idGridCharts"
     >
-        <core:Fragment
-            fragmentName="com.avv.ingerop.ingeropfga.ext.view.chart.OpportTable"
-            type="XML"
-        />
+        <VBox class="sapUiSmallMargin">
+            <!-- First Table with Title -->
+            <Title
+                text="Opportunités :"
+                class="sapUiSmallMarginBottom"
+                level="H2"
+            />
+            <core:Fragment
+                fragmentName="com.avv.ingerop.ingeropfga.ext.view.chart.OpportTable"
+                type="XML"
+            />
+
+            <!-- Spacing between tables -->
+            <VBox height="2rem" />
+
+            <!-- Second Table with Title -->
+            <Title
+                text="Risques :"
+                class="sapUiSmallMarginBottom"
+                level="H2"
+            />
+            <core:Fragment
+                fragmentName="com.avv.ingerop.ingeropfga.ext.view.chart.RisqueTable"
+                type="XML"
+            />
+        </VBox>
         <core:Fragment
             fragmentName="com.avv.ingerop.ingeropfga.ext.view.chart.Progress"
             type="XML"
