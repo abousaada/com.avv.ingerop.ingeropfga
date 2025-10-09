@@ -3,7 +3,7 @@
                         xmlns:layout="sap.ui.layout"
                         xmlns:semantic="sap.f.semantic">
 
-    <Table id="risqueTable" inset="false" items="{utilities>/opport}">
+    <Table id="risqueTable" inset="false" items="{utilities>/risque}">
         <columns>
             <Column>
                 <Text text="Description"/>
@@ -17,7 +17,7 @@
                 <cells>
                     <Text text="{utilities>description}" 
                           />
-                    <Text text="{utilities>valueOpport}"/>
+                    <Text text="{utilities>valueRisque}"/>
                 </cells>
             </ColumnListItem>
         </items>

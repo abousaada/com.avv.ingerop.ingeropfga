@@ -62,12 +62,13 @@ sap.ui.define([
 
             async getBEDatas() {
                 try {
-                    const [missions, previsions, recaps, opport, charts, chartsadddata, pxRecettes, pxAutres, pxSubContracting, pxMainOeuvre, pxSTI, pSTI, notes, sfgp] = await Promise.all([
+                    const [missions, previsions, recaps, opport, risque, charts, chartsadddata, pxRecettes, pxAutres, pxSubContracting, pxMainOeuvre, pxSTI, pSTI, notes, sfgp] = await Promise.all([
 
                         this.getBEMissions(),
                         this.getBEPrevisions(),
                         this.getBERecaps(),
                         this.getBEOpport(),
+                        this.getBERisque(),
                         this.getBECharts(),
                         this.getBEChartsAdditionalData(),
 
@@ -88,6 +89,7 @@ sap.ui.define([
                     this.setRecaps(recaps || []);
                     this.setPrevisions(previsions || []);
                     this.setOpport(opport || []);
+                    this.setRisque(risque || []);
                     this.setCharts(charts || []);
                     this.setChartsAdditionalData(chartsadddata || []);
 
@@ -658,9 +660,24 @@ sap.ui.define([
                     const urlBusinessNo = encodeURIComponent(businessNo);
                     const urlPeriod = encodeURIComponent(period);
                     const sPath = `/zc_fga_opport(p_businessno='${urlBusinessNo}',p_period='${urlPeriod}')/Set`;
-                    console.log(`retrieve recaps with period: ${period} and BusinessNo: ${businessNo}`);
+                    console.log(`retrieve opport with period: ${period} and BusinessNo: ${businessNo}`);
                     const opport = await this.read(sPath);
                     return opport?.results || [];
+                } catch (error) {
+                    console.log(error);
+                }
+            },
+
+            async getBERisque() {
+                try {
+                    const businessNo = this.getBusinessNo();
+                    const period = this.getPeriod();
+                    const urlBusinessNo = encodeURIComponent(businessNo);
+                    const urlPeriod = encodeURIComponent(period);
+                    const sPath = `/ZC_FGA_RISQUE(p_businessno='${urlBusinessNo}',p_period='${urlPeriod}')/Set`;
+                    console.log(`retrieve risque with period: ${period} and BusinessNo: ${businessNo}`);
+                    const risque = await this.read(sPath);
+                    return risque?.results || [];
                 } catch (error) {
                     console.log(error);
                 }

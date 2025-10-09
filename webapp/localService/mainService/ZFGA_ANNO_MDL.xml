@@ -680,6 +680,12 @@
             <Annotations Target="ZFGA_SRV.ZC_FGA_PxstintType/Regroupement">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGA_RISQUEType/p_businessno">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGA_RISQUEType/p_period">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_FGA_SFGP_REPORTType/p_businessno">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
@@ -745,6 +751,9 @@
                         <PropertyPath>STILinkedCount</PropertyPath>
                     </Collection>
                 </Annotation>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_STIType/status">
+                <Annotation Term="UI.Hidden"/>
             </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_STIType/business_e_SDate">
                 <Annotation Term="UI.Hidden"/>
@@ -904,9 +913,6 @@
                 <Annotation Term="UI.Identification">
                     <Collection>
                         <Record Type="UI.DataField">
-                            <PropertyValue Property="Value" Path="Criticality"/>
-                        </Record>
-                        <Record Type="UI.DataField">
                             <PropertyValue Property="Value" Path="business_no_e"/>
                         </Record>
                     </Collection>
@@ -917,10 +923,10 @@
                             <PropertyValue Property="Value" Path="id_formulaire"/>
                         </Record>
                         <Record Type="UI.DataField">
-                            <PropertyValue Property="Value" Path="proprio_sti"/>
+                            <PropertyValue Property="Value" Path="status_text"/>
                         </Record>
                         <Record Type="UI.DataField">
-                            <PropertyValue Property="Value" Path="status"/>
+                            <PropertyValue Property="Value" Path="proprio_sti"/>
                         </Record>
                         <Record Type="UI.DataField">
                             <PropertyValue Property="Value" Path="stidescr"/>
@@ -976,16 +982,13 @@
                 <Annotation Term="UI.LineItem">
                     <Collection>
                         <Record Type="UI.DataField">
-                            <PropertyValue Property="Value" Path="Criticality"/>
-                        </Record>
-                        <Record Type="UI.DataField">
                             <PropertyValue Property="Value" Path="id_formulaire"/>
                         </Record>
                         <Record Type="UI.DataField">
-                            <PropertyValue Property="Value" Path="proprio_sti"/>
+                            <PropertyValue Property="Value" Path="status_text"/>
                         </Record>
                         <Record Type="UI.DataField">
-                            <PropertyValue Property="Value" Path="status"/>
+                            <PropertyValue Property="Value" Path="proprio_sti"/>
                         </Record>
                         <Record Type="UI.DataField">
                             <PropertyValue Property="Value" Path="stidescr"/>
@@ -1052,9 +1055,9 @@
                 </Annotation>
                 <Annotation Term="UI.SelectionFields">
                     <Collection>
+                        <PropertyPath>status_text</PropertyPath>
                         <PropertyPath>id_formulaire</PropertyPath>
                         <PropertyPath>business_no_e</PropertyPath>
-                        <PropertyPath>status</PropertyPath>
                         <PropertyPath>business_e_t</PropertyPath>
                         <PropertyPath>business_e_cmp</PropertyPath>
                         <PropertyPath>business_e_cdp</PropertyPath>
@@ -1180,6 +1183,9 @@
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
             <Annotations Target="ZFGA_SRV.ZI_FGA_TYPE_VHType/spras">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_STI_STATUS_VHType/language">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
         </Schema>

@@ -8,6 +8,7 @@ sap.ui.define([], function() {
         "recaps": [],
         "previsions": [],
         "opport": [],
+        "risque": [],
         "charts": [],
         "chartsAdditionalData": [],
         "pxAutres": [],
