@@ -16,6 +16,11 @@ sap.ui.define(
 
         return {
 
+            onAfterRendering: function () {
+                // Always clear forecast mode when coming back to the list
+                this.getView().getModel("utilities").setProperty("/isForecastMode", false);
+            },
+
             onSTIPress: function (oEvent) {
                 try {
                     var aFAGs = this.getSelectedBusinessNumbers();

@@ -734,21 +734,32 @@ sap.ui.define([
                 key: "AfterFacet::ZC_FGASet::GeneralInfo::Section",
                 visible: {
                     create: false,
-                    modify: true
+                    modify: true,
+                    forecast: true,
+                }
+            },
+            tabRacap: {
+                key: "AfterFacet::ZC_FGASet::GeneralInfo::Section",
+                visible: {
+                    create: false,
+                    modify: true,
+                    forecast: false,
                 }
             },
             budget: {
                 key: "AfterFacet::ZC_FGASet::TableInfo::Section",
                 visible: {
                     create: false,
-                    modify: true
+                    modify: true,
+                    forecast: false,
                 }
             },
             graphic: {
                 key: "BeforeFacet::ZC_FGASet::TableInfo::Section",
                 visible: {
                     create: false,
-                    modify: true
+                    modify: true,
+                    forecast: false,
                 }
             },
             note: {
@@ -756,7 +767,8 @@ sap.ui.define([
                 key: "com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--template:::ObjectPageSection:::AfterFacetExtensionSectionWithKey:::sFacet::GeneralInfo:::sEntitySet::ZC_FGASet:::sFacetExtensionKey::1",
                 visible: {
                     create: false,
-                    modify: true
+                    modify: true,
+                    forecast: false,
                 }
             },
 
@@ -765,10 +777,18 @@ sap.ui.define([
                 key: "com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--template:::ObjectPageSection:::AfterFacetExtensionSectionWithKey:::sFacet::TableInfo:::sEntitySet::ZC_FGASet:::sFacetExtensionKey::1",
                 visible: {
                     create: false,
-                    modify: true
+                    modify: true,
+                    forecast: false,
                 }
             },
-            
+            prevision: {
+                key: "AfterFacet::ZC_FGASet::Prevision::Section",
+                visible: {
+                    create: false,
+                    modify: false,
+                    forecast: true,
+                }
+            },
             // com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--template:::ObjectPageSection:::AfterFacetExtensionSectionWithKey:::sFacet::TableInfo:::sEntitySet::ZC_FGASet:::sFacetExtensionKey::1
 
             // com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--objectPage-anchBar-com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--template:::ObjectPageSection:::AfterFacetExtensionSectionWithKey:::sFacet::GeneralInfo:::sEntitySet::ZC_FGASet:::sFacetExtensionKey::1-anchor

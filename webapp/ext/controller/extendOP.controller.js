@@ -51,6 +51,9 @@ sap.ui.define(
 
                     this._getExtensionAPI().getTransactionController().attachAfterCancel(this._resetViewSetUp.bind(this));
 
+                    const oRouter = this._getOwnerComponent().getRouter();
+                    oRouter.attachRoutePatternMatched(this._onRoutePatternMatched.bind(this));
+
                     // Initializes the Create Missions tab
                     this._missionsTab = new Missions();
                     this._missionsTab.oView = this.getView();
@@ -82,6 +85,11 @@ sap.ui.define(
 
                     window.addEventListener("popstate", this._cleanModification.bind(this));
                     window.addEventListener("onbeforeunload", this._cleanModification.bind(this));
+
+                    /*window.addEventListener("beforeunload", () => {
+                        this._cleanModification();
+                        this._cleanPrevisionel(); 
+                    });*/
 
 
                     this._resetRecapMerge = this._resetRecapMerge.bind(this);
@@ -184,6 +192,22 @@ sap.ui.define(
                         return Promise.reject(error);
                     }
                 },
+
+            },
+
+            _onRoutePatternMatched: function (oEvent) {
+                const sRouteName = oEvent.getParameter("name");
+                if (sRouteName === "rootquery") {
+                    this._cleanPrevisionel();
+                }
+            },
+
+            _cleanPrevisionel: function () {
+                // This is triggered when user navigates back to the List Report
+                const oUtilitiesModel = this.getView().getModel("utilities");
+                if (oUtilitiesModel) {
+                    oUtilitiesModel.setProperty("/isForecastMode", false);
+                }
             },
 
             _cleanModification() {
@@ -1191,7 +1215,10 @@ sap.ui.define(
 
             formatSTIEditable: function (bEditable, sIsSTI) {
                 return bEditable && sIsSTI !== "X";
-            }
+            },
+
+
+
         });
 
     });

@@ -7,8 +7,8 @@ sap.ui.define([
     "use strict";
 
     return Controller.extend("com.avv.ingerop.ingeropfga.ext.controller.helpers.ExtendOPUiManage", {
-        
-        _setFieldByType(type){
+
+        _setFieldByType(type) {
             this._setMandatoryFieldByType(type);
             this._setVisibleFieldByType(type);
             this._setVisibleFieldGroupByType(type);
@@ -20,8 +20,8 @@ sap.ui.define([
 
             // const type = context.getProperty("BusinessType");
             const type = context.getProperty("Type");
-            
-            if(Helper.isProject(type)){
+
+            if (Helper.isProject(type)) {
                 this._setProjectFieldEnabled();
                 this._setProjectFieldVisible();
                 // this._setProjectFieldGroupVisible(type);
@@ -36,7 +36,7 @@ sap.ui.define([
             this._setFieldDefaultValue(context);
         },
 
-        _setFieldDefaultValue(context){
+        _setFieldDefaultValue(context) {
             const isCreateMode = this.oView.getModel("ui").getProperty("/createMode");
             const model = this.oView.getModel();
             const path = context.getPath();
@@ -44,27 +44,37 @@ sap.ui.define([
                 ({ identifier, field, defaultValue }) => {
                     const propertyPath = "/" + field
                     const fieldValue = context.getProperty(propertyPath);
-                    if(!fieldValue && defaultValue) {
-                        model.setProperty(path + propertyPath , defaultValue);
+                    if (!fieldValue && defaultValue) {
+                        model.setProperty(path + propertyPath, defaultValue);
                     }
                 });
             //set Default Label By Currency
             const currency = context.getProperty("Currency");
-            if(!!currency){
+            if (!!currency) {
                 this._setCurrencyLabel(currency);
             }
         },
 
         _setTabsVisible() {
             const isCreateMode = this.oView.getModel("ui").getProperty("/createMode");
-            Helper.getTabVisibilityByMode(isCreateMode).map(({ key, visible }) => {
+            const isForecastMode = this.oView.getModel("utilities").getProperty("/isForecastMode");
+
+            // Determine the current mode
+            let currentMode;
+            if (isForecastMode) {
+                currentMode = 'forecast';
+            } else {
+                currentMode = isCreateMode; // This will be true/false
+            }
+
+            Helper.getTabVisibilityByMode(currentMode).map(({ key, visible }) => {
                 this.oView.byId(key)?.setVisible(visible)
             });
         },
 
-        _setProjectFieldVisible(){
+        _setProjectFieldVisible() {
             const isCreateMode = this.oView.getModel("ui").getProperty("/createMode");
-            if(!isCreateMode){
+            if (!isCreateMode) {
                 Helper.getProjectHeaderFieldList().map(
                     ({ identifier, field, visible }) => {
                         this._getField(identifier, field)?.setVisible(visible);
@@ -73,9 +83,9 @@ sap.ui.define([
             }
         },
 
-        _setProjectFieldGroupVisible(sType){
+        _setProjectFieldGroupVisible(sType) {
             const isCreateMode = this.oView.getModel("ui").getProperty("/createMode");
-            if(!isCreateMode){
+            if (!isCreateMode) {
                 // bloc report SFGP
                 var oFieldGroup = this.oView.byId("com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--template:::ObjectPageSection:::AfterFacetExtensionSectionWithKey:::sFacet::TableInfo:::sEntitySet::ZC_FGASet:::sFacetExtensionKey::1");
                 if (oFieldGroup) {
@@ -105,10 +115,10 @@ sap.ui.define([
             });
 
             const uomEditable = [
-                {identifier:"Facturation"   , field:"VAT"},
-                {identifier:"Travaux"       , field:"Ingtrvx"}
+                { identifier: "Facturation", field: "VAT" },
+                { identifier: "Travaux", field: "Ingtrvx" }
             ];
-            uomEditable.forEach(({identifier, field}) => {
+            uomEditable.forEach(({ identifier, field }) => {
                 this._getField(identifier, field)?.setUomEditable(false);
             });
         },
@@ -173,20 +183,20 @@ sap.ui.define([
 
         _resetDefaultValueByType(type) {
             Helper.getDefaultNAValueByType(type).map(
-                ({identifier, field, value}) => this._getField(identifier, field).setValue(value)
+                ({ identifier, field, value }) => this._getField(identifier, field).setValue(value)
             );
         },
 
-        _setCurrencyLabel(currency="Devise"){
+        _setCurrencyLabel(currency = "Devise") {
             const resourceBundle = this.oView.getModel("i18n").getResourceBundle();
 
             const labelForField = [
-                { identifier: "Prix",       field: "Paring",    i18nText: "Field_Paring_Label" },
-                { identifier: "Travaux",    field: "Mttrvx",    i18nText: "Field_Mttrvx_Label" },
-                { identifier: "Prix",       field: "Mtctr",     i18nText: "Field_Mtctr_Label" }
+                { identifier: "Prix", field: "Paring", i18nText: "Field_Paring_Label" },
+                { identifier: "Travaux", field: "Mttrvx", i18nText: "Field_Mttrvx_Label" },
+                { identifier: "Prix", field: "Mtctr", i18nText: "Field_Mtctr_Label" }
             ];
 
-            labelForField.forEach(({identifier, field, i18nText}) => {
+            labelForField.forEach(({ identifier, field, i18nText }) => {
                 const text = resourceBundle.getText(i18nText, [currency]);
                 this._getFieldLabel(identifier, field)?.setText(text);
             });
@@ -199,7 +209,7 @@ sap.ui.define([
         },
 
 
-        onCurrencyChange(oEvent){
+        onCurrencyChange(oEvent) {
             const currency = oEvent.getParameter("newValue");
             this._setCurrencyLabel(currency);
         },
@@ -245,15 +255,15 @@ sap.ui.define([
             });
         },
 
-        _setVisibleFieldByType(type){
-            if(type === "Z0" || type === "Z1"){
+        _setVisibleFieldByType(type) {
+            if (type === "Z0" || type === "Z1") {
                 this._setProjectFieldVisible();
-            }else{
+            } else {
                 this._setFieldVisible();
             }
         },
 
-        _setVisibleFieldGroupByType(type){
+        _setVisibleFieldGroupByType(type) {
             this._setProjectFieldGroupVisible(type);
         }
 
