@@ -280,6 +280,13 @@
                                 </Collection>
                             </PropertyValue>
                         </Record>
+                        <Record Type="UI.CollectionFacet">
+                            <PropertyValue Property="Label" String="Général"/>
+                            <PropertyValue Property="ID" String="Prevision"/>
+                            <PropertyValue Property="Facets">
+                                <Collection/>
+                            </PropertyValue>
+                        </Record>
                     </Collection>
                 </Annotation>
                 <Annotation Term="UI.FieldGroup" Qualifier="BudgetObjectif">

@@ -395,6 +395,14 @@
               "sap.ui.generic.app": {
                 "title": "Graphiques"
               }
+            },
+            "AfterFacet|ZC_FGASet|Prevision": {
+              "className": "sap.ui.core.Fragment",
+              "fragmentName": "com.avv.ingerop.ingeropfga.ext.view.tab.budget.Previsionel",
+              "type": "XML",
+              "sap.ui.generic.app": {
+                "title": "Prévisionel"
+              }
             }
           }
         }
