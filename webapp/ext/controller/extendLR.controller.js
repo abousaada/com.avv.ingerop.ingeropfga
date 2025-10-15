@@ -91,7 +91,7 @@ sap.ui.define(
                     const oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
 
                     var aFAGs = this.getSelectedBusinessNumbers();
-                    
+
                     const sHash = oCrossAppNavigator.hrefForExternal({
                         target: {
                             semanticObject: "ZEMX",
@@ -152,7 +152,27 @@ sap.ui.define(
                 return aSelectedContexts.map(function (oContext) {
                     return oContext.getObject().BusinessNo;
                 });
+            },
+
+            onPrevPress: function (oEvent) {
+                const aSelectedContexts = this.extensionAPI.getSelectedContexts();
+
+                if (aSelectedContexts.length !== 1) {
+                    sap.m.MessageToast.show("Veuillez sélectionner une seule ligne pour ouvrir la prévision.");
+                    return;
+                }
+
+                const oContext = aSelectedContexts[0];
+
+                // Set the mode in the model BEFORE navigation
+                this.getView().getModel("utilities").setProperty("/isForecastMode", true);
+
+                // Navigate internally to the Object Page
+                this.extensionAPI.getNavigationController().navigateInternal(oContext, {
+                    navigationMode: "inplace"
+                });
             }
+
 
 
         };

@@ -44,6 +44,7 @@ sap.ui.define(
                 */
 
                 onInit: async function () {
+
                     this._getOwnerComponent().getModel("utilities").setView(this.getView());
 
                     this._getExtensionAPI().attachPageDataLoaded(this._onObjectExtMatched.bind(this));
@@ -260,6 +261,15 @@ sap.ui.define(
             },
 
             _onObjectExtMatched: async function (e) {
+
+                const oContext = e.context;
+
+                // Read the flag from the model
+                const isForecastMode = this.getInterface().getModel("utilities").getProperty("/isForecastMode");
+                if (isForecastMode) {
+                    console.log("Mode PREVISION détecté !");
+                }
+
                 const utilitiesModel = this.getInterface().getModel("utilities");
                 const bCreateMode = this.getView().getModel("ui").getProperty("/createMode");
 
@@ -305,6 +315,8 @@ sap.ui.define(
                         console.logs(error);
                     }
                 }
+
+
             },
 
             _loadFragment: async function (sFragmentName) {
@@ -855,7 +867,7 @@ sap.ui.define(
             _styleMergedRecapRow: function () {
                 if (PROJET_TYPE === "Z0" || PROJET_TYPE === "Z1") {
 
-                    const oTable   = this.oView.byId("idRecapTable");
+                    const oTable = this.oView.byId("idRecapTable");
                     const oBinding = oTable && oTable.getBinding("rows");
                     if (!oBinding) return;
 
@@ -875,15 +887,15 @@ sap.ui.define(
                     oTable.getColumns().forEach((c, i) => {
                         const t = c.getLabel && c.getLabel().getText && c.getLabel().getText();
                         const tl = norm(t);
-                        if (tl === "cumul n-1")        idxCumulN1   = i;
-                        if (tl === "cumul à ce jour")  idxCumulJour = i;
-                        if (tl === "année en cours")   idxAnnee     = i;
+                        if (tl === "cumul n-1") idxCumulN1 = i;
+                        if (tl === "cumul à ce jour") idxCumulJour = i;
+                        if (tl === "année en cours") idxAnnee = i;
                     });
 
                     // Fallbacks prudents si libellés changent
-                    if (idxCumulN1   < 0) idxCumulN1   = 3;
+                    if (idxCumulN1 < 0) idxCumulN1 = 3;
                     if (idxCumulJour < 0) idxCumulJour = idxCumulN1 + 1;
-                    if (idxAnnee     < 0) idxAnnee     = idxCumulJour + 1;
+                    if (idxAnnee < 0) idxAnnee = idxCumulJour + 1;
 
                     const lastColIdx = oTable.getColumns().length - 1;
 
@@ -904,10 +916,10 @@ sap.ui.define(
                         if (!$cells.length) { setTimeout(() => this._styleMergedRecapRow(), 50); return; }
 
                         for (let i = fromIdx; i <= toIdx && i < $cells.length; i++) {
-                        const td = $cells.get(i);
-                        td.style.background = opts.bg;
-                        const inner = td.querySelector(".sapMText, .sapMLnk");
-                        if (inner) inner.style.visibility = (opts.showFirst && i === fromIdx) ? "" : "hidden";
+                            const td = $cells.get(i);
+                            td.style.background = opts.bg;
+                            const inner = td.querySelector(".sapMText, .sapMLnk");
+                            if (inner) inner.style.visibility = (opts.showFirst && i === fromIdx) ? "" : "hidden";
                         }
 
                         let totalW = 0;
@@ -925,20 +937,20 @@ sap.ui.define(
                         overlay.className = opts.className;
                         overlay.textContent = opts.text || "";
                         Object.assign(overlay.style, {
-                        position: "absolute",
-                        left: "0",
-                        top: "0",
-                        width: totalW + "px",
-                        height: "100%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        color: opts.text ? "#fff" : "transparent",
-                        fontWeight: opts.text ? "600" : "normal",
-                        fontSize: "0.8rem",
-                        backgroundColor: opts.bg,
-                        pointerEvents: "none",
-                        zIndex: 2
+                            position: "absolute",
+                            left: "0",
+                            top: "0",
+                            width: totalW + "px",
+                            height: "100%",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            color: opts.text ? "#fff" : "transparent",
+                            fontWeight: opts.text ? "600" : "normal",
+                            fontSize: "0.8rem",
+                            backgroundColor: opts.bg,
+                            pointerEvents: "none",
+                            zIndex: 2
                         });
 
                         tdStart.appendChild(overlay);
@@ -950,8 +962,8 @@ sap.ui.define(
                     // === FUSION GAUCHE BLEU ===
                     // Désormais on s'arrête AVANT "Cumul N-1" → 3 premières colonnes (Desc + 2 budgets)
                     const leftEnd = Math.max(0, idxCumulN1 - 1);
-                    paintBlock(rBefore, 0, leftEnd, { bg:"#333399", className:"sfgpOverlay",      text: txtBefore, showFirst:true });
-                    paintBlock(rLast,   0, leftEnd, { bg:"#333399", className:"sfgpOverlay",      text: txtLast,   showFirst:true });
+                    paintBlock(rBefore, 0, leftEnd, { bg: "#333399", className: "sfgpOverlay", text: txtBefore, showFirst: true });
+                    paintBlock(rLast, 0, leftEnd, { bg: "#333399", className: "sfgpOverlay", text: txtLast, showFirst: true });
 
                     // === COLONNES VISIBLES AU CENTRE ===
                     // On laisse visibles : "Cumul N-1" (idxCumulN1), "Cumul à ce jour" (idxCumulJour), "Année en cours" (idxAnnee)
@@ -961,8 +973,8 @@ sap.ui.define(
                     // Elle démarre maintenant APRÈS "Année en cours"
                     const rightStart = idxAnnee + 1;
                     if (rightStart <= lastColIdx) {
-                        paintBlock(rBefore, rightStart, lastColIdx, { bg:"#ffffff", className:"sfgpOverlayRight", showFirst:false });
-                        paintBlock(rLast,   rightStart, lastColIdx, { bg:"#ffffff", className:"sfgpOverlayRight", showFirst:false });
+                        paintBlock(rBefore, rightStart, lastColIdx, { bg: "#ffffff", className: "sfgpOverlayRight", showFirst: false });
+                        paintBlock(rLast, rightStart, lastColIdx, { bg: "#ffffff", className: "sfgpOverlayRight", showFirst: false });
                     }
                 }
             },

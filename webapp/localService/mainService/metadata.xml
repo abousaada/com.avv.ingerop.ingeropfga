@@ -901,7 +901,7 @@
                 <Property Name="business_no_e" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="N° Affaire Emettrice" sap:quickinfo="Zone de caractères de longueur 24" sap:value-list="standard"/>
                 <Property Name="Criticality" Type="Edm.Byte"/>
                 <Property Name="status_text" Type="Edm.String" MaxLength="14" sap:label="Status formulaire" sap:creatable="false" sap:updatable="false" sap:value-list="fixed-values"/>
-                <Property Name="status" Type="Edm.String" MaxLength="15" sap:display-format="UpperCase" sap:label="Status STI" sap:heading=""/>
+                <Property Name="status" Type="Edm.String" MaxLength="15" sap:display-format="UpperCase" sap:label="Status" sap:quickinfo="Status STI"/>
                 <Property Name="business_e_t" Type="Edm.String" MaxLength="40" sap:label="Libellé Affaire Emettrice" sap:quickinfo="PS: désignation (première ligne de texte)" sap:creatable="false" sap:updatable="false"/>
                 <Property Name="business_e_cmp" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Société Affaire Emettrice" sap:quickinfo="Société de l'élément d'OTP" sap:creatable="false" sap:updatable="false" sap:value-list="standard"/>
                 <Property Name="business_e_SDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Start Date" sap:quickinfo="Élément d'OTP : date de début de base"/>

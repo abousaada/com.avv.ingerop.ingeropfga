@@ -329,6 +329,12 @@
                     "text": "Manage EMX",
                     "press": "onEMXPress",
                     "requiresSelection": false
+                  },
+                  "onPrevPress": {
+                    "id": "onPrevPressButton",
+                    "text": "Prévision",
+                    "press": "onPrevPress",
+                    "requiresSelection": true
                   }
                 }
               }

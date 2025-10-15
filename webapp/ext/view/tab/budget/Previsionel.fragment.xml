@@ -1,0 +1,245 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:table="sap.ui.table"
+    xmlns:rm="sap.ui.table.rowmodes">
+
+    <table:TreeTable
+        id="PrevisionnelTreeTable"
+        rows="{
+            path: 'utilities>/PxAutreHierarchyWithTotals',
+            parameters: {
+                arrayNames: ['children'],
+                numberOfExpandedLevels: 3
+            }
+        }"
+        selectionMode="None"
+        fixedColumnCount="3"
+        enableColumnReordering="false"
+        visibleRowCountMode="Auto"
+        class="sapUiSizeCompact">
+
+        <table:rowMode>
+            <rm:Auto minRowCount="{localModel>/tableSettings/minRowCount}" />
+        </table:rowMode>
+
+        <table:columns>
+
+            <!-- === Base columns === -->
+            <table:Column width="10rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Numéro affaire" />
+                </table:multiLabels>
+                <table:template><Text text="{utilities>Affaire}" /></table:template>
+            </table:Column>
+
+            <table:Column width="12rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Libellé affaire" />
+                </table:multiLabels>
+                <table:template><Text text="{utilities>Description}" /></table:template>
+            </table:Column>
+
+            <table:Column width="9rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Facturation / Dépenses" />
+                </table:multiLabels>
+                <table:template><Text text="{utilities>Type}" /></table:template>
+            </table:Column>
+
+            <table:Column width="8rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Reste à facturer" />
+                </table:multiLabels>
+                <table:template><Text text="{utilities>ResteAFacturer}" /></table:template>
+            </table:Column>
+
+            <table:Column width="8rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Reste à dépenser" />
+                </table:multiLabels>
+                <table:template><Text text="{utilities>ResteADepenser}" /></table:template>
+            </table:Column>
+
+            <!-- === Année en cours (2025) === -->
+            <table:Column width="6rem" headerSpan="12,1" hAlign="Center">
+                <table:multiLabels>
+                    <Label text="ANNÉE EN COURS" />
+                    <Label text="Janv-25" />
+                </table:multiLabels>
+                <table:template><Text text="{utilities>Jan2025}" /></table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Févr-25" />
+                </table:multiLabels>
+                <table:template><Text text="{utilities>Fev2025}" /></table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Mars-25" />
+                </table:multiLabels>
+                <table:template><Text text="{utilities>Mar2025}" /></table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Avr-25" />
+                </table:multiLabels>
+                <table:template><Text text="{utilities>Avr2025}" /></table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Mai-25" />
+                </table:multiLabels>
+                <table:template><Text text="{utilities>Mai2025}" /></table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Juin-25" />
+                </table:multiLabels>
+                <table:template><Text text="{utilities>Juin2025}" /></table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Juil-25" />
+                </table:multiLabels>
+                <table:template><Text text="{utilities>Juil2025}" /></table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Août-25" />
+                </table:multiLabels>
+                <table:template><Text text="{utilities>Aout2025}" /></table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Sept-25" />
+                </table:multiLabels>
+                <table:template><Text text="{utilities>Sept2025}" /></table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Oct-25" />
+                </table:multiLabels>
+                <table:template><Text text="{utilities>Oct2025}" /></table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Nov-25" />
+                </table:multiLabels>
+                <table:template><Text text="{utilities>Nov2025}" /></table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Déc-25" />
+                </table:multiLabels>
+                <table:template><Text text="{utilities>Dec2025}" /></table:template>
+            </table:Column>
+
+            <!-- === Année N+1 (2026) === -->
+            <table:Column width="6rem" headerSpan="12,1" hAlign="Center">
+                <table:multiLabels>
+                    <Label text="ANNÉE N+1" />
+                    <Label text="Janv-26" />
+                </table:multiLabels>
+                <table:template><Text text="{utilities>Jan2026}" /></table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Févr-26" />
+                </table:multiLabels>
+                <table:template><Text text="{utilities>Fev2026}" /></table:template>
+            </table:Column>
+
+            <!-- continue with Mars-26 → Déc-26 -->
+            <table:Column width="6rem">
+                <table:multiLabels><Label text="" /><Label text="Mars-26" /></table:multiLabels>
+                <table:template><Text text="{utilities>Mar2026}" /></table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels><Label text="" /><Label text="Avr-26" /></table:multiLabels>
+                <table:template><Text text="{utilities>Avr2026}" /></table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels><Label text="" /><Label text="Mai-26" /></table:multiLabels>
+                <table:template><Text text="{utilities>Mai2026}" /></table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels><Label text="" /><Label text="Juin-26" /></table:multiLabels>
+                <table:template><Text text="{utilities>Juin2026}" /></table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels><Label text="" /><Label text="Juil-26" /></table:multiLabels>
+                <table:template><Text text="{utilities>Juil2026}" /></table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels><Label text="" /><Label text="Août-26" /></table:multiLabels>
+                <table:template><Text text="{utilities>Aout2026}" /></table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels><Label text="" /><Label text="Sept-26" /></table:multiLabels>
+                <table:template><Text text="{utilities>Sept2026}" /></table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels><Label text="" /><Label text="Oct-26" /></table:multiLabels>
+                <table:template><Text text="{utilities>Oct2026}" /></table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels><Label text="" /><Label text="Nov-26" /></table:multiLabels>
+                <table:template><Text text="{utilities>Nov2026}" /></table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels><Label text="" /><Label text="Déc-26" /></table:multiLabels>
+                <table:template><Text text="{utilities>Dec2026}" /></table:template>
+            </table:Column>
+
+            <!-- Au-delà -->
+            <table:Column width="7rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Au-delà" />
+                </table:multiLabels>
+                <table:template><Text text="{utilities>AuDela}" /></table:template>
+            </table:Column>
+
+        </table:columns>
+    </table:TreeTable>
+</core:FragmentDefinition>
