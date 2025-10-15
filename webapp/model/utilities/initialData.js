@@ -37,6 +37,7 @@ sap.ui.define([], function() {
         "pSTI": [],
         "Notes": '',
         "sfgp": [],
+        "previsionel": [],
         "missionTypes": [
             { code: "GEN", description: "GEN" },
             { code: "AVP", description: "AVP" },

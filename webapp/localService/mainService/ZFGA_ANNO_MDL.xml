@@ -612,6 +612,111 @@
             <Annotations Target="ZFGA_SRV.ZC_FGA_CHART_AVANCEMENTType/p_period">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGA_ForecastType/Regroupement">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGA_ForecastType">
+                <Annotation Term="UI.LineItem">
+                    <Collection>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Janvier N"/>
+                            <PropertyValue Property="Value" Path="JanvN"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Février N"/>
+                            <PropertyValue Property="Value" Path="FevrN"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Mars N"/>
+                            <PropertyValue Property="Value" Path="MarsN"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Avril N"/>
+                            <PropertyValue Property="Value" Path="AvrN"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Mai N"/>
+                            <PropertyValue Property="Value" Path="MaiN"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Juin N"/>
+                            <PropertyValue Property="Value" Path="JuinN"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Juillet N"/>
+                            <PropertyValue Property="Value" Path="JuilN"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Août N"/>
+                            <PropertyValue Property="Value" Path="AoutN"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Septembre N"/>
+                            <PropertyValue Property="Value" Path="SeptN"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Octobre N"/>
+                            <PropertyValue Property="Value" Path="OctN"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Novembre N"/>
+                            <PropertyValue Property="Value" Path="NovN"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Décembre N"/>
+                            <PropertyValue Property="Value" Path="DecN"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Janvier N+1"/>
+                            <PropertyValue Property="Value" Path="JanvN1"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Février N+1"/>
+                            <PropertyValue Property="Value" Path="FevrN1"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Mars N+1"/>
+                            <PropertyValue Property="Value" Path="MarsN1"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Avril N+1"/>
+                            <PropertyValue Property="Value" Path="AvrN1"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Mai N+1"/>
+                            <PropertyValue Property="Value" Path="MaiN1"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Juin N+1"/>
+                            <PropertyValue Property="Value" Path="JuinN1"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Juillet N+1"/>
+                            <PropertyValue Property="Value" Path="JuilN1"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Août N+1"/>
+                            <PropertyValue Property="Value" Path="AoutN1"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Septembre N+1"/>
+                            <PropertyValue Property="Value" Path="SeptN1"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Octobre N+1"/>
+                            <PropertyValue Property="Value" Path="OctN1"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Novembre N+1"/>
+                            <PropertyValue Property="Value" Path="NovN1"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Décembre N+1"/>
+                            <PropertyValue Property="Value" Path="DecN1"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_FGA_MISSIONType/Regroupement">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>

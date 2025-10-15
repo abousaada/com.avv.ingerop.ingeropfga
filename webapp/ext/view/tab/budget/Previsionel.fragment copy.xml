@@ -1,0 +1,245 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:table="sap.ui.table"
+    xmlns:rm="sap.ui.table.rowmodes">
+
+    <table:TreeTable
+        id="PrevisionnelTreeTable"
+        rows="{
+            path: 'utilities>/PxAutreHierarchyWithTotals',
+            parameters: {
+                arrayNames: ['children'],
+                numberOfExpandedLevels: 3
+            }
+        }"
+        selectionMode="None"
+        fixedColumnCount="3"
+        enableColumnReordering="false"
+        visibleRowCountMode="Auto"
+        class="sapUiSizeCompact">
+
+        <table:rowMode>
+            <rm:Auto minRowCount="{localModel>/tableSettings/minRowCount}" />
+        </table:rowMode>
+
+        <table:columns>
+
+            <!-- === Base columns === -->
+            <table:Column width="10rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Numéro affaire" />
+                </table:multiLabels>
+                <table:template><Text text="{utilities>Affaire}" /></table:template>
+            </table:Column>
+
+            <table:Column width="12rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Libellé affaire" />
+                </table:multiLabels>
+                <table:template><Text text="{utilities>Description}" /></table:template>
+            </table:Column>
+
+            <table:Column width="9rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Facturation / Dépenses" />
+                </table:multiLabels>
+                <table:template><Text text="{utilities>Type}" /></table:template>
+            </table:Column>
+
+            <table:Column width="8rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Reste à facturer" />
+                </table:multiLabels>
+                <table:template><Text text="{utilities>ResteAFacturer}" /></table:template>
+            </table:Column>
+
+            <table:Column width="8rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Reste à dépenser" />
+                </table:multiLabels>
+                <table:template><Text text="{utilities>ResteADepenser}" /></table:template>
+            </table:Column>
+
+            <!-- === Année N (2025) === -->
+            <table:Column width="6rem" headerSpan="12,1" hAlign="Center">
+                <table:multiLabels>
+                    <Label text="ANNÉE EN COURS" />
+                    <Label text="Janv" />
+                </table:multiLabels>
+                <table:template><Text text="{utilities>JanvN}" /></table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels><Label text="" /><Label text="Févr" /></table:multiLabels>
+                <table:template><Text text="{utilities>FevrN}" /></table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels><Label text="" /><Label text="Mars" /></table:multiLabels>
+                <table:template><Text text="{utilities>MarsN}" /></table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels><Label text="" /><Label text="Avr" /></table:multiLabels>
+                <table:template><Text text="{utilities>AvrN}" /></table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels><Label text="" /><Label text="Mai" /></table:multiLabels>
+                <table:template><Text text="{utilities>MaiN}" /></table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels><Label text="" /><Label text="Juin" /></table:multiLabels>
+                <table:template><Text text="{utilities>JuinN}" /></table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels><Label text="" /><Label text="Juil" /></table:multiLabels>
+                <table:template><Text text="{utilities>JuilN}" /></table:template>
+            </table:Column>
+
+            <!-- === Editable fields (Août → Déc N) === -->
+            <table:Column width="6rem">
+                <table:multiLabels><Label text="" /><Label text="Août" /></table:multiLabels>
+                <table:template>
+                    <Input value="{utilities>AoutN}" submit="onSubmit" type="Number" />
+                </table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels><Label text="" /><Label text="Sept" /></table:multiLabels>
+                <table:template>
+                    <Input value="{utilities>SeptN}" submit="onSubmit" type="Number" />
+                </table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels><Label text="" /><Label text="Oct" /></table:multiLabels>
+                <table:template>
+                    <Input value="{utilities>OctN}" submit="onSubmit" type="Number" />
+                </table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels><Label text="" /><Label text="Nov" /></table:multiLabels>
+                <table:template>
+                    <Input value="{utilities>NovN}" submit="onSubmit" type="Number" />
+                </table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels><Label text="" /><Label text="Déc" /></table:multiLabels>
+                <table:template>
+                    <Input value="{utilities>DecN}" submit="onSubmit" type="Number" />
+                </table:template>
+            </table:Column>
+
+            <!-- === Année N+1 (2026) — all editable === -->
+            <table:Column width="6rem" headerSpan="12,1" hAlign="Center">
+                <table:multiLabels>
+                    <Label text="ANNÉE N+1" />
+                    <Label text="Janv" />
+                </table:multiLabels>
+                <table:template>
+                    <Input value="{utilities>JanvN1}" submit="onSubmit" type="Number" />
+                </table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels><Label text="" /><Label text="Févr" /></table:multiLabels>
+                <table:template>
+                    <Input value="{utilities>FevrN1}" submit="onSubmit" type="Number" />
+                </table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels><Label text="" /><Label text="Mars" /></table:multiLabels>
+                <table:template>
+                    <Input value="{utilities>MarsN1}" submit="onSubmit" type="Number" />
+                </table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels><Label text="" /><Label text="Avr" /></table:multiLabels>
+                <table:template>
+                    <Input value="{utilities>AvrN1}" submit="onSubmit" type="Number" />
+                </table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels><Label text="" /><Label text="Mai" /></table:multiLabels>
+                <table:template>
+                    <Input value="{utilities>MaiN1}" submit="onSubmit" type="Number" />
+                </table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels><Label text="" /><Label text="Juin" /></table:multiLabels>
+                <table:template>
+                    <Input value="{utilities>JuinN1}" submit="onSubmit" type="Number" />
+                </table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels><Label text="" /><Label text="Juil" /></table:multiLabels>
+                <table:template>
+                    <Input value="{utilities>JuilN1}" submit="onSubmit" type="Number" />
+                </table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels><Label text="" /><Label text="Août" /></table:multiLabels>
+                <table:template>
+                    <Input value="{utilities>AoutN1}" submit="onSubmit" type="Number" />
+                </table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels><Label text="" /><Label text="Sept" /></table:multiLabels>
+                <table:template>
+                    <Input value="{utilities>SeptN1}" submit="onSubmit" type="Number" />
+                </table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels><Label text="" /><Label text="Oct" /></table:multiLabels>
+                <table:template>
+                    <Input value="{utilities>OctN1}" submit="onSubmit" type="Number" />
+                </table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels><Label text="" /><Label text="Nov" /></table:multiLabels>
+                <table:template>
+                    <Input value="{utilities>NovN1}" submit="onSubmit" type="Number" />
+                </table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels><Label text="" /><Label text="Déc" /></table:multiLabels>
+                <table:template>
+                    <Input value="{utilities>DecN1}" submit="onSubmit" type="Number" />
+                </table:template>
+            </table:Column>
+
+            <!-- Totaux -->
+            <table:Column width="7rem">
+                <table:multiLabels><Label text="" /><Label text="Total N" /></table:multiLabels>
+                <table:template><Text text="{utilities>TotalN}" /></table:template>
+            </table:Column>
+
+            <table:Column width="7rem">
+                <table:multiLabels><Label text="" /><Label text="Total N+1" /></table:multiLabels>
+                <table:template><Text text="{utilities>TotalN1}" /></table:template>
+            </table:Column>
+
+        </table:columns>
+    </table:TreeTable>
+</core:FragmentDefinition>

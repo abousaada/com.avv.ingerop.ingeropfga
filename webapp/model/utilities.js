@@ -62,7 +62,10 @@ sap.ui.define([
 
             async getBEDatas() {
                 try {
-                    const [missions, previsions, recaps, opport, risque, charts, chartsadddata, pxRecettes, pxAutres, pxSubContracting, pxMainOeuvre, pxSTI, pSTI, notes, sfgp] = await Promise.all([
+                    const [missions, previsions, recaps, opport, risque, charts, 
+                            chartsadddata, pxRecettes, pxAutres, pxSubContracting, 
+                            pxMainOeuvre, pxSTI, pSTI, notes, sfgp, previsionel] 
+                        = await Promise.all([
 
                         this.getBEMissions(),
                         this.getBEPrevisions(),
@@ -82,7 +85,10 @@ sap.ui.define([
 
                         //Notes
                         this.getBENotes(),
-                        this.getBESfgp()
+                        this.getBESfgp(),
+
+                        this.getBEPrevisionel(),
+                        
                     ]);
 
                     this.setMissions(missions || []);
@@ -108,6 +114,9 @@ sap.ui.define([
                     this.setNotes(notes);
 
                     this.setSfgp(sfgp || []);
+
+                    this.setPrevisionel(previsionel || []);
+                    
 
                 } catch (error) {
                     console.log(error);
@@ -749,6 +758,24 @@ sap.ui.define([
                     const sfgp = await this.read(sPath);
                     this.setChartBusy(false);
                     return sfgp?.results || [];
+                } catch (error) {
+                    this.setChartBusy(false);
+                    console.log(error);
+                }
+            },
+
+             async getBEPrevisionel() {
+                try {
+                    this.setChartBusy(true);
+                    const businessNo = this.getBusinessNo();
+                    const period = this.getPeriod();
+                    const urlBusinessNo = encodeURIComponent(businessNo);
+                    const urlPeriod = encodeURIComponent(period);
+                    const sPath = `/ZC_FGASet(BusinessNo='${urlBusinessNo}',p_period='${urlPeriod}')/to_Previsionel`;
+                    console.log(`retrieve Previsionel report data with period: ${period} and BusinessNo: ${businessNo}`);
+                    const previsionel = await this.read(sPath);
+                    this.setChartBusy(false);
+                    return previsionel?.results || [];
                 } catch (error) {
                     this.setChartBusy(false);
                     console.log(error);

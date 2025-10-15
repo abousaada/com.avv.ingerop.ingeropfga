@@ -434,7 +434,7 @@
             },
             "tableSettings": {
               "type": "AnalyticalTable",
-              "multiSelect": true,
+              "multiSelect": false,
               "copy": false
             },
             "dataLoadSettings": {

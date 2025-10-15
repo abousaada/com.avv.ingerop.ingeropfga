@@ -2,28 +2,39 @@
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
     xmlns:table="sap.ui.table"
-    xmlns:rm="sap.ui.table.rowmodes">
-
+    xmlns:rm="sap.ui.table.rowmodes"
+>
     <table:TreeTable
         id="PrevisionnelTreeTable"
         rows="{
-            path: 'utilities>/PxAutreHierarchyWithTotals',
+            path: 'utilities>/previsionelHierarchyWithTotals',
             parameters: {
                 arrayNames: ['children'],
                 numberOfExpandedLevels: 3
             }
         }"
         selectionMode="None"
-        fixedColumnCount="3"
+        fixedColumnCount="1"
         enableColumnReordering="false"
         visibleRowCountMode="Auto"
-        class="sapUiSizeCompact">
-
+        class="sapUiSizeCompact"
+    >
         <table:rowMode>
             <rm:Auto minRowCount="{localModel>/tableSettings/minRowCount}" />
         </table:rowMode>
 
         <table:columns>
+            <!-- === Colonne Hiérarchique (comme PxAutre) === -->
+            <table:Column width="17rem">
+                <Label text="Hierarchy/Mission" />
+                <table:template>
+                    <Text
+                        text="{= ${utilities>isTotalRow} ? ${utilities>name} : 
+                                 ${utilities>isNode} ? ${utilities>name} : 
+                                 ${utilities>MissionId}}"
+                    />
+                </table:template>
+            </table:Column>
 
             <!-- === Base columns === -->
             <table:Column width="10rem">
@@ -31,7 +42,12 @@
                     <Label text="" />
                     <Label text="Numéro affaire" />
                 </table:multiLabels>
-                <table:template><Text text="{utilities>Affaire}" /></table:template>
+                <table:template>
+                    <Text
+                        text="{utilities>Affaire}"
+                        visible="{= !${utilities>isTotalRow}}"
+                    />
+                </table:template>
             </table:Column>
 
             <table:Column width="12rem">
@@ -39,7 +55,12 @@
                     <Label text="" />
                     <Label text="Libellé affaire" />
                 </table:multiLabels>
-                <table:template><Text text="{utilities>Description}" /></table:template>
+                <table:template>
+                    <Text
+                        text="{utilities>Description}"
+                        visible="{= !${utilities>isTotalRow}}"
+                    />
+                </table:template>
             </table:Column>
 
             <table:Column width="9rem">
@@ -47,7 +68,12 @@
                     <Label text="" />
                     <Label text="Facturation / Dépenses" />
                 </table:multiLabels>
-                <table:template><Text text="{utilities>Type}" /></table:template>
+                <table:template>
+                    <Text
+                        text="{utilities>Type}"
+                        visible="{= !${utilities>isTotalRow}}"
+                    />
+                </table:template>
             </table:Column>
 
             <table:Column width="8rem">
@@ -55,7 +81,12 @@
                     <Label text="" />
                     <Label text="Reste à facturer" />
                 </table:multiLabels>
-                <table:template><Text text="{utilities>ResteAFacturer}" /></table:template>
+                <table:template>
+                    <Text
+                        text="{utilities>ResteAFacturer}"
+                        visible="{= !${utilities>isTotalRow}}"
+                    />
+                </table:template>
             </table:Column>
 
             <table:Column width="8rem">
@@ -63,183 +94,562 @@
                     <Label text="" />
                     <Label text="Reste à dépenser" />
                 </table:multiLabels>
-                <table:template><Text text="{utilities>ResteADepenser}" /></table:template>
+                <table:template>
+                    <Text
+                        text="{utilities>ResteADepenser}"
+                        visible="{= !${utilities>isTotalRow}}"
+                    />
+                </table:template>
             </table:Column>
 
-            <!-- === Année en cours (2025) === -->
-            <table:Column width="6rem" headerSpan="12,1" hAlign="Center">
+            <!-- === Année N (2025) === -->
+            <table:Column
+                width="6rem"
+                headerSpan="12,1"
+                hAlign="Center"
+            >
                 <table:multiLabels>
                     <Label text="ANNÉE EN COURS" />
-                    <Label text="Janv-25" />
+                    <Label text="Janv" />
                 </table:multiLabels>
-                <table:template><Text text="{utilities>Jan2025}" /></table:template>
+                <table:template>
+                    <HBox>
+                        <!--Text
+                            text="{utilities>JanvN}"
+                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
+                        /-->
+                        <Input
+                            value="{utilities>JanvN}"
+                            submit="onSubmit"
+                            type="Number"
+                            enabled="{= ${utilities>isEditableJanvN}}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                        />
+                    </HBox>
+                </table:template>
             </table:Column>
 
             <table:Column width="6rem">
                 <table:multiLabels>
                     <Label text="" />
-                    <Label text="Févr-25" />
+                    <Label text="Févr" />
                 </table:multiLabels>
-                <table:template><Text text="{utilities>Fev2025}" /></table:template>
+                <table:template>
+                    <HBox>
+                        <!--Text
+                            text="{utilities>FevrN}"
+                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
+                        /-->
+                        <Input
+                            value="{utilities>FevrN}"
+                            submit="onSubmit"
+                            type="Number"
+                            enabled="{= ${utilities>isEditableFevrN}}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                        />
+                    </HBox>
+                </table:template>
             </table:Column>
 
             <table:Column width="6rem">
                 <table:multiLabels>
                     <Label text="" />
-                    <Label text="Mars-25" />
+                    <Label text="Mars" />
                 </table:multiLabels>
-                <table:template><Text text="{utilities>Mar2025}" /></table:template>
+                <table:template>
+                    <HBox>
+                        <!--Text
+                            text="{utilities>MarsN}"
+                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
+                        /-->
+                        <Input
+                            value="{utilities>MarsN}"
+                            submit="onSubmit"
+                            type="Number"
+                            enabled="{= ${utilities>isEditableMarsN}}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                        />
+                    </HBox>
+                </table:template>
             </table:Column>
 
             <table:Column width="6rem">
                 <table:multiLabels>
                     <Label text="" />
-                    <Label text="Avr-25" />
+                    <Label text="Avr" />
                 </table:multiLabels>
-                <table:template><Text text="{utilities>Avr2025}" /></table:template>
+                <table:template>
+                    <HBox>
+                        <!--Text
+                            text="{utilities>AvrN}"
+                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
+                        /-->
+                        <Input
+                            value="{utilities>AvrN}"
+                            submit="onSubmit"
+                            type="Number"
+                            enabled="{= ${utilities>isEditableAvrN}}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                        />
+                    </HBox>
+                </table:template>
             </table:Column>
 
             <table:Column width="6rem">
                 <table:multiLabels>
                     <Label text="" />
-                    <Label text="Mai-25" />
+                    <Label text="Mai" />
                 </table:multiLabels>
-                <table:template><Text text="{utilities>Mai2025}" /></table:template>
+                <table:template>
+                    <HBox>
+                        <!--Text
+                            text="{utilities>MaiN}"
+                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
+                        /-->
+                        <Input
+                            value="{utilities>MaiN}"
+                            submit="onSubmit"
+                            type="Number"
+                            enabled="{= ${utilities>isEditableMaiN}}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                        />
+                    </HBox>
+                </table:template>
             </table:Column>
 
             <table:Column width="6rem">
                 <table:multiLabels>
                     <Label text="" />
-                    <Label text="Juin-25" />
+                    <Label text="Juin" />
                 </table:multiLabels>
-                <table:template><Text text="{utilities>Juin2025}" /></table:template>
+                <table:template>
+                    <HBox>
+                        <!--Text
+                            text="{utilities>JuinN}"
+                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
+                        /-->
+                        <Input
+                            value="{utilities>JuinN}"
+                            submit="onSubmit"
+                            type="Number"
+                            enabled="{= ${utilities>isEditableJuinN}}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                        />
+                    </HBox>
+                </table:template>
             </table:Column>
 
             <table:Column width="6rem">
                 <table:multiLabels>
                     <Label text="" />
-                    <Label text="Juil-25" />
+                    <Label text="Juil" />
                 </table:multiLabels>
-                <table:template><Text text="{utilities>Juil2025}" /></table:template>
+                <table:template>
+                    <HBox>
+                        <!--Text
+                            text="{utilities>JuilN}"
+                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
+                        /-->
+                        <Input
+                            value="{utilities>JuilN}"
+                            submit="onSubmit"
+                            type="Number"
+                            enabled="{= ${utilities>isEditableJuilN}}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                        />
+                    </HBox>
+                </table:template>
+            </table:Column>
+
+            <!-- === Editable fields (Août → Déc N) === -->
+            <table:Column width="6rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Août" />
+                </table:multiLabels>
+                <table:template>
+                    <HBox>
+                        <!--Text
+                            text="{utilities>AoutN}"
+                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
+                        /-->
+                        <Input
+                            value="{utilities>AoutN}"
+                            submit="onSubmit"
+                            type="Number"
+                            enabled="{= ${utilities>isEditableAoutN}}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                        />
+                    </HBox>
+                </table:template>
             </table:Column>
 
             <table:Column width="6rem">
                 <table:multiLabels>
                     <Label text="" />
-                    <Label text="Août-25" />
+                    <Label text="Sept" />
                 </table:multiLabels>
-                <table:template><Text text="{utilities>Aout2025}" /></table:template>
+                <table:template>
+                    <HBox>
+                        <!--Text
+                            text="{utilities>SeptN}"
+                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
+                        /-->
+                        <Input
+                            value="{utilities>SeptN}"
+                            submit="onSubmit"
+                            type="Number"
+                            enabled="{= ${utilities>isEditableSeptN}}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                        />
+                    </HBox>
+                </table:template>
             </table:Column>
 
             <table:Column width="6rem">
                 <table:multiLabels>
                     <Label text="" />
-                    <Label text="Sept-25" />
+                    <Label text="Oct" />
                 </table:multiLabels>
-                <table:template><Text text="{utilities>Sept2025}" /></table:template>
+                <table:template>
+                    <HBox>
+                        <!--Text
+                            text="{utilities>OctN}"
+                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
+                        /-->
+                        <Input
+                            value="{utilities>OctN}"
+                            submit="onSubmit"
+                            type="Number"
+                            enabled="{= ${utilities>isEditableOctN}}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                        />
+                    </HBox>
+                </table:template>
             </table:Column>
 
             <table:Column width="6rem">
                 <table:multiLabels>
                     <Label text="" />
-                    <Label text="Oct-25" />
+                    <Label text="Nov" />
                 </table:multiLabels>
-                <table:template><Text text="{utilities>Oct2025}" /></table:template>
+                <table:template>
+                    <HBox>
+                        <!--Text
+                            text="{utilities>NovN}"
+                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
+                        /-->
+                        <Input
+                            value="{utilities>NovN}"
+                            submit="onSubmit"
+                            type="Number"
+                            enabled="{= ${utilities>isEditableNovN}}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                        />
+                    </HBox>
+                </table:template>
             </table:Column>
 
             <table:Column width="6rem">
                 <table:multiLabels>
                     <Label text="" />
-                    <Label text="Nov-25" />
+                    <Label text="Déc" />
                 </table:multiLabels>
-                <table:template><Text text="{utilities>Nov2025}" /></table:template>
+                <table:template>
+                    <HBox>
+                        <!--Text
+                            text="{utilities>DecN}"
+                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
+                        /-->
+                        <Input
+                            value="{utilities>DecN}"
+                            submit="onSubmit"
+                            type="Number"
+                            enabled="{= ${utilities>isEditableDecN}}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                        />
+                    </HBox>
+                </table:template>
             </table:Column>
 
-            <table:Column width="6rem">
-                <table:multiLabels>
-                    <Label text="" />
-                    <Label text="Déc-25" />
-                </table:multiLabels>
-                <table:template><Text text="{utilities>Dec2025}" /></table:template>
-            </table:Column>
-
+            <!-- === Année N+1 (2026) — all editable === -->
             <!-- === Année N+1 (2026) === -->
-            <table:Column width="6rem" headerSpan="12,1" hAlign="Center">
+            <table:Column
+                width="6rem"
+                headerSpan="12,1"
+                hAlign="Center"
+            >
                 <table:multiLabels>
                     <Label text="ANNÉE N+1" />
-                    <Label text="Janv-26" />
+                    <Label text="Janv" />
                 </table:multiLabels>
-                <table:template><Text text="{utilities>Jan2026}" /></table:template>
+                <table:template>
+                    <HBox>
+                        <!--Text
+                            text="{utilities>JanvN1}"
+                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
+                        /-->
+                        <Input
+                            value="{utilities>JanvN1}"
+                            type="Number"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            submit="onSubmit"
+                        />
+                    </HBox>
+                </table:template>
             </table:Column>
 
             <table:Column width="6rem">
                 <table:multiLabels>
                     <Label text="" />
-                    <Label text="Févr-26" />
+                    <Label text="Févr" />
                 </table:multiLabels>
-                <table:template><Text text="{utilities>Fev2026}" /></table:template>
-            </table:Column>
-
-            <!-- continue with Mars-26 → Déc-26 -->
-            <table:Column width="6rem">
-                <table:multiLabels><Label text="" /><Label text="Mars-26" /></table:multiLabels>
-                <table:template><Text text="{utilities>Mar2026}" /></table:template>
-            </table:Column>
-
-            <table:Column width="6rem">
-                <table:multiLabels><Label text="" /><Label text="Avr-26" /></table:multiLabels>
-                <table:template><Text text="{utilities>Avr2026}" /></table:template>
-            </table:Column>
-
-            <table:Column width="6rem">
-                <table:multiLabels><Label text="" /><Label text="Mai-26" /></table:multiLabels>
-                <table:template><Text text="{utilities>Mai2026}" /></table:template>
+                <table:template>
+                    <HBox>
+                        <!--Text
+                            text="{utilities>FevrN1}"
+                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
+                        /-->
+                        <Input
+                            value="{utilities>FevrN1}"
+                            type="Number"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            submit="onSubmit"
+                        />
+                    </HBox>
+                </table:template>
             </table:Column>
 
             <table:Column width="6rem">
-                <table:multiLabels><Label text="" /><Label text="Juin-26" /></table:multiLabels>
-                <table:template><Text text="{utilities>Juin2026}" /></table:template>
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Mars" />
+                </table:multiLabels>
+                <table:template>
+                    <HBox>
+                        <!--Text
+                            text="{utilities>MarsN1}"
+                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
+                        /-->
+                        <Input
+                            value="{utilities>MarsN1}"
+                            type="Number"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            submit="onSubmit"
+                        />
+                    </HBox>
+                </table:template>
             </table:Column>
 
             <table:Column width="6rem">
-                <table:multiLabels><Label text="" /><Label text="Juil-26" /></table:multiLabels>
-                <table:template><Text text="{utilities>Juil2026}" /></table:template>
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Avr" />
+                </table:multiLabels>
+                <table:template>
+                    <HBox>
+                        <!--Text
+                            text="{utilities>AvrN1}"
+                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
+                        /-->
+                        <Input
+                            value="{utilities>AvrN1}"
+                            type="Number"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            submit="onSubmit"
+                        />
+                    </HBox>
+                </table:template>
             </table:Column>
 
             <table:Column width="6rem">
-                <table:multiLabels><Label text="" /><Label text="Août-26" /></table:multiLabels>
-                <table:template><Text text="{utilities>Aout2026}" /></table:template>
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Mai" />
+                </table:multiLabels>
+                <table:template>
+                    <HBox>
+                        <!--Text
+                            text="{utilities>MaiN1}"
+                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
+                        /-->
+                        <Input
+                            value="{utilities>MaiN1}"
+                            type="Number"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            submit="onSubmit"
+                        />
+                    </HBox>
+                </table:template>
             </table:Column>
 
             <table:Column width="6rem">
-                <table:multiLabels><Label text="" /><Label text="Sept-26" /></table:multiLabels>
-                <table:template><Text text="{utilities>Sept2026}" /></table:template>
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Juin" />
+                </table:multiLabels>
+                <table:template>
+                    <HBox>
+                        <!--Text
+                            text="{utilities>JuinN1}"
+                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
+                        /-->
+                        <Input
+                            value="{utilities>JuinN1}"
+                            type="Number"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            submit="onSubmit"
+                        />
+                    </HBox>
+                </table:template>
             </table:Column>
 
             <table:Column width="6rem">
-                <table:multiLabels><Label text="" /><Label text="Oct-26" /></table:multiLabels>
-                <table:template><Text text="{utilities>Oct2026}" /></table:template>
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Juil" />
+                </table:multiLabels>
+                <table:template>
+                    <HBox>
+                        <!--Text
+                            text="{utilities>JuilN1}"
+                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
+                        /-->
+                        <Input
+                            value="{utilities>JuilN1}"
+                            type="Number"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            submit="onSubmit"
+                        />
+                    </HBox>
+                </table:template>
             </table:Column>
 
             <table:Column width="6rem">
-                <table:multiLabels><Label text="" /><Label text="Nov-26" /></table:multiLabels>
-                <table:template><Text text="{utilities>Nov2026}" /></table:template>
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Août" />
+                </table:multiLabels>
+                <table:template>
+                    <HBox>
+                        <!--Text
+                            text="{utilities>AoutN1}"
+                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
+                        /-->
+                        <Input
+                            value="{utilities>AoutN1}"
+                            type="Number"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            submit="onSubmit"
+                        />
+                    </HBox>
+                </table:template>
             </table:Column>
 
             <table:Column width="6rem">
-                <table:multiLabels><Label text="" /><Label text="Déc-26" /></table:multiLabels>
-                <table:template><Text text="{utilities>Dec2026}" /></table:template>
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Sept" />
+                </table:multiLabels>
+                <table:template>
+                    <HBox>
+                        <!--Text
+                            text="{utilities>SeptN1}"
+                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
+                        /-->
+                        <Input
+                            value="{utilities>SeptN1}"
+                            type="Number"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            submit="onSubmit"
+                        />
+                    </HBox>
+                </table:template>
             </table:Column>
 
-            <!-- Au-delà -->
+            <table:Column width="6rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Oct" />
+                </table:multiLabels>
+                <table:template>
+                    <HBox>
+                        <!--Text
+                            text="{utilities>OctN1}"
+                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
+                        /-->
+                        <Input
+                            value="{utilities>OctN1}"
+                            type="Number"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            submit="onSubmit"
+                        />
+                    </HBox>
+                </table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Nov" />
+                </table:multiLabels>
+                <table:template>
+                    <HBox>
+                        <!--Text
+                            text="{utilities>NovN1}"
+                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
+                        /-->
+                        <Input
+                            value="{utilities>NovN1}"
+                            type="Number"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            submit="onSubmit"
+                        />
+                    </HBox>
+                </table:template>
+            </table:Column>
+
+            <table:Column width="6rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Déc" />
+                </table:multiLabels>
+                <table:template>
+                    <HBox>
+                        <!--Text
+                            text="{utilities>DecN1}"
+                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
+                        /-->
+                        <Input
+                            value="{utilities>DecN1}"
+                            type="Number"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            submit="onSubmit"
+                        />
+                    </HBox>
+                </table:template>
+            </table:Column>
+
+            <!-- Totaux -->
             <table:Column width="7rem">
                 <table:multiLabels>
                     <Label text="" />
-                    <Label text="Au-delà" />
+                    <Label text="Total N" />
                 </table:multiLabels>
-                <table:template><Text text="{utilities>AuDela}" /></table:template>
+                <table:template>
+                    <Text text="{utilities>TotalN}" />
+                </table:template>
             </table:Column>
 
+            <table:Column width="7rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Total N+1" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{utilities>TotalN1}" />
+                </table:template>
+            </table:Column>
         </table:columns>
     </table:TreeTable>
 </core:FragmentDefinition>

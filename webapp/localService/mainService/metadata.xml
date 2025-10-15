@@ -440,6 +440,7 @@
                 <NavigationProperty Name="to_BudgetPxSTI" Relationship="ZFGA_SRV.assoc_EFFDDDFC883D7FA56DD238F3514A8B40" FromRole="FromRole_assoc_EFFDDDFC883D7FA56DD238F3514A8B40" ToRole="ToRole_assoc_EFFDDDFC883D7FA56DD238F3514A8B40"/>
                 <NavigationProperty Name="to_BudgetPxSubContracting" Relationship="ZFGA_SRV.assoc_733945962AA43335851B4AB0A78DD1C7" FromRole="FromRole_assoc_733945962AA43335851B4AB0A78DD1C7" ToRole="ToRole_assoc_733945962AA43335851B4AB0A78DD1C7"/>
                 <NavigationProperty Name="to_Missions" Relationship="ZFGA_SRV.assoc_C3CEBB4F914AE5B0F6B34A7D0ECC717D" FromRole="FromRole_assoc_C3CEBB4F914AE5B0F6B34A7D0ECC717D" ToRole="ToRole_assoc_C3CEBB4F914AE5B0F6B34A7D0ECC717D"/>
+                <NavigationProperty Name="to_Previsionel" Relationship="ZFGA_SRV.assoc_CEA120ED07E58C2993244432427D097E" FromRole="FromRole_assoc_CEA120ED07E58C2993244432427D097E" ToRole="ToRole_assoc_CEA120ED07E58C2993244432427D097E"/>
                 <NavigationProperty Name="Parameters" Relationship="ZFGA_SRV.assoc_FBAFCCB8228F35F33FFA98CD63EBFA5B" FromRole="ToRole_assoc_FBAFCCB8228F35F33FFA98CD63EBFA5B" ToRole="FromRole_assoc_FBAFCCB8228F35F33FFA98CD63EBFA5B" sap:filterable="false"/>
             </EntityType>
             <EntityType Name="ZC_FGAParameters" sap:semantics="parameters" sap:content-version="1">
@@ -508,6 +509,43 @@
                 <Property Name="p_businessno" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:parameter="mandatory" sap:label="Business Number" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="p_period" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase" sap:parameter="mandatory" sap:label="Period" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <NavigationProperty Name="Set" Relationship="ZFGA_SRV.assoc_FE6B4C4249FA0DD7A7C69CBFC58C3715" FromRole="FromRole_assoc_FE6B4C4249FA0DD7A7C69CBFC58C3715" ToRole="ToRole_assoc_FE6B4C4249FA0DD7A7C69CBFC58C3715"/>
+            </EntityType>
+            <EntityType Name="ZC_FGA_ForecastType" sap:label="FGA - Prévisionel" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="MissionId"/>
+                    <PropertyRef Name="BusinessNo"/>
+                </Key>
+                <Property Name="MissionId" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Texte 24" sap:quickinfo="Zone de caractères de longueur 24"/>
+                <Property Name="BusinessNo" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Numéro de business" sap:quickinfo="FGA Numéro de business"/>
+                <Property Name="Libelle" Type="Edm.String" MaxLength="40" sap:label="Libellé Mission" sap:quickinfo="PS: désignation (première ligne de texte)"/>
+                <Property Name="MissionCode" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Code Mission" sap:quickinfo="Zone d'une longueur de 3 octets"/>
+                <Property Name="JanvN" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="FevrN" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="MarsN" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="AvrN" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="MaiN" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="JuinN" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="JuilN" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="AoutN" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="SeptN" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="OctN" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="NovN" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="DecN" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="JanvN1" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="FevrN1" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="MarsN1" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="AvrN1" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="MaiN1" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="JuinN1" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="JuilN1" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="AoutN1" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="SeptN1" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="OctN1" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="NovN1" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="DecN1" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="TotalN" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Total Année N"/>
+                <Property Name="TotalN1" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Total Année N+1"/>
+                <Property Name="Regroupement" Type="Edm.String" MaxLength="40" sap:label="Regroupement mission"/>
             </EntityType>
             <EntityType Name="ZC_FGA_MISSIONType" sap:label="FGA Missions" sap:content-version="1">
                 <Key>
@@ -1305,6 +1343,10 @@
                 <End Type="ZFGA_SRV.ZC_FGAType" Multiplicity="1" Role="FromRole_assoc_C3CEBB4F914AE5B0F6B34A7D0ECC717D"/>
                 <End Type="ZFGA_SRV.ZC_FGA_MISSIONType" Multiplicity="*" Role="ToRole_assoc_C3CEBB4F914AE5B0F6B34A7D0ECC717D"/>
             </Association>
+            <Association Name="assoc_CEA120ED07E58C2993244432427D097E" sap:content-version="1">
+                <End Type="ZFGA_SRV.ZC_FGAType" Multiplicity="1" Role="FromRole_assoc_CEA120ED07E58C2993244432427D097E"/>
+                <End Type="ZFGA_SRV.ZC_FGA_ForecastType" Multiplicity="*" Role="ToRole_assoc_CEA120ED07E58C2993244432427D097E"/>
+            </Association>
             <Association Name="assoc_77B97FEC11941A669886CB8195BBB298" sap:content-version="1">
                 <End Type="ZFGA_SRV.I_BusinessPartnerVHType" Multiplicity="1" Role="FromRole_assoc_77B97FEC11941A669886CB8195BBB298"/>
                 <End Type="ZFGA_SRV.I_FormOfAddressTextType" Multiplicity="1" Role="ToRole_assoc_77B97FEC11941A669886CB8195BBB298"/>
@@ -1439,6 +1481,7 @@
                 <EntitySet Name="ZC_FGA_CHART" EntityType="ZFGA_SRV.ZC_FGA_CHARTParameters" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
                 <EntitySet Name="ZC_FGA_CHART_AVANCEMENTSet" EntityType="ZFGA_SRV.ZC_FGA_CHART_AVANCEMENTType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:addressable="false" sap:content-version="1"/>
                 <EntitySet Name="ZC_FGA_CHART_AVANCEMENT" EntityType="ZFGA_SRV.ZC_FGA_CHART_AVANCEMENTParameters" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="ZC_FGA_Forecast" EntityType="ZFGA_SRV.ZC_FGA_ForecastType" sap:content-version="1"/>
                 <EntitySet Name="ZC_FGA_MISSION" EntityType="ZFGA_SRV.ZC_FGA_MISSIONType" sap:content-version="1"/>
                 <EntitySet Name="zc_fga_opportSet" EntityType="ZFGA_SRV.zc_fga_opportType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:addressable="false" sap:content-version="1"/>
                 <EntitySet Name="zc_fga_opport" EntityType="ZFGA_SRV.zc_fga_opportParameters" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
@@ -1555,6 +1598,10 @@
                 <AssociationSet Name="assoc_19F528BA7320D1D27B8766707DF4466C" Association="ZFGA_SRV.assoc_19F528BA7320D1D27B8766707DF4466C" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
                     <End EntitySet="I_FiscalYearVariant" Role="FromRole_assoc_19F528BA7320D1D27B8766707DF4466C"/>
                     <End EntitySet="I_FiscalYearVariantText" Role="ToRole_assoc_19F528BA7320D1D27B8766707DF4466C"/>
+                </AssociationSet>
+                <AssociationSet Name="assoc_CEA120ED07E58C2993244432427D097E" Association="ZFGA_SRV.assoc_CEA120ED07E58C2993244432427D097E" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="ZC_FGASet" Role="FromRole_assoc_CEA120ED07E58C2993244432427D097E"/>
+                    <End EntitySet="ZC_FGA_Forecast" Role="ToRole_assoc_CEA120ED07E58C2993244432427D097E"/>
                 </AssociationSet>
                 <AssociationSet Name="assoc_8935324EB612D712A7C3C8CE9F11C424" Association="ZFGA_SRV.assoc_8935324EB612D712A7C3C8CE9F11C424" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
                     <End EntitySet="I_ChartOfAccounts" Role="FromRole_assoc_8935324EB612D712A7C3C8CE9F11C424"/>
@@ -3126,6 +3173,9 @@
             <Annotations Target="ZFGA_SRV.ZC_FGAType/to_Missions" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Common.Composition"/>
             </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGAType/to_Previsionel" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.Composition"/>
+            </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_STIType/to_BUDG" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Common.Composition"/>
             </Annotations>
@@ -3628,6 +3678,14 @@
                                 </Record>
                                 <Record>
                                     <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_Missions"/>
+                                    <PropertyValue Property="InsertRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Insertable" Bool="true"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_Previsionel"/>
                                     <PropertyValue Property="InsertRestrictions">
                                         <Record>
                                             <PropertyValue Property="Insertable" Bool="true"/>
