@@ -16,7 +16,6 @@
         selectionMode="None"
         fixedColumnCount="1"
         enableColumnReordering="false"
-        visibleRowCountMode="Auto"
         class="sapUiSizeCompact"
     >
         <table:rowMode>
