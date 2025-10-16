@@ -23,10 +23,10 @@
     >
         <table:extension>
             <MessageStrip
-                text="{= ${utilities>/currentYear} === 2026
+                text="{= ${utilities>/DataMode} === 'M'
             ? 'Mode manuel : les valeurs affichées ont été saisies manuellement.'
             : 'Mode automatique : les valeurs sont calculées automatiquement.'}"
-                type="{= ${utilities>/currentYear} === 2026 ? 'Information' : 'Warning'}"
+                type="{= ${utilities>/DataMode} === 'M' ? 'Information' : 'Warning'}"
                 showIcon="true"
                 showCloseButton="false"
             />

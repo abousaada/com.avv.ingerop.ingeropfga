@@ -10,6 +10,12 @@ sap.ui.define([
             var self = this;
             var previsionel = this.getView().getModel("utilities").getProperty("/previsionel");
 
+            if (previsionel && previsionel.length > 0 && previsionel[0].DataMode) {
+                this.getView().getModel("utilities").setProperty("/DataMode", previsionel[0].DataMode);
+            } else {
+                this.getView().getModel("utilities").setProperty("/DataMode", "A"); // default to Auto if missing
+            }
+
             var buildTree = function (items) {
                 var treeData = [];
                 var fgaGroups = {};

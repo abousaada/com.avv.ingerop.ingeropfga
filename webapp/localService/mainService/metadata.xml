@@ -551,6 +551,7 @@
                 <Property Name="TotalN1" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Total Année N+1"/>
                 <Property Name="Audela" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Au-dela"/>
                 <Property Name="Regroupement" Type="Edm.String" MaxLength="40" sap:label="Regroupement mission"/>
+                <Property Name="DataMode" Type="Edm.String" MaxLength="1"/>
             </EntityType>
             <EntityType Name="ZC_FGA_MISSIONType" sap:label="FGA Missions" sap:content-version="1">
                 <Key>

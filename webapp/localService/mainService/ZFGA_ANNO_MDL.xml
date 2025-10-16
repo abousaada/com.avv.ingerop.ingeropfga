@@ -615,6 +615,9 @@
             <Annotations Target="ZFGA_SRV.ZC_FGA_ForecastType/Regroupement">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGA_ForecastType/DataMode">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_FGA_ForecastType">
                 <Annotation Term="UI.LineItem">
                     <Collection>
