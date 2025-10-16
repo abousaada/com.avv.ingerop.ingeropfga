@@ -674,7 +674,7 @@
                     <Label text="Au-dela" />
                 </table:multiLabels>
                 <table:template>
-                    <Text text="{utilities>audela}" />
+                    <Text text="{utilities>Audela}" />
                 </table:template>
             </table:Column>
         </table:columns>
