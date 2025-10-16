@@ -39,6 +39,14 @@ sap.ui.define(
 
             // this section allows to extend lifecycle hooks or hooks provided by Fiori elements
             override: {
+
+                onAfterRendering: function () {
+                    const oTreeTable = this.getView().byId("PrevisionnelTreeTable");
+                    if (oTreeTable) {
+                        oTreeTable.setFixedColumnCount(99);
+                    }
+                },
+
                 /**
                 * Called when a controller is instantiated and its View controls (if available) are already created.
                 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time       initialization.
@@ -291,12 +299,20 @@ sap.ui.define(
             },
 
             _onObjectExtMatched: async function (e) {
-
+                const oUtilitiesModel = this.getInterface().getModel("utilities");
                 const oContext = e.context;
 
-                // Read the flag from the model
-                const isForecastMode = this.getInterface().getModel("utilities").getProperty("/isForecastMode");
-
+                // Read the flag from the model + manage refresh
+                let isForecastMode = this.getInterface().getModel("utilities").getProperty("/isForecastMode");
+                if (isForecastMode === undefined || isForecastMode === null) {
+                    const storedValue = sessionStorage.getItem("isForecastMode");
+                    if (storedValue !== null) {
+                        isForecastMode = JSON.parse(storedValue);
+                        oUtilitiesModel.setProperty("/isForecastMode", isForecastMode);
+                    } else {
+                        isForecastMode = false;
+                    }
+                }
 
                 const utilitiesModel = this.getInterface().getModel("utilities");
                 const bCreateMode = this.getView().getModel("ui").getProperty("/createMode");
@@ -328,7 +344,7 @@ sap.ui.define(
 
                 if (sPeriod && sBusinessNo && !bCreateMode) {
                     try {
-                        
+
                         if (isForecastMode) {
                             console.log("Mode PREVISION détecté !");
                             var type = 'previsionel';

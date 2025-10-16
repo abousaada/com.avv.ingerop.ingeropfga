@@ -6,6 +6,8 @@
 >
     <table:TreeTable
         id="PrevisionnelTreeTable"
+        width="100%"
+            rowsUpdated="onRowsUpdatedBudgetPXTab"
         rows="{
             path: 'utilities>/previsionelHierarchyWithTotals',
             parameters: {
@@ -14,9 +16,10 @@
             }
         }"
         selectionMode="None"
-        fixedColumnCount="1"
+        ariaLabelledBy="title"
         enableColumnReordering="false"
-        class="sapUiSizeCompact"
+        enableColumnFreeze="true"
+        fixedColumnCount="1"
     >
         <table:rowMode>
             <rm:Auto minRowCount="{localModel>/tableSettings/minRowCount}" />
@@ -36,7 +39,7 @@
             </table:Column>
 
             <!-- === Base columns === -->
-            <table:Column width="10rem">
+            <!--table:Column width="10rem">
                 <table:multiLabels>
                     <Label text="" />
                     <Label text="Numéro affaire" />
@@ -47,7 +50,7 @@
                         visible="{= !${utilities>isTotalRow}}"
                     />
                 </table:template>
-            </table:Column>
+            </table:Column -->
 
             <table:Column width="12rem">
                 <table:multiLabels>
@@ -69,7 +72,7 @@
                 </table:multiLabels>
                 <table:template>
                     <Text
-                        text="{utilities>Type}"
+                        text="{utilities>FacturationDepense}"
                         visible="{= !${utilities>isTotalRow}}"
                     />
                 </table:template>
@@ -109,7 +112,7 @@
             >
                 <table:multiLabels>
                     <Label text="ANNÉE EN COURS" />
-                    <Label text="Janv" />
+                    <Label text="{= 'Janv ' + ${utilities>/currentYear}}" />
                 </table:multiLabels>
                 <table:template>
                     <HBox>
@@ -121,7 +124,7 @@
                             value="{utilities>JanvN}"
                             submit="onSubmit"
                             type="Number"
-                            enabled="{= ${utilities>isEditableJanvN}}"
+                            editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableJanvN} }"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
                         />
                     </HBox>
@@ -131,7 +134,7 @@
             <table:Column width="6rem">
                 <table:multiLabels>
                     <Label text="" />
-                    <Label text="Févr" />
+                    <Label text="{= 'Févr ' + ${utilities>/currentYear}}" />
                 </table:multiLabels>
                 <table:template>
                     <HBox>
@@ -143,7 +146,7 @@
                             value="{utilities>FevrN}"
                             submit="onSubmit"
                             type="Number"
-                            enabled="{= ${utilities>isEditableFevrN}}"
+                            editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableFevrN}}"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
                         />
                     </HBox>
@@ -153,7 +156,7 @@
             <table:Column width="6rem">
                 <table:multiLabels>
                     <Label text="" />
-                    <Label text="Mars" />
+                    <Label text="{= 'Mars ' + ${utilities>/currentYear}}" />
                 </table:multiLabels>
                 <table:template>
                     <HBox>
@@ -165,7 +168,7 @@
                             value="{utilities>MarsN}"
                             submit="onSubmit"
                             type="Number"
-                            enabled="{= ${utilities>isEditableMarsN}}"
+                            editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableMarsN}}"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
                         />
                     </HBox>
@@ -175,7 +178,7 @@
             <table:Column width="6rem">
                 <table:multiLabels>
                     <Label text="" />
-                    <Label text="Avr" />
+                    <Label text="{= 'Avr ' + ${utilities>/currentYear}}" />
                 </table:multiLabels>
                 <table:template>
                     <HBox>
@@ -187,7 +190,7 @@
                             value="{utilities>AvrN}"
                             submit="onSubmit"
                             type="Number"
-                            enabled="{= ${utilities>isEditableAvrN}}"
+                            editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableAvrN}}"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
                         />
                     </HBox>
@@ -197,7 +200,7 @@
             <table:Column width="6rem">
                 <table:multiLabels>
                     <Label text="" />
-                    <Label text="Mai" />
+                    <Label text="{= 'Mai ' + ${utilities>/currentYear}}" />
                 </table:multiLabels>
                 <table:template>
                     <HBox>
@@ -209,7 +212,7 @@
                             value="{utilities>MaiN}"
                             submit="onSubmit"
                             type="Number"
-                            enabled="{= ${utilities>isEditableMaiN}}"
+                            editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableMaiN}}"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
                         />
                     </HBox>
@@ -219,7 +222,7 @@
             <table:Column width="6rem">
                 <table:multiLabels>
                     <Label text="" />
-                    <Label text="Juin" />
+                    <Label text="{= 'Juin ' + ${utilities>/currentYear}}" />
                 </table:multiLabels>
                 <table:template>
                     <HBox>
@@ -231,7 +234,7 @@
                             value="{utilities>JuinN}"
                             submit="onSubmit"
                             type="Number"
-                            enabled="{= ${utilities>isEditableJuinN}}"
+                            editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableJuinN}}"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
                         />
                     </HBox>
@@ -241,7 +244,7 @@
             <table:Column width="6rem">
                 <table:multiLabels>
                     <Label text="" />
-                    <Label text="Juil" />
+                    <Label text="{= 'Juil ' + ${utilities>/currentYear}}" />
                 </table:multiLabels>
                 <table:template>
                     <HBox>
@@ -253,7 +256,7 @@
                             value="{utilities>JuilN}"
                             submit="onSubmit"
                             type="Number"
-                            enabled="{= ${utilities>isEditableJuilN}}"
+                            editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableJuilN}}"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
                         />
                     </HBox>
@@ -264,7 +267,7 @@
             <table:Column width="6rem">
                 <table:multiLabels>
                     <Label text="" />
-                    <Label text="Août" />
+                    <Label text="{= 'Août ' + ${utilities>/currentYear}}" />
                 </table:multiLabels>
                 <table:template>
                     <HBox>
@@ -276,7 +279,7 @@
                             value="{utilities>AoutN}"
                             submit="onSubmit"
                             type="Number"
-                            enabled="{= ${utilities>isEditableAoutN}}"
+                            editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableAoutN}}"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
                         />
                     </HBox>
@@ -286,7 +289,7 @@
             <table:Column width="6rem">
                 <table:multiLabels>
                     <Label text="" />
-                    <Label text="Sept" />
+                    <Label text="{= 'Sept ' + ${utilities>/currentYear}}" />
                 </table:multiLabels>
                 <table:template>
                     <HBox>
@@ -298,7 +301,7 @@
                             value="{utilities>SeptN}"
                             submit="onSubmit"
                             type="Number"
-                            enabled="{= ${utilities>isEditableSeptN}}"
+                            editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableSeptN}}"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
                         />
                     </HBox>
@@ -308,7 +311,7 @@
             <table:Column width="6rem">
                 <table:multiLabels>
                     <Label text="" />
-                    <Label text="Oct" />
+                    <Label text="{= 'Oct ' + ${utilities>/currentYear}}" />
                 </table:multiLabels>
                 <table:template>
                     <HBox>
@@ -320,7 +323,7 @@
                             value="{utilities>OctN}"
                             submit="onSubmit"
                             type="Number"
-                            enabled="{= ${utilities>isEditableOctN}}"
+                            editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableOctN}}"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
                         />
                     </HBox>
@@ -330,7 +333,7 @@
             <table:Column width="6rem">
                 <table:multiLabels>
                     <Label text="" />
-                    <Label text="Nov" />
+                    <Label text="{= 'Nov ' + ${utilities>/currentYear}}" />
                 </table:multiLabels>
                 <table:template>
                     <HBox>
@@ -342,7 +345,7 @@
                             value="{utilities>NovN}"
                             submit="onSubmit"
                             type="Number"
-                            enabled="{= ${utilities>isEditableNovN}}"
+                            editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableNovN}}"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
                         />
                     </HBox>
@@ -352,7 +355,7 @@
             <table:Column width="6rem">
                 <table:multiLabels>
                     <Label text="" />
-                    <Label text="Déc" />
+                    <Label text="{= 'Déc ' + ${utilities>/currentYear}}" />
                 </table:multiLabels>
                 <table:template>
                     <HBox>
@@ -364,7 +367,7 @@
                             value="{utilities>DecN}"
                             submit="onSubmit"
                             type="Number"
-                            enabled="{= ${utilities>isEditableDecN}}"
+                            editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableDecN}}"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
                         />
                     </HBox>
@@ -380,7 +383,7 @@
             >
                 <table:multiLabels>
                     <Label text="ANNÉE N+1" />
-                    <Label text="Janv" />
+                    <Label text="{= 'Janv ' + ${utilities>/nextYear}}" />
                 </table:multiLabels>
                 <table:template>
                     <HBox>
@@ -392,6 +395,7 @@
                             value="{utilities>JanvN1}"
                             type="Number"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            editable="{ui>/editable}"
                             submit="onSubmit"
                         />
                     </HBox>
@@ -401,7 +405,7 @@
             <table:Column width="6rem">
                 <table:multiLabels>
                     <Label text="" />
-                    <Label text="Févr" />
+                    <Label text="{= 'Févr ' + ${utilities>/nextYear}}" />
                 </table:multiLabels>
                 <table:template>
                     <HBox>
@@ -413,6 +417,7 @@
                             value="{utilities>FevrN1}"
                             type="Number"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            editable="{ui>/editable}"
                             submit="onSubmit"
                         />
                     </HBox>
@@ -422,7 +427,7 @@
             <table:Column width="6rem">
                 <table:multiLabels>
                     <Label text="" />
-                    <Label text="Mars" />
+                    <Label text="{= 'Mars ' + ${utilities>/nextYear}}" />
                 </table:multiLabels>
                 <table:template>
                     <HBox>
@@ -434,6 +439,7 @@
                             value="{utilities>MarsN1}"
                             type="Number"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            editable="{ui>/editable}"
                             submit="onSubmit"
                         />
                     </HBox>
@@ -443,7 +449,7 @@
             <table:Column width="6rem">
                 <table:multiLabels>
                     <Label text="" />
-                    <Label text="Avr" />
+                    <Label text="{= 'Avr ' + ${utilities>/nextYear}}" />
                 </table:multiLabels>
                 <table:template>
                     <HBox>
@@ -455,6 +461,7 @@
                             value="{utilities>AvrN1}"
                             type="Number"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            editable="{ui>/editable}"
                             submit="onSubmit"
                         />
                     </HBox>
@@ -464,7 +471,7 @@
             <table:Column width="6rem">
                 <table:multiLabels>
                     <Label text="" />
-                    <Label text="Mai" />
+                    <Label text="{= 'Mai ' + ${utilities>/nextYear}}" />
                 </table:multiLabels>
                 <table:template>
                     <HBox>
@@ -476,6 +483,7 @@
                             value="{utilities>MaiN1}"
                             type="Number"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            editable="{ui>/editable}"
                             submit="onSubmit"
                         />
                     </HBox>
@@ -485,7 +493,7 @@
             <table:Column width="6rem">
                 <table:multiLabels>
                     <Label text="" />
-                    <Label text="Juin" />
+                    <Label text="{= 'Juin ' + ${utilities>/nextYear}}" />
                 </table:multiLabels>
                 <table:template>
                     <HBox>
@@ -497,6 +505,7 @@
                             value="{utilities>JuinN1}"
                             type="Number"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            editable="{ui>/editable}"
                             submit="onSubmit"
                         />
                     </HBox>
@@ -506,7 +515,7 @@
             <table:Column width="6rem">
                 <table:multiLabels>
                     <Label text="" />
-                    <Label text="Juil" />
+                    <Label text="{= 'Juil ' + ${utilities>/nextYear}}" />
                 </table:multiLabels>
                 <table:template>
                     <HBox>
@@ -518,6 +527,7 @@
                             value="{utilities>JuilN1}"
                             type="Number"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            editable="{ui>/editable}"
                             submit="onSubmit"
                         />
                     </HBox>
@@ -527,7 +537,7 @@
             <table:Column width="6rem">
                 <table:multiLabels>
                     <Label text="" />
-                    <Label text="Août" />
+                    <Label text="{= 'Août ' + ${utilities>/nextYear}}" />
                 </table:multiLabels>
                 <table:template>
                     <HBox>
@@ -539,6 +549,7 @@
                             value="{utilities>AoutN1}"
                             type="Number"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            editable="{ui>/editable}"
                             submit="onSubmit"
                         />
                     </HBox>
@@ -548,7 +559,7 @@
             <table:Column width="6rem">
                 <table:multiLabels>
                     <Label text="" />
-                    <Label text="Sept" />
+                    <Label text="{= 'Sept ' + ${utilities>/nextYear}}" />
                 </table:multiLabels>
                 <table:template>
                     <HBox>
@@ -560,6 +571,7 @@
                             value="{utilities>SeptN1}"
                             type="Number"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            editable="{ui>/editable}"
                             submit="onSubmit"
                         />
                     </HBox>
@@ -569,7 +581,7 @@
             <table:Column width="6rem">
                 <table:multiLabels>
                     <Label text="" />
-                    <Label text="Oct" />
+                    <Label text="{= 'Oct ' + ${utilities>/nextYear}}" />
                 </table:multiLabels>
                 <table:template>
                     <HBox>
@@ -581,6 +593,7 @@
                             value="{utilities>OctN1}"
                             type="Number"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            editable="{ui>/editable}"
                             submit="onSubmit"
                         />
                     </HBox>
@@ -590,7 +603,7 @@
             <table:Column width="6rem">
                 <table:multiLabels>
                     <Label text="" />
-                    <Label text="Nov" />
+                    <Label text="{= 'Nov ' + ${utilities>/nextYear}}" />
                 </table:multiLabels>
                 <table:template>
                     <HBox>
@@ -602,6 +615,7 @@
                             value="{utilities>NovN1}"
                             type="Number"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            editable="{ui>/editable}"
                             submit="onSubmit"
                         />
                     </HBox>
@@ -611,7 +625,7 @@
             <table:Column width="6rem">
                 <table:multiLabels>
                     <Label text="" />
-                    <Label text="Déc" />
+                    <Label text="{= 'Déc ' + ${utilities>/nextYear}}" />
                 </table:multiLabels>
                 <table:template>
                     <HBox>
@@ -623,6 +637,7 @@
                             value="{utilities>DecN1}"
                             type="Number"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            editable="{ui>/editable}"
                             submit="onSubmit"
                         />
                     </HBox>
@@ -633,7 +648,7 @@
             <table:Column width="7rem">
                 <table:multiLabels>
                     <Label text="" />
-                    <Label text="Total N" />
+                    <Label text="{= 'Total ' + ${utilities>/currentYear}}" />
                 </table:multiLabels>
                 <table:template>
                     <Text text="{utilities>TotalN}" />
@@ -643,10 +658,20 @@
             <table:Column width="7rem">
                 <table:multiLabels>
                     <Label text="" />
-                    <Label text="Total N+1" />
+                    <Label text="{= 'Total ' + ${utilities>/nextYear}}" />
                 </table:multiLabels>
                 <table:template>
                     <Text text="{utilities>TotalN1}" />
+                </table:template>
+            </table:Column>
+
+            <table:Column width="7rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Au-dela" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{utilities>audela}" />
                 </table:template>
             </table:Column>
         </table:columns>

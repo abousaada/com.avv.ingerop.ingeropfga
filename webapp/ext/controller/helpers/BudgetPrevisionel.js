@@ -8,7 +8,7 @@ sap.ui.define([
         preparePrevisionelTreeData: function () {
 
             var self = this;
-            var pxAutres = this.getView().getModel("utilities").getProperty("/previsionel");
+            var previsionel = this.getView().getModel("utilities").getProperty("/previsionel");
 
             var buildTree = function (items) {
                 var treeData = [];
@@ -128,24 +128,24 @@ sap.ui.define([
             };
 
             // Build trees 
-            var pxAutresTreeData = buildTree(pxAutres);
+            var previsionelTreeData = buildTree(previsionel);
 
             // Calculate global totals
-            var globalTotals = this.calculateGlobalTotals(pxAutresTreeData);
+            var globalTotals = this.calculateGlobalTotals(previsionelTreeData);
 
             // Create flat summary rows (level 0)
+            // Create new summary rows
             var summaryRows = [
-                this.createSummaryRow("Total Acquis", globalTotals.totalAcquis, false),
-                this.createSummaryRow("Cumule", globalTotals.cumule, false),
-                this.createSummaryRow("Pourcentage", globalTotals.pourcentage, true),
-                this.createSummaryRow("RAD", globalTotals.rad, false)
+                this.createSummaryRow("Total facturation", globalTotals.totalAcquis, false),
+                this.createSummaryRow("Total dépense", globalTotals.cumule, false)
             ];
 
+
             // Add summary rows directly to the root array (as level 0 items)
-            pxAutresTreeData = pxAutresTreeData.concat(summaryRows);
+            previsionelTreeData = previsionelTreeData.concat(summaryRows);
 
             // Set tree
-            this.getView().getModel("utilities").setProperty("/previsionelHierarchyWithTotals", pxAutresTreeData);
+            this.getView().getModel("utilities").setProperty("/previsionelHierarchyWithTotals", previsionelTreeData);
         },
 
         // Configuration des mois editables
@@ -154,6 +154,13 @@ sap.ui.define([
             const period = this.getView().getModel("utilities").getProperty("/period"); // e.g. "102025"
             const periodMonth = parseInt(period.substring(0, 2), 10); // "10" → 10
             const periodYear = parseInt(period.substring(2, 6), 10);  // "2025" → 2025
+
+            const nextYear = periodYear + 1;
+
+            // Save these years for bindings
+            const utilitiesModel = this.getView().getModel("utilities");
+            utilitiesModel.setProperty("/currentYear", periodYear);
+            utilitiesModel.setProperty("/nextYear", nextYear);
 
             const currentMonth = periodMonth;
             const currentYear = periodYear;
@@ -298,12 +305,12 @@ sap.ui.define([
             var globalTotals = this.calculateGlobalTotals(aTreeData);
 
             // Create new summary rows
+            // Create flat summary rows (level 0)
             var summaryRows = [
-                this.createSummaryRow("Total Acquis", globalTotals.totalAcquis, false),
-                this.createSummaryRow("Cumule", globalTotals.cumule, false),
-                this.createSummaryRow("Pourcentage", globalTotals.pourcentage, true),
-                this.createSummaryRow("RAD", globalTotals.rad, false)
+                this.createSummaryRow("Total facturation", globalTotals.totalAcquis, false),
+                this.createSummaryRow("Total dépense", globalTotals.cumule, false)
             ];
+
 
             // Update the model
             oModel.setProperty("/previsionelHierarchyWithTotals", aTreeData.concat(summaryRows));

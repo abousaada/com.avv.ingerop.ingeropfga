@@ -16,11 +16,6 @@ sap.ui.define(
 
         return {
 
-            onAfterRendering: function () {
-                // Always clear forecast mode when coming back to the list
-                this.getView().getModel("utilities").setProperty("/isForecastMode", false);
-            },
-
             onSTIPress: function (oEvent) {
                 try {
                     var aFAGs = this.getSelectedBusinessNumbers();
@@ -171,6 +166,9 @@ sap.ui.define(
 
                 // Set the mode in the model BEFORE navigation
                 this.getView().getModel("utilities").setProperty("/isForecastMode", true);
+
+                // Save it so it's not lost on refresh
+                sessionStorage.setItem("isForecastMode", "true");
 
                 // Navigate internally to the Object Page
                 this.extensionAPI.getNavigationController().navigateInternal(oContext, {
