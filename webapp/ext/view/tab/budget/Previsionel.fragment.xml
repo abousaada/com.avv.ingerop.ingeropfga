@@ -85,8 +85,18 @@
                     <Label text="Facturation / Dépenses" />
                 </table:multiLabels>
                 <table:template>
-                    <Text
+                    <!--Text
                         text="{utilities>FacturationDepense}"
+                        visible="{= !${utilities>isTotalRow}}"
+                    /-->
+                    <ObjectStatus
+                        text="{utilities>FacturationDepense}"
+                        state="{= ${utilities>FacturationDepense} === 'Facturation' ? 'Success' : 'Warning'}"
+                        icon="{= ${utilities>FacturationDepense}
+                            ? (${utilities>FacturationDepense} === 'Facturation'
+                                ? 'sap-icon://money-bills'
+                                : 'sap-icon://expense-report')
+                            : '' }"
                         visible="{= !${utilities>isTotalRow}}"
                     />
                 </table:template>
