@@ -21,6 +21,17 @@
         enableColumnFreeze="true"
         fixedColumnCount="99"
     >
+        <table:extension>
+            <MessageStrip
+                text="{= ${utilities>/currentYear} === 2026
+            ? 'Mode manuel : les valeurs affichées ont été saisies manuellement.'
+            : 'Mode automatique : les valeurs sont calculées automatiquement.'}"
+                type="{= ${utilities>/currentYear} === 2026 ? 'Information' : 'Warning'}"
+                showIcon="true"
+                showCloseButton="false"
+            />
+        </table:extension>
+
         <table:rowMode>
             <rm:Auto minRowCount="{localModel>/tableSettings/minRowCount}" />
         </table:rowMode>
