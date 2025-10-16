@@ -146,6 +146,9 @@ sap.ui.define([
 
             // Set tree
             this.getView().getModel("utilities").setProperty("/previsionelHierarchyWithTotals", previsionelTreeData);
+
+            var totalRows = this.countRows(previsionelTreeData);
+            this.updateRowCount(totalRows);
         },
 
         // Configuration des mois editables
@@ -624,6 +627,42 @@ sap.ui.define([
             } catch (err) {
                 console.error("Error during navigation:", err);
             }
+        },
+
+        updateRowCount: function (rowCount) {
+
+            if (!this.getView().getModel("localModel")) {
+                this.getView().setModel(new JSONModel({
+                    tableSettings: {
+                        minRowCount: 5
+                    }
+                }), "localModel");
+            }
+
+            this.getView().getModel("localModel").setProperty("/tableSettings/minRowCount",
+                Math.max(rowCount, 1));
+        },
+
+        countRows: function (nodes) {
+            if (!nodes || nodes.length === 0) return 0;
+
+            var count = 0;
+            nodes.forEach(function (node) {
+                count++;
+                if (node.isNode && !node.isL0) {
+                    count++; // Add 1 for the line total
+                }
+                if (node.children && node.children.length > 0) {
+                    count += this.countRows(node.children);
+                }
+            }.bind(this));
+
+            // Add 4 lines for global totals 
+            /*if (nodes[0] && nodes[0].isL0) {
+                count += 2;
+            }*/
+
+            return count;
         },
     });
 });

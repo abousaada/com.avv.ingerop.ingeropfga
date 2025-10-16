@@ -7,7 +7,7 @@
     <table:TreeTable
         id="PrevisionnelTreeTable"
         width="100%"
-            rowsUpdated="onRowsUpdatedBudgetPXTab"
+        rowsUpdated="onRowsUpdatedBudgetPXTab"
         rows="{
             path: 'utilities>/previsionelHierarchyWithTotals',
             parameters: {
@@ -19,7 +19,7 @@
         ariaLabelledBy="title"
         enableColumnReordering="false"
         enableColumnFreeze="true"
-        fixedColumnCount="1"
+        fixedColumnCount="99"
     >
         <table:rowMode>
             <rm:Auto minRowCount="{localModel>/tableSettings/minRowCount}" />
@@ -28,7 +28,10 @@
         <table:columns>
             <!-- === Colonne Hiérarchique (comme PxAutre) === -->
             <table:Column width="17rem">
-                <Label text="Hierarchy/Mission" />
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Hierarchy/Mission" />
+                </table:multiLabels>
                 <table:template>
                     <Text
                         text="{= ${utilities>isTotalRow} ? ${utilities>name} : 
