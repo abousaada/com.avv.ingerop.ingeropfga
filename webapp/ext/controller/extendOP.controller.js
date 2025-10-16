@@ -166,7 +166,7 @@ sap.ui.define(
                                 "to_BudgetPxSubContracting": formattedPxSubContractingExt,
                                 "to_BudgetPxRecetteExt": formattedPxRecetteExt,
                                 "to_BudgetPxSTI": [],
-                                "to_BudgetPrevisionel": [],
+                                "to_Previsionel": [],
                                 "to_BudgetPxMainOeuvre": formattedMainOeuvre
                             });
 
