@@ -60,36 +60,42 @@ sap.ui.define([
                 return this.oMainOeuvre.reCalcMainOeuvreTable();
             },
 
-            async getBEDatas() {
+            async getBEDatas(type) {
                 try {
-                    const [missions, previsions, recaps, opport, risque, charts, 
-                            chartsadddata, pxRecettes, pxAutres, pxSubContracting, 
-                            pxMainOeuvre, pxSTI, pSTI, notes, sfgp, previsionel] 
+                    
+                    if (type === 'previsionel') {
+                        const previsionel = await this.getBEPrevisionel();
+                        this.setPrevisionel(previsionel || []);
+                        return;
+                    }
+                    const [missions, previsions, recaps, opport, risque, charts,
+                        chartsadddata, pxRecettes, pxAutres, pxSubContracting,
+                        pxMainOeuvre, pxSTI, pSTI, notes, sfgp, previsionel]
                         = await Promise.all([
 
-                        this.getBEMissions(),
-                        this.getBEPrevisions(),
-                        this.getBERecaps(),
-                        this.getBEOpport(),
-                        this.getBERisque(),
-                        this.getBECharts(),
-                        this.getBEChartsAdditionalData(),
+                            this.getBEMissions(),
+                            this.getBEPrevisions(),
+                            this.getBERecaps(),
+                            this.getBEOpport(),
+                            this.getBERisque(),
+                            this.getBECharts(),
+                            this.getBEChartsAdditionalData(),
 
-                        //Bugets PX
-                        this.getBEPxRecettes(),
-                        this.getBEPxAutres(),
-                        this.getBEPxExtSubContracting(),
-                        this.getBEPxMainOeuvre(),
-                        this.getBEPxSTI(),
-                        this.getBEPSTI(),
+                            //Bugets PX
+                            this.getBEPxRecettes(),
+                            this.getBEPxAutres(),
+                            this.getBEPxExtSubContracting(),
+                            this.getBEPxMainOeuvre(),
+                            this.getBEPxSTI(),
+                            this.getBEPSTI(),
 
-                        //Notes
-                        this.getBENotes(),
-                        this.getBESfgp(),
+                            //Notes
+                            this.getBENotes(),
+                            this.getBESfgp(),
 
-                        this.getBEPrevisionel(),
-                        
-                    ]);
+                            this.getBEPrevisionel(),
+
+                        ]);
 
                     this.setMissions(missions || []);
                     this.setRecaps(recaps || []);
@@ -116,7 +122,7 @@ sap.ui.define([
                     this.setSfgp(sfgp || []);
 
                     this.setPrevisionel(previsionel || []);
-                    
+
 
                 } catch (error) {
                     console.log(error);
@@ -368,14 +374,14 @@ sap.ui.define([
                 const recetteExt = this.getPxRecetteExt();
                 const formattedRecetteExt = this.formattedPxRecetteExt();
                 const props = [
-                    { inProp : "groupe", outProp : "Groupe"}, 
-                    { inProp : "interUfo", outProp : "InterUFO"}, 
-                    { inProp : "intraUfo", outProp : "IntraUFO"}
+                    { inProp: "groupe", outProp: "Groupe" },
+                    { inProp: "interUfo", outProp: "InterUFO" },
+                    { inProp: "intraUfo", outProp: "IntraUFO" }
                 ];
 
-                const sum = (array, prop) => array.reduce((s,v) => s + parseFloat(v[prop]), 0); 
+                const sum = (array, prop) => array.reduce((s, v) => s + parseFloat(v[prop]), 0);
 
-                return props.every( ( { inProp , outProp } ) => sum(recetteExt, inProp) === sum(formattedRecetteExt, outProp));
+                return props.every(({ inProp, outProp }) => sum(recetteExt, inProp) === sum(formattedRecetteExt, outProp));
             },
 
             getViewField(identifier, field) {
@@ -571,8 +577,8 @@ sap.ui.define([
 
                     const pSTI = await this.read("/ZC_STI", {
                         urlParameters: {
-                           //"$filter": `business_no_e eq '${businessNo}' and p_period eq '${urlPeriod}'`
-                           "$filter": `business_no_e eq '${businessNo}' and p_period eq '${period}'`
+                            //"$filter": `business_no_e eq '${businessNo}' and p_period eq '${urlPeriod}'`
+                            "$filter": `business_no_e eq '${businessNo}' and p_period eq '${period}'`
                         }
                     });
 
@@ -764,7 +770,7 @@ sap.ui.define([
                 }
             },
 
-             async getBEPrevisionel() {
+            async getBEPrevisionel() {
                 try {
                     this.setChartBusy(true);
                     const businessNo = this.getBusinessNo();
@@ -812,7 +818,7 @@ sap.ui.define([
                 }
             },
 
-            async getBEProfilById(ProfilNo){
+            async getBEProfilById(ProfilNo) {
                 try {
                     const BusinessNo = this.getBusinessNo();
                     const Period = this.getPeriod();

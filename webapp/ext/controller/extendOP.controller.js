@@ -277,9 +277,9 @@ sap.ui.define(
                 // this.base.templateBaseExtension.getExtensionAPI().refresh();
             },
 
-            async _getTabsData() {
+            async _getTabsData(type) {
                 try {
-                    const data = await this.getInterface().getModel("utilities").getBEDatas();
+                    const data = await this.getInterface().getModel("utilities").getBEDatas(type);
                     return data;
                 } catch (error) {
                     console.log(error);
@@ -296,9 +296,7 @@ sap.ui.define(
 
                 // Read the flag from the model
                 const isForecastMode = this.getInterface().getModel("utilities").getProperty("/isForecastMode");
-                if (isForecastMode) {
-                    console.log("Mode PREVISION détecté !");
-                }
+
 
                 const utilitiesModel = this.getInterface().getModel("utilities");
                 const bCreateMode = this.getView().getModel("ui").getProperty("/createMode");
@@ -330,7 +328,13 @@ sap.ui.define(
 
                 if (sPeriod && sBusinessNo && !bCreateMode) {
                     try {
-                        const tabData = await this._getTabsData();
+                        
+                        if (isForecastMode) {
+                            console.log("Mode PREVISION détecté !");
+                            var type = 'previsionel';
+                        }
+
+                        const tabData = await this._getTabsData(type);
 
                         //2. Display Different Fragments Based on Company Code Country
                         const sCountry = e.context.getProperty("CompanyCountry");
@@ -600,7 +604,9 @@ sap.ui.define(
 
             // Delegates submit logic to specialized handler : Budget Prévisionel
             preparePrevisionelTreeData: function () {
+                this._setBusy(true);
                 this._budgetPrevisionel.preparePrevisionelTreeData();
+                this._setBusy(false);
             },
 
             getCurrentEditableMonth: function () {

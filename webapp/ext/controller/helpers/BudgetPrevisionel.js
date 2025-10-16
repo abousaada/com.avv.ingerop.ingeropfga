@@ -6,6 +6,7 @@ sap.ui.define([
     return Controller.extend("com.avv.ingerop.ingeropfga.ext.controller.BudgetPrevisionel", {
 
         preparePrevisionelTreeData: function () {
+
             var self = this;
             var pxAutres = this.getView().getModel("utilities").getProperty("/previsionel");
 
@@ -149,9 +150,14 @@ sap.ui.define([
 
         // Configuration des mois editables
         getEditableMonthsConfig: function () {
-            var currentDate = new Date();
-            var currentMonth = currentDate.getMonth() + 1;
-            var currentYear = currentDate.getFullYear();
+
+            const period = this.getView().getModel("utilities").getProperty("/period"); // e.g. "102025"
+            const periodMonth = parseInt(period.substring(0, 2), 10); // "10" → 10
+            const periodYear = parseInt(period.substring(2, 6), 10);  // "2025" → 2025
+
+            const currentMonth = periodMonth;
+            const currentYear = periodYear;
+
 
             var config = {
                 // Pour l'année N, seuls les mois futurs sont editables
