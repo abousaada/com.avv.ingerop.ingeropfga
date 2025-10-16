@@ -650,7 +650,7 @@ sap.ui.define([
             nodes.forEach(function (node) {
                 count++;
                 if (node.isNode && !node.isL0) {
-                    count++; // Add 1 for the line total
+                    //count++; // Add 1 for the line total
                 }
                 if (node.children && node.children.length > 0) {
                     count += this.countRows(node.children);
@@ -658,9 +658,9 @@ sap.ui.define([
             }.bind(this));
 
             // Add 4 lines for global totals 
-            /*if (nodes[0] && nodes[0].isL0) {
+            if (nodes[0] && nodes[0].isL0) {
                 count += 2;
-            }*/
+            }
 
             return count;
         },
