@@ -520,7 +520,7 @@
                 <Property Name="Libelle" Type="Edm.String" MaxLength="40" sap:label="Libellé Mission" sap:quickinfo="PS: désignation (première ligne de texte)"/>
                 <Property Name="MissionCode" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Code Mission" sap:quickinfo="Zone d'une longueur de 3 octets"/>
                 <Property Name="Description" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Description" sap:quickinfo="Description Mission"/>
-                <Property Name="FacturationDepense" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Type (Facturation / Dépenses)"/>
+                <Property Name="FacturationDepense" Type="Edm.String" MaxLength="20" sap:label="Type (Facturation / Dépenses)"/>
                 <Property Name="ResteAFacturer" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Reste à facturer"/>
                 <Property Name="ResteADepenser" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Reste à dépenser"/>
                 <Property Name="JanvN" Type="Edm.Decimal" Precision="15" Scale="2"/>
