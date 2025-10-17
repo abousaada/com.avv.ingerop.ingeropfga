@@ -16,52 +16,31 @@ sap.ui.define([
                 this.getView().getModel("utilities").setProperty("/DataMode", "A"); // default to Auto if missing
             }
 
-            /*var buildTree = function (items) {
+            var buildTree = function (items) {
                 var treeData = [];
                 var fgaGroups = {};
 
                 if (!items) return treeData;
 
-                // === APPEL DE LA CONFIGURATION ===
+                // === CONFIGURATION D'ÉDITION ===
                 var editableConfig = self.getEditableMonthsConfig();
-                console.log("Configuration d'édition:", editableConfig); // Pour debug
+                console.log("Configuration d'édition:", editableConfig);
 
                 items.forEach(function (item) {
                     item.isTotalRow = false;
 
-                    // === APPLIQUEZ LA CONFIGURATION D'ÉDITION ===
-                    // Année N
-                    item.isEditableJanvN = editableConfig.N.JanvN;
-                    item.isEditableFevrN = editableConfig.N.FevrN;
-                    item.isEditableMarsN = editableConfig.N.MarsN;
-                    item.isEditableAvrN = editableConfig.N.AvrN;
-                    item.isEditableMaiN = editableConfig.N.MaiN;
-                    item.isEditableJuinN = editableConfig.N.JuinN;
-                    item.isEditableJuilN = editableConfig.N.JuilN;
-                    item.isEditableAoutN = editableConfig.N.AoutN;
-                    item.isEditableSeptN = editableConfig.N.SeptN;
-                    item.isEditableOctN = editableConfig.N.OctN;
-                    item.isEditableNovN = editableConfig.N.NovN;
-                    item.isEditableDecN = editableConfig.N.DecN;
+                    // === Applique la configuration d'édition ===
+                    Object.keys(editableConfig.N).forEach(function (key) {
+                        item["isEditable" + key] = editableConfig.N[key];
+                        // Stocke le nom de la propriété pour référence
+                        item["monthProperty" + key] = key;
+                    });
+                    Object.keys(editableConfig.N1).forEach(function (key) {
+                        item["isEditable" + key] = editableConfig.N1[key];
+                        item["monthProperty" + key] = key;
+                    });
 
-                    // Année N+1
-                    item.isEditableJanvN1 = editableConfig.N1.JanvN1;
-                    item.isEditableFevrN1 = editableConfig.N1.FevrN1;
-                    item.isEditableMarsN1 = editableConfig.N1.MarsN1;
-                    item.isEditableAvrN1 = editableConfig.N1.AvrN1;
-                    item.isEditableMaiN1 = editableConfig.N1.MaiN1;
-                    item.isEditableJuinN1 = editableConfig.N1.JuinN1;
-                    item.isEditableJuilN1 = editableConfig.N1.JuilN1;
-                    item.isEditableAoutN1 = editableConfig.N1.AoutN1;
-                    item.isEditableSeptN1 = editableConfig.N1.SeptN1;
-                    item.isEditableOctN1 = editableConfig.N1.OctN1;
-                    item.isEditableNovN1 = editableConfig.N1.NovN1;
-                    item.isEditableDecN1 = editableConfig.N1.DecN1;
-
-                    //items.forEach(function (item) {
-                    //    item.isTotalRow = false;
-
-                    // Calculate FinAffaire as sum of other columns for each line
+                    // === Calcule FinAffaire ===
                     item.FinAffaire = (Number(item.VoyageDeplacement) || 0) +
                         (Number(item.AutresFrais) || 0) +
                         (Number(item.CreancesDouteuses) || 0) +
@@ -69,196 +48,113 @@ sap.ui.define([
                         (Number(item.SinistreContentieux) || 0) +
                         (Number(item.AleasDivers) || 0);
 
+                    // === Initialise le groupe BusinessNo ===
                     if (!fgaGroups[item.BusinessNo]) {
                         fgaGroups[item.BusinessNo] = {
-                            name: item.BusinessNo,
-                            isNode: true,
-                            isL0: true,
-                            children: {}
+                            businessNo: item.BusinessNo,
+                            rootNode: null,      // ligne FGA0
+                            regroupements: {},   // autres regroupements
                         };
                     }
 
-                    if (!fgaGroups[item.BusinessNo].children[item.Regroupement]) {
-                        fgaGroups[item.BusinessNo].children[item.Regroupement] = {
-                            name: item.Regroupement, // Store the regroupement name here
-                            isNode: true,
-                            isL0: false,
-                            children: [],
-                            totals: {
-                                VoyageDeplacement: 0,
-                                AutresFrais: 0,
-                                CreancesDouteuses: 0,
-                                EtudesTravaux: 0,
-                                SinistreContentieux: 0,
-                                AleasDivers: 0,
-                                FinAffaire: 0
-                            }
-                        };
+                    var fgaGroup = fgaGroups[item.BusinessNo];
+
+                    // === CAS 1 : LIGNE PRINCIPALE FGA0 ===
+                    if (item.Regroupement === "FGA0") {
+                        // Cette ligne devient le niveau 0 avec toutes ses colonnes
+                        item.isNode = true;
+                        item.isL0 = true;
+                        fgaGroup.rootNode = item;
+                        fgaGroup.rootNode.children = [];
+                        item.name = item.MissionId;
                     }
+                    // === CAS 2 : AUTRES REGROUPEMENTS ===
+                    else {
+                        if (!fgaGroup.regroupements[item.Regroupement]) {
+                            fgaGroup.regroupements[item.Regroupement] = {
+                                name: item.Regroupement,
+                                isNode: true,
+                                isL0: false,
+                                FacturationDepense: item.FacturationDepense,
+                                ResteAFacturer: 0,
+                                ResteADepenser: 0,
+                                TotalN: 0,
+                                TotalN1: 0,
+                                Audela: 0,
+                                children: [],
+                                totals: self._createEmptyMonthlyTotals()
 
-                    var regroupement = fgaGroups[item.BusinessNo].children[item.Regroupement];
-                    regroupement.children.push(item);
+                            };
+                        }
 
-                    // Accumulate totals for the Regroupement
-                    regroupement.totals.VoyageDeplacement += Number(item.VoyageDeplacement) || 0;
-                    regroupement.totals.AutresFrais += Number(item.AutresFrais) || 0;
-                    regroupement.totals.CreancesDouteuses += Number(item.CreancesDouteuses) || 0;
-                    regroupement.totals.EtudesTravaux += Number(item.EtudesTravaux) || 0;
-                    regroupement.totals.SinistreContentieux += Number(item.SinistreContentieux) || 0;
-                    regroupement.totals.AleasDivers += Number(item.AleasDivers) || 0;
-                    regroupement.totals.FinAffaire += Number(item.FinAffaire) || 0;
+                        var regroupement = fgaGroup.regroupements[item.Regroupement];
+                        regroupement.children.push(item);
+
+                        // Cumule les totaux pour le regroupement
+
+                        // Cumule les totaux utiles
+                        regroupement.totals.ResteAFacturer += Number(item.ResteAFacturer) || 0;
+                        regroupement.totals.ResteADepenser += Number(item.ResteADepenser) || 0;
+                        regroupement.totals.TotalN += Number(item.TotalN) || 0;
+                        regroupement.totals.TotalN1 += Number(item.TotalN1) || 0;
+                        regroupement.totals.Audela += Number(item.Audela) || 0;
+
+                        // Cumule les mois année N
+                        [
+                            "JanvN", "FevrN", "MarsN", "AvrN", "MaiN", "JuinN",
+                            "JuilN", "AoutN", "SeptN", "OctN", "NovN", "DecN"
+                        ].forEach(function (month) {
+                            regroupement.totals[month] += Number(item[month]) || 0;
+                        });
+
+                        // Cumule les mois année N+1
+                        [
+                            "JanvN1", "FevrN1", "MarsN1", "AvrN1", "MaiN1", "JuinN1",
+                            "JuilN1", "AoutN1", "SeptN1", "OctN1", "NovN1", "DecN1"
+                        ].forEach(function (month) {
+                            regroupement.totals[month] += Number(item[month]) || 0;
+                        });
+
+                    }
                 });
 
-                // Convert children objects to arrays while preserving names
+                // === CONSTRUCTION DE L’ARBRE FINAL ===
                 for (var fga in fgaGroups) {
-                    var fgaGroup = fgaGroups[fga];
+                    var group = fgaGroups[fga];
 
-                    // Convert children object to array of regroupements with their names
+                    // Crée les regroupements (niveaux enfants)
                     var regroupementArray = [];
-                    for (var regroupementKey in fgaGroup.children) {
-                        if (fgaGroup.children.hasOwnProperty(regroupementKey)) {
-                            var regroupement = fgaGroup.children[regroupementKey];
-                            // Add total row with the regroupement's name
+                    for (var regKey in group.regroupements) {
+                        if (group.regroupements.hasOwnProperty(regKey)) {
+                            var regroupement = group.regroupements[regKey];
+
+                            // Ajoute une ligne de total pour chaque regroupement
                             regroupement.children.push(
                                 self.createRegroupementTotalRow(regroupement.totals, regroupement.name)
                             );
+
                             regroupementArray.push(regroupement);
                         }
                     }
 
-                    fgaGroup.children = regroupementArray;
-                    treeData.push(fgaGroup);
+                    // Si la ligne FGA0 existe → c’est la racine
+                    if (group.rootNode) {
+                        group.rootNode.children = regroupementArray;
+                        treeData.push(group.rootNode);
+                    } else {
+                        // Sinon on crée un nœud "Affaire" par défaut
+                        treeData.push({
+                            name: group.businessNo,
+                            FacturationDepense: "Affaire",
+                            isNode: true,
+                            isL0: true,
+                            children: regroupementArray
+                        });
+                    }
                 }
 
                 return treeData;
-            };*/
-
-var buildTree = function (items) {
-    var treeData = [];
-    var fgaGroups = {};
-
-    if (!items) return treeData;
-
-    // === CONFIGURATION D'ÉDITION ===
-    var editableConfig = self.getEditableMonthsConfig();
-    console.log("Configuration d'édition:", editableConfig);
-
-    items.forEach(function (item) {
-        item.isTotalRow = false;
-
-        // === Applique la configuration d’édition ===
-        Object.keys(editableConfig.N).forEach(function (key) {
-            item["isEditable" + key] = editableConfig.N[key];
-        });
-        Object.keys(editableConfig.N1).forEach(function (key) {
-            item["isEditable" + key] = editableConfig.N1[key];
-        });
-
-        // === Calcule FinAffaire ===
-        item.FinAffaire = (Number(item.VoyageDeplacement) || 0) +
-            (Number(item.AutresFrais) || 0) +
-            (Number(item.CreancesDouteuses) || 0) +
-            (Number(item.EtudesTravaux) || 0) +
-            (Number(item.SinistreContentieux) || 0) +
-            (Number(item.AleasDivers) || 0);
-
-        // === Initialise le groupe BusinessNo ===
-        if (!fgaGroups[item.BusinessNo]) {
-            fgaGroups[item.BusinessNo] = {
-                businessNo: item.BusinessNo,
-                rootNode: null,      // ligne FGA0
-                regroupements: {},   // autres regroupements
             };
-        }
-
-        var fgaGroup = fgaGroups[item.BusinessNo];
-
-        // === CAS 1 : LIGNE PRINCIPALE FGA0 ===
-        if (item.Regroupement === "FGA0") {
-            // Cette ligne devient le niveau 0 avec toutes ses colonnes
-            item.isNode = true;
-            item.isL0 = true;
-            fgaGroup.rootNode = item;
-            fgaGroup.rootNode.children = [];
-            item.name = item.MissionId;
-        }
-        // === CAS 2 : AUTRES REGROUPEMENTS ===
-        else {
-            if (!fgaGroup.regroupements[item.Regroupement]) {
-                fgaGroup.regroupements[item.Regroupement] = {
-                    name: item.Regroupement,
-                    isNode: true,
-                    isL0: false,
-                    FacturationDepense: item.FacturationDepense,
-                    ResteAFacturer: 0,
-                    ResteADepenser: 0,
-                    TotalN: 0,
-                    TotalN1: 0,
-                    Audela: 0,
-                    children: [],
-                    totals: {
-                        VoyageDeplacement: 0,
-                        AutresFrais: 0,
-                        CreancesDouteuses: 0,
-                        EtudesTravaux: 0,
-                        SinistreContentieux: 0,
-                        AleasDivers: 0,
-                        FinAffaire: 0
-                    }
-                };
-            }
-
-            var regroupement = fgaGroup.regroupements[item.Regroupement];
-            regroupement.children.push(item);
-
-            // Cumule les totaux pour le regroupement
-            regroupement.totals.VoyageDeplacement += Number(item.VoyageDeplacement) || 0;
-            regroupement.totals.AutresFrais += Number(item.AutresFrais) || 0;
-            regroupement.totals.CreancesDouteuses += Number(item.CreancesDouteuses) || 0;
-            regroupement.totals.EtudesTravaux += Number(item.EtudesTravaux) || 0;
-            regroupement.totals.SinistreContentieux += Number(item.SinistreContentieux) || 0;
-            regroupement.totals.AleasDivers += Number(item.AleasDivers) || 0;
-            regroupement.totals.FinAffaire += Number(item.FinAffaire) || 0;
-        }
-    });
-
-    // === CONSTRUCTION DE L’ARBRE FINAL ===
-    for (var fga in fgaGroups) {
-        var group = fgaGroups[fga];
-
-        // Crée les regroupements (niveaux enfants)
-        var regroupementArray = [];
-        for (var regKey in group.regroupements) {
-            if (group.regroupements.hasOwnProperty(regKey)) {
-                var regroupement = group.regroupements[regKey];
-
-                // Ajoute une ligne de total pour chaque regroupement
-                regroupement.children.push(
-                    self.createRegroupementTotalRow(regroupement.totals, regroupement.name)
-                );
-
-                regroupementArray.push(regroupement);
-            }
-        }
-
-        // Si la ligne FGA0 existe → c’est la racine
-        if (group.rootNode) {
-            group.rootNode.children = regroupementArray;
-            treeData.push(group.rootNode);
-        } else {
-            // Sinon on crée un nœud "Affaire" par défaut
-            treeData.push({
-                name: group.businessNo,
-                FacturationDepense: "Affaire",
-                isNode: true,
-                isL0: true,
-                children: regroupementArray
-            });
-        }
-    }
-
-    return treeData;
-};
 
             // Build trees 
             var previsionelTreeData = buildTree(previsionel);
@@ -269,9 +165,10 @@ var buildTree = function (items) {
             // Create flat summary rows (level 0)
             // Create new summary rows
             var summaryRows = [
-                this.createSummaryRow("Total facturation", globalTotals.totalAcquis, false),
-                this.createSummaryRow("Total dépense", globalTotals.cumule, false)
+                this.createSummaryRow("Total facturation", globalTotals.totalFacturation, false),
+                this.createSummaryRow("Total dépense", globalTotals.totalDepense, false)
             ];
+
 
 
             // Add summary rows directly to the root array (as level 0 items)
@@ -282,6 +179,36 @@ var buildTree = function (items) {
 
             var totalRows = this.countRows(previsionelTreeData);
             this.updateRowCount(totalRows);
+        },
+
+
+        // Ajoutez un gestionnaire pour capturer le dernier input modifié
+        onInputChange: function (oEvent) {
+            const oInput = oEvent.getSource();
+            const sBindingPath = oInput.getBindingPath("value");
+            // Extraire le nom de la propriété du mois (ex: "JanvN", "FevrN1", etc.)
+            const monthProperty = sBindingPath.split("/").pop();
+            oInput.data("monthProperty", monthProperty);
+            this._lastModifiedInput = oInput;
+        },
+
+        _createEmptyMonthlyTotals: function () {
+            return {
+                // Mois année N
+                JanvN: 0, FevrN: 0, MarsN: 0, AvrN: 0, MaiN: 0, JuinN: 0,
+                JuilN: 0, AoutN: 0, SeptN: 0, OctN: 0, NovN: 0, DecN: 0,
+
+                // Mois année N+1
+                JanvN1: 0, FevrN1: 0, MarsN1: 0, AvrN1: 0, MaiN1: 0, JuinN1: 0,
+                JuilN1: 0, AoutN1: 0, SeptN1: 0, OctN1: 0, NovN1: 0, DecN1: 0,
+
+                // Totaux globaux
+                ResteAFacturer: 0,
+                ResteADepenser: 0,
+                TotalN: 0,
+                TotalN1: 0,
+                Audela: 0
+            };
         },
 
         // Configuration des mois editables
@@ -338,7 +265,23 @@ var buildTree = function (items) {
             return config;
         },
 
+
         onSubmit: function (oEvent) {
+            const oModel = this.getView().getModel("utilities");
+            const currentDataMode = oModel.getProperty("/DataMode");
+
+            // Si on est déjà en mode manuel, pas besoin de confirmation
+            if (currentDataMode === "M") {
+                this._processUpdate(oEvent);
+                return;
+            }
+
+            // Si on est en mode automatique, demander confirmation
+            this._showManualModeConfirmation(oEvent);
+        },
+
+
+        onSubmit1: function (oEvent) {
 
             //this.oView.setBusy(true);
 
@@ -359,6 +302,101 @@ var buildTree = function (items) {
             }
 
             //this.oView.setBusy(false);
+        },
+
+        _showManualModeConfirmation: function (oEvent) {
+            MessageBox.confirm(
+                this._getConfirmationText(),
+                {
+                    title: "Passage en mode manuel",
+                    onClose: function (oAction) {
+                        if (oAction === MessageBox.Action.OK) {
+                            this._processUpdate(oEvent);
+                            this._switchToManualMode();
+                            MessageToast.show("Mode manuel activé - Les autres valeurs de l'affaire ont été mises à zéro");
+                        } else {
+                            this._revertInputValue(oEvent);
+                        }
+                    }.bind(this),
+                    emphasizedAction: MessageBox.Action.OK
+                }
+            );
+        },
+
+        _getConfirmationText: function () {
+            return "Êtes-vous sûr de vouloir passer en mode manuel ?\n\n" +
+                "✓ Le système basculera définitivement en mode manuel\n" +
+                "✓ Les valeurs calculées automatiquement seront écrasées\n" +
+                "✓ Les autres mois de la même affaire seront remis à zéro\n\n" +
+                "Cette action est irréversible pour cette affaire.";
+        },
+
+        _processUpdate: function (oEvent) {
+            const oModel = this.getView().getModel("utilities");
+            const oInput = oEvent.getSource();
+            const oBindingContext = oInput.getBindingContext("utilities");
+
+            try {
+                oModel.checkUpdate(true);
+
+                // Si on passe en mode manuel, réinitialiser les autres valeurs
+                if (oModel.getProperty("/DataMode") === "M") {
+                    this._resetOtherMonths(oBindingContext);
+                }
+
+                setTimeout(() => {
+                    this.updateTotals();
+                }, 50);
+
+            } catch (error) {
+                console.error("Update failed:", error);
+                this._revertInputValue(oEvent);
+            }
+        },
+
+        _switchToManualMode: function () {
+            const oModel = this.getView().getModel("utilities");
+            oModel.setProperty("/DataMode", "M");
+
+            // Mettre à jour le MessageStrip
+            const messageStrip = this.byId("PrevisionnelTreeTable").getExtension()[0];
+            if (messageStrip) {
+                messageStrip.setText("Mode manuel : les valeurs affichées ont été saisies manuellement.");
+                messageStrip.setType("Information");
+            }
+        },
+
+        _resetOtherMonths: function (oBindingContext) {
+            if (!oBindingContext) return;
+
+            const oModel = this.getView().getModel("utilities");
+            const oData = oBindingContext.getObject();
+
+            // Réinitialiser tous les autres mois de la même affaire à 0
+            const monthsToReset = [
+                "JanvN", "FevrN", "MarsN", "AvrN", "MaiN", "JuinN",
+                "JuilN", "AoutN", "SeptN", "OctN", "NovN", "DecN",
+                "JanvN1", "FevrN1", "MarsN1", "AvrN1", "MaiN1", "JuinN1",
+                "JuilN1", "AoutN1", "SeptN1", "OctN1", "NovN1", "DecN1"
+            ];
+
+            // Garder une référence à la valeur qu'on vient de modifier
+            const modifiedInput = this._lastModifiedInput;
+            if (modifiedInput) {
+                const modifiedMonth = modifiedInput.data("monthProperty");
+
+                monthsToReset.forEach(function (month) {
+                    if (month !== modifiedMonth && oData[month] !== 0) {
+                        oModel.setProperty(oBindingContext.getPath() + "/" + month, 0);
+                    }
+                });
+            }
+        },
+
+        _revertInputValue: function (oEvent) {
+            const oInput = oEvent.getSource();
+            // Revenir à la valeur précédente
+            oInput.setValue(oInput.getBindingContext("utilities").getObject()[oInput.getBindingPath("value")]);
         },
 
         updateTotals: function () {
@@ -388,37 +426,37 @@ var buildTree = function (items) {
                     var regroupement = entry.data;
 
                     // Reset totals
-                    regroupement.totals = {
-                        isNode: false,
-                        VoyageDeplacement: 0,
-                        AutresFrais: 0,
-                        CreancesDouteuses: 0,
-                        EtudesTravaux: 0,
-                        SinistreContentieux: 0,
-                        AleasDivers: 0,
-                        FinAffaire: 0
-                    };
+                    regroupement.totals = this._createEmptyMonthlyTotals();
 
+                    // Recalculate totals
                     // Recalculate totals
                     regroupement.children.forEach(function (item) {
                         if (!item.isTotalRow) {
 
-                            item.FinAffaire = (Number(item.VoyageDeplacement) || 0) +
-                                (Number(item.AutresFrais) || 0) +
-                                (Number(item.CreancesDouteuses) || 0) +
-                                (Number(item.EtudesTravaux) || 0) +
-                                (Number(item.SinistreContentieux) || 0) +
-                                (Number(item.AleasDivers) || 0);
+                            regroupement.totals.ResteAFacturer += Number(item.ResteAFacturer) || 0;
+                            regroupement.totals.ResteADepenser += Number(item.ResteADepenser) || 0;
+                            regroupement.totals.TotalN += Number(item.TotalN) || 0;
+                            regroupement.totals.TotalN1 += Number(item.TotalN1) || 0;
+                            regroupement.totals.Audela += Number(item.Audela) || 0;
 
-                            regroupement.totals.VoyageDeplacement += Number(item.VoyageDeplacement) || 0;
-                            regroupement.totals.AutresFrais += Number(item.AutresFrais) || 0;
-                            regroupement.totals.CreancesDouteuses += Number(item.CreancesDouteuses) || 0;
-                            regroupement.totals.EtudesTravaux += Number(item.EtudesTravaux) || 0;
-                            regroupement.totals.SinistreContentieux += Number(item.SinistreContentieux) || 0;
-                            regroupement.totals.AleasDivers += Number(item.AleasDivers) || 0;
-                            regroupement.totals.FinAffaire += Number(item.FinAffaire) || 0;
+                            // Sum months N
+                            [
+                                "JanvN", "FevrN", "MarsN", "AvrN", "MaiN", "JuinN",
+                                "JuilN", "AoutN", "SeptN", "OctN", "NovN", "DecN"
+                            ].forEach(function (month) {
+                                regroupement.totals[month] += Number(item[month]) || 0;
+                            });
+
+                            // Sum months N+1
+                            [
+                                "JanvN1", "FevrN1", "MarsN1", "AvrN1", "MaiN1", "JuinN1",
+                                "JuilN1", "AoutN1", "SeptN1", "OctN1", "NovN1", "DecN1"
+                            ].forEach(function (month) {
+                                regroupement.totals[month] += Number(item[month]) || 0;
+                            });
                         }
                     });
+
 
                     // Update the regroupement total row
                     var existingTotalIndex = regroupement.children.findIndex(function (child) {
@@ -443,9 +481,10 @@ var buildTree = function (items) {
             // Create new summary rows
             // Create flat summary rows (level 0)
             var summaryRows = [
-                this.createSummaryRow("Total facturation", globalTotals.totalAcquis, false),
-                this.createSummaryRow("Total dépense", globalTotals.cumule, false)
+                this.createSummaryRow("Total facturation", globalTotals.totalFacturation, false),
+                this.createSummaryRow("Total dépense", globalTotals.totalDepense, false)
             ];
+
 
 
             // Update the model
@@ -453,314 +492,100 @@ var buildTree = function (items) {
         },
 
         createRegroupementTotalRow: function (totals, regroupementName) {
-            return {
+            const row = {
                 name: "Total " + regroupementName,
                 isTotalRow: true,
                 isNode: false,
-                isRegroupementTotal: true,
-                VoyageDeplacement: totals.VoyageDeplacement,
-                AutresFrais: totals.AutresFrais,
-                CreancesDouteuses: totals.CreancesDouteuses,
-                EtudesTravaux: totals.EtudesTravaux,
-                SinistreContentieux: totals.SinistreContentieux,
-                AleasDivers: totals.AleasDivers,
-                FinAffaire: totals.FinAffaire
-            };
-        },
-
-        calculateGlobalTotals: function (items) {
-            var totals = {
-                totalAcquis: {
-                    VoyageDeplacement: 0,
-                    AutresFrais: 0,
-                    CreancesDouteuses: 0,
-                    EtudesTravaux: 0,
-                    SinistreContentieux: 0,
-                    AleasDivers: 0,
-                    FinAffaire: 0
-                },
-                cumule: {
-                    VoyageDeplacement: 0,
-                    AutresFrais: 0,
-                    CreancesDouteuses: 0,
-                    EtudesTravaux: 0,
-                    SinistreContentieux: 0,
-                    AleasDivers: 0,
-                    FinAffaire: 0,
-
-                    GLAccountVoyageDeplacement: '',
-                    GLAccountAutresFrais: '',
-                    GLAccountCreancesDouteuses: '',
-                    GLAccountEtudesTravaux: '',
-                    GLAccountSinistreContentieux: '',
-                    GLAccountAleasDivers: '',
-                    GLAccountFinAffaire: ''
-
-                }
+                isRegroupementTotal: true
             };
 
-            var sumValues = function (node) {
-                if (node.children) {
-                    if (node.isNode) {
-                        node.children.forEach(function (child) {
-                            if (!child.isTotalRow && !child.isRegroupementTotal) {
-                                sumValues(child);
-                            }
-                        });
-                    }
-                } else if (!node.isNode) {
-                    totals.totalAcquis.VoyageDeplacement += Number(node.VoyageDeplacement) || 0;
-                    totals.totalAcquis.AutresFrais += Number(node.AutresFrais) || 0;
-                    totals.totalAcquis.CreancesDouteuses += Number(node.CreancesDouteuses) || 0;
-                    totals.totalAcquis.EtudesTravaux += Number(node.EtudesTravaux) || 0;
-                    totals.totalAcquis.SinistreContentieux += Number(node.SinistreContentieux) || 0;
-                    totals.totalAcquis.AleasDivers += Number(node.AleasDivers) || 0;
-                    totals.totalAcquis.FinAffaire += Number(node.FinAffaire) || 0;
-
-                    // Read cumulé from entity
-                    totals.cumule.VoyageDeplacement = Number(node.CumulVoyageDeplacement) || 0;
-                    totals.cumule.AutresFrais = Number(node.CumulAutresFrais) || 0;
-                    totals.cumule.CreancesDouteuses = Number(node.CumulCreancesDouteuses) || 0;
-                    totals.cumule.EtudesTravaux = Number(node.CumulEtudesTravaux) || 0;
-                    totals.cumule.SinistreContentieux = Number(node.CumulSinistreContentieux) || 0;
-                    totals.cumule.AleasDivers = Number(node.CumulAleasDivers) || 0;
-                    totals.cumule.FinAffaire = Number(node.CumulFinAffaire) || 0;
-
-                    // Read GlAccounts from entity
-                    totals.cumule.GLAccountVoyageDeplacement = node.GLAccountVoyageDeplacement;
-                    totals.cumule.GLAccountAutresFrais = node.GLAccountAutresFrais;
-                    totals.cumule.GLAccountCreancesDouteuses = node.GLAccountCreancesDouteuses;
-                    totals.cumule.GLAccountEtudesTravaux = node.GLAccountEtudesTravaux;
-                    totals.cumule.GLAccountSinistreContentieux = node.GLAccountSinistreContentieux;
-                    totals.cumule.GLAccountAleasDivers = node.GLAccountAleasDivers;
-                    totals.cumule.GLAccountFinAffaire = node.GLAccountFinAffaire;
-                }
-            };
-
-            items.forEach(sumValues);
-
-
-            // Calculate percentages
-            totals.pourcentage = {
-                VoyageDeplacement: totals.totalAcquis.VoyageDeplacement > 0 ?
-                    (totals.cumule.VoyageDeplacement / totals.totalAcquis.VoyageDeplacement * 100) : 0,
-                AutresFrais: totals.totalAcquis.AutresFrais > 0 ?
-                    (totals.cumule.AutresFrais / totals.totalAcquis.AutresFrais * 100) : 0,
-                CreancesDouteuses: totals.totalAcquis.CreancesDouteuses > 0 ?
-                    (totals.cumule.CreancesDouteuses / totals.totalAcquis.CreancesDouteuses * 100) : 0,
-                EtudesTravaux: totals.totalAcquis.EtudesTravaux > 0 ?
-                    (totals.cumule.EtudesTravaux / totals.totalAcquis.EtudesTravaux * 100) : 0,
-                SinistreContentieux: totals.totalAcquis.SinistreContentieux > 0 ?
-                    (totals.cumule.SinistreContentieux / totals.totalAcquis.SinistreContentieux * 100) : 0,
-                AleasDivers: totals.totalAcquis.AleasDivers > 0 ?
-                    (totals.cumule.AleasDivers / totals.totalAcquis.AleasDivers * 100) : 0,
-                FinAffaire: totals.totalAcquis.FinAffaire > 0 ?
-                    (totals.cumule.FinAffaire / totals.totalAcquis.FinAffaire * 100) : 0
-            };
-
-            // Calculate RAD values
-            totals.rad = {
-                VoyageDeplacement: totals.totalAcquis.VoyageDeplacement - totals.cumule.VoyageDeplacement,
-                AutresFrais: totals.totalAcquis.AutresFrais - totals.cumule.AutresFrais,
-                CreancesDouteuses: totals.totalAcquis.CreancesDouteuses - totals.cumule.CreancesDouteuses,
-                EtudesTravaux: totals.totalAcquis.EtudesTravaux - totals.cumule.EtudesTravaux,
-                SinistreContentieux: totals.totalAcquis.SinistreContentieux - totals.cumule.SinistreContentieux,
-                AleasDivers: totals.totalAcquis.AleasDivers - totals.cumule.AleasDivers,
-                FinAffaire: totals.totalAcquis.FinAffaire - totals.cumule.FinAffaire
-            };
-
-            return totals;
-        },
-
-        createSummaryRow: function (name, values, isPercentage) {
-            var row = {
-                name: name,
-                isTotalRow: true,
-                isNode: false,
-                VoyageDeplacement: isPercentage ? values.VoyageDeplacement.toFixed(2) + "%" : values.VoyageDeplacement,
-                AutresFrais: isPercentage ? values.AutresFrais.toFixed(2) + "%" : values.AutresFrais,
-                CreancesDouteuses: isPercentage ? values.CreancesDouteuses.toFixed(2) + "%" : values.CreancesDouteuses,
-                EtudesTravaux: isPercentage ? values.EtudesTravaux.toFixed(2) + "%" : values.EtudesTravaux,
-                SinistreContentieux: isPercentage ? values.SinistreContentieux.toFixed(2) + "%" : values.SinistreContentieux,
-                AleasDivers: isPercentage ? values.AleasDivers.toFixed(2) + "%" : values.AleasDivers,
-                FinAffaire: isPercentage ? values.FinAffaire.toFixed(2) + "%" : values.FinAffaire,
-
-                GLAccountVoyageDeplacement: values.GLAccountVoyageDeplacement,
-                GLAccountAutresFrais: values.GLAccountAutresFrais,
-                GLAccountCreancesDouteuses: values.GLAccountCreancesDouteuses,
-                GLAccountEtudesTravaux: values.GLAccountEtudesTravaux,
-                GLAccountSinistreContentieux: values.GLAccountSinistreContentieux,
-                GLAccountAleasDivers: values.GLAccountAleasDivers,
-                GLAccountFinAffaire: values.GLAccountFinAffaire,
-            };
+            // Copie tous les champs numériques (mois + totaux)
+            Object.keys(totals).forEach(k => {
+                row[k] = Number(totals[k]) || 0;
+            });
 
             return row;
         },
 
 
 
-        onCumuleClick: async function (oEvent) {
-            var oItem = oEvent.getSource().getBindingContext("utilities").getObject();
-            var oView = this.getView();
+        calculateGlobalTotals: function (items) {
+            const totals = {
+                totalFacturation: this._createEmptyMonthlyTotals(), // Use monthly totals instead
+                totalDepense: this._createEmptyMonthlyTotals()     // Use monthly totals instead
+            };
 
-            var oItem = oEvent.getSource().getBindingContext("utilities").getObject();
-            var sColumnId = oEvent.getSource().data("columnId"); // from BudgetPx view
-
-            // Determine which GLAccount to show based on the clicked column
-            var sGLAccount = "";
-
-            switch (sColumnId) {
-                case "VoyageDeplacement":
-                    sGLAccount = oItem.GLAccountVoyageDeplacement;
-                    break;
-                case "AutresFrais":
-                    sGLAccount = oItem.GLAccountAutresFrais;
-                    break;
-                case "CreancesDouteuses":
-                    sGLAccount = oItem.GLAccountCreancesDouteuses;
-                    break;
-                case "EtudesTravaux":
-                    sGLAccount = oItem.GLAccountEtudesTravaux;
-                    break;
-                case "SinistreContentieux":
-                    sGLAccount = oItem.GLAccountSinistreContentieux;
-                    break;
-                case "AleasDivers":
-                    sGLAccount = oItem.GLAccountAleasDivers;
-                    break;
-                case "FinAffaire":
-                    sGLAccount = oItem.GLAccountFinAffaire;
-                    break;
-                default:
-                    sGLAccount = "GL Account not set";
-            }
-
-            //sap.m.MessageToast.show("GLAccount: " + sGLAccount);
-
-
-            var period = this.getView().getModel("utilities").getProperty("/period");
-
-            try {
-
-                const oLink = oEvent.getSource();
-
-                // 2. Get GL Accounts
-                const oContext = oLink.getBindingContext("utilities");
-                const oData = oContext.getObject();
-
-
-                const glAccounts = sGLAccount
-                    ? sGLAccount.split(";").map(a => a.trim()).filter(a => a.length > 0)
-                    : [];
-
-                if (glAccounts.length === 0) {
-                    sap.m.MessageToast.show("GLAccount non disponible.");
+            const sumValues = (node) => {
+                if (node.children && node.children.length > 0) {
+                    node.children.forEach(sumValues);
                     return;
                 }
 
-                // 3. Get Date range
-                const month = period.substring(0, 2);
-                const year = period.substring(2);
+                if (node.isNode || node.isTotalRow || node.isRegroupementTotal) return;
 
-                // 4. Get missions
-                let missions = [];
-                try {
-                    missions = oLink.getModel('utilities').getMissions();
+                const type = (node.FacturationDepense || "").toLowerCase();
+                const target =
+                    type === "facturation"
+                        ? totals.totalFacturation
+                        : type === "dépense" || type === "depense"
+                            ? totals.totalDepense
+                            : null;
 
-                } catch (error) {
-                    console.error("Failed to fetch missions:", error);
-                    throw error;
+                if (target) {
+                    // Sum all properties including monthly values
+                    for (const key in target) {
+                        if (target.hasOwnProperty(key)) {
+                            target[key] += Number(node[key]) || 0;
+                        }
+                    }
                 }
+            };
 
-                const wbsElements = [oData.business_no];
-                if (missions && missions.length > 0) {
-                    // Add missions to the WBS elements array
-                    wbsElements.push(...missions.map(mission => mission.MissionId));
-                }
-
-                // 5. Create navigation
-                /*const oComponent = sap.ui.core.Component.getOwnerComponentFor(this.oView);
-                const oAppStateService = sap.ushell.Container.getService("AppState");
-                const oSelectionVariant = new sap.ui.generic.app.navigation.service.SelectionVariant();
-
-                const oAppState = await oAppStateService.createEmptyAppState(oComponent);
-                oAppState.setData(oSelectionVariant.toJSONString());
-                await oAppState.save();
-
-                const sAppStateKey = oAppState.getKey();*/
-                const oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
-
-                // Construct the URL parameters
-                /*var params = {
-                    FiscalYearPeriod: `${year}0${month}`,
-                    GLAccount: glAccounts,
-                    WBSElementExternalID: wbsElements
-                };*/
-
-                const fiscalPeriods = [];
-                for (let m = 1; m <= month; m++) {
-                    fiscalPeriods.push(`${year}0${m.toString().padStart(2, "0")}`);
-
-                }
-
-                var params = {
-                    //FiscalYearPeriod: `${year}0${month}`,
-                    FiscalYearPeriod: fiscalPeriods,
-                    GLAccount: glAccounts,
-                    WBSElementExternalID: wbsElements
-                };
-
-                // Get the base URL for the target app
-                const sHash = oCrossAppNavigator.hrefForExternal({
-                    target: {
-                        semanticObject: "GLAccount",
-                        action: "displayGLLineItemReportingView"
-                    },
-                    params: Object.fromEntries(
-                        Object.entries(params).map(([key, value]) => {
-                            if (Array.isArray(value)) {
-                                return [key, value.map(v => encodeURIComponent(v))];
-                            }
-                            return [key, encodeURIComponent(value)];
-                        })
-                    )
-                });
-
-                // Open in new window
-                window.open(sHash, "_blank", "noopener,noreferrer");
-
-                /*
-                        // Convert params to URL string
-                        const sParams = Object.entries(params)
-                            .map(([key, value]) => {
-                                if (Array.isArray(value)) {
-                                    return value.map(v => `${key}=${encodeURIComponent(v)}`).join('&');
-                                }
-                                return `${key}=${encodeURIComponent(value)}`;
-                            })
-                            .join('&');
-        
-                        // Get the base URL for the target app
-                        const sHash = oCrossAppNavigator.hrefForExternal({
-                            target: {
-                                semanticObject: "GLAccount",
-                                action: "displayGLLineItemReportingView"
-                            }
-                        });
-        
-                        // Get the FLP base URL
-                        const sBaseUrl = window.location.origin + window.location.pathname;
-        
-                        // Construct the full URL
-                        const sUrl = `${sBaseUrl}#${sHash}&${sParams}`;
-        
-                        // Open in new window
-                        window.open(sUrl, "_blank", "noopener,noreferrer");*/
-
-            } catch (err) {
-                console.error("Error during navigation:", err);
-            }
+            items.forEach(sumValues);
+            return totals;
         },
+
+        _createEmptyTotals: function () {
+            return {
+                ResteAFacturer: 0,
+                ResteADepenser: 0,
+                TotalN: 0,
+                TotalN1: 0,
+                Audela: 0
+            };
+        },
+
+        createSummaryRow: function (name, values, isPercentage = false, decimals = 2) {
+            const fmt = (v) => {
+                const n = Number(v) || 0;
+                return isPercentage ? n.toFixed(decimals) + "%" : Number(n.toFixed(decimals));
+            };
+
+            let facturationDepense = "";
+            if (name.toLowerCase().includes("facturation")) {
+                facturationDepense = "Facturation";
+            } else if (name.toLowerCase().includes("dépense") || name.toLowerCase().includes("depense")) {
+                facturationDepense = "Dépense";
+            } else {
+                facturationDepense = "Total général";
+            }
+
+            const row = {
+                name: name,
+                FacturationDepense: facturationDepense,
+                isTotalRow: true,
+                isNode: false,
+                isRegroupementTotal: false
+            };
+
+            // Copy ALL values including monthly data
+            Object.keys(values).forEach(k => {
+                row[k] = fmt(values[k]);
+            });
+
+            return row;
+        },
+
 
         updateRowCount: function (rowCount) {
 

@@ -140,13 +140,14 @@
                 </table:multiLabels>
                 <table:template>
                     <HBox>
-                        <!--Text
+                        <Text
                             text="{utilities>JanvN}"
-                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
-                        /-->
+                            visible="{= ${utilities>isTotalRow}}"
+                            class="{= 'sapMTextStrong' }"
+                        />
                         <Input
                             value="{utilities>JanvN}"
-                            submit="onSubmit"
+                            submit=".onPrevisionelSubmit"
                             type="Number"
                             editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableJanvN} }"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
@@ -162,13 +163,14 @@
                 </table:multiLabels>
                 <table:template>
                     <HBox>
-                        <!--Text
+                        <Text
                             text="{utilities>FevrN}"
-                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
-                        /-->
+                            visible="{= ${utilities>isTotalRow}}"
+                            class="{= 'sapMTextStrong' }"
+                        />
                         <Input
                             value="{utilities>FevrN}"
-                            submit="onSubmit"
+                            submit=".onPrevisionelSubmit"
                             type="Number"
                             editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableFevrN}}"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
@@ -184,13 +186,14 @@
                 </table:multiLabels>
                 <table:template>
                     <HBox>
-                        <!--Text
+                        <Text
                             text="{utilities>MarsN}"
-                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
-                        /-->
+                            visible="{= ${utilities>isTotalRow}}"
+                            class="{= 'sapMTextStrong' }"
+                        />
                         <Input
                             value="{utilities>MarsN}"
-                            submit="onSubmit"
+                            submit=".onPrevisionelSubmit"
                             type="Number"
                             editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableMarsN}}"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
@@ -206,13 +209,14 @@
                 </table:multiLabels>
                 <table:template>
                     <HBox>
-                        <!--Text
+                        <Text
                             text="{utilities>AvrN}"
-                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
-                        /-->
+                            visible="{= ${utilities>isTotalRow}}"
+                            class="{= 'sapMTextStrong' }"
+                        />
                         <Input
                             value="{utilities>AvrN}"
-                            submit="onSubmit"
+                            submit=".onPrevisionelSubmit"
                             type="Number"
                             editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableAvrN}}"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
@@ -228,13 +232,14 @@
                 </table:multiLabels>
                 <table:template>
                     <HBox>
-                        <!--Text
+                        <Text
                             text="{utilities>MaiN}"
-                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
-                        /-->
+                            visible="{= ${utilities>isTotalRow}}"
+                            class="{= 'sapMTextStrong' }"
+                        />
                         <Input
                             value="{utilities>MaiN}"
-                            submit="onSubmit"
+                            submit=".onPrevisionelSubmit"
                             type="Number"
                             editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableMaiN}}"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
@@ -250,13 +255,14 @@
                 </table:multiLabels>
                 <table:template>
                     <HBox>
-                        <!--Text
+                        <Text
                             text="{utilities>JuinN}"
-                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
-                        /-->
+                            visible="{= ${utilities>isTotalRow}}"
+                            class="{= 'sapMTextStrong' }"
+                        />
                         <Input
                             value="{utilities>JuinN}"
-                            submit="onSubmit"
+                            submit=".onPrevisionelSubmit"
                             type="Number"
                             editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableJuinN}}"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
@@ -272,13 +278,14 @@
                 </table:multiLabels>
                 <table:template>
                     <HBox>
-                        <!--Text
+                        <Text
                             text="{utilities>JuilN}"
-                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
-                        /-->
+                            visible="{= ${utilities>isTotalRow}}"
+                            class="{= 'sapMTextStrong' }"
+                        />
                         <Input
                             value="{utilities>JuilN}"
-                            submit="onSubmit"
+                            submit=".onPrevisionelSubmit"
                             type="Number"
                             editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableJuilN}}"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
@@ -295,13 +302,14 @@
                 </table:multiLabels>
                 <table:template>
                     <HBox>
-                        <!--Text
+                        <Text
                             text="{utilities>AoutN}"
-                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
-                        /-->
+                            visible="{= ${utilities>isTotalRow}}"
+                            class="{= 'sapMTextStrong' }"
+                        />
                         <Input
                             value="{utilities>AoutN}"
-                            submit="onSubmit"
+                            submit=".onPrevisionelSubmit"
                             type="Number"
                             editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableAoutN}}"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
@@ -317,13 +325,14 @@
                 </table:multiLabels>
                 <table:template>
                     <HBox>
-                        <!--Text
+                        <Text
                             text="{utilities>SeptN}"
-                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
-                        /-->
+                            visible="{= ${utilities>isTotalRow}}"
+                            class="{= 'sapMTextStrong' }"
+                        />
                         <Input
                             value="{utilities>SeptN}"
-                            submit="onSubmit"
+                            submit=".onPrevisionelSubmit"
                             type="Number"
                             editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableSeptN}}"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
@@ -339,13 +348,14 @@
                 </table:multiLabels>
                 <table:template>
                     <HBox>
-                        <!--Text
+                        <Text
                             text="{utilities>OctN}"
-                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
-                        /-->
+                            visible="{= ${utilities>isTotalRow}}"
+                            class="{= 'sapMTextStrong' }"
+                        />
                         <Input
                             value="{utilities>OctN}"
-                            submit="onSubmit"
+                            submit=".onPrevisionelSubmit"
                             type="Number"
                             editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableOctN}}"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
@@ -361,13 +371,14 @@
                 </table:multiLabels>
                 <table:template>
                     <HBox>
-                        <!--Text
+                        <Text
                             text="{utilities>NovN}"
-                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
-                        /-->
+                            visible="{= ${utilities>isTotalRow}}"
+                            class="{= 'sapMTextStrong' }"
+                        />
                         <Input
                             value="{utilities>NovN}"
-                            submit="onSubmit"
+                            submit=".onPrevisionelSubmit"
                             type="Number"
                             editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableNovN}}"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
@@ -383,13 +394,14 @@
                 </table:multiLabels>
                 <table:template>
                     <HBox>
-                        <!--Text
+                        <Text
                             text="{utilities>DecN}"
-                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
-                        /-->
+                            visible="{= ${utilities>isTotalRow}}"
+                            class="{= 'sapMTextStrong' }"
+                        />
                         <Input
                             value="{utilities>DecN}"
-                            submit="onSubmit"
+                            submit=".onPrevisionelSubmit"
                             type="Number"
                             editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableDecN}}"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
@@ -411,16 +423,17 @@
                 </table:multiLabels>
                 <table:template>
                     <HBox>
-                        <!--Text
+                        <Text
                             text="{utilities>JanvN1}"
-                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
-                        /-->
+                            visible="{= ${utilities>isTotalRow}}"
+                            class="{= 'sapMTextStrong' }"
+                        />
                         <Input
                             value="{utilities>JanvN1}"
                             type="Number"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                             editable="{ui>/editable}"
-                            submit="onSubmit"
+                            submit=".onPrevisionelSubmit"
                         />
                     </HBox>
                 </table:template>
@@ -433,16 +446,17 @@
                 </table:multiLabels>
                 <table:template>
                     <HBox>
-                        <!--Text
+                        <Text
                             text="{utilities>FevrN1}"
-                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
-                        /-->
+                            visible="{= ${utilities>isTotalRow}}"
+                            class="{= 'sapMTextStrong' }"
+                        />
                         <Input
                             value="{utilities>FevrN1}"
                             type="Number"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                             editable="{ui>/editable}"
-                            submit="onSubmit"
+                            submit=".onPrevisionelSubmit"
                         />
                     </HBox>
                 </table:template>
@@ -455,16 +469,17 @@
                 </table:multiLabels>
                 <table:template>
                     <HBox>
-                        <!--Text
+                        <Text
                             text="{utilities>MarsN1}"
-                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
-                        /-->
+                            visible="{= ${utilities>isTotalRow}}"
+                            class="{= 'sapMTextStrong' }"
+                        />
                         <Input
                             value="{utilities>MarsN1}"
                             type="Number"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                             editable="{ui>/editable}"
-                            submit="onSubmit"
+                            submit=".onPrevisionelSubmit"
                         />
                     </HBox>
                 </table:template>
@@ -477,16 +492,17 @@
                 </table:multiLabels>
                 <table:template>
                     <HBox>
-                        <!--Text
+                        <Text
                             text="{utilities>AvrN1}"
-                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
-                        /-->
+                            visible="{= ${utilities>isTotalRow}}"
+                            class="{= 'sapMTextStrong' }"
+                        />
                         <Input
                             value="{utilities>AvrN1}"
                             type="Number"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                             editable="{ui>/editable}"
-                            submit="onSubmit"
+                            submit=".onPrevisionelSubmit"
                         />
                     </HBox>
                 </table:template>
@@ -499,16 +515,17 @@
                 </table:multiLabels>
                 <table:template>
                     <HBox>
-                        <!--Text
+                        <Text
                             text="{utilities>MaiN1}"
-                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
-                        /-->
+                            visible="{= ${utilities>isTotalRow}}"
+                            class="{= 'sapMTextStrong' }"
+                        />
                         <Input
                             value="{utilities>MaiN1}"
                             type="Number"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                             editable="{ui>/editable}"
-                            submit="onSubmit"
+                            submit=".onPrevisionelSubmit"
                         />
                     </HBox>
                 </table:template>
@@ -521,16 +538,17 @@
                 </table:multiLabels>
                 <table:template>
                     <HBox>
-                        <!--Text
+                        <Text
                             text="{utilities>JuinN1}"
-                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
-                        /-->
+                            visible="{= ${utilities>isTotalRow}}"
+                            class="{= 'sapMTextStrong' }"
+                        />
                         <Input
                             value="{utilities>JuinN1}"
                             type="Number"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                             editable="{ui>/editable}"
-                            submit="onSubmit"
+                            submit=".onPrevisionelSubmit"
                         />
                     </HBox>
                 </table:template>
@@ -543,16 +561,17 @@
                 </table:multiLabels>
                 <table:template>
                     <HBox>
-                        <!--Text
+                        <Text
                             text="{utilities>JuilN1}"
-                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
-                        /-->
+                            visible="{= ${utilities>isTotalRow}}"
+                            class="{= 'sapMTextStrong' }"
+                        />
                         <Input
                             value="{utilities>JuilN1}"
                             type="Number"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                             editable="{ui>/editable}"
-                            submit="onSubmit"
+                            submit=".onPrevisionelSubmit"
                         />
                     </HBox>
                 </table:template>
@@ -565,16 +584,17 @@
                 </table:multiLabels>
                 <table:template>
                     <HBox>
-                        <!--Text
+                        <Text
                             text="{utilities>AoutN1}"
-                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
-                        /-->
+                            visible="{= ${utilities>isTotalRow}}"
+                            class="{= 'sapMTextStrong' }"
+                        />
                         <Input
                             value="{utilities>AoutN1}"
                             type="Number"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                             editable="{ui>/editable}"
-                            submit="onSubmit"
+                            submit=".onPrevisionelSubmit"
                         />
                     </HBox>
                 </table:template>
@@ -587,16 +607,17 @@
                 </table:multiLabels>
                 <table:template>
                     <HBox>
-                        <!--Text
+                        <Text
                             text="{utilities>SeptN1}"
-                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
-                        /-->
+                            visible="{= ${utilities>isTotalRow}}"
+                            class="{= 'sapMTextStrong' }"
+                        />
                         <Input
                             value="{utilities>SeptN1}"
                             type="Number"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                             editable="{ui>/editable}"
-                            submit="onSubmit"
+                            submit=".onPrevisionelSubmit"
                         />
                     </HBox>
                 </table:template>
@@ -609,16 +630,17 @@
                 </table:multiLabels>
                 <table:template>
                     <HBox>
-                        <!--Text
+                        <Text
                             text="{utilities>OctN1}"
-                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
-                        /-->
+                            visible="{= ${utilities>isTotalRow}}"
+                            class="{= 'sapMTextStrong' }"
+                        />
                         <Input
                             value="{utilities>OctN1}"
                             type="Number"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                             editable="{ui>/editable}"
-                            submit="onSubmit"
+                            submit=".onPrevisionelSubmit"
                         />
                     </HBox>
                 </table:template>
@@ -631,16 +653,17 @@
                 </table:multiLabels>
                 <table:template>
                     <HBox>
-                        <!--Text
+                        <Text
                             text="{utilities>NovN1}"
-                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
-                        /-->
+                            visible="{= ${utilities>isTotalRow}}"
+                            class="{= 'sapMTextStrong' }"
+                        />
                         <Input
                             value="{utilities>NovN1}"
                             type="Number"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                             editable="{ui>/editable}"
-                            submit="onSubmit"
+                            submit=".onPrevisionelSubmit"
                         />
                     </HBox>
                 </table:template>
@@ -653,16 +676,17 @@
                 </table:multiLabels>
                 <table:template>
                     <HBox>
-                        <!--Text
+                        <Text
                             text="{utilities>DecN1}"
-                            visible="{= ${utilities>isTotalRow} || ${utilities>isNode}}"
-                        /-->
+                            visible="{= ${utilities>isTotalRow}}"
+                            class="{= 'sapMTextStrong' }"
+                        />
                         <Input
                             value="{utilities>DecN1}"
                             type="Number"
                             visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                             editable="{ui>/editable}"
-                            submit="onSubmit"
+                            submit=".onPrevisionelSubmit"
                         />
                     </HBox>
                 </table:template>
@@ -675,7 +699,8 @@
                     <Label text="{= 'Total ' + ${utilities>/currentYear}}" />
                 </table:multiLabels>
                 <table:template>
-                    <Text text="{utilities>TotalN}" />
+                    <Text text="{utilities>TotalN}" 
+                    visible = "{= (!${utilities>isNode} || ${utilities>isL0})}"/>
                 </table:template>
             </table:Column>
 
@@ -685,7 +710,8 @@
                     <Label text="{= 'Total ' + ${utilities>/nextYear}}" />
                 </table:multiLabels>
                 <table:template>
-                    <Text text="{utilities>TotalN1}" />
+                    <Text text="{utilities>TotalN1}" 
+                    visible = "{= (!${utilities>isNode} || ${utilities>isL0})}"/>
                 </table:template>
             </table:Column>
 
@@ -695,7 +721,8 @@
                     <Label text="Au-dela" />
                 </table:multiLabels>
                 <table:template>
-                    <Text text="{utilities>Audela}" />
+                    <Text text="{utilities>Audela}" 
+                    visible = "{= (!${utilities>isNode} || ${utilities>isL0})}" />
                 </table:template>
             </table:Column>
         </table:columns>

@@ -625,35 +625,12 @@ sap.ui.define(
                 this._setBusy(false);
             },
 
-            getCurrentEditableMonth: function () {
-                var currentMonth = 5;
-                var currentYear = currentDate.getFullYear();
-
-                var referenceYear = 2025;
-
-                if (currentYear === referenceYear) {
-                    return currentMonth;
-                } else if (currentYear > referenceYear) {
-                    return 12; // Tous les mois de N sont read-only
-                } else {
-                    return 0; // Tous les mois sont editables
+            onPrevisionelSubmit: function (oEvent) {
+                if (!this._budgetPrevisionel) {
+                    this._budgetPrevisionel = new _budgetPrevisionel();
+                    this._budgetPrevisionel.oView = this.oView;
                 }
-            },
-
-            isMonthEditable: function (monthIndex, isN1) {
-                var editableUntilMonth = this.getCurrentEditableMonth();
-
-                if (isN1) {
-                    // Pour N+1, tout est toujours editable
-                    return true;
-                } else {
-                    // Pour N, seuls les mois après le mois actuel sont editables
-                    return monthIndex > editableUntilMonth;
-                }
-            },
-
-            getEditablePropertyName: function (monthName, isN1) {
-                return "isEditable" + monthName + (isN1 ? "N1" : "N");
+                this._budgetPrevisionel.onSubmit(oEvent);
             },
 
             // ==============================================
