@@ -16,7 +16,7 @@ sap.ui.define([
                 this.getView().getModel("utilities").setProperty("/DataMode", "A"); // default to Auto if missing
             }
 
-            var buildTree = function (items) {
+            /*var buildTree = function (items) {
                 var treeData = [];
                 var fgaGroups = {};
 
@@ -131,7 +131,134 @@ sap.ui.define([
                 }
 
                 return treeData;
+            };*/
+
+var buildTree = function (items) {
+    var treeData = [];
+    var fgaGroups = {};
+
+    if (!items) return treeData;
+
+    // === CONFIGURATION D'ÉDITION ===
+    var editableConfig = self.getEditableMonthsConfig();
+    console.log("Configuration d'édition:", editableConfig);
+
+    items.forEach(function (item) {
+        item.isTotalRow = false;
+
+        // === Applique la configuration d’édition ===
+        Object.keys(editableConfig.N).forEach(function (key) {
+            item["isEditable" + key] = editableConfig.N[key];
+        });
+        Object.keys(editableConfig.N1).forEach(function (key) {
+            item["isEditable" + key] = editableConfig.N1[key];
+        });
+
+        // === Calcule FinAffaire ===
+        item.FinAffaire = (Number(item.VoyageDeplacement) || 0) +
+            (Number(item.AutresFrais) || 0) +
+            (Number(item.CreancesDouteuses) || 0) +
+            (Number(item.EtudesTravaux) || 0) +
+            (Number(item.SinistreContentieux) || 0) +
+            (Number(item.AleasDivers) || 0);
+
+        // === Initialise le groupe BusinessNo ===
+        if (!fgaGroups[item.BusinessNo]) {
+            fgaGroups[item.BusinessNo] = {
+                businessNo: item.BusinessNo,
+                rootNode: null,      // ligne FGA0
+                regroupements: {},   // autres regroupements
             };
+        }
+
+        var fgaGroup = fgaGroups[item.BusinessNo];
+
+        // === CAS 1 : LIGNE PRINCIPALE FGA0 ===
+        if (item.Regroupement === "FGA0") {
+            // Cette ligne devient le niveau 0 avec toutes ses colonnes
+            item.isNode = true;
+            item.isL0 = true;
+            fgaGroup.rootNode = item;
+            fgaGroup.rootNode.children = [];
+            item.name = item.MissionId;
+        }
+        // === CAS 2 : AUTRES REGROUPEMENTS ===
+        else {
+            if (!fgaGroup.regroupements[item.Regroupement]) {
+                fgaGroup.regroupements[item.Regroupement] = {
+                    name: item.Regroupement,
+                    isNode: true,
+                    isL0: false,
+                    FacturationDepense: item.FacturationDepense,
+                    ResteAFacturer: 0,
+                    ResteADepenser: 0,
+                    TotalN: 0,
+                    TotalN1: 0,
+                    Audela: 0,
+                    children: [],
+                    totals: {
+                        VoyageDeplacement: 0,
+                        AutresFrais: 0,
+                        CreancesDouteuses: 0,
+                        EtudesTravaux: 0,
+                        SinistreContentieux: 0,
+                        AleasDivers: 0,
+                        FinAffaire: 0
+                    }
+                };
+            }
+
+            var regroupement = fgaGroup.regroupements[item.Regroupement];
+            regroupement.children.push(item);
+
+            // Cumule les totaux pour le regroupement
+            regroupement.totals.VoyageDeplacement += Number(item.VoyageDeplacement) || 0;
+            regroupement.totals.AutresFrais += Number(item.AutresFrais) || 0;
+            regroupement.totals.CreancesDouteuses += Number(item.CreancesDouteuses) || 0;
+            regroupement.totals.EtudesTravaux += Number(item.EtudesTravaux) || 0;
+            regroupement.totals.SinistreContentieux += Number(item.SinistreContentieux) || 0;
+            regroupement.totals.AleasDivers += Number(item.AleasDivers) || 0;
+            regroupement.totals.FinAffaire += Number(item.FinAffaire) || 0;
+        }
+    });
+
+    // === CONSTRUCTION DE L’ARBRE FINAL ===
+    for (var fga in fgaGroups) {
+        var group = fgaGroups[fga];
+
+        // Crée les regroupements (niveaux enfants)
+        var regroupementArray = [];
+        for (var regKey in group.regroupements) {
+            if (group.regroupements.hasOwnProperty(regKey)) {
+                var regroupement = group.regroupements[regKey];
+
+                // Ajoute une ligne de total pour chaque regroupement
+                regroupement.children.push(
+                    self.createRegroupementTotalRow(regroupement.totals, regroupement.name)
+                );
+
+                regroupementArray.push(regroupement);
+            }
+        }
+
+        // Si la ligne FGA0 existe → c’est la racine
+        if (group.rootNode) {
+            group.rootNode.children = regroupementArray;
+            treeData.push(group.rootNode);
+        } else {
+            // Sinon on crée un nœud "Affaire" par défaut
+            treeData.push({
+                name: group.businessNo,
+                FacturationDepense: "Affaire",
+                isNode: true,
+                isL0: true,
+                children: regroupementArray
+            });
+        }
+    }
+
+    return treeData;
+};
 
             // Build trees 
             var previsionelTreeData = buildTree(previsionel);

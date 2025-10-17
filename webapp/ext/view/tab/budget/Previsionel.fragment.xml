@@ -97,7 +97,7 @@
                                 ? 'sap-icon://money-bills'
                                 : 'sap-icon://expense-report')
                             : '' }"
-                        visible="{= !${utilities>isTotalRow}}"
+                        visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                     />
                 </table:template>
             </table:Column>
@@ -110,7 +110,7 @@
                 <table:template>
                     <Text
                         text="{utilities>ResteAFacturer}"
-                        visible="{= !${utilities>isTotalRow}}"
+                        visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                     />
                 </table:template>
             </table:Column>
@@ -123,7 +123,7 @@
                 <table:template>
                     <Text
                         text="{utilities>ResteADepenser}"
-                        visible="{= !${utilities>isTotalRow}}"
+                        visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                     />
                 </table:template>
             </table:Column>
@@ -149,7 +149,7 @@
                             submit="onSubmit"
                             type="Number"
                             editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableJanvN} }"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                         />
                     </HBox>
                 </table:template>
@@ -171,7 +171,7 @@
                             submit="onSubmit"
                             type="Number"
                             editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableFevrN}}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                         />
                     </HBox>
                 </table:template>
@@ -193,7 +193,7 @@
                             submit="onSubmit"
                             type="Number"
                             editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableMarsN}}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                         />
                     </HBox>
                 </table:template>
@@ -215,7 +215,7 @@
                             submit="onSubmit"
                             type="Number"
                             editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableAvrN}}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                         />
                     </HBox>
                 </table:template>
@@ -237,7 +237,7 @@
                             submit="onSubmit"
                             type="Number"
                             editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableMaiN}}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                         />
                     </HBox>
                 </table:template>
@@ -259,7 +259,7 @@
                             submit="onSubmit"
                             type="Number"
                             editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableJuinN}}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                         />
                     </HBox>
                 </table:template>
@@ -281,7 +281,7 @@
                             submit="onSubmit"
                             type="Number"
                             editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableJuilN}}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                         />
                     </HBox>
                 </table:template>
@@ -304,7 +304,7 @@
                             submit="onSubmit"
                             type="Number"
                             editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableAoutN}}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                         />
                     </HBox>
                 </table:template>
@@ -326,7 +326,7 @@
                             submit="onSubmit"
                             type="Number"
                             editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableSeptN}}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                         />
                     </HBox>
                 </table:template>
@@ -348,7 +348,7 @@
                             submit="onSubmit"
                             type="Number"
                             editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableOctN}}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                         />
                     </HBox>
                 </table:template>
@@ -370,7 +370,7 @@
                             submit="onSubmit"
                             type="Number"
                             editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableNovN}}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                         />
                     </HBox>
                 </table:template>
@@ -392,7 +392,7 @@
                             submit="onSubmit"
                             type="Number"
                             editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableDecN}}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                         />
                     </HBox>
                 </table:template>
@@ -418,7 +418,7 @@
                         <Input
                             value="{utilities>JanvN1}"
                             type="Number"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                             editable="{ui>/editable}"
                             submit="onSubmit"
                         />
@@ -440,7 +440,7 @@
                         <Input
                             value="{utilities>FevrN1}"
                             type="Number"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                             editable="{ui>/editable}"
                             submit="onSubmit"
                         />
@@ -462,7 +462,7 @@
                         <Input
                             value="{utilities>MarsN1}"
                             type="Number"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                             editable="{ui>/editable}"
                             submit="onSubmit"
                         />
@@ -484,7 +484,7 @@
                         <Input
                             value="{utilities>AvrN1}"
                             type="Number"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                             editable="{ui>/editable}"
                             submit="onSubmit"
                         />
@@ -506,7 +506,7 @@
                         <Input
                             value="{utilities>MaiN1}"
                             type="Number"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                             editable="{ui>/editable}"
                             submit="onSubmit"
                         />
@@ -528,7 +528,7 @@
                         <Input
                             value="{utilities>JuinN1}"
                             type="Number"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                             editable="{ui>/editable}"
                             submit="onSubmit"
                         />
@@ -550,7 +550,7 @@
                         <Input
                             value="{utilities>JuilN1}"
                             type="Number"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                             editable="{ui>/editable}"
                             submit="onSubmit"
                         />
@@ -572,7 +572,7 @@
                         <Input
                             value="{utilities>AoutN1}"
                             type="Number"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                             editable="{ui>/editable}"
                             submit="onSubmit"
                         />
@@ -594,7 +594,7 @@
                         <Input
                             value="{utilities>SeptN1}"
                             type="Number"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                             editable="{ui>/editable}"
                             submit="onSubmit"
                         />
@@ -616,7 +616,7 @@
                         <Input
                             value="{utilities>OctN1}"
                             type="Number"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                             editable="{ui>/editable}"
                             submit="onSubmit"
                         />
@@ -638,7 +638,7 @@
                         <Input
                             value="{utilities>NovN1}"
                             type="Number"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                             editable="{ui>/editable}"
                             submit="onSubmit"
                         />
@@ -660,7 +660,7 @@
                         <Input
                             value="{utilities>DecN1}"
                             type="Number"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode}}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
                             editable="{ui>/editable}"
                             submit="onSubmit"
                         />

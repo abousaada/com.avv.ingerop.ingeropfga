@@ -619,6 +619,54 @@
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_FGA_ForecastType">
+                <Annotation Term="UI.FieldGroup" Qualifier="PartenaireFields">
+                    <Record>
+                        <PropertyValue Property="Data">
+                            <Collection>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="MissionId"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="Description"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="Regroupement"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.FieldGroup" Qualifier="TitulaireFields">
+                    <Record>
+                        <PropertyValue Property="Data">
+                            <Collection>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="BusinessNo"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.Identification">
+                    <Collection>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="BusinessNo"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="UI.Identification" Qualifier="InformationsFacetFields">
+                    <Collection>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="MissionId"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="Description"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="Regroupement"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
                 <Annotation Term="UI.LineItem">
                     <Collection>
                         <Record Type="UI.DataField">
@@ -636,6 +684,12 @@
                         <Record Type="UI.DataField">
                             <PropertyValue Property="Label" String="Avril N"/>
                             <PropertyValue Property="Value" Path="AvrN"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="BusinessNo"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="MissionId"/>
                         </Record>
                         <Record Type="UI.DataField">
                             <PropertyValue Property="Label" String="Mai N"/>
@@ -668,6 +722,12 @@
                         <Record Type="UI.DataField">
                             <PropertyValue Property="Label" String="Décembre N"/>
                             <PropertyValue Property="Value" Path="DecN"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="Description"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="Regroupement"/>
                         </Record>
                         <Record Type="UI.DataField">
                             <PropertyValue Property="Label" String="Janvier N+1"/>
@@ -717,6 +777,14 @@
                             <PropertyValue Property="Label" String="Décembre N+1"/>
                             <PropertyValue Property="Value" Path="DecN1"/>
                         </Record>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="UI.SelectionFields">
+                    <Collection>
+                        <PropertyPath>BusinessNo</PropertyPath>
+                        <PropertyPath>MissionId</PropertyPath>
+                        <PropertyPath>Description</PropertyPath>
+                        <PropertyPath>Regroupement</PropertyPath>
                     </Collection>
                 </Annotation>
             </Annotations>
