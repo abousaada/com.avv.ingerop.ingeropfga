@@ -116,6 +116,7 @@ sap.ui.define(
                                 this._styleMergedRecapRow();
                             }
                         }, this);
+
                     }
                 },
 
@@ -132,6 +133,50 @@ sap.ui.define(
                 onListNavigationExtension: function (oEvent) {
                     console.log("onListNavigationExtension called", oEvent);
                 },
+
+                beforeSaveExtension1() {
+                    try {
+                        const utilitiesModel = this.getModel("utilities");
+                        const oModel = this.base.getView().getModel();
+
+                        // Vérifier s'il y a des modifications en attente
+                        const hasChanges = this._hasManualChanges(utilitiesModel, oModel);
+
+                        if (hasChanges) {
+                        }
+                        // Check if we're in manual mode and show confirmation popup
+                        const dataMode = utilitiesModel.getProperty("/DataMode");
+                        if (dataMode === "M") {
+                            return new Promise((resolve, reject) => {
+                                sap.m.MessageBox.confirm(
+                                    "Passage en mode manuel requis\n\n✓ Écrasement des valeurs automatiques\n✓ Action irréversible\n\nConfirmez-vous cette modification ?",
+                                    {
+                                        title: "Confirmation requise",
+                                        onClose: (sAction) => {
+                                            if (sAction === sap.m.MessageBox.Action.OK) {
+                                                // User confirmed - proceed with save
+                                                this._executeSave(utilitiesModel, resolve, reject);
+                                            } else {
+                                                // User cancelled
+                                                this._setBusy(false);
+                                                reject("Save cancelled by user");
+                                            }
+                                        }
+                                    }
+                                );
+                            });
+                        } else {
+                            // Auto mode - proceed directly with save
+                            return this._executeSave(utilitiesModel);
+                        }
+                    } catch (error) {
+                        this._setBusy(false);
+                        Helper.errorMessage("FGA update failed");
+                        console.log(error);
+                        return Promise.reject(error);
+                    }
+                },
+
 
                 beforeSaveExtension() {
                     try {
@@ -179,6 +224,7 @@ sap.ui.define(
                             });
 
                             delete oPayload.to_BudgetPxSTI;
+                            delete oPayload.to_Previsionel;
 
                             try {
                                 oPayload.VAT = oPayload.VAT ? oPayload.VAT.toString() : oPayload.VAT;
@@ -209,6 +255,7 @@ sap.ui.define(
 
             },
 
+            
             _onRoutePatternMatched: function (oEvent) {
                 const sRouteName = oEvent.getParameter("name");
                 if (sRouteName === "rootquery") {

@@ -12,7 +12,7 @@
             path: 'utilities>/previsionelHierarchyWithTotals',
             parameters: {
                 arrayNames: ['children'],
-                numberOfExpandedLevels: 3
+                numberOfExpandedLevels: 4
             }
         }"
         selectionMode="None"
@@ -38,7 +38,7 @@
 
         <table:columns>
             <!-- === Colonne Hiérarchique (comme PxAutre) === -->
-            <table:Column width="17rem">
+            <!--table:Column width="17rem">
                 <table:multiLabels>
                     <Label text="" />
                     <Label text="Hierarchy/Mission" />
@@ -50,22 +50,26 @@
                                  ${utilities>MissionId}}"
                     />
                 </table:template>
+            </table:Column-->
+            <table:Column width="23rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Hierarchy/Mission" />
+                </table:multiLabels>
+                <table:template>
+                    <!--Text
+                        text="{= ${utilities>isTotalRow} ? ${utilities>name} : 
+                                 ${utilities>isSectionHeader} ? ${utilities>name} :
+                                 ${utilities>isL2} ? ${utilities>name} :
+                                 ${utilities>isL1} ? ${utilities>name} :
+                                 ${utilities>isL0} ? ${utilities>name} : 
+                                 ${utilities>MissionId}}"
+                    /-->
+                    <Text text="{utilities>name}" />
+                </table:template>
             </table:Column>
 
             <!-- === Base columns === -->
-            <!--table:Column width="10rem">
-                <table:multiLabels>
-                    <Label text="" />
-                    <Label text="Numéro affaire" />
-                </table:multiLabels>
-                <table:template>
-                    <Text
-                        text="{utilities>Affaire}"
-                        visible="{= !${utilities>isTotalRow}}"
-                    />
-                </table:template>
-            </table:Column -->
-
             <table:Column width="12rem">
                 <table:multiLabels>
                     <Label text="" />
@@ -79,16 +83,12 @@
                 </table:template>
             </table:Column>
 
-            <table:Column width="9rem">
+            <!--table:Column width="9rem">
                 <table:multiLabels>
                     <Label text="" />
                     <Label text="Facturation / Dépenses" />
                 </table:multiLabels>
                 <table:template>
-                    <!--Text
-                        text="{utilities>FacturationDepense}"
-                        visible="{= !${utilities>isTotalRow}}"
-                    /-->
                     <ObjectStatus
                         text="{utilities>FacturationDepense}"
                         state="{= ${utilities>FacturationDepense} === 'Facturation' ? 'Success' : 'Warning'}"
@@ -98,6 +98,26 @@
                                 : 'sap-icon://expense-report')
                             : '' }"
                         visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
+                    />
+                </table:template>
+            </table:Column-->
+
+            <table:Column width="9rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="Facturation / Dépenses" />
+                </table:multiLabels>
+                <table:template>
+                    <ObjectStatus
+                        text="{utilities>FacturationDepense}"
+                        state="{= ${utilities>FacturationDepense} === 'Facturation' ? 'Success' : 'Warning'}"
+                        icon="{= ${utilities>FacturationDepense}
+                ? (${utilities>FacturationDepense} === 'Facturation'
+                    ? 'sap-icon://money-bills'
+                    : 'sap-icon://expense-report')
+                : '' }"
+                        visible="{= (${utilities>isFactDepGroup} || ${utilities>isRegroupement} || (!${utilities>isNode} &amp;&amp; !${utilities>isTotalRow})) 
+                      &amp;&amp; !${utilities>isMission}}"
                     />
                 </table:template>
             </table:Column>
@@ -110,7 +130,7 @@
                 <table:template>
                     <Text
                         text="{utilities>ResteAFacturer}"
-                        visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
+            visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                     />
                 </table:template>
             </table:Column>
@@ -123,7 +143,7 @@
                 <table:template>
                     <Text
                         text="{utilities>ResteADepenser}"
-                        visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
+            visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                     />
                 </table:template>
             </table:Column>
@@ -145,12 +165,16 @@
                             visible="{= ${utilities>isTotalRow}}"
                             class="{= 'sapMTextStrong' }"
                         />
+                        <!--Input
+                            value="{utilities>JanvN}"
+                            submit=".onPrevisionelSubmit"
+                            editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableJanvN} }"
+visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"                        /-->
                         <Input
                             value="{utilities>JanvN}"
                             submit=".onPrevisionelSubmit"
-                            type="Number"
                             editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableJanvN} }"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                         />
                     </HBox>
                 </table:template>
@@ -166,14 +190,13 @@
                         <Text
                             text="{utilities>FevrN}"
                             visible="{= ${utilities>isTotalRow}}"
-                            class="{= 'sapMTextStrong' }"
+                            class="boldText"
                         />
                         <Input
                             value="{utilities>FevrN}"
                             submit=".onPrevisionelSubmit"
-                            type="Number"
                             editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableFevrN}}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                         />
                     </HBox>
                 </table:template>
@@ -194,9 +217,8 @@
                         <Input
                             value="{utilities>MarsN}"
                             submit=".onPrevisionelSubmit"
-                            type="Number"
                             editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableMarsN}}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                         />
                     </HBox>
                 </table:template>
@@ -217,9 +239,8 @@
                         <Input
                             value="{utilities>AvrN}"
                             submit=".onPrevisionelSubmit"
-                            type="Number"
                             editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableAvrN}}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                         />
                     </HBox>
                 </table:template>
@@ -240,9 +261,8 @@
                         <Input
                             value="{utilities>MaiN}"
                             submit=".onPrevisionelSubmit"
-                            type="Number"
                             editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableMaiN}}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                         />
                     </HBox>
                 </table:template>
@@ -263,9 +283,8 @@
                         <Input
                             value="{utilities>JuinN}"
                             submit=".onPrevisionelSubmit"
-                            type="Number"
                             editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableJuinN}}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                         />
                     </HBox>
                 </table:template>
@@ -286,9 +305,8 @@
                         <Input
                             value="{utilities>JuilN}"
                             submit=".onPrevisionelSubmit"
-                            type="Number"
                             editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableJuilN}}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                         />
                     </HBox>
                 </table:template>
@@ -310,9 +328,8 @@
                         <Input
                             value="{utilities>AoutN}"
                             submit=".onPrevisionelSubmit"
-                            type="Number"
                             editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableAoutN}}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                         />
                     </HBox>
                 </table:template>
@@ -333,9 +350,8 @@
                         <Input
                             value="{utilities>SeptN}"
                             submit=".onPrevisionelSubmit"
-                            type="Number"
                             editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableSeptN}}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                         />
                     </HBox>
                 </table:template>
@@ -356,9 +372,8 @@
                         <Input
                             value="{utilities>OctN}"
                             submit=".onPrevisionelSubmit"
-                            type="Number"
                             editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableOctN}}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                         />
                     </HBox>
                 </table:template>
@@ -379,9 +394,8 @@
                         <Input
                             value="{utilities>NovN}"
                             submit=".onPrevisionelSubmit"
-                            type="Number"
                             editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableNovN}}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                         />
                     </HBox>
                 </table:template>
@@ -402,9 +416,8 @@
                         <Input
                             value="{utilities>DecN}"
                             submit=".onPrevisionelSubmit"
-                            type="Number"
                             editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableDecN}}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                         />
                     </HBox>
                 </table:template>
@@ -430,8 +443,7 @@
                         />
                         <Input
                             value="{utilities>JanvN1}"
-                            type="Number"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                             editable="{ui>/editable}"
                             submit=".onPrevisionelSubmit"
                         />
@@ -453,8 +465,7 @@
                         />
                         <Input
                             value="{utilities>FevrN1}"
-                            type="Number"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                             editable="{ui>/editable}"
                             submit=".onPrevisionelSubmit"
                         />
@@ -476,8 +487,7 @@
                         />
                         <Input
                             value="{utilities>MarsN1}"
-                            type="Number"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                             editable="{ui>/editable}"
                             submit=".onPrevisionelSubmit"
                         />
@@ -499,8 +509,7 @@
                         />
                         <Input
                             value="{utilities>AvrN1}"
-                            type="Number"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                             editable="{ui>/editable}"
                             submit=".onPrevisionelSubmit"
                         />
@@ -522,8 +531,7 @@
                         />
                         <Input
                             value="{utilities>MaiN1}"
-                            type="Number"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                             editable="{ui>/editable}"
                             submit=".onPrevisionelSubmit"
                         />
@@ -545,8 +553,7 @@
                         />
                         <Input
                             value="{utilities>JuinN1}"
-                            type="Number"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                             editable="{ui>/editable}"
                             submit=".onPrevisionelSubmit"
                         />
@@ -568,8 +575,7 @@
                         />
                         <Input
                             value="{utilities>JuilN1}"
-                            type="Number"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                             editable="{ui>/editable}"
                             submit=".onPrevisionelSubmit"
                         />
@@ -591,8 +597,7 @@
                         />
                         <Input
                             value="{utilities>AoutN1}"
-                            type="Number"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                             editable="{ui>/editable}"
                             submit=".onPrevisionelSubmit"
                         />
@@ -614,8 +619,7 @@
                         />
                         <Input
                             value="{utilities>SeptN1}"
-                            type="Number"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                             editable="{ui>/editable}"
                             submit=".onPrevisionelSubmit"
                         />
@@ -637,8 +641,7 @@
                         />
                         <Input
                             value="{utilities>OctN1}"
-                            type="Number"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                             editable="{ui>/editable}"
                             submit=".onPrevisionelSubmit"
                         />
@@ -660,8 +663,7 @@
                         />
                         <Input
                             value="{utilities>NovN1}"
-                            type="Number"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                             editable="{ui>/editable}"
                             submit=".onPrevisionelSubmit"
                         />
@@ -683,8 +685,7 @@
                         />
                         <Input
                             value="{utilities>DecN1}"
-                            type="Number"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; (!${utilities>isNode} || ${utilities>isL0})}"
+                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                             editable="{ui>/editable}"
                             submit=".onPrevisionelSubmit"
                         />
@@ -699,8 +700,10 @@
                     <Label text="{= 'Total ' + ${utilities>/currentYear}}" />
                 </table:multiLabels>
                 <table:template>
-                    <Text text="{utilities>TotalN}" 
-                    visible = "{= (!${utilities>isNode} || ${utilities>isL0})}"/>
+                    <Text
+                        text="{utilities>TotalN}"
+                        visible="{= (!${utilities>isNode} || ${utilities>isL0})}"
+                    />
                 </table:template>
             </table:Column>
 
@@ -710,8 +713,10 @@
                     <Label text="{= 'Total ' + ${utilities>/nextYear}}" />
                 </table:multiLabels>
                 <table:template>
-                    <Text text="{utilities>TotalN1}" 
-                    visible = "{= (!${utilities>isNode} || ${utilities>isL0})}"/>
+                    <Text
+                        text="{utilities>TotalN1}"
+                        visible="{= (!${utilities>isNode} || ${utilities>isL0})}"
+                    />
                 </table:template>
             </table:Column>
 
@@ -721,8 +726,10 @@
                     <Label text="Au-dela" />
                 </table:multiLabels>
                 <table:template>
-                    <Text text="{utilities>Audela}" 
-                    visible = "{= (!${utilities>isNode} || ${utilities>isL0})}" />
+                    <Text
+                        text="{utilities>Audela}"
+                        visible="{= (!${utilities>isNode} || ${utilities>isL0})}"
+                    />
                 </table:template>
             </table:Column>
         </table:columns>
