@@ -612,6 +612,12 @@
             <Annotations Target="ZFGA_SRV.ZC_FGA_CHART_AVANCEMENTType/p_period">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGA_ForecastType/ParentMissionId">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGA_ForecastType/HierarchyLevel">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_FGA_ForecastType/Regroupement">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>

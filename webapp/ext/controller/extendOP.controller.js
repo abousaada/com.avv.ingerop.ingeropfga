@@ -134,7 +134,7 @@ sap.ui.define(
                     console.log("onListNavigationExtension called", oEvent);
                 },
 
-                beforeSaveExtension() {
+                beforeSaveExtension1() { //ABO work in progress. Don't remove
                     try {
                         const utilitiesModel = this.getModel("utilities");
                         const oView = this.base.getView();
@@ -246,7 +246,7 @@ sap.ui.define(
                 },
 
 
-                beforeSaveExtension1() {
+                beforeSaveExtension() { 
                     try {
                         const utilitiesModel = this.getModel("utilities");
 
