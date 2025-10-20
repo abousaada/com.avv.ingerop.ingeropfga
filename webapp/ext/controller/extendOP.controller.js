@@ -134,19 +134,38 @@ sap.ui.define(
                     console.log("onListNavigationExtension called", oEvent);
                 },
 
-                beforeSaveExtension1() {
+                beforeSaveExtension() {
                     try {
                         const utilitiesModel = this.getModel("utilities");
-                        const oModel = this.base.getView().getModel();
+                        const oView = this.base.getView();
+                        const oContext = oView.getBindingContext();
 
-                        // Vérifier s'il y a des modifications en attente
-                        const hasChanges = this._hasManualChanges(utilitiesModel, oModel);
-
-                        if (hasChanges) {
+                        if (!oContext) {
+                            sap.m.MessageBox.error("Aucun contexte lié à la vue !");
+                            throw new Error("Impossible d'accéder au contexte.");
                         }
-                        // Check if we're in manual mode and show confirmation popup
-                        const dataMode = utilitiesModel.getProperty("/DataMode");
-                        if (dataMode === "M") {
+
+                        if (!this.getModel("utilities").validDataBeforeSave(oView)) {
+                            sap.m.MessageBox.error("Veuillez Vérifier tous les champs");
+                            return new Promise((resolve, reject) => {
+                                reject();
+                            });
+                        }
+
+                        if (!this.getModel("utilities").validRecetteExtBeforeSave(oView)) {
+                            sap.m.MessageBox.error("Veuillez Répartir correctement les budgets");
+                            return new Promise((resolve, reject) => {
+                                reject();
+                            });
+                        }
+
+                        this._setBusy(true);
+
+                        // Check for manual changes in Previsionel
+                        const oModel = this.getModel();
+                        const hasManualChanges = this._budgetPrevisionel._hasManualChangesPrevisionel(utilitiesModel, oModel);
+
+                        if (hasManualChanges) {
                             return new Promise((resolve, reject) => {
                                 sap.m.MessageBox.confirm(
                                     "Passage en mode manuel requis\n\n✓ Écrasement des valeurs automatiques\n✓ Action irréversible\n\nConfirmez-vous cette modification ?",
@@ -155,7 +174,7 @@ sap.ui.define(
                                         onClose: (sAction) => {
                                             if (sAction === sap.m.MessageBox.Action.OK) {
                                                 // User confirmed - proceed with save
-                                                this._executeSave(utilitiesModel, resolve, reject);
+                                                this._executeSave(utilitiesModel, oView, oContext, resolve, reject);
                                             } else {
                                                 // User cancelled
                                                 this._setBusy(false);
@@ -166,19 +185,68 @@ sap.ui.define(
                                 );
                             });
                         } else {
-                            // Auto mode - proceed directly with save
-                            return this._executeSave(utilitiesModel);
+                            // No manual changes - proceed directly with save
+                            return this._executeSave(utilitiesModel, oView, oContext);
                         }
                     } catch (error) {
                         this._setBusy(false);
-                        Helper.errorMessage("FGA update failed");
+                        Helper.errorMessage("FGA updated fail");
                         console.log(error);
                         return Promise.reject(error);
                     }
                 },
 
+                // The Actual saving logic
+                _executeSave: function (utilitiesModel, oView, oContext, resolve, reject) {
+                    return new Promise(async (innerResolve, innerReject) => {
+                        // Use the provided resolve/reject or create new ones for the inner promise
+                        const finalResolve = resolve || innerResolve;
+                        const finalReject = reject || innerReject;
 
-                beforeSaveExtension() {
+                        try {
+                            const formattedMissions = utilitiesModel.getFormattedMissions();
+                            const formattedPxAutre = utilitiesModel.getFormattedPxAutre();
+                            const formattedPxSubContractingExt = utilitiesModel.formattedPxSubContractingExt();
+                            const formattedPxRecetteExt = utilitiesModel.formattedPxRecetteExt();
+                            const formattedMainOeuvre = utilitiesModel.formattedPxMainOeuvre();
+                            const oPayload = Helper.extractPlainData({
+                                ...oContext.getObject(),
+                                "to_Missions": formattedMissions,
+                                "to_BudgetPxAutre": formattedPxAutre,
+                                "to_BudgetPxSubContracting": formattedPxSubContractingExt,
+                                "to_BudgetPxRecetteExt": formattedPxRecetteExt,
+                                "to_BudgetPxSTI": [],
+                                "to_Previsionel": [],
+                                "to_BudgetPxMainOeuvre": formattedMainOeuvre
+                            });
+
+                            delete oPayload.to_BudgetPxSTI;
+                            delete oPayload.to_Previsionel;
+
+                            oPayload.VAT = oPayload.VAT ? oPayload.VAT.toString() : oPayload.VAT;
+                            const updatedFGA = await utilitiesModel.deepUpsertFGA(oPayload);
+                            this._setBusy(false);
+
+                            if (updatedFGA) {
+                                Helper.validMessage("FGA updated: " + updatedFGA.BusinessNo, this.getView(), this.onAfterSaveAction.bind(this));
+                                finalResolve(updatedFGA);
+                            } else {
+                                this._setBusy(false);
+                                Helper.errorMessage("FGA updated fail");
+                                finalReject("No data returned");
+                            }
+
+                        } catch (error) {
+                            this._setBusy(false);
+                            Helper.errorMessage("FGA updated fail");
+                            console.log(error);
+                            finalReject(error);
+                        }
+                    });
+                },
+
+
+                beforeSaveExtension1() {
                     try {
                         const utilitiesModel = this.getModel("utilities");
 
@@ -255,7 +323,7 @@ sap.ui.define(
 
             },
 
-            
+
             _onRoutePatternMatched: function (oEvent) {
                 const sRouteName = oEvent.getParameter("name");
                 if (sRouteName === "rootquery") {

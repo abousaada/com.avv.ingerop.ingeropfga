@@ -152,10 +152,10 @@ sap.ui.define([
             // Add static columns to tree table
             treeTable.addColumn(interUfoColumn);
             treeTable.addColumn(intraUfoColumn);
-            treeTable.addColumn(intercompagnieColumn);
+            //treeTable.addColumn(intercompagnieColumn);
 
             // Store references for cleanup if needed
-            this._staticColumns = [interUfoColumn, intraUfoColumn, intercompagnieColumn];
+            this._staticColumns = [interUfoColumn, intraUfoColumn]; //, intercompagnieColumn];
         },
 
 

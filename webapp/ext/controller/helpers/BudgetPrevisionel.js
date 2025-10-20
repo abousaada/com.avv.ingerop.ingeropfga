@@ -893,146 +893,321 @@ sap.ui.define([
 
             return count;
         },
-        _hasManualChanges: function (utilitiesModel, oModel) {
-                // 1. Vérifier les changements dans le modèle principal
-                const pendingChanges = oModel.getPendingChanges();
-                if (Object.keys(pendingChanges).length > 0) {
-                    return true;
-                }
-
-                // 2. Vérifier les modifications dans les données hiérarchiques
-                const previsionelData = utilitiesModel.getProperty("/previsionel");
-                const previsionelHierarchy = utilitiesModel.getProperty("/previsionelHierarchyWithTotals");
-
-                return this._checkHierarchyChanges(previsionelData, previsionelHierarchy);
-            },
-
-            _checkHierarchyChanges: function (originalData, hierarchyData) {
-                if (!originalData || !hierarchyData) return false;
-
-                // Approche simplifiée : compter le nombre total de valeurs non nulles
-                const countNonZeroValues = (data) => {
-                    let count = 0;
-                    const fieldsToCheck = [
-                        'JanvN', 'FevrN', 'MarsN', 'AvrN', 'MaiN', 'JuinN',
-                        'JuilN', 'AoutN', 'SeptN', 'OctN', 'NovN', 'DecN',
-                        'JanvN1', 'FevrN1', 'MarsN1', 'AvrN1', 'MaiN1', 'JuinN1',
-                        'JuilN1', 'AoutN1', 'SeptN1', 'OctN1', 'NovN1', 'DecN1',
-                        'ResteAFacturer', 'ResteADepenser', 'TotalN', 'TotalN1', 'Audela'
-                    ];
-
-                    const traverse = (nodes) => {
-                        if (!nodes || !Array.isArray(nodes)) return;
-
-                        for (let node of nodes) {
-                            // Ignorer les totaux et regroupements
-                            if (node.isTotalRow || node.isRegroupementTotal || node.isNode) {
-                                continue;
-                            }
-
-                            // Compter les valeurs non nulles
-                            fieldsToCheck.forEach(field => {
-                                const value = Number(node[field]) || 0;
-                                if (value !== 0) {
-                                    count++;
-                                }
-                            });
-
-                            // Vérifier les enfants
-                            if (node.children && Array.isArray(node.children)) {
-                                traverse(node.children);
-                            }
-                        }
-                    };
-
-                    traverse(data);
-                    return count;
-                };
-
-                const originalCount = countNonZeroValues(originalData);
-                const hierarchyCount = countNonZeroValues(hierarchyData);
-
-                console.log(`Compteur valeurs non nulles - Original: ${originalCount}, Hiérarchie: ${hierarchyCount}`);
-
-                return originalCount !== hierarchyCount;
-            },
-
-            // Extract the save logic into a separate method
-            _executeSave: function (utilitiesModel, resolve, reject) {
-                try {
-                    // Accès au contexte via la vue
-                    const oView = this.base.getView();
-                    const oContext = oView.getBindingContext();
-
-                    if (!oContext) {
-                        sap.m.MessageBox.error("Aucun contexte lié à la vue !");
-                        throw new Error("Impossible d'accéder au contexte.");
-                    }
-
-                    if (!this.getModel("utilities").validDataBeforeSave(oView)) {
-                        sap.m.MessageBox.error("Veuillez Vérifier tous les champs");
-                        return new Promise((resolve, reject) => {
-                            reject();
-                        });
-                    }
-
-                    if (!this.getModel("utilities").validRecetteExtBeforeSave(oView)) {
-                        sap.m.MessageBox.error("Veuillez Répartir correctement les budgets");
-                        return new Promise((resolve, reject) => {
-                            reject();
-                        });
-                    }
-
-                    this._setBusy(true);
-                    return new Promise(async (resolve, reject) => {
-                        const formattedMissions = utilitiesModel.getFormattedMissions();
-                        const formattedPxAutre = utilitiesModel.getFormattedPxAutre();
-                        const formattedPxSubContractingExt = utilitiesModel.formattedPxSubContractingExt();
-                        const formattedPxRecetteExt = utilitiesModel.formattedPxRecetteExt();
-                        const formattedMainOeuvre = utilitiesModel.formattedPxMainOeuvre();
-                        const oPayload = Helper.extractPlainData({
-                            ...oContext.getObject(),
-                            "to_Missions": formattedMissions,
-                            "to_BudgetPxAutre": formattedPxAutre,
-                            "to_BudgetPxSubContracting": formattedPxSubContractingExt,
-                            "to_BudgetPxRecetteExt": formattedPxRecetteExt,
-                            "to_BudgetPxSTI": [],
-                            "to_Previsionel": [],
-                            "to_BudgetPxMainOeuvre": formattedMainOeuvre
-                        });
-
-                        delete oPayload.to_BudgetPxSTI;
-
-                        try {
-                            oPayload.VAT = oPayload.VAT ? oPayload.VAT.toString() : oPayload.VAT;
-                            const updatedFGA = await utilitiesModel.deepUpsertFGA(oPayload);
-                            this._setBusy(false);
-                            if (updatedFGA) {
-                                Helper.validMessage("FGA updated: " + updatedFGA.BusinessNo, this.getView(), this.onAfterSaveAction.bind(this));
-                                if (resolve) resolve();
-                            }
-
-                        } catch (error) {
-                            this._setBusy(false);
-                            Helper.errorMessage("FGA update failed");
-                            console.log(error);
-                            if (reject) reject("No data returned");
-                            else return Promise.reject("No data returned");
-                        }
-
-                        if (reject) reject();
-                        else return Promise.reject();
-                    });
-                } catch (error) {
-                    this._setBusy(false);
-                    Helper.errorMessage("FGA update failed");
-                    console.log(error);
-                    if (reject) reject(error);
-                    else return Promise.reject(error);
-                }
-            },
-
 
         
+_hasManualChangesPrevisionel: function (utilitiesModel, oModel) {
+    // 1. Check for changes ONLY in the utilities model (JSONModel), not the main OData model
+    const pendingChanges = utilitiesModel.getPendingChanges && utilitiesModel.getPendingChanges();
+    if (pendingChanges && Object.keys(pendingChanges).length > 0) {
+        console.log("Pending changes in utilities model:", pendingChanges);
+        return true;
+    }
+
+    // 2. Check for modifications in hierarchical data
+    const previsionelData = utilitiesModel.getProperty("/previsionel");
+    const previsionelHierarchy = utilitiesModel.getProperty("/previsionelHierarchyWithTotals");
+
+    console.log("=== Manual Changes Check ===");
+    console.log("Original data lines:", previsionelData?.length);
+    console.log("Hierarchy data structure:", previsionelHierarchy);
+
+    console.log("=== DEBUG COMPARISON INPUT ===");
+console.log("Original flat previsionel:", previsionelData?.length, previsionelData?.[0]);
+console.log("Hierarchy tree root:", previsionelHierarchy?.length, previsionelHierarchy?.[0]);
+
+    return this._checkHierarchyChanges(previsionelData, previsionelHierarchy);
+},
+
+_filterPrevisionelChanges: function(pendingChanges) {
+    const relevantChanges = {};
+    
+    // Only include changes that are related to previsionel data
+    // Adjust these patterns based on your entity names
+    const previsionelPatterns = [
+        '/ZC_FGA_Forecast',  // Adjust to your actual entity name
+        '/previsionel',
+        '/Previsionel',
+        'MissionId',
+        'BusinessNo'
+    ];
+    
+    for (const [key, value] of Object.entries(pendingChanges)) {
+        // Check if this change is related to previsionel data
+        const isRelevant = previsionelPatterns.some(pattern => 
+            key.includes(pattern) || 
+            (value && typeof value === 'object' && value.MissionId)
+        );
+        
+        if (isRelevant) {
+            relevantChanges[key] = value;
+        }
+    }
+    
+    return relevantChanges;
+},
+
+_debugHierarchyStructure: function() {
+    const utilitiesModel = this.getView().getModel("utilities");
+    const hierarchyData = utilitiesModel.getProperty("/previsionelHierarchyWithTotals");
+    
+    console.log("=== DEBUG HIERARCHY STRUCTURE ===");
+    
+    const traverseAndLog = (nodes, level = 0) => {
+        if (!nodes) return;
+        const indent = "  ".repeat(level);
+        
+        nodes.forEach((node, index) => {
+            const props = [
+                `name: ${node.name}`,
+                `MissionId: ${node.MissionId}`,
+                `isNode: ${node.isNode}`,
+                `isTotalRow: ${node.isTotalRow}`,
+                `isSectionHeader: ${node.isSectionHeader}`,
+                `OctN: ${node.OctN}`
+            ].filter(Boolean).join(", ");
+            
+            console.log(`${indent}[${index}] ${props}`);
+            
+            if (node.children) {
+                traverseAndLog(node.children, level + 1);
+            }
+        });
+    };
+    
+    traverseAndLog(hierarchyData);
+},
+
+_debugManualChanges: function() {
+    const utilitiesModel = this.getView().getModel("utilities");
+    const oModel = this.getView().getModel();
+    
+    console.log("=== DEBUG MANUAL CHANGES ===");
+    
+    // 1. Check pending changes
+    const pendingChanges = oModel.getPendingChanges();
+    console.log("1. Pending changes:", pendingChanges);
+    
+    // 2. Get both datasets
+    const previsionelData = utilitiesModel.getProperty("/previsionel");
+    const previsionelHierarchy = utilitiesModel.getProperty("/previsionelHierarchyWithTotals");
+    
+    console.log("2. Data counts - Original:", previsionelData?.length, "Hierarchy:", previsionelHierarchy?.length);
+    
+    // 3. Check the specific MissionId that was changed
+    const missionId = "MED1XXXXXXXX-00221-000";
+    const originalLine = previsionelData?.find(d => d.MissionId === missionId);
+    const hierarchyLine = this._findDataLineInHierarchy(previsionelHierarchy, missionId);
+    
+    console.log("3. Specific line comparison for MissionId:", missionId);
+    console.log("   Original OctN:", originalLine?.OctN);
+    console.log("   Hierarchy OctN:", hierarchyLine?.OctN);
+    console.log("   Are they equal?", originalLine?.OctN === hierarchyLine?.OctN);
+    
+    // 4. Check if hierarchy has the change
+    console.log("4. Hierarchy data structure:");
+    this._logHierarchyStructure(previsionelHierarchy);
+    
+    return this._checkHierarchyChanges(previsionelData, previsionelHierarchy);
+},
+
+_findDataLineInHierarchy: function(hierarchy, missionId) {
+    const traverse = (nodes) => {
+        if (!nodes) return null;
+        for (let node of nodes) {
+            // Look for actual data lines (not totals, nodes, etc.)
+            if (node.MissionId === missionId && 
+                !node.isTotalRow && 
+                !node.isNode && 
+                !node.isSectionHeader) {
+                return node;
+            }
+            if (node.children) {
+                const found = traverse(node.children);
+                if (found) return found;
+            }
+        }
+        return null;
+    };
+    return traverse(hierarchy);
+},
+
+_logHierarchyStructure: function(hierarchy) {
+    const traverse = (nodes, level = 0) => {
+        if (!nodes) return;
+        const indent = "  ".repeat(level);
+        nodes.forEach(node => {
+            console.log(`${indent}${node.name} (MissionId: ${node.MissionId}, isNode: ${node.isNode}, isTotalRow: ${node.isTotalRow}, OctN: ${node.OctN})`);
+            if (node.children) {
+                traverse(node.children, level + 1);
+            }
+        });
+    };
+    traverse(hierarchy);
+},
+
+_debugSpecificMission: function() {
+    const utilitiesModel = this.getView().getModel("utilities");
+    const previsionelData = utilitiesModel.getProperty("/previsionel");
+    const previsionelHierarchy = utilitiesModel.getProperty("/previsionelHierarchyWithTotals");
+    
+    const missionId = "MED1XXXXXXXX-00221-000"; // The one that should have OctN changed
+    
+    console.log("=== DEBUG SPECIFIC MISSION ===");
+    console.log("Looking for MissionId:", missionId);
+    
+    // Find in original data
+    const originalLine = previsionelData.find(d => d.MissionId === missionId);
+    console.log("Found in original:", !!originalLine);
+    if (originalLine) {
+        console.log("Original OctN:", originalLine.OctN);
+    }
+    
+    // Find in hierarchy
+    const findInHierarchy = (nodes, targetMissionId) => {
+        for (const node of nodes) {
+            if (node.MissionId === targetMissionId && 
+                !node.isTotalRow && 
+                !node.isNode && 
+                !node.isSectionHeader) {
+                return node;
+            }
+            if (node.children) {
+                const found = findInHierarchy(node.children, targetMissionId);
+                if (found) return found;
+            }
+        }
+        return null;
+    };
+    
+    const hierarchyLine = findInHierarchy(previsionelHierarchy, missionId);
+    console.log("Found in hierarchy:", !!hierarchyLine);
+    if (hierarchyLine) {
+        console.log("Hierarchy OctN:", hierarchyLine.OctN);
+    }
+    
+    if (originalLine && hierarchyLine) {
+        console.log("COMPARISON RESULT:");
+        console.log("OctN values equal?", originalLine.OctN === hierarchyLine.OctN);
+        console.log("Numeric OctN values equal?", 
+            Number(originalLine.OctN) === Number(hierarchyLine.OctN));
+    }
+},
+
+_checkHierarchyChanges: function (originalData, hierarchyData) {
+    if (!originalData || !hierarchyData) return false;
+
+    const numericFields = [
+        "JanvN", "FevrN", "MarsN", "AvrN", "MaiN", "JuinN",
+        "JuilN", "AoutN", "SeptN", "OctN", "NovN", "DecN",
+        "JanvN1", "FevrN1", "MarsN1", "AvrN1", "MaiN1", "JuinN1",
+        "JuilN1", "AoutN1", "SeptN1", "OctN1", "NovN1", "DecN1",
+        "ResteAFacturer", "ResteADepenser", "TotalN", "TotalN1", "Audela"
+    ];
+
+    // Extract data lines from hierarchy
+    const extractDataLines = (nodes, result = []) => {
+        if (!Array.isArray(nodes)) return result;
+        for (const node of nodes) {
+            const isData =
+                node.MissionId &&
+                !node.isTotalRow &&
+                !node.isNode &&
+                !node.isSectionHeader &&
+                !node.isRegroupementTotal;
+
+            if (isData) {
+                result.push(node);
+            }
+
+            if (Array.isArray(node.children) && node.children.length > 0) {
+                extractDataLines(node.children, result);
+            }
+        }
+        return result;
+    };
+
+    const hierarchyLines = extractDataLines(hierarchyData);
+    console.log("Extracted data lines from hierarchy:", hierarchyLines.length);
+
+    // Debug: Show all MissionIds in both datasets
+    console.log("Original MissionIds:", originalData.map(d => d.MissionId));
+    console.log("Hierarchy MissionIds:", hierarchyLines.map(d => d.MissionId));
+
+    // Create a map of original data by MissionId for quick lookup
+    const originalMap = new Map();
+    originalData.forEach(item => {
+        if (item.MissionId) {
+            originalMap.set(item.MissionId, item);
+        }
     });
+
+    // DEBUG: Check the specific MissionId that should have changes
+    // Use the first MissionId from hierarchy that exists in both datasets
+    const targetMissionId = hierarchyLines.find(h => originalMap.has(h.MissionId))?.MissionId;
+    console.log("=== DEBUG TARGET MISSION ===");
+    console.log("Target MissionId:", targetMissionId);
+    
+    if (targetMissionId) {
+        const originalTarget = originalMap.get(targetMissionId);
+        const hierarchyTarget = hierarchyLines.find(h => h.MissionId === targetMissionId);
+        
+        console.log("Original target found:", !!originalTarget);
+        console.log("Hierarchy target found:", !!hierarchyTarget);
+        
+        if (originalTarget && hierarchyTarget) {
+            console.log("Original OctN:", originalTarget.OctN, "Type:", typeof originalTarget.OctN);
+            console.log("Hierarchy OctN:", hierarchyTarget.OctN, "Type:", typeof hierarchyTarget.OctN);
+            console.log("String comparison:", originalTarget.OctN === hierarchyTarget.OctN);
+            console.log("Numeric comparison:", Number(originalTarget.OctN) === Number(hierarchyTarget.OctN));
+            
+            // Check all fields for this specific mission
+            for (const field of numericFields) {
+                const originalValue = Number(originalTarget[field]) || 0;
+                const hierarchyValue = Number(hierarchyTarget[field]) || 0;
+                if (originalValue !== hierarchyValue) {
+                    console.log(`🚨 FIELD CHANGE: ${field} - Original: ${originalValue}, Hierarchy: ${hierarchyValue}`);
+                }
+            }
+        }
+    }
+
+    // Compare each hierarchy line with its original counterpart
+    let hasChanges = false;
+    
+    for (const editedLine of hierarchyLines) {
+        if (!editedLine.MissionId) continue;
+
+        const originalLine = originalMap.get(editedLine.MissionId);
+        
+        if (!originalLine) {
+            console.log(`MissionId ${editedLine.MissionId} not found in original data`);
+            continue;
+        }
+
+        // Compare all numeric fields
+        for (const field of numericFields) {
+            const originalValue = Number(originalLine[field]) || 0;
+            const editedValue = Number(editedLine[field]) || 0;
+            
+            if (originalValue !== editedValue) {
+                console.log(`CHANGE DETECTED: ${field} for ${editedLine.MissionId}`);
+                console.log(`   Original: ${originalValue} (${originalLine[field]})`);
+                console.log(`   Edited: ${editedValue} (${editedLine[field]})`);
+                hasChanges = true;
+                break; // Found a change, no need to check other fields
+            }
+        }
+        
+        if (hasChanges) break; // Found a change, no need to check other lines
+    }
+
+    if (!hasChanges) {
+        console.log(" No manual changes detected");
+    }
+    
+    return hasChanges;
+},
+
+
+});
 });
