@@ -33,7 +33,7 @@
         </table:extension>
 
         <table:rowMode>
-            <rm:Auto minRowCount="{localModel>/tableSettings/minRowCount}" />
+            <rm:Auto minRowCount="{localModel>/tableSettings/minRowCountPrev}" />
         </table:rowMode>
 
         <table:columns>

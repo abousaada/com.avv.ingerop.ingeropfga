@@ -352,7 +352,7 @@ sap.ui.define([
 
             this.getView().getModel("utilities").setProperty("/previsionelHierarchyWithTotals", previsionelTreeData);
             var totalRows = this.countRows(previsionelTreeData);
-            this.updateRowCount(totalRows);
+            this.updateRowCountPrev(totalRows);
         },
 
         // Fonction pour construire les enfants d'une mission niveau 2
@@ -752,7 +752,7 @@ sap.ui.define([
             this.getView().getModel("utilities").setProperty("/previsionelHierarchyWithTotals", previsionelTreeData);
 
             var totalRows = this.countRows(previsionelTreeData);
-            this.updateRowCount(totalRows);
+            this.updateRowCountPrev(totalRows);
         },
 
         // Helper function to create mission type totals (Facturation/Dépense)
@@ -1016,7 +1016,7 @@ sap.ui.define([
             this.getView().getModel("utilities").setProperty("/previsionelHierarchyWithTotals", previsionelTreeData);
 
             var totalRows = this.countRows(previsionelTreeData);
-            this.updateRowCount(totalRows);
+            this.updateRowCountPrev(totalRows);
         },
 
 
@@ -1308,7 +1308,7 @@ sap.ui.define([
         },
 
 
-        updateRowCount: function (rowCount) {
+        updateRowCountPrev: function (rowCount) {
 
             if (!this.getView().getModel("localModel")) {
                 this.getView().setModel(new JSONModel({
@@ -1318,7 +1318,7 @@ sap.ui.define([
                 }), "localModel");
             }
 
-            this.getView().getModel("localModel").setProperty("/tableSettings/minRowCount",
+            this.getView().getModel("localModel").setProperty("/tableSettings/minRowCountPrev",
                 Math.max(rowCount, 1));
         },
 
