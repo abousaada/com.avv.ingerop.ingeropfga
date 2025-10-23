@@ -94,12 +94,12 @@ sap.ui.define(
 
                     const sHash = oCrossAppNavigator.hrefForExternal({
                         target: {
-                            semanticObject: "ZEMX",
-                            action: "manage"
-                        },
-                        params: {
-                            FGA: aFAGs
+                            semanticObject: "ZEMA",
+                            action: "display"
                         }
+                        // ,params: {
+                        //     FGA: aFAGs
+                        // }
                     });
 
                     window.open(sHash, "_blank", "noopener,noreferrer");
