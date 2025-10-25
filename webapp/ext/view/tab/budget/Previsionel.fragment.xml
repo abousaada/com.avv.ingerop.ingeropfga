@@ -8,7 +8,7 @@
 >
     <VBox
         width="100%"
-        class="sapUiSmallMargin"
+        class=""
         renderType="Bare"
     >
         <!-- ===== FILTER BAR (classic, comp) ===== -->
@@ -20,9 +20,7 @@
             search=".onSearch"
             filterBarExpanded="true"
         >
-            <!-- Basic search (leftmost “Rechercher”) -->
-
-            <!-- Use filterGroupItems (NOT filterItems) -->
+            <!-- Use filterGroupItems  -->
             <fb:filterGroupItems>
                 <fb:FilterGroupItem
                     groupName="_BASIC"
@@ -130,7 +128,6 @@
             </fb:filterGroupItems>
         </fb:FilterBar>
 
-
         <!-- ===== TREE TABLE BELOW ===== -->
         <table:TreeTable
             id="PrevisionnelTreeTable"
@@ -148,7 +145,7 @@
             ariaLabelledBy="title"
             enableColumnReordering="false"
             enableColumnFreeze="true"
-            fixedColumnCount="99"
+            fixedColumnCount="1"
         >
             <table:extension>
                 <MessageStrip
@@ -161,9 +158,16 @@
                 />
             </table:extension>
 
-            <table:rowMode>
+            <!--table:rowMode>
                 <rm:Auto
                     minRowCount="{localModel>/tableSettings/minRowCountPrev}"
+                />
+            </table:rowMode-->
+
+            <table:rowMode>
+                <rm:Interactive
+                    rowCount="15"
+                    minRowCount="5"
                 />
             </table:rowMode>
 

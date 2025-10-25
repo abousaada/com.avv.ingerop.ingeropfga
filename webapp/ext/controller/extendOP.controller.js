@@ -415,89 +415,100 @@ sap.ui.define(
             },
 
             _onObjectExtMatched: async function (e) {
-                const oUtilitiesModel = this.getInterface().getModel("utilities");
-                const oContext = e.context;
 
-                // Read the flag from the model + manage refresh
-                let aSelectedBusinessNos = [];
-                let isForecastMode = this.getInterface().getModel("utilities").getProperty("/isForecastMode");
-                if (isForecastMode === undefined || isForecastMode === null) {
+                this._setBusy(true);
 
-                    let type = null;
-                    const storedValue = sessionStorage.getItem("isForecastMode");
-                    if (storedValue !== null) {
-                        isForecastMode = JSON.parse(storedValue);
-                        oUtilitiesModel.setProperty("/isForecastMode", isForecastMode);
-                    } else {
-                        isForecastMode = false;
-                    }
+                try {
 
-                } else if (isForecastMode === true) {
+                    const oUtilitiesModel = this.getInterface().getModel("utilities");
+                    const oContext = e.context;
 
+                    // Read the flag from the model + manage refresh
+                    let aSelectedBusinessNos = [];
+                    let isForecastMode = this.getInterface().getModel("utilities").getProperty("/isForecastMode");
+                    if (isForecastMode === undefined || isForecastMode === null) {
 
-                    const storedSelection = sessionStorage.getItem("selectedBusinessNos");
-                    if (storedSelection) {
-                        aSelectedBusinessNos = JSON.parse(storedSelection);
-                        console.log("Loaded selected BusinessNos:", storedSelection);
-                    }
-                }
-
-                const utilitiesModel = this.getInterface().getModel("utilities");
-                const bCreateMode = this.getView().getModel("ui").getProperty("/createMode");
-
-                this._extendOPUiManage._setOPView(e.context);
-
-                const Percent = e.context.getProperty("Percent");
-                if (Percent === "P1" || Percent === "PI" || !Percent) {
-                    const oModel = this.getInterface().getModel();
-                    oModel.setProperty(e.context.getPath() + "/Percent", "%");
-                }
-
-                PROJET_TYPE = e.context ? e.context.getProperty("Type") : null;
-
-                //1. if create
-                if (bCreateMode) { utilitiesModel.reInit(); return }
-
-                const sPeriod = e.context.getProperty("p_period");
-                if (sPeriod) { utilitiesModel.setYearByPeriod(sPeriod); }
-
-                const sBusinessNo = e.context.getProperty("BusinessNo");
-                if (sBusinessNo) { utilitiesModel.setBusinessNo(sBusinessNo); }
-
-                //redirection, si pas de period ou non en création mode
-                if (!utilitiesModel.getYear() && !bCreateMode) {
-                    window.location.hash = "";
-                    return;
-                }
-
-                if (sPeriod && sBusinessNo && !bCreateMode) {
-                    try {
-
-                        if (isForecastMode) {
-                            console.log("Mode PREVISION détecté !");
-                            var type = 'previsionel';
+                        let type = null;
+                        const storedValue = sessionStorage.getItem("isForecastMode");
+                        if (storedValue !== null) {
+                            isForecastMode = JSON.parse(storedValue);
+                            oUtilitiesModel.setProperty("/isForecastMode", isForecastMode);
+                        } else {
+                            isForecastMode = false;
                         }
 
-                        const tabData = await this._getTabsData(type, aSelectedBusinessNos);
+                    } else if (isForecastMode === true) {
 
-                        this._loadFragment("Missions");
 
-                        /*
-                        //2. Display Different Fragments Based on Company Code Country
-                        const sCountry = e.context.getProperty("CompanyCountry");
-
-                        if (sCountry === "FR") {
-                            this._loadFragment("Missions");
-                        } else {
-                            this._loadFragment("hoai");
-                        }*/
-
-                    } catch (error) {
-                        console.logs(error);
+                        const storedSelection = sessionStorage.getItem("selectedBusinessNos");
+                        if (storedSelection) {
+                            aSelectedBusinessNos = JSON.parse(storedSelection);
+                            console.log("Loaded selected BusinessNos:", storedSelection);
+                        }
                     }
+
+                    const utilitiesModel = this.getInterface().getModel("utilities");
+                    const bCreateMode = this.getView().getModel("ui").getProperty("/createMode");
+
+                    this._extendOPUiManage._setOPView(e.context);
+
+                    const Percent = e.context.getProperty("Percent");
+                    if (Percent === "P1" || Percent === "PI" || !Percent) {
+                        const oModel = this.getInterface().getModel();
+                        oModel.setProperty(e.context.getPath() + "/Percent", "%");
+                    }
+
+                    PROJET_TYPE = e.context ? e.context.getProperty("Type") : null;
+
+                    //1. if create
+                    if (bCreateMode) { utilitiesModel.reInit(); return }
+
+                    const sPeriod = e.context.getProperty("p_period");
+                    if (sPeriod) { utilitiesModel.setYearByPeriod(sPeriod); }
+
+                    const sBusinessNo = e.context.getProperty("BusinessNo");
+                    if (sBusinessNo) { utilitiesModel.setBusinessNo(sBusinessNo); }
+
+                    //redirection, si pas de period ou non en création mode
+                    if (!utilitiesModel.getYear() && !bCreateMode) {
+                        window.location.hash = "";
+                        return;
+                    }
+
+                    if (sPeriod && sBusinessNo && !bCreateMode) {
+                        try {
+
+                            if (isForecastMode) {
+                                console.log("Mode PREVISION détecté !");
+                                var type = 'previsionel';
+                            }
+
+                            const tabData = await this._getTabsData(type, aSelectedBusinessNos);
+
+                            // this._loadFragment("Missions");
+
+                            await this._loadFragment("Missions");
+
+                            this._setBusy(false);
+
+                            /*
+                            //2. Display Different Fragments Based on Company Code Country
+                            const sCountry = e.context.getProperty("CompanyCountry");
+    
+                            if (sCountry === "FR") {
+                                this._loadFragment("Missions");
+                            } else {
+                                this._loadFragment("hoai");
+                            }*/
+
+                        } catch (error) {
+                            console.logs(error);
+                        }
+                    }
+
+                } catch (error) {
+                    console.log(error);
                 }
-
-
             },
 
             _loadFragment: async function (sFragmentName) {
@@ -507,53 +518,61 @@ sap.ui.define(
 
                 if (!oContainer) {
                     console.error("Dynamic container not found");
-                    return;
+                    return Promise.resolve();
+                    //return;
                 }
 
                 // Clear any existing content
                 oContainer.destroyItems();
+                return new Promise(async (resolve, reject) => {
+                    //if missions -- clean this !
+                    if (sFragmentName === "Missions") {
+                        try {
+                            const oFragment = await sap.ui.core.Fragment.load({
+                                name: "com.avv.ingerop.ingeropfga.ext.view.tab.detail." + sFragmentName,
+                                id: sViewId,
+                                controller: this
+                            });
 
-                //if missions -- clean this !
-                if (sFragmentName === "Missions") {
-                    try {
-                        const oFragment = await sap.ui.core.Fragment.load({
-                            name: "com.avv.ingerop.ingeropfga.ext.view.tab.detail." + sFragmentName,
-                            id: sViewId,
-                            controller: this
-                        });
+                            oContainer.addItem(oFragment);
+                        } catch (oError) {
+                            sap.m.MessageBox.error("Failed to load fragment: " + oError.message);
+                            reject(oError);
+                        }
 
-                        oContainer.addItem(oFragment);
-                    } catch (oError) {
-                        sap.m.MessageBox.error("Failed to load fragment: " + oError.message);
+                        //Prepare tree for missions
+                        this.prepareMissionsTreeData();
+                        this.preparePxAutreTreeData();
+                        this.preparePxSubContractingTreeData();
+                        this.preparePxRecetteExtTreeData();
+                        this.preparePxMainOeuvreTreeData();
+                        this.preparePxSTITreeData();
+                        this.preparePrevisionelTreeData();
+
+                        resolve();
                     }
+                    else {
 
-                    //Prepare tree for missions
-                    this.prepareMissionsTreeData();
-                    this.preparePxAutreTreeData();
-                    this.preparePxSubContractingTreeData();
-                    this.preparePxRecetteExtTreeData();
-                    this.preparePxMainOeuvreTreeData();
-                    this.preparePxSTITreeData();
-                    this.preparePrevisionelTreeData();
-                }
-                else {
+                        try {
+                            const oFragment = await sap.ui.core.Fragment.load({
+                                name: "com.avv.ingerop.ingeropfga.ext.view.tab.DetailsTab", //change to Hoai tab
+                                id: sViewId,
+                                controller: this
+                            });
 
-                    try {
-                        const oFragment = await sap.ui.core.Fragment.load({
-                            name: "com.avv.ingerop.ingeropfga.ext.view.tab.DetailsTab", //change to Hoai tab
-                            id: sViewId,
-                            controller: this
-                        });
+                            oContainer.addItem(oFragment);
 
-                        oContainer.addItem(oFragment);
-                    } catch (oError) {
-                        sap.m.MessageBox.error("Failed to load fragment: " + oError.message);
+                            resolve();
+
+                        } catch (oError) {
+                            sap.m.MessageBox.error("Failed to load fragment: " + oError.message);
+                        }
+
                     }
-
-                }
-
+                });
             },
 
+            
             _onRouteMatched(event) {
                 console.logs(event);
             },

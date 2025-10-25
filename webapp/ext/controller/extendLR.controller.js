@@ -161,31 +161,49 @@ sap.ui.define(
                 const oUtilitiesModel = oView.getModel("utilities");
                 const oNavController = this.extensionAPI.getNavigationController();
 
+                const oContext = oModel.createEntry("/ZC_FGASet", {
+                    properties: {
+                        BusinessNo: "DUMMY",
+                        p_period: oUtilitiesModel.getProperty("/period") || (() => {
+                            const now = new Date();
+                            const month = String(now.getMonth() + 1).padStart(2, "0");
+                            const year = String(now.getFullYear());
+                            return `${month}${year}`;
+                        })()
+                    }
+                });
+
                 oUtilitiesModel.setProperty("/isForecastMode", true);
                 sessionStorage.setItem("isForecastMode", "true");
+
+                // Clean previous tree data
+
+                oUtilitiesModel.setProperty("/previsionelHierarchyWithTotals", []);
+                const oTable = this.byId("com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--PrevisionnelTreeTable");
+                if (oTable && oTable.getBinding("rows")) {
+                    oTable.getBinding("rows").refresh(true);
+                }
+
 
                 const aSelectedContexts = this.extensionAPI.getSelectedContexts();
                 let oNavigationContext;
 
-                if (aSelectedContexts.length > 0) {
+                if (aSelectedContexts.length === 1) {
                     oNavigationContext = aSelectedContexts[0];
                     const aSelectedBusinessNos = aSelectedContexts.map(ctx => ctx.getProperty("BusinessNo"));
+
                     sessionStorage.setItem("selectedBusinessNos", JSON.stringify(aSelectedBusinessNos));
                     console.log("Navigating to selected BusinessNo:", aSelectedBusinessNos[0]);
+                }
+                else if (aSelectedContexts.length > 0) {
+                    const aSelectedBusinessNos = aSelectedContexts.map(ctx => ctx.getProperty("BusinessNo"));
+                    sessionStorage.setItem("selectedBusinessNos", JSON.stringify(aSelectedBusinessNos));
+
+                    oNavigationContext = oContext;
+                    console.log("Navigating to selected BusinessNo:", aSelectedBusinessNos[0]);
+
                 } else {
                     console.log("No items selected — navigating to forecast (all data)");
-
-                    const oContext = oModel.createEntry("/ZC_FGASet", {
-                        properties: {
-                            BusinessNo: "DUMMY",
-                            p_period: oUtilitiesModel.getProperty("/period") || (() => {
-                                const now = new Date();
-                                const month = String(now.getMonth() + 1).padStart(2, "0");
-                                const year = String(now.getFullYear());
-                                return `${month}${year}`;
-                            })()
-                        }
-                    });
 
                     oNavigationContext = oContext;
                     sessionStorage.removeItem("selectedBusinessNos");

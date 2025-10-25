@@ -8,18 +8,6 @@ sap.ui.define([
         preparePrevisionelTreeData: function () {
             var self = this;
 
-    if (!this.oView || !this.oView.getDomRef()) {
-        // View not ready, try again later
-        setTimeout(function() {
-            self.preparePrevisionelTreeData();
-        }, 100);
-        return;
-    }
-    
-    this.oView.setBusy(true);
-
-            console.log("oView:", this.oView);
-
             var previsionel = this.getView().getModel("utilities").getProperty("/previsionel");
 
             if (previsionel && previsionel.length > 0 && previsionel[0].DataMode) {
@@ -317,7 +305,6 @@ sap.ui.define([
             var totalRows = this.countRows(previsionelTreeData);
             this.updateRowCountPrev(totalRows);
 
-            this.oView.setBusy(false);
         },
 
         // Helper function to create mission type totals (Facturation/Dépense)
