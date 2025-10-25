@@ -6,7 +6,7 @@ sap.ui.define([
     return Controller.extend("com.avv.ingerop.ingeropfga.ext.controller.BudgetPrevisionel", {
 
 
-        preparePrevisionelTreeData: function () {
+        preparePrevisionelTreeData00: function () {
             var self = this;
             var previsionel = this.getView().getModel("utilities").getProperty("/previsionel");
 
@@ -456,8 +456,9 @@ sap.ui.define([
             return children;
         },
 
-        preparePrevisionelTreeData11: function () {
+        preparePrevisionelTreeData: function () {
             var self = this;
+            this.oView.setBusy(true);
             var previsionel = this.getView().getModel("utilities").getProperty("/previsionel");
 
             if (previsionel && previsionel.length > 0 && previsionel[0].DataMode) {
@@ -731,6 +732,7 @@ sap.ui.define([
                 }
 
                 return treeData;
+                
             };
 
             // Build trees
@@ -753,6 +755,8 @@ sap.ui.define([
 
             var totalRows = this.countRows(previsionelTreeData);
             this.updateRowCountPrev(totalRows);
+
+            this.oView.setBusy(false);
         },
 
         // Helper function to create mission type totals (Facturation/Dépense)
@@ -845,7 +849,7 @@ sap.ui.define([
             return row;
         },
 
-        preparePrevisionelTreeData1: function () {
+        preparePrevisionelTreeData01: function () {
 
             var self = this;
             var previsionel = this.getView().getModel("utilities").getProperty("/previsionel");

@@ -12,7 +12,7 @@
             path: 'utilities>/previsionelHierarchyWithTotals',
             parameters: {
                 arrayNames: ['children'],
-                numberOfExpandedLevels: 4
+                numberOfExpandedLevels: 0
             }
         }"
         selectionMode="None"

@@ -518,7 +518,7 @@
                 <Property Name="MissionId" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="N°Affaire Partenaire (Fille ou petite)" sap:quickinfo="Zone de caractères de longueur 24" sap:creatable="false" sap:updatable="false"/>
                 <Property Name="BusinessNo" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="N° Affaire Emettrice" sap:quickinfo="Zone de caractères de longueur 24" sap:value-list="standard"/>
                 <Property Name="ParentMissionId" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="Elément d'OTP" sap:quickinfo="Elément d'organigramme technique de projet (élt OTP)"/>
-                <Property Name="HierarchyLevel" Type="Edm.Byte"/>
+                <Property Name="HierarchyLevel" Type="Edm.Int32"/>
                 <Property Name="Libelle" Type="Edm.String" MaxLength="40" sap:label="Libellé Mission" sap:quickinfo="PS: désignation (première ligne de texte)"/>
                 <Property Name="Description" Type="Edm.String" MaxLength="40" sap:label="Description" sap:quickinfo="PS: désignation (première ligne de texte)"/>
                 <Property Name="FacturationDepense" Type="Edm.String" MaxLength="20" sap:label="Type (Facturation / Dépenses)"/>

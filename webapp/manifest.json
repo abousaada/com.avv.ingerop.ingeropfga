@@ -334,6 +334,13 @@
                     "id": "onPrevPressButton",
                     "text": "Prévision",
                     "press": "onPrevPress",
+                    "requiresSelection": false
+                  },
+                  "onDummyPress": {
+                    "id": "onDummyPressButton",
+                    "text": "||",
+                    "visible": false,
+                    "flexEnabled": false,
                     "requiresSelection": true
                   }
                 }
@@ -434,8 +441,9 @@
             },
             "tableSettings": {
               "type": "AnalyticalTable",
-              "multiSelect": false,
-              "copy": false
+              "copy": false,
+              "multiSelect": true,
+              "selectAll": true
             },
             "dataLoadSettings": {
               "loadDataOnAppLaunch": "always"

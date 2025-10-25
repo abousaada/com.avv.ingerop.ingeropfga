@@ -154,28 +154,50 @@ sap.ui.define(
                 });
             },
 
-            onPrevPress: function (oEvent) {
-                const aSelectedContexts = this.extensionAPI.getSelectedContexts();
 
-                if (aSelectedContexts.length !== 1) {
-                    sap.m.MessageToast.show("Veuillez sélectionner une seule ligne pour ouvrir la prévision.");
-                    return;
-                }
+            onPrevPress: async function () {
+                const oView = this.getView();
+                const oModel = oView.getModel();
+                const oUtilitiesModel = oView.getModel("utilities");
+                const oNavController = this.extensionAPI.getNavigationController();
 
-                const oContext = aSelectedContexts[0];
-
-                // Set the mode in the model BEFORE navigation
-                this.getView().getModel("utilities").setProperty("/isForecastMode", true);
-
-                // Save it so it's not lost on refresh
+                oUtilitiesModel.setProperty("/isForecastMode", true);
                 sessionStorage.setItem("isForecastMode", "true");
 
-                // Navigate internally to the Object Page
-                this.extensionAPI.getNavigationController().navigateInternal(oContext, {
-                    navigationMode: "inplace"
-                });
-            }
+                const aSelectedContexts = this.extensionAPI.getSelectedContexts();
+                let oNavigationContext;
 
+                if (aSelectedContexts.length > 0) {
+                    oNavigationContext = aSelectedContexts[0];
+                    const aSelectedBusinessNos = aSelectedContexts.map(ctx => ctx.getProperty("BusinessNo"));
+                    sessionStorage.setItem("selectedBusinessNos", JSON.stringify(aSelectedBusinessNos));
+                    console.log("Navigating to selected BusinessNo:", aSelectedBusinessNos[0]);
+                } else {
+                    console.log("No items selected — navigating to forecast (all data)");
+
+                    const oContext = oModel.createEntry("/ZC_FGASet", {
+                        properties: {
+                            BusinessNo: "DUMMY",
+                            p_period: oUtilitiesModel.getProperty("/period") || (() => {
+                                const now = new Date();
+                                const month = String(now.getMonth() + 1).padStart(2, "0");
+                                const year = String(now.getFullYear());
+                                return `${month}${year}`;
+                            })()
+                        }
+                    });
+
+                    oNavigationContext = oContext;
+                    sessionStorage.removeItem("selectedBusinessNos");
+
+                }
+
+                try {
+                    await oNavController.navigateInternal(oNavigationContext, { navigationMode: "inplace" });
+                } catch (error) {
+                    console.error("Error navigating to forecast page:", error);
+                }
+            }
 
 
         };

@@ -95,6 +95,7 @@ sap.ui.define(
 
                     this._budgetPrevisionel = new BudgetPrevisionel();
                     this._budgetPrevisionel.oView = this.getView();
+                    this._budgetPrevisionel.oController = this;
 
                     window.addEventListener("popstate", this._cleanModification.bind(this));
                     window.addEventListener("onbeforeunload", this._cleanModification.bind(this));
@@ -246,7 +247,7 @@ sap.ui.define(
                 },
 
 
-                beforeSaveExtension() { 
+                beforeSaveExtension() {
                     try {
                         const utilitiesModel = this.getModel("utilities");
 
@@ -400,9 +401,9 @@ sap.ui.define(
                 // this.base.templateBaseExtension.getExtensionAPI().refresh();
             },
 
-            async _getTabsData(type) {
+            async _getTabsData(type, aSelectedBusinessNos = []) {
                 try {
-                    const data = await this.getInterface().getModel("utilities").getBEDatas(type);
+                    const data = await this.getInterface().getModel("utilities").getBEDatas(type, aSelectedBusinessNos);
                     return data;
                 } catch (error) {
                     console.log(error);
@@ -418,14 +419,26 @@ sap.ui.define(
                 const oContext = e.context;
 
                 // Read the flag from the model + manage refresh
+                let aSelectedBusinessNos = [];
                 let isForecastMode = this.getInterface().getModel("utilities").getProperty("/isForecastMode");
                 if (isForecastMode === undefined || isForecastMode === null) {
+
+                    let type = null;
                     const storedValue = sessionStorage.getItem("isForecastMode");
                     if (storedValue !== null) {
                         isForecastMode = JSON.parse(storedValue);
                         oUtilitiesModel.setProperty("/isForecastMode", isForecastMode);
                     } else {
                         isForecastMode = false;
+                    }
+
+                } else if (isForecastMode === true) {
+
+
+                    const storedSelection = sessionStorage.getItem("selectedBusinessNos");
+                    if (storedSelection) {
+                        aSelectedBusinessNos = JSON.parse(storedSelection);
+                        console.log("Loaded selected BusinessNos:", storedSelection);
                     }
                 }
 
@@ -465,8 +478,11 @@ sap.ui.define(
                             var type = 'previsionel';
                         }
 
-                        const tabData = await this._getTabsData(type);
+                        const tabData = await this._getTabsData(type, aSelectedBusinessNos);
 
+                        this._loadFragment("Missions");
+
+                        /*
                         //2. Display Different Fragments Based on Company Code Country
                         const sCountry = e.context.getProperty("CompanyCountry");
 
@@ -474,7 +490,7 @@ sap.ui.define(
                             this._loadFragment("Missions");
                         } else {
                             this._loadFragment("hoai");
-                        }
+                        }*/
 
                     } catch (error) {
                         console.logs(error);
@@ -735,9 +751,7 @@ sap.ui.define(
 
             // Delegates submit logic to specialized handler : Budget Prévisionel
             preparePrevisionelTreeData: function () {
-                this._setBusy(true);
                 this._budgetPrevisionel.preparePrevisionelTreeData();
-                this._setBusy(false);
             },
 
             onPrevisionelSubmit: function (oEvent) {
