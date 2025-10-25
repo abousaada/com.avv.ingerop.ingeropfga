@@ -200,7 +200,16 @@
                                  ${utilities>isL0} ? ${utilities>name} : 
                                  ${utilities>MissionId}}"
                     /-->
-                        <Text text="{utilities>name}" />
+                        <!--Text text="{utilities>name}" /-->
+                        <HBox alignItems="Center">
+                            <items>
+                                <ObjectStatus
+                                    text="{utilities>name}"
+                                    icon="{= ${utilities>DataMode} === 'M' ? 'sap-icon://edit' : ''}"
+                                    state="{= ${utilities>DataMode} === 'M' ? 'Information' : 'None'}"
+                                />
+                            </items>
+                        </HBox>
                     </table:template>
                 </table:Column>
 
