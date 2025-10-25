@@ -3,42 +3,173 @@
     xmlns:core="sap.ui.core"
     xmlns:table="sap.ui.table"
     xmlns:rm="sap.ui.table.rowmodes"
+    xmlns:layout="sap.ui.layout"
+    xmlns:fb="sap.ui.comp.filterbar"
 >
-    <table:TreeTable
-        id="PrevisionnelTreeTable"
+    <VBox
         width="100%"
-        rowsUpdated="onRowsUpdatedBudgetPXTab"
-        rows="{
+        class="sapUiSmallMargin"
+        renderType="Bare"
+    >
+        <!-- ===== FILTER BAR (classic, comp) ===== -->
+        <fb:FilterBar
+            id="filterBar"
+            showGoOnFB="true"
+            showClearOnFB="false"
+            showRestoreButton="false"
+            search=".onSearch"
+            filterBarExpanded="true"
+        >
+            <!-- Basic search (leftmost “Rechercher”) -->
+
+            <!-- Use filterGroupItems (NOT filterItems) -->
+            <fb:filterGroupItems>
+                <fb:FilterGroupItem
+                    groupName="_BASIC"
+                    name="Period"
+                    label="Période MMyyyy"
+                    visibleInFilterBar="true"
+                    mandatory="true"
+                >
+                    <fb:control>
+                        <Input
+                            value="{filtersModel>/Period}"
+                            placeholder="MMYYYY"
+                            width="8rem"
+                        />
+                    </fb:control>
+                </fb:FilterGroupItem>
+
+                <fb:FilterGroupItem
+                    groupName="_BASIC"
+                    name="BusinessNo"
+                    label="N°Affaire"
+                    visibleInFilterBar="true"
+                >
+                    <fb:control>
+                        <Input value="{filtersModel>/Affaire}" />
+                    </fb:control>
+                </fb:FilterGroupItem>
+
+                <fb:FilterGroupItem
+                    groupName="_BASIC"
+                    name="UFO"
+                    label="UFO Délégué"
+                    visibleInFilterBar="true"
+                >
+                    <fb:control>
+                        <Input value="{filtersModel>/UFO}" />
+                    </fb:control>
+                </fb:FilterGroupItem>
+
+                <fb:FilterGroupItem
+                    groupName="_BASIC"
+                    name="Label"
+                    label="Libellé"
+                    visibleInFilterBar="true"
+                >
+                    <fb:control>
+                        <Input value="{filtersModel>/Label}" />
+                    </fb:control>
+                </fb:FilterGroupItem>
+
+                <fb:FilterGroupItem
+                    groupName="_BASIC"
+                    name="Societe"
+                    label="Société"
+                    visibleInFilterBar="true"
+                >
+                    <fb:control>
+                        <Input value="{filtersModel>/Societe}" />
+                    </fb:control>
+                </fb:FilterGroupItem>
+
+                <fb:FilterGroupItem
+                    groupName="_BASIC"
+                    name="ProfitCenter"
+                    label="Centre de profit"
+                    visibleInFilterBar="true"
+                >
+                    <fb:control>
+                        <Input value="{filtersModel>/ProfitCenter}" />
+                    </fb:control>
+                </fb:FilterGroupItem>
+
+                <fb:FilterGroupItem
+                    groupName="_BASIC"
+                    name="BusinessManager"
+                    label="Business Manager"
+                    visibleInFilterBar="false"
+                >
+                    <fb:control>
+                        <Input value="{filtersModel>/BusinessManager}" />
+                    </fb:control>
+                </fb:FilterGroupItem>
+
+                <fb:FilterGroupItem
+                    groupName="_BASIC"
+                    name="ChefProjet"
+                    label="Chef de projet"
+                    visibleInFilterBar="false"
+                >
+                    <fb:control>
+                        <Input value="{filtersModel>/ChefProjet}" />
+                    </fb:control>
+                </fb:FilterGroupItem>
+
+                <fb:FilterGroupItem
+                    groupName="_BASIC"
+                    name="STIsLiees"
+                    label="STIs Liées"
+                    visibleInFilterBar="false"
+                >
+                    <fb:control>
+                        <Input value="{filtersModel>/STIsLiees}" />
+                    </fb:control>
+                </fb:FilterGroupItem>
+            </fb:filterGroupItems>
+        </fb:FilterBar>
+
+
+        <!-- ===== TREE TABLE BELOW ===== -->
+        <table:TreeTable
+            id="PrevisionnelTreeTable"
+            width="100%"
+            rowsUpdated="onRowsUpdatedBudgetPXTab"
+            class="sapUiMediumMarginTop"
+            rows="{
             path: 'utilities>/previsionelHierarchyWithTotals',
             parameters: {
                 arrayNames: ['children'],
                 numberOfExpandedLevels: 0
             }
         }"
-        selectionMode="None"
-        ariaLabelledBy="title"
-        enableColumnReordering="false"
-        enableColumnFreeze="true"
-        fixedColumnCount="99"
-    >
-        <table:extension>
-            <MessageStrip
-                text="{= ${utilities>/DataMode} === 'M'
+            selectionMode="None"
+            ariaLabelledBy="title"
+            enableColumnReordering="false"
+            enableColumnFreeze="true"
+            fixedColumnCount="99"
+        >
+            <table:extension>
+                <MessageStrip
+                    text="{= ${utilities>/DataMode} === 'M'
             ? 'Mode manuel : les valeurs affichées ont été saisies manuellement.'
             : 'Mode automatique : les valeurs sont calculées automatiquement.'}"
-                type="{= ${utilities>/DataMode} === 'M' ? 'Information' : 'Warning'}"
-                showIcon="true"
-                showCloseButton="false"
-            />
-        </table:extension>
+                    type="{= ${utilities>/DataMode} === 'M' ? 'Information' : 'Warning'}"
+                    showIcon="true"
+                    showCloseButton="false"
+                />
+            </table:extension>
 
-        <table:rowMode>
-            <rm:Auto minRowCount="{localModel>/tableSettings/minRowCountPrev}" />
-        </table:rowMode>
+            <table:rowMode>
+                <rm:Auto
+                    minRowCount="{localModel>/tableSettings/minRowCountPrev}"
+                />
+            </table:rowMode>
 
-        <table:columns>
-            <!-- === Colonne Hiérarchique (comme PxAutre) === -->
-            <!--table:Column width="17rem">
+            <table:columns>
+                <!-- === Colonne Hiérarchique (comme PxAutre) === -->
+                <!--table:Column width="17rem">
                 <table:multiLabels>
                     <Label text="" />
                     <Label text="Hierarchy/Mission" />
@@ -51,13 +182,13 @@
                     />
                 </table:template>
             </table:Column-->
-            <table:Column width="23rem">
-                <table:multiLabels>
-                    <Label text="" />
-                    <Label text="Hierarchy/Mission" />
-                </table:multiLabels>
-                <table:template>
-                    <!--Text
+                <table:Column width="23rem">
+                    <table:multiLabels>
+                        <Label text="" />
+                        <Label text="Hierarchy/Mission" />
+                    </table:multiLabels>
+                    <table:template>
+                        <!--Text
                         text="{= ${utilities>isTotalRow} ? ${utilities>name} : 
                                  ${utilities>isSectionHeader} ? ${utilities>name} :
                                  ${utilities>isL2} ? ${utilities>name} :
@@ -65,25 +196,25 @@
                                  ${utilities>isL0} ? ${utilities>name} : 
                                  ${utilities>MissionId}}"
                     /-->
-                    <Text text="{utilities>name}" />
-                </table:template>
-            </table:Column>
+                        <Text text="{utilities>name}" />
+                    </table:template>
+                </table:Column>
 
-            <!-- === Base columns === -->
-            <table:Column width="12rem">
-                <table:multiLabels>
-                    <Label text="" />
-                    <Label text="Libellé affaire" />
-                </table:multiLabels>
-                <table:template>
-                    <Text
-                        text="{utilities>Description}"
-                        visible="{= !${utilities>isTotalRow}}"
-                    />
-                </table:template>
-            </table:Column>
+                <!-- === Base columns === -->
+                <table:Column width="12rem">
+                    <table:multiLabels>
+                        <Label text="" />
+                        <Label text="Libellé affaire" />
+                    </table:multiLabels>
+                    <table:template>
+                        <Text
+                            text="{utilities>Description}"
+                            visible="{= !${utilities>isTotalRow}}"
+                        />
+                    </table:template>
+                </table:Column>
 
-            <!--table:Column width="9rem">
+                <!--table:Column width="9rem">
                 <table:multiLabels>
                     <Label text="" />
                     <Label text="Facturation / Dépenses" />
@@ -102,636 +233,639 @@
                 </table:template>
             </table:Column-->
 
-            <table:Column width="9rem">
-                <table:multiLabels>
-                    <Label text="" />
-                    <Label text="Facturation / Dépenses" />
-                </table:multiLabels>
-                <table:template>
-                    <ObjectStatus
-                        text="{utilities>FacturationDepense}"
-                        state="{= ${utilities>FacturationDepense} === 'Facturation' ? 'Success' : 'Warning'}"
-                        icon="{= ${utilities>FacturationDepense}
+                <table:Column width="9rem">
+                    <table:multiLabels>
+                        <Label text="" />
+                        <Label text="Facturation / Dépenses" />
+                    </table:multiLabels>
+                    <table:template>
+                        <ObjectStatus
+                            text="{utilities>FacturationDepense}"
+                            state="{= ${utilities>FacturationDepense} === 'Facturation' ? 'Success' : 'Warning'}"
+                            icon="{= ${utilities>FacturationDepense}
                 ? (${utilities>FacturationDepense} === 'Facturation'
                     ? 'sap-icon://money-bills'
                     : 'sap-icon://expense-report')
                 : '' }"
-                        visible="{= (${utilities>isFactDepGroup} || ${utilities>isRegroupement} || (!${utilities>isNode} &amp;&amp; !${utilities>isTotalRow})) 
+                            visible="{= (${utilities>isFactDepGroup} || ${utilities>isRegroupement} || (!${utilities>isNode} &amp;&amp; !${utilities>isTotalRow})) 
                       &amp;&amp; !${utilities>isMission}}"
-                    />
-                </table:template>
-            </table:Column>
-
-            <table:Column width="8rem">
-                <table:multiLabels>
-                    <Label text="" />
-                    <Label text="Reste à facturer" />
-                </table:multiLabels>
-                <table:template>
-                    <Text
-                        text="{utilities>ResteAFacturer}"
-            visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
-                    />
-                </table:template>
-            </table:Column>
-
-            <table:Column width="8rem">
-                <table:multiLabels>
-                    <Label text="" />
-                    <Label text="Reste à dépenser" />
-                </table:multiLabels>
-                <table:template>
-                    <Text
-                        text="{utilities>ResteADepenser}"
-            visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
-                    />
-                </table:template>
-            </table:Column>
-
-            <!-- === Année N (2025) === -->
-            <table:Column
-                width="6rem"
-                headerSpan="12,1"
-                hAlign="Center"
-            >
-                <table:multiLabels>
-                    <Label text="ANNÉE EN COURS" />
-                    <Label text="{= 'Janv ' + ${utilities>/currentYear}}" />
-                </table:multiLabels>
-                <table:template>
-                    <HBox>
-                        <Text
-                            text="{utilities>JanvN}"
-                            visible="{= ${utilities>isTotalRow}}"
-                            class="{= 'sapMTextStrong' }"
                         />
-                        <!--Input
+                    </table:template>
+                </table:Column>
+
+                <table:Column width="8rem">
+                    <table:multiLabels>
+                        <Label text="" />
+                        <Label text="Reste à facturer" />
+                    </table:multiLabels>
+                    <table:template>
+                        <Text
+                            text="{utilities>ResteAFacturer}"
+                            visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
+                        />
+                    </table:template>
+                </table:Column>
+
+                <table:Column width="8rem">
+                    <table:multiLabels>
+                        <Label text="" />
+                        <Label text="Reste à dépenser" />
+                    </table:multiLabels>
+                    <table:template>
+                        <Text
+                            text="{utilities>ResteADepenser}"
+                            visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
+                        />
+                    </table:template>
+                </table:Column>
+
+                <!-- === Année N (2025) === -->
+                <table:Column
+                    width="6rem"
+                    headerSpan="12,1"
+                    hAlign="Center"
+                >
+                    <table:multiLabels>
+                        <Label text="ANNÉE EN COURS" />
+                        <Label text="{= 'Janv ' + ${utilities>/currentYear}}" />
+                    </table:multiLabels>
+                    <table:template>
+                        <HBox>
+                            <Text
+                                text="{utilities>JanvN}"
+                                visible="{= ${utilities>isTotalRow}}"
+                                class="{= 'sapMTextStrong' }"
+                            />
+                            <!--Input
                             value="{utilities>JanvN}"
                             submit=".onPrevisionelSubmit"
                             editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableJanvN} }"
 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"                        /-->
-                        <Input
-                            value="{utilities>JanvN}"
-                            submit=".onPrevisionelSubmit"
-                            editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableJanvN} }"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
-                        />
-                    </HBox>
-                </table:template>
-            </table:Column>
+                            <Input
+                                value="{utilities>JanvN}"
+                                submit=".onPrevisionelSubmit"
+                                editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableJanvN} }"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
+                            />
+                        </HBox>
+                    </table:template>
+                </table:Column>
 
-            <table:Column width="6rem">
-                <table:multiLabels>
-                    <Label text="" />
-                    <Label text="{= 'Févr ' + ${utilities>/currentYear}}" />
-                </table:multiLabels>
-                <table:template>
-                    <HBox>
+                <table:Column width="6rem">
+                    <table:multiLabels>
+                        <Label text="" />
+                        <Label text="{= 'Févr ' + ${utilities>/currentYear}}" />
+                    </table:multiLabels>
+                    <table:template>
+                        <HBox>
+                            <Text
+                                text="{utilities>FevrN}"
+                                visible="{= ${utilities>isTotalRow}}"
+                                class="boldText"
+                            />
+                            <Input
+                                value="{utilities>FevrN}"
+                                submit=".onPrevisionelSubmit"
+                                editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableFevrN}}"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
+                            />
+                        </HBox>
+                    </table:template>
+                </table:Column>
+
+                <table:Column width="6rem">
+                    <table:multiLabels>
+                        <Label text="" />
+                        <Label text="{= 'Mars ' + ${utilities>/currentYear}}" />
+                    </table:multiLabels>
+                    <table:template>
+                        <HBox>
+                            <Text
+                                text="{utilities>MarsN}"
+                                visible="{= ${utilities>isTotalRow}}"
+                                class="{= 'sapMTextStrong' }"
+                            />
+                            <Input
+                                value="{utilities>MarsN}"
+                                submit=".onPrevisionelSubmit"
+                                editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableMarsN}}"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
+                            />
+                        </HBox>
+                    </table:template>
+                </table:Column>
+
+                <table:Column width="6rem">
+                    <table:multiLabels>
+                        <Label text="" />
+                        <Label text="{= 'Avr ' + ${utilities>/currentYear}}" />
+                    </table:multiLabels>
+                    <table:template>
+                        <HBox>
+                            <Text
+                                text="{utilities>AvrN}"
+                                visible="{= ${utilities>isTotalRow}}"
+                                class="{= 'sapMTextStrong' }"
+                            />
+                            <Input
+                                value="{utilities>AvrN}"
+                                submit=".onPrevisionelSubmit"
+                                editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableAvrN}}"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
+                            />
+                        </HBox>
+                    </table:template>
+                </table:Column>
+
+                <table:Column width="6rem">
+                    <table:multiLabels>
+                        <Label text="" />
+                        <Label text="{= 'Mai ' + ${utilities>/currentYear}}" />
+                    </table:multiLabels>
+                    <table:template>
+                        <HBox>
+                            <Text
+                                text="{utilities>MaiN}"
+                                visible="{= ${utilities>isTotalRow}}"
+                                class="{= 'sapMTextStrong' }"
+                            />
+                            <Input
+                                value="{utilities>MaiN}"
+                                submit=".onPrevisionelSubmit"
+                                editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableMaiN}}"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
+                            />
+                        </HBox>
+                    </table:template>
+                </table:Column>
+
+                <table:Column width="6rem">
+                    <table:multiLabels>
+                        <Label text="" />
+                        <Label text="{= 'Juin ' + ${utilities>/currentYear}}" />
+                    </table:multiLabels>
+                    <table:template>
+                        <HBox>
+                            <Text
+                                text="{utilities>JuinN}"
+                                visible="{= ${utilities>isTotalRow}}"
+                                class="{= 'sapMTextStrong' }"
+                            />
+                            <Input
+                                value="{utilities>JuinN}"
+                                submit=".onPrevisionelSubmit"
+                                editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableJuinN}}"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
+                            />
+                        </HBox>
+                    </table:template>
+                </table:Column>
+
+                <table:Column width="6rem">
+                    <table:multiLabels>
+                        <Label text="" />
+                        <Label text="{= 'Juil ' + ${utilities>/currentYear}}" />
+                    </table:multiLabels>
+                    <table:template>
+                        <HBox>
+                            <Text
+                                text="{utilities>JuilN}"
+                                visible="{= ${utilities>isTotalRow}}"
+                                class="{= 'sapMTextStrong' }"
+                            />
+                            <Input
+                                value="{utilities>JuilN}"
+                                submit=".onPrevisionelSubmit"
+                                editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableJuilN}}"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
+                            />
+                        </HBox>
+                    </table:template>
+                </table:Column>
+
+                <!-- === Editable fields (Août → Déc N) === -->
+                <table:Column width="6rem">
+                    <table:multiLabels>
+                        <Label text="" />
+                        <Label text="{= 'Août ' + ${utilities>/currentYear}}" />
+                    </table:multiLabels>
+                    <table:template>
+                        <HBox>
+                            <Text
+                                text="{utilities>AoutN}"
+                                visible="{= ${utilities>isTotalRow}}"
+                                class="{= 'sapMTextStrong' }"
+                            />
+                            <Input
+                                value="{utilities>AoutN}"
+                                submit=".onPrevisionelSubmit"
+                                editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableAoutN}}"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
+                            />
+                        </HBox>
+                    </table:template>
+                </table:Column>
+
+                <table:Column width="6rem">
+                    <table:multiLabels>
+                        <Label text="" />
+                        <Label text="{= 'Sept ' + ${utilities>/currentYear}}" />
+                    </table:multiLabels>
+                    <table:template>
+                        <HBox>
+                            <Text
+                                text="{utilities>SeptN}"
+                                visible="{= ${utilities>isTotalRow}}"
+                                class="{= 'sapMTextStrong' }"
+                            />
+                            <Input
+                                value="{utilities>SeptN}"
+                                submit=".onPrevisionelSubmit"
+                                editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableSeptN}}"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
+                            />
+                        </HBox>
+                    </table:template>
+                </table:Column>
+
+                <table:Column width="6rem">
+                    <table:multiLabels>
+                        <Label text="" />
+                        <Label text="{= 'Oct ' + ${utilities>/currentYear}}" />
+                    </table:multiLabels>
+                    <table:template>
+                        <HBox>
+                            <Text
+                                text="{utilities>OctN}"
+                                visible="{= ${utilities>isTotalRow}}"
+                                class="{= 'sapMTextStrong' }"
+                            />
+                            <Input
+                                value="{utilities>OctN}"
+                                submit=".onPrevisionelSubmit"
+                                editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableOctN}}"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
+                            />
+                        </HBox>
+                    </table:template>
+                </table:Column>
+
+                <table:Column width="6rem">
+                    <table:multiLabels>
+                        <Label text="" />
+                        <Label text="{= 'Nov ' + ${utilities>/currentYear}}" />
+                    </table:multiLabels>
+                    <table:template>
+                        <HBox>
+                            <Text
+                                text="{utilities>NovN}"
+                                visible="{= ${utilities>isTotalRow}}"
+                                class="{= 'sapMTextStrong' }"
+                            />
+                            <Input
+                                value="{utilities>NovN}"
+                                submit=".onPrevisionelSubmit"
+                                editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableNovN}}"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
+                            />
+                        </HBox>
+                    </table:template>
+                </table:Column>
+
+                <table:Column width="6rem">
+                    <table:multiLabels>
+                        <Label text="" />
+                        <Label text="{= 'Déc ' + ${utilities>/currentYear}}" />
+                    </table:multiLabels>
+                    <table:template>
+                        <HBox>
+                            <Text
+                                text="{utilities>DecN}"
+                                visible="{= ${utilities>isTotalRow}}"
+                                class="{= 'sapMTextStrong' }"
+                            />
+                            <Input
+                                value="{utilities>DecN}"
+                                submit=".onPrevisionelSubmit"
+                                editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableDecN}}"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
+                            />
+                        </HBox>
+                    </table:template>
+                </table:Column>
+
+                <!-- === Année N+1 (2026) — all editable === -->
+                <!-- === Année N+1 (2026) === -->
+                <table:Column
+                    width="6rem"
+                    headerSpan="12,1"
+                    hAlign="Center"
+                >
+                    <table:multiLabels>
+                        <Label text="ANNÉE N+1" />
+                        <Label text="{= 'Janv ' + ${utilities>/nextYear}}" />
+                    </table:multiLabels>
+                    <table:template>
+                        <HBox>
+                            <Text
+                                text="{utilities>JanvN1}"
+                                visible="{= ${utilities>isTotalRow}}"
+                                class="{= 'sapMTextStrong' }"
+                            />
+                            <Input
+                                value="{utilities>JanvN1}"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
+                                editable="{ui>/editable}"
+                                submit=".onPrevisionelSubmit"
+                            />
+                        </HBox>
+                    </table:template>
+                </table:Column>
+
+                <table:Column width="6rem">
+                    <table:multiLabels>
+                        <Label text="" />
+                        <Label text="{= 'Févr ' + ${utilities>/nextYear}}" />
+                    </table:multiLabels>
+                    <table:template>
+                        <HBox>
+                            <Text
+                                text="{utilities>FevrN1}"
+                                visible="{= ${utilities>isTotalRow}}"
+                                class="{= 'sapMTextStrong' }"
+                            />
+                            <Input
+                                value="{utilities>FevrN1}"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
+                                editable="{ui>/editable}"
+                                submit=".onPrevisionelSubmit"
+                            />
+                        </HBox>
+                    </table:template>
+                </table:Column>
+
+                <table:Column width="6rem">
+                    <table:multiLabels>
+                        <Label text="" />
+                        <Label text="{= 'Mars ' + ${utilities>/nextYear}}" />
+                    </table:multiLabels>
+                    <table:template>
+                        <HBox>
+                            <Text
+                                text="{utilities>MarsN1}"
+                                visible="{= ${utilities>isTotalRow}}"
+                                class="{= 'sapMTextStrong' }"
+                            />
+                            <Input
+                                value="{utilities>MarsN1}"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
+                                editable="{ui>/editable}"
+                                submit=".onPrevisionelSubmit"
+                            />
+                        </HBox>
+                    </table:template>
+                </table:Column>
+
+                <table:Column width="6rem">
+                    <table:multiLabels>
+                        <Label text="" />
+                        <Label text="{= 'Avr ' + ${utilities>/nextYear}}" />
+                    </table:multiLabels>
+                    <table:template>
+                        <HBox>
+                            <Text
+                                text="{utilities>AvrN1}"
+                                visible="{= ${utilities>isTotalRow}}"
+                                class="{= 'sapMTextStrong' }"
+                            />
+                            <Input
+                                value="{utilities>AvrN1}"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
+                                editable="{ui>/editable}"
+                                submit=".onPrevisionelSubmit"
+                            />
+                        </HBox>
+                    </table:template>
+                </table:Column>
+
+                <table:Column width="6rem">
+                    <table:multiLabels>
+                        <Label text="" />
+                        <Label text="{= 'Mai ' + ${utilities>/nextYear}}" />
+                    </table:multiLabels>
+                    <table:template>
+                        <HBox>
+                            <Text
+                                text="{utilities>MaiN1}"
+                                visible="{= ${utilities>isTotalRow}}"
+                                class="{= 'sapMTextStrong' }"
+                            />
+                            <Input
+                                value="{utilities>MaiN1}"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
+                                editable="{ui>/editable}"
+                                submit=".onPrevisionelSubmit"
+                            />
+                        </HBox>
+                    </table:template>
+                </table:Column>
+
+                <table:Column width="6rem">
+                    <table:multiLabels>
+                        <Label text="" />
+                        <Label text="{= 'Juin ' + ${utilities>/nextYear}}" />
+                    </table:multiLabels>
+                    <table:template>
+                        <HBox>
+                            <Text
+                                text="{utilities>JuinN1}"
+                                visible="{= ${utilities>isTotalRow}}"
+                                class="{= 'sapMTextStrong' }"
+                            />
+                            <Input
+                                value="{utilities>JuinN1}"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
+                                editable="{ui>/editable}"
+                                submit=".onPrevisionelSubmit"
+                            />
+                        </HBox>
+                    </table:template>
+                </table:Column>
+
+                <table:Column width="6rem">
+                    <table:multiLabels>
+                        <Label text="" />
+                        <Label text="{= 'Juil ' + ${utilities>/nextYear}}" />
+                    </table:multiLabels>
+                    <table:template>
+                        <HBox>
+                            <Text
+                                text="{utilities>JuilN1}"
+                                visible="{= ${utilities>isTotalRow}}"
+                                class="{= 'sapMTextStrong' }"
+                            />
+                            <Input
+                                value="{utilities>JuilN1}"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
+                                editable="{ui>/editable}"
+                                submit=".onPrevisionelSubmit"
+                            />
+                        </HBox>
+                    </table:template>
+                </table:Column>
+
+                <table:Column width="6rem">
+                    <table:multiLabels>
+                        <Label text="" />
+                        <Label text="{= 'Août ' + ${utilities>/nextYear}}" />
+                    </table:multiLabels>
+                    <table:template>
+                        <HBox>
+                            <Text
+                                text="{utilities>AoutN1}"
+                                visible="{= ${utilities>isTotalRow}}"
+                                class="{= 'sapMTextStrong' }"
+                            />
+                            <Input
+                                value="{utilities>AoutN1}"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
+                                editable="{ui>/editable}"
+                                submit=".onPrevisionelSubmit"
+                            />
+                        </HBox>
+                    </table:template>
+                </table:Column>
+
+                <table:Column width="6rem">
+                    <table:multiLabels>
+                        <Label text="" />
+                        <Label text="{= 'Sept ' + ${utilities>/nextYear}}" />
+                    </table:multiLabels>
+                    <table:template>
+                        <HBox>
+                            <Text
+                                text="{utilities>SeptN1}"
+                                visible="{= ${utilities>isTotalRow}}"
+                                class="{= 'sapMTextStrong' }"
+                            />
+                            <Input
+                                value="{utilities>SeptN1}"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
+                                editable="{ui>/editable}"
+                                submit=".onPrevisionelSubmit"
+                            />
+                        </HBox>
+                    </table:template>
+                </table:Column>
+
+                <table:Column width="6rem">
+                    <table:multiLabels>
+                        <Label text="" />
+                        <Label text="{= 'Oct ' + ${utilities>/nextYear}}" />
+                    </table:multiLabels>
+                    <table:template>
+                        <HBox>
+                            <Text
+                                text="{utilities>OctN1}"
+                                visible="{= ${utilities>isTotalRow}}"
+                                class="{= 'sapMTextStrong' }"
+                            />
+                            <Input
+                                value="{utilities>OctN1}"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
+                                editable="{ui>/editable}"
+                                submit=".onPrevisionelSubmit"
+                            />
+                        </HBox>
+                    </table:template>
+                </table:Column>
+
+                <table:Column width="6rem">
+                    <table:multiLabels>
+                        <Label text="" />
+                        <Label text="{= 'Nov ' + ${utilities>/nextYear}}" />
+                    </table:multiLabels>
+                    <table:template>
+                        <HBox>
+                            <Text
+                                text="{utilities>NovN1}"
+                                visible="{= ${utilities>isTotalRow}}"
+                                class="{= 'sapMTextStrong' }"
+                            />
+                            <Input
+                                value="{utilities>NovN1}"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
+                                editable="{ui>/editable}"
+                                submit=".onPrevisionelSubmit"
+                            />
+                        </HBox>
+                    </table:template>
+                </table:Column>
+
+                <table:Column width="6rem">
+                    <table:multiLabels>
+                        <Label text="" />
+                        <Label text="{= 'Déc ' + ${utilities>/nextYear}}" />
+                    </table:multiLabels>
+                    <table:template>
+                        <HBox>
+                            <Text
+                                text="{utilities>DecN1}"
+                                visible="{= ${utilities>isTotalRow}}"
+                                class="{= 'sapMTextStrong' }"
+                            />
+                            <Input
+                                value="{utilities>DecN1}"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
+                                editable="{ui>/editable}"
+                                submit=".onPrevisionelSubmit"
+                            />
+                        </HBox>
+                    </table:template>
+                </table:Column>
+
+                <!-- Totaux -->
+                <table:Column width="7rem">
+                    <table:multiLabels>
+                        <Label text="" />
+                        <Label
+                            text="{= 'Total ' + ${utilities>/currentYear}}"
+                        />
+                    </table:multiLabels>
+                    <table:template>
                         <Text
-                            text="{utilities>FevrN}"
-                            visible="{= ${utilities>isTotalRow}}"
-                            class="boldText"
+                            text="{utilities>TotalN}"
+                            visible="{= (!${utilities>isNode} || ${utilities>isL0})}"
                         />
-                        <Input
-                            value="{utilities>FevrN}"
-                            submit=".onPrevisionelSubmit"
-                            editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableFevrN}}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
-                        />
-                    </HBox>
-                </table:template>
-            </table:Column>
+                    </table:template>
+                </table:Column>
 
-            <table:Column width="6rem">
-                <table:multiLabels>
-                    <Label text="" />
-                    <Label text="{= 'Mars ' + ${utilities>/currentYear}}" />
-                </table:multiLabels>
-                <table:template>
-                    <HBox>
+                <table:Column width="7rem">
+                    <table:multiLabels>
+                        <Label text="" />
+                        <Label text="{= 'Total ' + ${utilities>/nextYear}}" />
+                    </table:multiLabels>
+                    <table:template>
                         <Text
-                            text="{utilities>MarsN}"
-                            visible="{= ${utilities>isTotalRow}}"
-                            class="{= 'sapMTextStrong' }"
+                            text="{utilities>TotalN1}"
+                            visible="{= (!${utilities>isNode} || ${utilities>isL0})}"
                         />
-                        <Input
-                            value="{utilities>MarsN}"
-                            submit=".onPrevisionelSubmit"
-                            editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableMarsN}}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
-                        />
-                    </HBox>
-                </table:template>
-            </table:Column>
+                    </table:template>
+                </table:Column>
 
-            <table:Column width="6rem">
-                <table:multiLabels>
-                    <Label text="" />
-                    <Label text="{= 'Avr ' + ${utilities>/currentYear}}" />
-                </table:multiLabels>
-                <table:template>
-                    <HBox>
+                <table:Column width="7rem">
+                    <table:multiLabels>
+                        <Label text="" />
+                        <Label text="Au-dela" />
+                    </table:multiLabels>
+                    <table:template>
                         <Text
-                            text="{utilities>AvrN}"
-                            visible="{= ${utilities>isTotalRow}}"
-                            class="{= 'sapMTextStrong' }"
+                            text="{utilities>Audela}"
+                            visible="{= (!${utilities>isNode} || ${utilities>isL0})}"
                         />
-                        <Input
-                            value="{utilities>AvrN}"
-                            submit=".onPrevisionelSubmit"
-                            editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableAvrN}}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
-                        />
-                    </HBox>
-                </table:template>
-            </table:Column>
-
-            <table:Column width="6rem">
-                <table:multiLabels>
-                    <Label text="" />
-                    <Label text="{= 'Mai ' + ${utilities>/currentYear}}" />
-                </table:multiLabels>
-                <table:template>
-                    <HBox>
-                        <Text
-                            text="{utilities>MaiN}"
-                            visible="{= ${utilities>isTotalRow}}"
-                            class="{= 'sapMTextStrong' }"
-                        />
-                        <Input
-                            value="{utilities>MaiN}"
-                            submit=".onPrevisionelSubmit"
-                            editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableMaiN}}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
-                        />
-                    </HBox>
-                </table:template>
-            </table:Column>
-
-            <table:Column width="6rem">
-                <table:multiLabels>
-                    <Label text="" />
-                    <Label text="{= 'Juin ' + ${utilities>/currentYear}}" />
-                </table:multiLabels>
-                <table:template>
-                    <HBox>
-                        <Text
-                            text="{utilities>JuinN}"
-                            visible="{= ${utilities>isTotalRow}}"
-                            class="{= 'sapMTextStrong' }"
-                        />
-                        <Input
-                            value="{utilities>JuinN}"
-                            submit=".onPrevisionelSubmit"
-                            editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableJuinN}}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
-                        />
-                    </HBox>
-                </table:template>
-            </table:Column>
-
-            <table:Column width="6rem">
-                <table:multiLabels>
-                    <Label text="" />
-                    <Label text="{= 'Juil ' + ${utilities>/currentYear}}" />
-                </table:multiLabels>
-                <table:template>
-                    <HBox>
-                        <Text
-                            text="{utilities>JuilN}"
-                            visible="{= ${utilities>isTotalRow}}"
-                            class="{= 'sapMTextStrong' }"
-                        />
-                        <Input
-                            value="{utilities>JuilN}"
-                            submit=".onPrevisionelSubmit"
-                            editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableJuilN}}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
-                        />
-                    </HBox>
-                </table:template>
-            </table:Column>
-
-            <!-- === Editable fields (Août → Déc N) === -->
-            <table:Column width="6rem">
-                <table:multiLabels>
-                    <Label text="" />
-                    <Label text="{= 'Août ' + ${utilities>/currentYear}}" />
-                </table:multiLabels>
-                <table:template>
-                    <HBox>
-                        <Text
-                            text="{utilities>AoutN}"
-                            visible="{= ${utilities>isTotalRow}}"
-                            class="{= 'sapMTextStrong' }"
-                        />
-                        <Input
-                            value="{utilities>AoutN}"
-                            submit=".onPrevisionelSubmit"
-                            editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableAoutN}}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
-                        />
-                    </HBox>
-                </table:template>
-            </table:Column>
-
-            <table:Column width="6rem">
-                <table:multiLabels>
-                    <Label text="" />
-                    <Label text="{= 'Sept ' + ${utilities>/currentYear}}" />
-                </table:multiLabels>
-                <table:template>
-                    <HBox>
-                        <Text
-                            text="{utilities>SeptN}"
-                            visible="{= ${utilities>isTotalRow}}"
-                            class="{= 'sapMTextStrong' }"
-                        />
-                        <Input
-                            value="{utilities>SeptN}"
-                            submit=".onPrevisionelSubmit"
-                            editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableSeptN}}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
-                        />
-                    </HBox>
-                </table:template>
-            </table:Column>
-
-            <table:Column width="6rem">
-                <table:multiLabels>
-                    <Label text="" />
-                    <Label text="{= 'Oct ' + ${utilities>/currentYear}}" />
-                </table:multiLabels>
-                <table:template>
-                    <HBox>
-                        <Text
-                            text="{utilities>OctN}"
-                            visible="{= ${utilities>isTotalRow}}"
-                            class="{= 'sapMTextStrong' }"
-                        />
-                        <Input
-                            value="{utilities>OctN}"
-                            submit=".onPrevisionelSubmit"
-                            editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableOctN}}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
-                        />
-                    </HBox>
-                </table:template>
-            </table:Column>
-
-            <table:Column width="6rem">
-                <table:multiLabels>
-                    <Label text="" />
-                    <Label text="{= 'Nov ' + ${utilities>/currentYear}}" />
-                </table:multiLabels>
-                <table:template>
-                    <HBox>
-                        <Text
-                            text="{utilities>NovN}"
-                            visible="{= ${utilities>isTotalRow}}"
-                            class="{= 'sapMTextStrong' }"
-                        />
-                        <Input
-                            value="{utilities>NovN}"
-                            submit=".onPrevisionelSubmit"
-                            editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableNovN}}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
-                        />
-                    </HBox>
-                </table:template>
-            </table:Column>
-
-            <table:Column width="6rem">
-                <table:multiLabels>
-                    <Label text="" />
-                    <Label text="{= 'Déc ' + ${utilities>/currentYear}}" />
-                </table:multiLabels>
-                <table:template>
-                    <HBox>
-                        <Text
-                            text="{utilities>DecN}"
-                            visible="{= ${utilities>isTotalRow}}"
-                            class="{= 'sapMTextStrong' }"
-                        />
-                        <Input
-                            value="{utilities>DecN}"
-                            submit=".onPrevisionelSubmit"
-                            editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableDecN}}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
-                        />
-                    </HBox>
-                </table:template>
-            </table:Column>
-
-            <!-- === Année N+1 (2026) — all editable === -->
-            <!-- === Année N+1 (2026) === -->
-            <table:Column
-                width="6rem"
-                headerSpan="12,1"
-                hAlign="Center"
-            >
-                <table:multiLabels>
-                    <Label text="ANNÉE N+1" />
-                    <Label text="{= 'Janv ' + ${utilities>/nextYear}}" />
-                </table:multiLabels>
-                <table:template>
-                    <HBox>
-                        <Text
-                            text="{utilities>JanvN1}"
-                            visible="{= ${utilities>isTotalRow}}"
-                            class="{= 'sapMTextStrong' }"
-                        />
-                        <Input
-                            value="{utilities>JanvN1}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
-                            editable="{ui>/editable}"
-                            submit=".onPrevisionelSubmit"
-                        />
-                    </HBox>
-                </table:template>
-            </table:Column>
-
-            <table:Column width="6rem">
-                <table:multiLabels>
-                    <Label text="" />
-                    <Label text="{= 'Févr ' + ${utilities>/nextYear}}" />
-                </table:multiLabels>
-                <table:template>
-                    <HBox>
-                        <Text
-                            text="{utilities>FevrN1}"
-                            visible="{= ${utilities>isTotalRow}}"
-                            class="{= 'sapMTextStrong' }"
-                        />
-                        <Input
-                            value="{utilities>FevrN1}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
-                            editable="{ui>/editable}"
-                            submit=".onPrevisionelSubmit"
-                        />
-                    </HBox>
-                </table:template>
-            </table:Column>
-
-            <table:Column width="6rem">
-                <table:multiLabels>
-                    <Label text="" />
-                    <Label text="{= 'Mars ' + ${utilities>/nextYear}}" />
-                </table:multiLabels>
-                <table:template>
-                    <HBox>
-                        <Text
-                            text="{utilities>MarsN1}"
-                            visible="{= ${utilities>isTotalRow}}"
-                            class="{= 'sapMTextStrong' }"
-                        />
-                        <Input
-                            value="{utilities>MarsN1}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
-                            editable="{ui>/editable}"
-                            submit=".onPrevisionelSubmit"
-                        />
-                    </HBox>
-                </table:template>
-            </table:Column>
-
-            <table:Column width="6rem">
-                <table:multiLabels>
-                    <Label text="" />
-                    <Label text="{= 'Avr ' + ${utilities>/nextYear}}" />
-                </table:multiLabels>
-                <table:template>
-                    <HBox>
-                        <Text
-                            text="{utilities>AvrN1}"
-                            visible="{= ${utilities>isTotalRow}}"
-                            class="{= 'sapMTextStrong' }"
-                        />
-                        <Input
-                            value="{utilities>AvrN1}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
-                            editable="{ui>/editable}"
-                            submit=".onPrevisionelSubmit"
-                        />
-                    </HBox>
-                </table:template>
-            </table:Column>
-
-            <table:Column width="6rem">
-                <table:multiLabels>
-                    <Label text="" />
-                    <Label text="{= 'Mai ' + ${utilities>/nextYear}}" />
-                </table:multiLabels>
-                <table:template>
-                    <HBox>
-                        <Text
-                            text="{utilities>MaiN1}"
-                            visible="{= ${utilities>isTotalRow}}"
-                            class="{= 'sapMTextStrong' }"
-                        />
-                        <Input
-                            value="{utilities>MaiN1}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
-                            editable="{ui>/editable}"
-                            submit=".onPrevisionelSubmit"
-                        />
-                    </HBox>
-                </table:template>
-            </table:Column>
-
-            <table:Column width="6rem">
-                <table:multiLabels>
-                    <Label text="" />
-                    <Label text="{= 'Juin ' + ${utilities>/nextYear}}" />
-                </table:multiLabels>
-                <table:template>
-                    <HBox>
-                        <Text
-                            text="{utilities>JuinN1}"
-                            visible="{= ${utilities>isTotalRow}}"
-                            class="{= 'sapMTextStrong' }"
-                        />
-                        <Input
-                            value="{utilities>JuinN1}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
-                            editable="{ui>/editable}"
-                            submit=".onPrevisionelSubmit"
-                        />
-                    </HBox>
-                </table:template>
-            </table:Column>
-
-            <table:Column width="6rem">
-                <table:multiLabels>
-                    <Label text="" />
-                    <Label text="{= 'Juil ' + ${utilities>/nextYear}}" />
-                </table:multiLabels>
-                <table:template>
-                    <HBox>
-                        <Text
-                            text="{utilities>JuilN1}"
-                            visible="{= ${utilities>isTotalRow}}"
-                            class="{= 'sapMTextStrong' }"
-                        />
-                        <Input
-                            value="{utilities>JuilN1}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
-                            editable="{ui>/editable}"
-                            submit=".onPrevisionelSubmit"
-                        />
-                    </HBox>
-                </table:template>
-            </table:Column>
-
-            <table:Column width="6rem">
-                <table:multiLabels>
-                    <Label text="" />
-                    <Label text="{= 'Août ' + ${utilities>/nextYear}}" />
-                </table:multiLabels>
-                <table:template>
-                    <HBox>
-                        <Text
-                            text="{utilities>AoutN1}"
-                            visible="{= ${utilities>isTotalRow}}"
-                            class="{= 'sapMTextStrong' }"
-                        />
-                        <Input
-                            value="{utilities>AoutN1}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
-                            editable="{ui>/editable}"
-                            submit=".onPrevisionelSubmit"
-                        />
-                    </HBox>
-                </table:template>
-            </table:Column>
-
-            <table:Column width="6rem">
-                <table:multiLabels>
-                    <Label text="" />
-                    <Label text="{= 'Sept ' + ${utilities>/nextYear}}" />
-                </table:multiLabels>
-                <table:template>
-                    <HBox>
-                        <Text
-                            text="{utilities>SeptN1}"
-                            visible="{= ${utilities>isTotalRow}}"
-                            class="{= 'sapMTextStrong' }"
-                        />
-                        <Input
-                            value="{utilities>SeptN1}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
-                            editable="{ui>/editable}"
-                            submit=".onPrevisionelSubmit"
-                        />
-                    </HBox>
-                </table:template>
-            </table:Column>
-
-            <table:Column width="6rem">
-                <table:multiLabels>
-                    <Label text="" />
-                    <Label text="{= 'Oct ' + ${utilities>/nextYear}}" />
-                </table:multiLabels>
-                <table:template>
-                    <HBox>
-                        <Text
-                            text="{utilities>OctN1}"
-                            visible="{= ${utilities>isTotalRow}}"
-                            class="{= 'sapMTextStrong' }"
-                        />
-                        <Input
-                            value="{utilities>OctN1}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
-                            editable="{ui>/editable}"
-                            submit=".onPrevisionelSubmit"
-                        />
-                    </HBox>
-                </table:template>
-            </table:Column>
-
-            <table:Column width="6rem">
-                <table:multiLabels>
-                    <Label text="" />
-                    <Label text="{= 'Nov ' + ${utilities>/nextYear}}" />
-                </table:multiLabels>
-                <table:template>
-                    <HBox>
-                        <Text
-                            text="{utilities>NovN1}"
-                            visible="{= ${utilities>isTotalRow}}"
-                            class="{= 'sapMTextStrong' }"
-                        />
-                        <Input
-                            value="{utilities>NovN1}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
-                            editable="{ui>/editable}"
-                            submit=".onPrevisionelSubmit"
-                        />
-                    </HBox>
-                </table:template>
-            </table:Column>
-
-            <table:Column width="6rem">
-                <table:multiLabels>
-                    <Label text="" />
-                    <Label text="{= 'Déc ' + ${utilities>/nextYear}}" />
-                </table:multiLabels>
-                <table:template>
-                    <HBox>
-                        <Text
-                            text="{utilities>DecN1}"
-                            visible="{= ${utilities>isTotalRow}}"
-                            class="{= 'sapMTextStrong' }"
-                        />
-                        <Input
-                            value="{utilities>DecN1}"
-                            visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
-                            editable="{ui>/editable}"
-                            submit=".onPrevisionelSubmit"
-                        />
-                    </HBox>
-                </table:template>
-            </table:Column>
-
-            <!-- Totaux -->
-            <table:Column width="7rem">
-                <table:multiLabels>
-                    <Label text="" />
-                    <Label text="{= 'Total ' + ${utilities>/currentYear}}" />
-                </table:multiLabels>
-                <table:template>
-                    <Text
-                        text="{utilities>TotalN}"
-                        visible="{= (!${utilities>isNode} || ${utilities>isL0})}"
-                    />
-                </table:template>
-            </table:Column>
-
-            <table:Column width="7rem">
-                <table:multiLabels>
-                    <Label text="" />
-                    <Label text="{= 'Total ' + ${utilities>/nextYear}}" />
-                </table:multiLabels>
-                <table:template>
-                    <Text
-                        text="{utilities>TotalN1}"
-                        visible="{= (!${utilities>isNode} || ${utilities>isL0})}"
-                    />
-                </table:template>
-            </table:Column>
-
-            <table:Column width="7rem">
-                <table:multiLabels>
-                    <Label text="" />
-                    <Label text="Au-dela" />
-                </table:multiLabels>
-                <table:template>
-                    <Text
-                        text="{utilities>Audela}"
-                        visible="{= (!${utilities>isNode} || ${utilities>isL0})}"
-                    />
-                </table:template>
-            </table:Column>
-        </table:columns>
-    </table:TreeTable>
+                    </table:template>
+                </table:Column>
+            </table:columns>
+        </table:TreeTable>
+    </VBox>
 </core:FragmentDefinition>
