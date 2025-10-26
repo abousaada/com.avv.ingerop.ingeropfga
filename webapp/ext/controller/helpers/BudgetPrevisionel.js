@@ -159,9 +159,10 @@ sap.ui.define([
                             isL1: true,
                             isSectionHeader: true,
                             FacturationDepense: "Facturation",
-                            children: group.directLines.facturation.concat(
+                            /*children: group.directLines.facturation.concat(
                                 self.createMissionTypeTotalRow(group.directLines.facturation, "Facturation", "directes")
-                            )
+                            )*/
+                            children: group.directLines.facturation
                         });
                     }
 
@@ -201,9 +202,9 @@ sap.ui.define([
                                 });
 
                                 // Add Facturation total
-                                mission.children.push(
+                                /*mission.children.push(
                                     self.createMissionTypeTotalRow(mission.facturationLines, "Facturation", mission.name)
-                                );
+                                );*/
                             }
 
                             // Add Dépense section header if there are depense lines
@@ -218,15 +219,15 @@ sap.ui.define([
                                 });
 
                                 // Add Dépense total
-                                mission.children.push(
+                                /*mission.children.push(
                                     self.createMissionTypeTotalRow(mission.depenseLines, "Dépense", mission.name)
-                                );
+                                );*/
                             }
 
                             // Add Mission total
-                            mission.children.push(
+                            /*mission.children.push(
                                 self.createMissionTotalRow(mission.totals, mission.name)
-                            );
+                            );*/
 
                             missionsArray.push(mission);
                         }
