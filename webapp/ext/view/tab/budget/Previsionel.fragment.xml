@@ -203,11 +203,19 @@
                         <!--Text text="{utilities>name}" /-->
                         <HBox alignItems="Center">
                             <items>
-                                <ObjectStatus
-                                    text="{utilities>name}"
-                                    icon="{= ${utilities>DataMode} === 'M' ? 'sap-icon://edit' : ''}"
-                                    state="{= ${utilities>DataMode} === 'M' ? 'Information' : 'None'}"
-                                />
+<ObjectStatus
+    text="{utilities>name}"
+    icon="{= (${utilities>isFactDepGroup} || ${utilities>isRegroupement} || 
+           (!${utilities>isNode} &amp;&amp; !${utilities>isTotalRow})) &amp;&amp;
+           !${utilities>isMission}
+           ? (${utilities>DataMode} === 'M' 
+               ? 'sap-icon://edit' 
+               : 'sap-icon://action-settings') 
+           : ''
+    }"
+    state="{= ${utilities>DataMode} === 'M' ? 'Information' : 'None'}"
+/>
+
                             </items>
                         </HBox>
                     </table:template>
