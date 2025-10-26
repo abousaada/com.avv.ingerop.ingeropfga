@@ -440,7 +440,6 @@
                 <NavigationProperty Name="to_BudgetPxSTI" Relationship="ZFGA_SRV.assoc_EFFDDDFC883D7FA56DD238F3514A8B40" FromRole="FromRole_assoc_EFFDDDFC883D7FA56DD238F3514A8B40" ToRole="ToRole_assoc_EFFDDDFC883D7FA56DD238F3514A8B40"/>
                 <NavigationProperty Name="to_BudgetPxSubContracting" Relationship="ZFGA_SRV.assoc_733945962AA43335851B4AB0A78DD1C7" FromRole="FromRole_assoc_733945962AA43335851B4AB0A78DD1C7" ToRole="ToRole_assoc_733945962AA43335851B4AB0A78DD1C7"/>
                 <NavigationProperty Name="to_Missions" Relationship="ZFGA_SRV.assoc_C3CEBB4F914AE5B0F6B34A7D0ECC717D" FromRole="FromRole_assoc_C3CEBB4F914AE5B0F6B34A7D0ECC717D" ToRole="ToRole_assoc_C3CEBB4F914AE5B0F6B34A7D0ECC717D"/>
-                <NavigationProperty Name="to_Previsionel" Relationship="ZFGA_SRV.assoc_CEA120ED07E58C2993244432427D097E" FromRole="FromRole_assoc_CEA120ED07E58C2993244432427D097E" ToRole="ToRole_assoc_CEA120ED07E58C2993244432427D097E"/>
                 <NavigationProperty Name="Parameters" Relationship="ZFGA_SRV.assoc_FBAFCCB8228F35F33FFA98CD63EBFA5B" FromRole="ToRole_assoc_FBAFCCB8228F35F33FFA98CD63EBFA5B" ToRole="FromRole_assoc_FBAFCCB8228F35F33FFA98CD63EBFA5B" sap:filterable="false"/>
             </EntityType>
             <EntityType Name="ZC_FGAParameters" sap:semantics="parameters" sap:content-version="1">
@@ -1351,10 +1350,6 @@
                 <End Type="ZFGA_SRV.ZC_FGAType" Multiplicity="1" Role="FromRole_assoc_C3CEBB4F914AE5B0F6B34A7D0ECC717D"/>
                 <End Type="ZFGA_SRV.ZC_FGA_MISSIONType" Multiplicity="*" Role="ToRole_assoc_C3CEBB4F914AE5B0F6B34A7D0ECC717D"/>
             </Association>
-            <Association Name="assoc_CEA120ED07E58C2993244432427D097E" sap:content-version="1">
-                <End Type="ZFGA_SRV.ZC_FGAType" Multiplicity="1" Role="FromRole_assoc_CEA120ED07E58C2993244432427D097E"/>
-                <End Type="ZFGA_SRV.ZC_FGA_ForecastType" Multiplicity="*" Role="ToRole_assoc_CEA120ED07E58C2993244432427D097E"/>
-            </Association>
             <Association Name="assoc_77B97FEC11941A669886CB8195BBB298" sap:content-version="1">
                 <End Type="ZFGA_SRV.I_BusinessPartnerVHType" Multiplicity="1" Role="FromRole_assoc_77B97FEC11941A669886CB8195BBB298"/>
                 <End Type="ZFGA_SRV.I_FormOfAddressTextType" Multiplicity="1" Role="ToRole_assoc_77B97FEC11941A669886CB8195BBB298"/>
@@ -1606,10 +1601,6 @@
                 <AssociationSet Name="assoc_19F528BA7320D1D27B8766707DF4466C" Association="ZFGA_SRV.assoc_19F528BA7320D1D27B8766707DF4466C" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
                     <End EntitySet="I_FiscalYearVariant" Role="FromRole_assoc_19F528BA7320D1D27B8766707DF4466C"/>
                     <End EntitySet="I_FiscalYearVariantText" Role="ToRole_assoc_19F528BA7320D1D27B8766707DF4466C"/>
-                </AssociationSet>
-                <AssociationSet Name="assoc_CEA120ED07E58C2993244432427D097E" Association="ZFGA_SRV.assoc_CEA120ED07E58C2993244432427D097E" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
-                    <End EntitySet="ZC_FGASet" Role="FromRole_assoc_CEA120ED07E58C2993244432427D097E"/>
-                    <End EntitySet="ZC_FGA_Forecast" Role="ToRole_assoc_CEA120ED07E58C2993244432427D097E"/>
                 </AssociationSet>
                 <AssociationSet Name="assoc_8935324EB612D712A7C3C8CE9F11C424" Association="ZFGA_SRV.assoc_8935324EB612D712A7C3C8CE9F11C424" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
                     <End EntitySet="I_ChartOfAccounts" Role="FromRole_assoc_8935324EB612D712A7C3C8CE9F11C424"/>
@@ -3461,9 +3452,6 @@
             <Annotations Target="ZFGA_SRV.ZC_FGAType/to_Missions" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Common.Composition"/>
             </Annotations>
-            <Annotations Target="ZFGA_SRV.ZC_FGAType/to_Previsionel" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-                <Annotation Term="Common.Composition"/>
-            </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_STIType/to_BUDG" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Common.Composition"/>
             </Annotations>
@@ -3966,14 +3954,6 @@
                                 </Record>
                                 <Record>
                                     <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_Missions"/>
-                                    <PropertyValue Property="InsertRestrictions">
-                                        <Record>
-                                            <PropertyValue Property="Insertable" Bool="true"/>
-                                        </Record>
-                                    </PropertyValue>
-                                </Record>
-                                <Record>
-                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_Previsionel"/>
                                     <PropertyValue Property="InsertRestrictions">
                                         <Record>
                                             <PropertyValue Property="Insertable" Bool="true"/>
