@@ -1,10 +1,13 @@
-<core:FragmentDefinition
-    xmlns="sap.m"
+<mvc:View
     xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:html="http://www.w3.org/1999/xhtml"
     xmlns:table="sap.ui.table"
     xmlns:rm="sap.ui.table.rowmodes"
     xmlns:layout="sap.ui.layout"
     xmlns:fb="sap.ui.comp.filterbar"
+    controllerName="com.avv.ingerop.ingeropfga.ext.controller.extendOP"
 >
     <VBox
         width="100%"
@@ -13,7 +16,7 @@
     >
         <!-- ===== FILTER BAR (classic, comp) ===== -->
         <fb:FilterBar
-            id="filterBar1"
+            id="filterBar"
             showGoOnFB="true"
             showClearOnFB="false"
             showRestoreButton="false"
@@ -130,7 +133,7 @@
 
         <!-- ===== TREE TABLE BELOW ===== -->
         <table:TreeTable
-            id="PrevisionnelTreeTable1"
+            id="PrevisionnelTreeTable"
             width="100%"
             rowsUpdated="onRowsUpdatedBudgetPXTab"
             class="sapUiMediumMarginTop"
@@ -203,9 +206,9 @@
                         <!--Text text="{utilities>name}" /-->
                         <HBox alignItems="Center">
                             <items>
-<ObjectStatus
-    text="{utilities>name}"
-    icon="{= (${utilities>isFactDepGroup} || ${utilities>isRegroupement} || 
+                                <ObjectStatus
+                                    text="{utilities>name}"
+                                    icon="{= (${utilities>isFactDepGroup} || ${utilities>isRegroupement} || 
            (!${utilities>isNode} &amp;&amp; !${utilities>isTotalRow})) &amp;&amp;
            !${utilities>isMission}
            ? (${utilities>DataMode} === 'M' 
@@ -213,9 +216,8 @@
                : 'sap-icon://action-settings') 
            : ''
     }"
-    state="{= ${utilities>DataMode} === 'M' ? 'Information' : 'None'}"
-/>
-
+                                    state="{= ${utilities>DataMode} === 'M' ? 'Information' : 'None'}"
+                                />
                             </items>
                         </HBox>
                     </table:template>
@@ -889,4 +891,4 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
             </table:columns>
         </table:TreeTable>
     </VBox>
-</core:FragmentDefinition>
+</mvc:View>

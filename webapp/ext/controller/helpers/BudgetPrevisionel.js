@@ -474,25 +474,7 @@ sap.ui.define([
 
         onSubmit: function (oEvent) {
 
-            //this.oView.setBusy(true);
 
-            const oModel = this.oView.getModel("utilities");
-            const oInput = oEvent.getSource();
-            const oBindingContext = oInput.getBindingContext("utilities");
-
-            try {
-                oModel.checkUpdate(true);
-
-                // Use arrow function to maintain 'this' context
-                setTimeout(() => {
-                    this.updateTotals();
-                }, 50);
-            } catch (error) {
-                console.error("Update failed:", error);
-                //this.oView.setBusy(false);
-            }
-
-            //this.oView.setBusy(false);
         },
 
         updateTotals: function () {

@@ -84,7 +84,7 @@ sap.ui.define([
                             );
                             regroupementArray.push(regroupement);
                         }
-                    }
+                    }I900
 
                     fgaGroup.children = regroupementArray;
                     treeData.push(fgaGroup);

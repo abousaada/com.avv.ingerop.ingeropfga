@@ -775,7 +775,7 @@ sap.ui.define(
 
             onPrevisionelSubmit: function (oEvent) {
                 if (!this._budgetPrevisionel) {
-                    this._budgetPrevisionel = new _budgetPrevisionel();
+                    this._budgetPrevisionel = new BudgetPrevisionel();
                     this._budgetPrevisionel.oView = this.oView;
                 }
                 this._budgetPrevisionel.onSubmit(oEvent);

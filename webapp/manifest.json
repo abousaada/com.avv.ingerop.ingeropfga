@@ -404,8 +404,8 @@
               }
             },
             "AfterFacet|ZC_FGASet|Prevision": {
-              "className": "sap.ui.core.Fragment",
-              "fragmentName": "com.avv.ingerop.ingeropfga.ext.view.tab.budget.Previsionel",
+              "className": "sap.ui.core.mvc.View",
+              "viewName": "com.avv.ingerop.ingeropfga.ext.view.Previsionel",
               "type": "XML"
             }
           }
