@@ -193,7 +193,10 @@ sap.ui.define(
                             });
                         } else {
                             // No manual changes - proceed directly with save
-                            return self._executeSave(utilitiesModel, oView, oContext, resolve, reject);
+                            //return self._executeSave(utilitiesModel, oView, oContext, resolve, reject);
+                            return new Promise((resolve, reject) => {
+                                self._executeSave(utilitiesModel, oView, oContext, resolve, reject);
+                            });
                         }
                     } catch (error) {
                         this._setBusy(false);
