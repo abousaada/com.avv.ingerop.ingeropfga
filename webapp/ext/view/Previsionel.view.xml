@@ -153,8 +153,8 @@
             <table:extension>
                 <MessageStrip
                     text="{= ${utilities>/DataMode} === 'M'
-            ? 'Mode manuel : les valeurs affichées ont été saisies manuellement.'
-            : 'Mode automatique : les valeurs sont calculées automatiquement.'}"
+            ? 'Mode manuel : ce tableau comporte des valeurs saisies manuellement..'
+            : 'Mode automatique : les valeurs dans ce tableau sont calculées automatiquement.'}"
                     type="{= ${utilities>/DataMode} === 'M' ? 'Information' : 'Warning'}"
                     showIcon="true"
                     showCloseButton="false"
