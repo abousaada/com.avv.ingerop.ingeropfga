@@ -209,13 +209,13 @@
                                 <ObjectStatus
                                     text="{utilities>name}"
                                     icon="{= (${utilities>isFactDepGroup} || ${utilities>isRegroupement} || 
-           (!${utilities>isNode} &amp;&amp; !${utilities>isTotalRow})) &amp;&amp;
-           !${utilities>isMission}
-           ? (${utilities>DataMode} === 'M' 
-               ? 'sap-icon://edit' 
-               : 'sap-icon://action-settings') 
-           : ''
-    }"
+                                        (!${utilities>isNode} &amp;&amp; !${utilities>isTotalRow})) &amp;&amp;
+                                        !${utilities>isMission}
+                                        ? (${utilities>DataMode} === 'M' 
+                                            ? 'sap-icon://edit' 
+                                            : 'sap-icon://action-settings') 
+                                        : ''
+                                    }"
                                     state="{= ${utilities>DataMode} === 'M' ? 'Information' : 'None'}"
                                 />
                             </items>
@@ -304,7 +304,7 @@
 
                 <!-- === Année N (2025) === -->
                 <table:Column
-                    width="6rem"
+                    width="7rem"
                     headerSpan="12,1"
                     hAlign="Center"
                 >
@@ -334,7 +334,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Févr ' + ${utilities>/currentYear}}" />
@@ -356,7 +356,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Mars ' + ${utilities>/currentYear}}" />
@@ -378,7 +378,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Avr ' + ${utilities>/currentYear}}" />
@@ -400,7 +400,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Mai ' + ${utilities>/currentYear}}" />
@@ -422,7 +422,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Juin ' + ${utilities>/currentYear}}" />
@@ -444,7 +444,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Juil ' + ${utilities>/currentYear}}" />
@@ -467,7 +467,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                 </table:Column>
 
                 <!-- === Editable fields (Août → Déc N) === -->
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Août ' + ${utilities>/currentYear}}" />
@@ -489,7 +489,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Sept ' + ${utilities>/currentYear}}" />
@@ -511,7 +511,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Oct ' + ${utilities>/currentYear}}" />
@@ -533,7 +533,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Nov ' + ${utilities>/currentYear}}" />
@@ -555,7 +555,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Déc ' + ${utilities>/currentYear}}" />
@@ -580,7 +580,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                 <!-- === Année N+1 (2026) — all editable === -->
                 <!-- === Année N+1 (2026) === -->
                 <table:Column
-                    width="6rem"
+                    width="7rem"
                     headerSpan="12,1"
                     hAlign="Center"
                 >
@@ -605,7 +605,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Févr ' + ${utilities>/nextYear}}" />
@@ -627,7 +627,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Mars ' + ${utilities>/nextYear}}" />
@@ -649,7 +649,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Avr ' + ${utilities>/nextYear}}" />
@@ -671,7 +671,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Mai ' + ${utilities>/nextYear}}" />
@@ -693,7 +693,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Juin ' + ${utilities>/nextYear}}" />
@@ -715,7 +715,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Juil ' + ${utilities>/nextYear}}" />
@@ -737,7 +737,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Août ' + ${utilities>/nextYear}}" />
@@ -759,7 +759,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Sept ' + ${utilities>/nextYear}}" />
@@ -781,7 +781,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Oct ' + ${utilities>/nextYear}}" />
@@ -803,7 +803,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Nov ' + ${utilities>/nextYear}}" />
@@ -825,7 +825,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Déc ' + ${utilities>/nextYear}}" />

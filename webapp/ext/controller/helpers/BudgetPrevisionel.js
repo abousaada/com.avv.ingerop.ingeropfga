@@ -472,10 +472,6 @@ sap.ui.define([
             return config;
         },
 
-        onSubmit: function (oEvent) {
-
-
-        },
 
         updateTotals: function () {
             var oModel = this.oView.getModel("utilities");
@@ -578,8 +574,15 @@ sap.ui.define([
             };
 
             // Copie tous les champs numériques (mois + totaux)
-            Object.keys(totals).forEach(k => {
+            /*Object.keys(totals).forEach(k => {
                 row[k] = Number(totals[k]) || 0;
+
+            });*/
+
+            Object.keys(totals).forEach(k => {
+                const value = Number(totals[k]) || 0;
+                // Round to 2 decimal places to avoid floating-point errors
+                row[k] = Math.round(value * 100) / 100;
             });
 
             return row;
@@ -1019,6 +1022,207 @@ sap.ui.define([
             return hasChanges;
         },
 
+        onSubmit: function (oEvent) {
+            var self = this;
+            var utilitiesModel = this.getView().getModel("utilities");
+
+            // Get the period to determine current month
+            var period = utilitiesModel.getProperty("/period");
+            var periodMonth = parseInt(period.substring(0, 2), 10);
+            var currentYear = parseInt(period.substring(2, 6), 10);
+
+            // Get the input field that triggered the submit
+            var sourceInput = oEvent.getSource();
+            var bindingContext = sourceInput.getBindingContext("utilities");
+
+            if (!bindingContext) {
+                console.error("No binding context found for the submitted input");
+                return;
+            }
+
+            // Get the path and property that was changed
+            var path = bindingContext.getPath();
+            var property = sourceInput.getBindingPath("value");
+            var fieldName = property;
+
+            console.log("Field changed:", fieldName, "for path:", path);
+
+            // Get the current hierarchy data to find which line was edited
+            var hierarchyData = utilitiesModel.getProperty("/previsionelHierarchyWithTotals");
+
+            if (!hierarchyData || !Array.isArray(hierarchyData)) {
+                console.error("No hierarchy data found");
+                return;
+            }
+
+            // Find the specific data line that was edited in hierarchy
+            var editedLineInfo = this._findDataLineByPath(hierarchyData, path);
+
+            if (!editedLineInfo || !editedLineInfo.line) {
+                console.error("Could not find the edited line in hierarchy data");
+                return;
+            }
+
+            var editedHierarchyLine = editedLineInfo.line;
+            console.log("Found edited line in hierarchy:", editedHierarchyLine.name, "MissionId:", editedHierarchyLine.MissionId);
+
+            // Get the flat data (original source)
+            var flatData = utilitiesModel.getProperty("/previsionel");
+
+            if (!flatData || !Array.isArray(flatData)) {
+                console.error("No flat data found");
+                return;
+            }
+
+            // Find the corresponding line in flat data
+            var flatLineIndex = flatData.findIndex(function (item) {
+                return item.MissionId === editedHierarchyLine.MissionId &&
+                    item.FacturationDepense === editedHierarchyLine.FacturationDepense;
+            });
+
+            if (flatLineIndex === -1) {
+                console.error("Could not find corresponding line in flat data");
+                return;
+            }
+
+            var editedFlatLine = flatData[flatLineIndex];
+            console.log("Found corresponding line in flat data at index:", flatLineIndex);
+
+            // Determine which months should be reset
+            var monthsToReset = this._getMonthsToReset(periodMonth, fieldName, currentYear);
+            console.log("Months to reset:", monthsToReset);
+
+            // Store the new value for the edited field (it's already updated in the hierarchy via data binding)
+            var newValue = editedHierarchyLine[fieldName];
+            console.log("New value for", fieldName, ":", newValue);
+
+            // Update the flat data with the new value for the edited field
+            editedFlatLine[fieldName] = newValue;
+
+            // SET DATA MODE TO 'M' (MANUAL) ONLY FOR THIS SPECIFIC LINE
+            editedFlatLine.DataMode = "M";
+            console.log("Set DataMode to 'M' for line:", editedFlatLine.MissionId);
+
+            // Reset the specified months to zero in the flat data
+            var hasChanges = false;
+            monthsToReset.forEach(function (monthField) {
+                if (editedFlatLine[monthField] !== 0 && editedFlatLine[monthField] !== "0") {
+                    console.log("Resetting", monthField, "from", editedFlatLine[monthField], "to 0 in flat data");
+                    editedFlatLine[monthField] = 0;
+                    hasChanges = true;
+                }
+            });
+
+            if (hasChanges) {
+                console.log("Flat data after changes:", editedFlatLine);
+
+                // Update the flat data model
+                utilitiesModel.setProperty("/previsionel", flatData);
+
+                // REBUILD THE ENTIRE TREE with the updated flat data
+                this.preparePrevisionelTreeData();
+
+                // Show message to user
+                sap.m.MessageToast.show("Ligne passée en mode manuel. Les mois suivants ont été réinitialisés à zéro: " + monthsToReset.join(", "));
+            }
+        },
+
+        // Simple path finder that works with your tree structure
+        _findDataLineByPath: function (nodes, targetPath) {
+            // Extract the indices from the path
+            // Path format: /previsionelHierarchyWithTotals/0/children/1/children/0/children/2
+            var pathParts = targetPath.split('/').filter(part => part !== '');
+
+            if (pathParts.length < 3 || pathParts[0] !== 'previsionelHierarchyWithTotals') {
+                return null;
+            }
+
+            // Remove the model prefix
+            pathParts = pathParts.slice(1);
+
+            try {
+                var currentNode = nodes;
+
+                for (var i = 0; i < pathParts.length; i++) {
+                    var part = pathParts[i];
+
+                    if (part === 'children') {
+                        // Skip the 'children' part and move to the index
+                        continue;
+                    }
+
+                    var index = parseInt(part, 10);
+
+                    if (isNaN(index) || !currentNode || !Array.isArray(currentNode) || index >= currentNode.length) {
+                        console.error("Invalid path index:", index, "at part:", part);
+                        return null;
+                    }
+
+                    currentNode = currentNode[index];
+
+                    // If this is the last part, return the node
+                    if (i === pathParts.length - 1) {
+                        return { line: currentNode, path: targetPath };
+                    }
+
+                    // Move to children for next iteration
+                    if (currentNode.children && Array.isArray(currentNode.children)) {
+                        currentNode = currentNode.children;
+                    } else {
+                        console.error("No children found at path part:", part);
+                        return null;
+                    }
+                }
+            } catch (error) {
+                console.error("Error traversing path:", error);
+                return null;
+            }
+
+            return null;
+        },
+
+        // Get months to reset based on period and edited field
+        _getMonthsToReset: function (currentMonth, editedField, currentYear) {
+            var monthFieldsN = [
+                "JanvN", "FevrN", "MarsN", "AvrN", "MaiN", "JuinN",
+                "JuilN", "AoutN", "SeptN", "OctN", "NovN", "DecN"
+            ];
+
+            var monthFieldsN1 = [
+                "JanvN1", "FevrN1", "MarsN1", "AvrN1", "MaiN1", "JuinN1",
+                "JuilN1", "AoutN1", "SeptN1", "OctN1", "NovN1", "DecN1"
+            ];
+
+            var monthsToReset = [];
+
+            var isCurrentYearField = editedField.includes("N") && !editedField.includes("N1");
+            var isNextYearField = editedField.includes("N1");
+
+            if (isCurrentYearField) {
+                // For current year: reset from current month to December, excluding edited field
+                for (var i = currentMonth; i <= 12; i++) {
+                    var monthField = monthFieldsN[i - 1];
+                    if (monthField !== editedField) {
+                        monthsToReset.push(monthField);
+                    }
+                }
+
+                // Also reset ALL months for next year (N+1)
+                monthsToReset = monthsToReset.concat(monthFieldsN1);
+
+            } else if (isNextYearField) {
+                // For next year: find which month was edited in N+1
+                var editedMonthIndex = monthFieldsN1.indexOf(editedField);
+                if (editedMonthIndex !== -1) {
+                    // Reset all subsequent months in N+1, excluding edited field
+                    for (var j = editedMonthIndex + 1; j < monthFieldsN1.length; j++) {
+                        monthsToReset.push(monthFieldsN1[j]);
+                    }
+                }
+            }
+
+            return monthsToReset;
+        },
 
     });
 });
