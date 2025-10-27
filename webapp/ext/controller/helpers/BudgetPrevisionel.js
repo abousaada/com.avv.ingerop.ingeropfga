@@ -174,9 +174,11 @@ sap.ui.define([
                             isL1: true,
                             isSectionHeader: true,
                             FacturationDepense: "Dépense",
-                            children: group.directLines.depense.concat(
+                            /*children: group.directLines.depense.concat(
                                 self.createMissionTypeTotalRow(group.directLines.depense, "Dépense", "directes")
-                            )
+                            )*/
+                            children: group.directLines.depense
+
                         });
                     }
 
