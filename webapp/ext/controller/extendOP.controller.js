@@ -135,7 +135,7 @@ sap.ui.define(
                     console.log("onListNavigationExtension called", oEvent);
                 },
 
-                beforeSaveExtension1() { //ABO work in progress. Don't remove
+                beforeSaveExtension() { //ABO work in progress. Don't remove
                     const self = this;
                     try {
                         const utilitiesModel = this.getModel("utilities");
@@ -170,9 +170,9 @@ sap.ui.define(
                         // Check for manual changes in Previsionel
                         //const oModel = this.getModel();
                         //const hasManualChanges = this._budgetPrevisionel._hasManualChangesPrevisionel(utilitiesModel, oModel);
-                        const hasManualChanges = utilitiesModel.getProperty("/DataMode");
+                        const dataMode = utilitiesModel.getProperty("/DataMode");
 
-                        if (hasManualChanges === 'M') {
+                        if (isForecastMode && dataMode === 'M') {
                             return new Promise((resolve, reject) => {
                                 sap.m.MessageBox.confirm(
                                     "Passage en mode manuel requis\n\n✓ Écrasement des valeurs automatiques\n✓ Action irréversible\n\nConfirmez-vous cette modification ?",
@@ -193,7 +193,7 @@ sap.ui.define(
                             });
                         } else {
                             // No manual changes - proceed directly with save
-                            return this._executeSave(utilitiesModel, oView, oContext);
+                            return self._executeSave(utilitiesModel, oView, oContext, resolve, reject);
                         }
                     } catch (error) {
                         this._setBusy(false);
@@ -204,7 +204,7 @@ sap.ui.define(
                 },
 
 
-                beforeSaveExtension() {
+                beforeSaveExtension1() {
                     try {
                         const utilitiesModel = this.getModel("utilities");
 
@@ -307,7 +307,7 @@ sap.ui.define(
                         });
 
                         delete oPayload.to_BudgetPxSTI;
-                        //delete oPayload.to_Previsionel;
+                        delete oPayload.to_Previsionel;
 
                         const previsionel = utilitiesModel.getProperty("/previsionel") || [];
                         const filtredPrevisionel = previsionel.filter(item => item.DataMode === "M");
