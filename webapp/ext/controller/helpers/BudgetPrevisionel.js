@@ -10,11 +10,11 @@ sap.ui.define([
 
             var previsionel = this.getView().getModel("utilities").getProperty("/previsionel");
 
-            if (previsionel && previsionel.length > 0 && previsionel[0].DataMode) {
+            /*if (previsionel && previsionel.length > 0 && previsionel[0].DataMode) {
                 this.getView().getModel("utilities").setProperty("/DataMode", previsionel[0].DataMode);
             } else {
                 this.getView().getModel("utilities").setProperty("/DataMode", "A");
-            }
+            }*/
 
             var buildTree = function (items) {
                 var treeData = [];
@@ -1104,6 +1104,8 @@ sap.ui.define([
             // SET DATA MODE TO 'M' (MANUAL) ONLY FOR THIS SPECIFIC LINE
             editedFlatLine.DataMode = "M";
             console.log("Set DataMode to 'M' for line:", editedFlatLine.MissionId);
+
+            this.getView().getModel("utilities").setProperty("/DataMode", "M");
 
             // Reset the specified months to zero in the flat data
             var hasChanges = false;
