@@ -1555,7 +1555,7 @@ sap.ui.define([
                         template: new sap.m.ColumnListItem({
                             cells: [
                                 new sap.m.Text({ text: "{CompanyCode}" }),
-                                new sap.m.Text({ text: "{CompanyName}" })
+                                new sap.m.Text({ text: "{CompanyCodeName}" })
                             ]
                         })
                     },
@@ -1607,7 +1607,7 @@ sap.ui.define([
                         template: new sap.m.ColumnListItem({
                             cells: [
                                 new sap.m.Text({ text: "{ProfitCenter}" }),
-                                new sap.m.Text({ text: "{ProfitCenterName}" })
+                                new sap.m.Text({ text: "{description}" })
                             ]
                         })
                     },
@@ -1653,7 +1653,7 @@ sap.ui.define([
                         template: new sap.m.ColumnListItem({
                             cells: [
                                 new sap.m.Text({ text: "{UFO}" }),
-                                new sap.m.Text({ text: "{UFOName}" })
+                                new sap.m.Text({ text: "{description}" })
                             ]
                         })
                     },
