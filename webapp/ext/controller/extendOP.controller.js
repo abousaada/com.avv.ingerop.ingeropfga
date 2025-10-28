@@ -874,6 +874,13 @@ sap.ui.define(
                 this._budgetPrevisionel.onSubmit(oEvent);
             },
 
+            onSearchPrevisionel: function (oEvent) {
+                if (!this._budgetPrevisionel) {
+                    this._budgetPrevisionel = new BudgetPrevisionel();
+                    this._budgetPrevisionel.oView = this.oView;
+                }
+                this._budgetPrevisionel.onSearch(oEvent);
+            },
             // ==============================================
             // Move to formatter !!!!
             // ==============================================

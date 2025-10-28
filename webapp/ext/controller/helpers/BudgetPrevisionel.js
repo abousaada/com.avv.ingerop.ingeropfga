@@ -1237,5 +1237,306 @@ sap.ui.define([
             return monthsToReset;
         },
 
+
+        onSearch: function (oEvent) {
+            var self = this;
+            var filtersModel = this.getView().getModel("filtersModel");
+            if (!filtersModel) {
+                console.error("Filters model not found. Initializing...");
+                this._initializeFiltersModel();
+                filtersModel = this.oView.getModel("filtersModel");
+
+                if (!filtersModel) {
+                    sap.m.MessageBox.error("Erreur d'initialisation des filtres");
+                    return;
+                }
+            }
+
+            // Get filter values
+            var period = filtersModel.getProperty("/Period");
+            var businessNo = filtersModel.getProperty("/Affaire");
+            var ufo = filtersModel.getProperty("/UFO");
+            var label = filtersModel.getProperty("/Label");
+            var societe = filtersModel.getProperty("/Societe");
+            var profitCenter = filtersModel.getProperty("/ProfitCenter");
+
+            // Validate period (mandatory field)
+            if (!period) {
+                sap.m.MessageBox.error("La période (MMYYYY) est obligatoire");
+                return;
+            }
+
+            // Update period in utilities model (important for getBEDatas)
+            var utilitiesModel = this.getView().getModel("utilities");
+            utilitiesModel.setProperty("/period", period);
+
+            // Build selected business numbers array
+            var aSelectedBusinessNos = [];
+            if (businessNo) {
+                aSelectedBusinessNos.push(businessNo);
+            }
+
+            // Show busy indicator
+            this.setBusy(true);
+
+            if (!utilitiesModel) {
+                sap.m.MessageBox.error("Méthode getBEPrevisionel non disponible");
+                this.setBusy(false);
+                return;
+            }
+
+            // Prepare filter object to pass to backend
+            var filterParams = {
+                societe: societe,
+                /*period: period,
+                businessNo: businessNo,
+                ufo: ufo,
+                label: label,
+                societe: societe,
+                profitCenter: profitCenter,
+                businessManager: businessManager,
+                chefProjet: chefProjet,
+                stIsLiees: stIsLiees,
+                selectedBusinessNos: aSelectedBusinessNos*/
+            };
+
+            utilitiesModel.getBEPrevisionel_filtre( filterParams)
+                .then(function (result) {
+                    // The result should already be filtered from the backend
+                    // Update the model with the filtered data
+                    utilitiesModel.setProperty("/previsionel", result);
+
+                    // Rebuild the tree with the filtered data
+                    self.preparePrevisionelTreeData();
+
+                    // Show success message
+                    var message = `Données actualisées: ${result.length} ligne(s) trouvée(s)`;
+                    if (businessNo) {
+                        message += ` pour l'affaire ${businessNo}`;
+                    }
+                    sap.m.MessageToast.show(message);
+                })
+                .catch(function (error) {
+                    console.error("Error fetching previsionel data:", error);
+                    sap.m.MessageBox.error("Erreur lors du chargement des données: " + error.message);
+                })
+                .finally(function () {
+                    self.setBusy(false);
+                });
+        },
+
+
+        // Helper method to apply additional filters
+        applyAdditionalFilters: function (data, filters) {
+            if (!data || !Array.isArray(data)) return data;
+
+            // If no additional filters provided, return all data
+            if (!filters.ufo && !filters.label && !filters.societe && !filters.profitCenter) {
+                return data;
+            }
+
+            return data.filter(function (item) {
+                var match = true;
+
+                if (filters.ufo && item.UFO) {
+                    match = match && item.UFO.toString().toLowerCase().includes(filters.ufo.toLowerCase());
+                }
+
+                if (filters.label && item.Description) {
+                    match = match && item.Description.toString().toLowerCase().includes(filters.label.toLowerCase());
+                }
+
+                if (filters.societe && item.Societe) {
+                    match = match && item.Societe.toString().toLowerCase().includes(filters.societe.toLowerCase());
+                }
+
+                if (filters.profitCenter && item.ProfitCenter) {
+                    match = match && item.ProfitCenter.toString().toLowerCase().includes(filters.profitCenter.toLowerCase());
+                }
+
+                return match;
+            });
+        },
+
+        // Helper method to set busy state
+        setBusy: function (isBusy) {
+            var oView = this.getView();
+            if (isBusy) {
+                if (!this._busyDialog) {
+                    this._busyDialog = new sap.m.BusyDialog({
+                        text: "Recherche des données en cours...",
+                        title: "Veuillez patienter"
+                    });
+                }
+                this._busyDialog.open();
+            } else {
+                if (this._busyDialog) {
+                    this._busyDialog.close();
+                }
+            }
+
+            // Also set busy state on the table and filter bar
+            var oTable = this.byId("PrevisionnelTreeTable");
+            if (oTable) {
+                oTable.setBusy(isBusy);
+            }
+
+            var oFilterBar = this.byId("filterBar");
+            if (oFilterBar) {
+                oFilterBar.setBusy(isBusy);
+            }
+        },
+
+        onPeriodChange: function (oEvent) {
+            var sPeriod = oEvent.getSource().getValue();
+            var oFiltersModel = this.getView().getModel("filtersModel");
+            var oUtilitiesModel = this.getView().getModel("utilities");
+
+            // Update both models
+            oFiltersModel.setProperty("/Period", sPeriod);
+            oUtilitiesModel.setProperty("/period", sPeriod);
+
+            // Validate period format (optional)
+            if (sPeriod && !/^(0[1-9]|1[0-2])[0-9]{4}$/.test(sPeriod)) {
+                sap.m.MessageBox.warning("Format de période invalide. Utilisez MMyyyy (ex: 102025)");
+            }
+        },
+
+        setView: function (oView) {
+            // Initialize filters model if not already done
+            var oFiltersModel = new sap.ui.model.json.JSONModel({
+                Period: "",
+                Affaire: "",
+                UFO: "",
+                Label: "",
+                Societe: "",
+                ProfitCenter: "",
+                BusinessManager: "",
+                ChefProjet: "",
+                STIsLiees: ""
+            });
+            this.getView().setModel(oFiltersModel, "filtersModel");
+
+            // Set initial period if needed
+            this.setInitialPeriod();
+
+            // Load initial data
+            this.loadInitialData();
+        },
+
+        setInitialPeriod: function () {
+            var oUtilitiesModel = this.getView().getModel("utilities");
+            var oFiltersModel = this.getView().getModel("filtersModel");
+
+            var currentPeriod = oUtilitiesModel.getProperty("/period");
+            if (currentPeriod) {
+                oFiltersModel.setProperty("/Period", currentPeriod);
+            } else {
+                // Set default to current month/year
+                var now = new Date();
+                var month = (now.getMonth() + 1).toString().padStart(2, '0');
+                var year = now.getFullYear().toString();
+                var defaultPeriod = month + year;
+
+                oFiltersModel.setProperty("/Period", defaultPeriod);
+                oUtilitiesModel.setProperty("/period", defaultPeriod);
+            }
+        },
+
+        loadInitialData: function () {
+            var self = this;
+            var oFiltersModel = this.getView().getModel("filtersModel");
+            var period = oFiltersModel.getProperty("/Period");
+
+            if (period) {
+                // Show loading indicator
+                this.setBusy(true);
+
+                // Load data for current period
+                this.getOwnerComponent()._getTabsData('previsionel', [])
+                    .then(function () {
+                        self.preparePrevisionelTreeData();
+                        sap.m.MessageToast.show("Données chargées pour la période " + period);
+                    })
+                    .catch(function (error) {
+                        console.error("Error loading initial data:", error);
+                        sap.m.MessageBox.error("Erreur lors du chargement initial des données");
+                    })
+                    .finally(function () {
+                        self.setBusy(false);
+                    });
+            }
+        },
+
+        onClearFilters: function () {
+            var oFiltersModel = this.getView().getModel("filtersModel");
+
+            // Clear all filters except period
+            oFiltersModel.setProperty("/Affaire", "");
+            oFiltersModel.setProperty("/UFO", "");
+            oFiltersModel.setProperty("/Label", "");
+            oFiltersModel.setProperty("/Societe", "");
+            oFiltersModel.setProperty("/ProfitCenter", "");
+            oFiltersModel.setProperty("/BusinessManager", "");
+            oFiltersModel.setProperty("/ChefProjet", "");
+            oFiltersModel.setProperty("/STIsLiees", "");
+
+            // Reload data with cleared filters
+            this.onSearch();
+        },
+
+        _initializeFiltersModel: function () {
+            if (!this.oView) {
+                console.error("View not set in BudgetPrevisionel");
+                return;
+            }
+
+            // Check if filters model already exists
+            var oFiltersModel = this.oView.getModel("filtersModel");
+
+            if (!oFiltersModel) {
+                // Create new filters model
+                oFiltersModel = new sap.ui.model.json.JSONModel({
+                    Period: "",
+                    Affaire: "",
+                    UFO: "",
+                    Label: "",
+                    Societe: "",
+                    ProfitCenter: "",
+                    BusinessManager: "",
+                    ChefProjet: "",
+                    STIsLiees: ""
+                });
+                this.oView.setModel(oFiltersModel, "filtersModel");
+            }
+
+            // Set initial period
+            this._setInitialPeriod();
+        },
+
+        _setInitialPeriod: function () {
+            var oUtilitiesModel = this.oView.getModel("utilities");
+            var oFiltersModel = this.oView.getModel("filtersModel");
+
+            if (!oUtilitiesModel || !oFiltersModel) {
+                console.warn("Models not available for period initialization");
+                return;
+            }
+
+            var currentPeriod = oUtilitiesModel.getProperty("/period");
+            if (currentPeriod) {
+                oFiltersModel.setProperty("/Period", currentPeriod);
+            } else {
+                // Set default to current month/year
+                var now = new Date();
+                var month = (now.getMonth() + 1).toString().padStart(2, '0');
+                var year = now.getFullYear().toString();
+                var defaultPeriod = month + year;
+
+                oFiltersModel.setProperty("/Period", defaultPeriod);
+                oUtilitiesModel.setProperty("/period", defaultPeriod);
+            }
+        },
+
     });
 });

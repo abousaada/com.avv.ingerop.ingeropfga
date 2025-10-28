@@ -20,7 +20,7 @@
             showGoOnFB="true"
             showClearOnFB="false"
             showRestoreButton="false"
-            search=".onSearch"
+            search=".onSearchPrevisionel"
             filterBarExpanded="true"
         >
             <!-- Use filterGroupItems  -->
@@ -37,6 +37,7 @@
                             value="{filtersModel>/Period}"
                             placeholder="MMYYYY"
                             width="8rem"
+                            liveChange=".onPeriodLiveChange"
                         />
                     </fb:control>
                 </fb:FilterGroupItem>
