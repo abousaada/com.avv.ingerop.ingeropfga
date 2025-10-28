@@ -881,6 +881,31 @@ sap.ui.define(
                 }
                 this._budgetPrevisionel.onSearch(oEvent);
             },
+
+            onCompanyValueHelp: function (oEvent) {
+                if (!this._budgetPrevisionel) {
+                    this._budgetPrevisionel = new BudgetPrevisionel();
+                    this._budgetPrevisionel.oView = this.oView;
+                }
+                this._budgetPrevisionel.onCompanyValueHelp(oEvent);
+            },
+
+            onProfitCenterValueHelp: function (oEvent) {
+                if (!this._budgetPrevisionel) {
+                    this._budgetPrevisionel = new BudgetPrevisionel();
+                    this._budgetPrevisionel.oView = this.oView;
+                }
+                this._budgetPrevisionel.onProfitCenterValueHelp(oEvent);
+            },
+
+            onUFOValueHelp: function (oEvent) {
+                if (!this._budgetPrevisionel) {
+                    this._budgetPrevisionel = new BudgetPrevisionel();
+                    this._budgetPrevisionel.oView = this.oView;
+                }
+                this._budgetPrevisionel.onUFOValueHelp(oEvent);
+            },
+
             // ==============================================
             // Move to formatter !!!!
             // ==============================================

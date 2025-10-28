@@ -1300,7 +1300,7 @@ sap.ui.define([
                 selectedBusinessNos: aSelectedBusinessNos*/
             };
 
-            utilitiesModel.getBEPrevisionel_filtre( filterParams)
+            utilitiesModel.getBEPrevisionel_filtre(filterParams)
                 .then(function (result) {
                     // The result should already be filtered from the backend
                     // Update the model with the filtered data
@@ -1536,6 +1536,151 @@ sap.ui.define([
                 oFiltersModel.setProperty("/Period", defaultPeriod);
                 oUtilitiesModel.setProperty("/period", defaultPeriod);
             }
+        },
+
+
+        onCompanyValueHelp: function (oEvent) {
+            var oInput = oEvent.getSource();
+            var oView = this.getView();
+
+            if (!this._oValueHelpDialog) {
+                // Create value help dialog
+                this._oValueHelpDialog = new sap.m.TableSelectDialog({
+                    title: "Select Company",
+                    noDataText: "No companies found",
+                    rememberSelections: true,
+                    contentWidth: "30%",
+                    items: {
+                        path: '/I_CompanyCodeVH',
+                        template: new sap.m.ColumnListItem({
+                            cells: [
+                                new sap.m.Text({ text: "{CompanyCode}" }),
+                                new sap.m.Text({ text: "{CompanyName}" })
+                            ]
+                        })
+                    },
+                    columns: [
+                        new sap.m.Column({
+                            header: new sap.m.Text({ text: "Company Code" })
+                        }),
+                        new sap.m.Column({
+                            header: new sap.m.Text({ text: "Company Name" })
+                        })
+                    ]
+                });
+
+                // Handle selection
+                this._oValueHelpDialog.attachConfirm(function (oEvent) {
+                    var aSelectedItems = oEvent.getParameter("selectedItems");
+                    if (aSelectedItems && aSelectedItems.length > 0) {
+                        var sSelectedValue = aSelectedItems[0].getBindingContext().getObject().CompanyCode;
+                        oInput.setValue(sSelectedValue);
+                    }
+                });
+
+                // Handle cancel
+                this._oValueHelpDialog.attachCancel(function (oEvent) {
+                    // Optional: handle cancel
+                });
+
+                oView.addDependent(this._oValueHelpDialog);
+            }
+
+            // Open the dialog
+            this._oValueHelpDialog.open();
+        },
+
+
+        onProfitCenterValueHelp: function (oEvent) {
+            var oInput = oEvent.getSource();
+            var oView = this.getView();
+
+            if (!this._oProfitCenterDialog) {
+                // Create value help dialog
+                this._oProfitCenterDialog = new sap.m.TableSelectDialog({
+                    title: "Select Profit Center",
+                    noDataText: "No profit centers found",
+                    rememberSelections: true,
+                    contentWidth: "40%",
+                    items: {
+                        path: '/ZI_FGA_PROFITCENTER_VH',
+                        template: new sap.m.ColumnListItem({
+                            cells: [
+                                new sap.m.Text({ text: "{ProfitCenter}" }),
+                                new sap.m.Text({ text: "{ProfitCenterName}" })
+                            ]
+                        })
+                    },
+                    columns: [
+                        new sap.m.Column({
+                            header: new sap.m.Text({ text: "Profit Center" })
+                        }),
+                        new sap.m.Column({
+                            header: new sap.m.Text({ text: "Description" })
+                        })
+                    ]
+                });
+
+                // Handle selection
+                this._oProfitCenterDialog.attachConfirm(function (oEvent) {
+                    var aSelectedItems = oEvent.getParameter("selectedItems");
+                    if (aSelectedItems && aSelectedItems.length > 0) {
+                        var sSelectedValue = aSelectedItems[0].getBindingContext().getObject().ProfitCenter;
+                        oInput.setValue(sSelectedValue);
+                    }
+                });
+
+                oView.addDependent(this._oProfitCenterDialog);
+            }
+
+            // Open the dialog
+            this._oProfitCenterDialog.open();
+        },
+
+        onUFOValueHelp: function (oEvent) {
+            var oInput = oEvent.getSource();
+            var oView = this.getView();
+
+            if (!this._oUFODialog) {
+                // Create value help dialog
+                this._oUFODialog = new sap.m.TableSelectDialog({
+                    title: "Select UFO Délégué",
+                    noDataText: "No UFOs found",
+                    rememberSelections: true,
+                    contentWidth: "40%",
+                    items: {
+                        path: '/ZI_FGA_UFO_VH',
+                        template: new sap.m.ColumnListItem({
+                            cells: [
+                                new sap.m.Text({ text: "{UFO}" }),
+                                new sap.m.Text({ text: "{UFOName}" })
+                            ]
+                        })
+                    },
+                    columns: [
+                        new sap.m.Column({
+                            header: new sap.m.Text({ text: "UFO" })
+                        }),
+                        new sap.m.Column({
+                            header: new sap.m.Text({ text: "Description" })
+                        })
+                    ]
+                });
+
+                // Handle selection
+                this._oUFODialog.attachConfirm(function (oEvent) {
+                    var aSelectedItems = oEvent.getParameter("selectedItems");
+                    if (aSelectedItems && aSelectedItems.length > 0) {
+                        var sSelectedValue = aSelectedItems[0].getBindingContext().getObject().UFO;
+                        oInput.setValue(sSelectedValue);
+                    }
+                });
+
+                oView.addDependent(this._oUFODialog);
+            }
+
+            // Open the dialog
+            this._oUFODialog.open();
         },
 
     });

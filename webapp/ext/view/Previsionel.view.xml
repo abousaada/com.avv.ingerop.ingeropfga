@@ -60,7 +60,21 @@
                     visibleInFilterBar="true"
                 >
                     <fb:control>
-                        <Input value="{filtersModel>/UFO}" />
+                        <Input
+                            value="{filtersModel>/UFO}"
+                            showValueHelp="true"
+                            valueHelpRequest=".onUFOValueHelp"
+                            valueHelpOnly="true"
+                            showSuggestion="true"
+                            suggestionItems="{
+                path: '/ZI_FGA_UFO_VH',
+                sorter: { path: 'UFO' }
+            }"
+                        >
+                            <suggestionItems>
+                                <core:Item text="{UFO}" />
+                            </suggestionItems>
+                        </Input>
                     </fb:control>
                 </fb:FilterGroupItem>
 
@@ -82,7 +96,21 @@
                     visibleInFilterBar="true"
                 >
                     <fb:control>
-                        <Input value="{filtersModel>/Societe}" />
+                        <Input
+                            value="{filtersModel>/Societe}"
+                            showValueHelp="true"
+                            valueHelpRequest=".onCompanyValueHelp"
+                            valueHelpOnly="true"
+                            showSuggestion="true"
+                            suggestionItems="{
+                path: '/I_CompanyCodeVH',
+                sorter: { path: 'CompanyCode' }
+            }"
+                        >
+                            <suggestionItems>
+                                <core:Item text="{CompanyCode}" />
+                            </suggestionItems>
+                        </Input>
                     </fb:control>
                 </fb:FilterGroupItem>
 
@@ -93,7 +121,21 @@
                     visibleInFilterBar="true"
                 >
                     <fb:control>
-                        <Input value="{filtersModel>/ProfitCenter}" />
+                        <Input
+                            value="{filtersModel>/ProfitCenter}"
+                            showValueHelp="true"
+                            valueHelpRequest=".onProfitCenterValueHelp"
+                            valueHelpOnly="true"
+                            showSuggestion="true"
+                            suggestionItems="{
+                path: '/ZI_FGA_PROFITCENTER_VH',
+                sorter: { path: 'ProfitCenter' }
+            }"
+                        >
+                            <suggestionItems>
+                                <core:Item text="{ProfitCenter}" />
+                            </suggestionItems>
+                        </Input>
                     </fb:control>
                 </fb:FilterGroupItem>
 
