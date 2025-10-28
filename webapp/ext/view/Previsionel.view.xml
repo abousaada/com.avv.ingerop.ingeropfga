@@ -64,7 +64,6 @@
                             value="{filtersModel>/UFO}"
                             showValueHelp="true"
                             valueHelpRequest=".onUFOValueHelp"
-                            valueHelpOnly="true"
                             showSuggestion="true"
                             suggestionItems="{
                 path: '/ZI_FGA_UFO_VH',
@@ -100,7 +99,6 @@
                             value="{filtersModel>/Societe}"
                             showValueHelp="true"
                             valueHelpRequest=".onCompanyValueHelp"
-                            valueHelpOnly="true"
                             showSuggestion="true"
                             suggestionItems="{
                 path: '/I_CompanyCodeVH',
@@ -125,7 +123,6 @@
                             value="{filtersModel>/ProfitCenter}"
                             showValueHelp="true"
                             valueHelpRequest=".onProfitCenterValueHelp"
-                            valueHelpOnly="true"
                             showSuggestion="true"
                             suggestionItems="{
                 path: '/ZI_FGA_PROFITCENTER_VH',
