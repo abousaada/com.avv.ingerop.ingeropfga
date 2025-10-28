@@ -10,11 +10,20 @@ sap.ui.define([
 
             var previsionel = this.getView().getModel("utilities").getProperty("/previsionel");
 
-            /*if (previsionel && previsionel.length > 0 && previsionel[0].DataMode) {
-                this.getView().getModel("utilities").setProperty("/DataMode", previsionel[0].DataMode);
+            // Check if any line has DataMode = "M"
+            var hasManualData = false;
+            if (previsionel && previsionel.length > 0) {
+                hasManualData = previsionel.some(function (item) {
+                    return item.DataMode === "M";
+                });
+            }
+
+            // Set global DataMode based on individual lines
+            if (hasManualData) {
+                this.getView().getModel("utilities").setProperty("/DataMode", "M");
             } else {
                 this.getView().getModel("utilities").setProperty("/DataMode", "A");
-            }*/
+            }
 
             var buildTree = function (items) {
                 var treeData = [];
@@ -441,18 +450,18 @@ sap.ui.define([
             var config = {
                 // Pour l'année N, seuls les mois futurs sont editables
                 N: {
-                    JanvN: currentMonth < 1,
-                    FevrN: currentMonth < 2,
-                    MarsN: currentMonth < 3,
-                    AvrN: currentMonth < 4,
-                    MaiN: currentMonth < 5,
-                    JuinN: currentMonth < 6,
-                    JuilN: currentMonth < 7,
-                    AoutN: currentMonth < 8,
-                    SeptN: currentMonth < 9,
-                    OctN: currentMonth < 10,
-                    NovN: currentMonth < 11,
-                    DecN: currentMonth < 12
+                    JanvN: currentMonth <= 1,
+                    FevrN: currentMonth <= 2,
+                    MarsN: currentMonth <= 3,
+                    AvrN: currentMonth <= 4,
+                    MaiN: currentMonth <= 5,
+                    JuinN: currentMonth <= 6,
+                    JuilN: currentMonth <= 7,
+                    AoutN: currentMonth <= 8,
+                    SeptN: currentMonth <= 9,
+                    OctN: currentMonth <= 10,
+                    NovN: currentMonth <= 11,
+                    DecN: currentMonth <= 12
                 },
                 // Pour l'année N+1, tout est toujours editable
                 N1: {
