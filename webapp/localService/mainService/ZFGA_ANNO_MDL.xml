@@ -621,6 +621,15 @@
             <Annotations Target="ZFGA_SRV.ZC_FGA_ForecastType/Regroupement">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGA_ForecastType/business_p_cmp">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGA_ForecastType/business_no_p_t">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGA_ForecastType/business_cdp">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_FGA_ForecastType/DataMode">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
@@ -633,10 +642,19 @@
                                     <PropertyValue Property="Value" Path="MissionId"/>
                                 </Record>
                                 <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="business_no_p_t"/>
+                                </Record>
+                                <Record Type="UI.DataField">
                                     <PropertyValue Property="Value" Path="Description"/>
                                 </Record>
                                 <Record Type="UI.DataField">
                                     <PropertyValue Property="Value" Path="Regroupement"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="business_p_cmp"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="business_cdp"/>
                                 </Record>
                             </Collection>
                         </PropertyValue>
@@ -666,10 +684,19 @@
                             <PropertyValue Property="Value" Path="MissionId"/>
                         </Record>
                         <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="business_no_p_t"/>
+                        </Record>
+                        <Record Type="UI.DataField">
                             <PropertyValue Property="Value" Path="Description"/>
                         </Record>
                         <Record Type="UI.DataField">
                             <PropertyValue Property="Value" Path="Regroupement"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="business_p_cmp"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="business_cdp"/>
                         </Record>
                     </Collection>
                 </Annotation>
@@ -726,6 +753,9 @@
                             <PropertyValue Property="Value" Path="NovN"/>
                         </Record>
                         <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="business_no_p_t"/>
+                        </Record>
+                        <Record Type="UI.DataField">
                             <PropertyValue Property="Label" String="Décembre N"/>
                             <PropertyValue Property="Value" Path="DecN"/>
                         </Record>
@@ -740,6 +770,9 @@
                             <PropertyValue Property="Value" Path="JanvN1"/>
                         </Record>
                         <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="business_p_cmp"/>
+                        </Record>
+                        <Record Type="UI.DataField">
                             <PropertyValue Property="Label" String="Février N+1"/>
                             <PropertyValue Property="Value" Path="FevrN1"/>
                         </Record>
@@ -750,6 +783,9 @@
                         <Record Type="UI.DataField">
                             <PropertyValue Property="Label" String="Avril N+1"/>
                             <PropertyValue Property="Value" Path="AvrN1"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="business_cdp"/>
                         </Record>
                         <Record Type="UI.DataField">
                             <PropertyValue Property="Label" String="Mai N+1"/>
@@ -789,8 +825,10 @@
                     <Collection>
                         <PropertyPath>BusinessNo</PropertyPath>
                         <PropertyPath>MissionId</PropertyPath>
+                        <PropertyPath>business_no_p_t</PropertyPath>
                         <PropertyPath>Description</PropertyPath>
                         <PropertyPath>Regroupement</PropertyPath>
+                        <PropertyPath>business_p_cmp</PropertyPath>
                     </Collection>
                 </Annotation>
             </Annotations>
