@@ -40,12 +40,27 @@ sap.ui.define([
 
                 const nextYear = periodYear + 1;
 
+                //Init period
+                var filtersModel = self.getView().getModel("filtersModel");
+                if (!filtersModel) {
+                    console.error("Filters model not found. Initializing...");
+                    self._initializeFiltersModel();
+                    filtersModel = self.oView.getModel("filtersModel");
+
+                    if (!filtersModel) {
+                        sap.m.MessageBox.error("Erreur d'initialisation des filtres");
+                        return;
+                    }
+                }
+                filtersModel.setProperty("/period", period);
+
+
                 // Save these years for bindings
                 const utilitiesModel = self.getView().getModel("utilities");
                 utilitiesModel.setProperty("/currentYear", periodYear);
                 utilitiesModel.setProperty("/nextYear", nextYear);
                 utilitiesModel.setProperty("/periodMonth", periodMonth);
-                
+
                 items.forEach(function (item) {
                     item.isTotalRow = false;
 
