@@ -346,7 +346,7 @@ sap.ui.define(
                 Object.keys(mPendingChanges).forEach(function (sPath) {
                     oModel.resetChanges([`/${sPath}`]);
                 });
-                oModel.refresh(true);
+                // oModel.refresh(true);
             },
 
             _resetViewSetUp() {
