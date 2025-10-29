@@ -95,6 +95,7 @@ sap.ui.define(
 
                     this._budgetPrevisionel = new BudgetPrevisionel();
                     this._budgetPrevisionel.oView = this.getView();
+                    this._budgetPrevisionel.oController = this;
 
                     window.addEventListener("popstate", this._cleanModification.bind(this));
                     window.addEventListener("onbeforeunload", this._cleanModification.bind(this));
@@ -134,7 +135,8 @@ sap.ui.define(
                     console.log("onListNavigationExtension called", oEvent);
                 },
 
-                beforeSaveExtension1() { //ABO work in progress. Don't remove
+                beforeSaveExtension() { //ABO work in progress. Don't remove
+                    const self = this;
                     try {
                         const utilitiesModel = this.getModel("utilities");
                         const oView = this.base.getView();
@@ -145,27 +147,32 @@ sap.ui.define(
                             throw new Error("Impossible d'accéder au contexte.");
                         }
 
-                        if (!this.getModel("utilities").validDataBeforeSave(oView)) {
-                            sap.m.MessageBox.error("Veuillez Vérifier tous les champs");
-                            return new Promise((resolve, reject) => {
-                                reject();
-                            });
-                        }
+                        const isForecastMode = utilitiesModel.getProperty("/isForecastMode");
 
-                        if (!this.getModel("utilities").validRecetteExtBeforeSave(oView)) {
-                            sap.m.MessageBox.error("Veuillez Répartir correctement les budgets");
-                            return new Promise((resolve, reject) => {
-                                reject();
-                            });
+                        if (!isForecastMode) {
+                            if (!this.getModel("utilities").validDataBeforeSave(oView)) {
+                                sap.m.MessageBox.error("Veuillez Vérifier tous les champs");
+                                return new Promise((resolve, reject) => {
+                                    reject();
+                                });
+                            }
+
+                            if (!this.getModel("utilities").validRecetteExtBeforeSave(oView)) {
+                                sap.m.MessageBox.error("Veuillez Répartir correctement les budgets");
+                                return new Promise((resolve, reject) => {
+                                    reject();
+                                });
+                            }
                         }
 
                         this._setBusy(true);
 
                         // Check for manual changes in Previsionel
-                        const oModel = this.getModel();
-                        const hasManualChanges = this._budgetPrevisionel._hasManualChangesPrevisionel(utilitiesModel, oModel);
+                        //const oModel = this.getModel();
+                        //const hasManualChanges = this._budgetPrevisionel._hasManualChangesPrevisionel(utilitiesModel, oModel);
+                        const dataMode = utilitiesModel.getProperty("/DataMode");
 
-                        if (hasManualChanges) {
+                        if (isForecastMode && dataMode === 'M') {
                             return new Promise((resolve, reject) => {
                                 sap.m.MessageBox.confirm(
                                     "Passage en mode manuel requis\n\n✓ Écrasement des valeurs automatiques\n✓ Action irréversible\n\nConfirmez-vous cette modification ?",
@@ -174,7 +181,7 @@ sap.ui.define(
                                         onClose: (sAction) => {
                                             if (sAction === sap.m.MessageBox.Action.OK) {
                                                 // User confirmed - proceed with save
-                                                this._executeSave(utilitiesModel, oView, oContext, resolve, reject);
+                                                self._executeSave(utilitiesModel, oView, oContext, resolve, reject);
                                             } else {
                                                 // User cancelled
                                                 this._setBusy(false);
@@ -186,7 +193,10 @@ sap.ui.define(
                             });
                         } else {
                             // No manual changes - proceed directly with save
-                            return this._executeSave(utilitiesModel, oView, oContext);
+                            //return self._executeSave(utilitiesModel, oView, oContext, resolve, reject);
+                            return new Promise((resolve, reject) => {
+                                self._executeSave(utilitiesModel, oView, oContext, resolve, reject);
+                            });
                         }
                     } catch (error) {
                         this._setBusy(false);
@@ -196,57 +206,8 @@ sap.ui.define(
                     }
                 },
 
-                // The Actual saving logic
-                _executeSave: function (utilitiesModel, oView, oContext, resolve, reject) {
-                    return new Promise(async (innerResolve, innerReject) => {
-                        // Use the provided resolve/reject or create new ones for the inner promise
-                        const finalResolve = resolve || innerResolve;
-                        const finalReject = reject || innerReject;
 
-                        try {
-                            const formattedMissions = utilitiesModel.getFormattedMissions();
-                            const formattedPxAutre = utilitiesModel.getFormattedPxAutre();
-                            const formattedPxSubContractingExt = utilitiesModel.formattedPxSubContractingExt();
-                            const formattedPxRecetteExt = utilitiesModel.formattedPxRecetteExt();
-                            const formattedMainOeuvre = utilitiesModel.formattedPxMainOeuvre();
-                            const oPayload = Helper.extractPlainData({
-                                ...oContext.getObject(),
-                                "to_Missions": formattedMissions,
-                                "to_BudgetPxAutre": formattedPxAutre,
-                                "to_BudgetPxSubContracting": formattedPxSubContractingExt,
-                                "to_BudgetPxRecetteExt": formattedPxRecetteExt,
-                                "to_BudgetPxSTI": [],
-                                "to_Previsionel": [],
-                                "to_BudgetPxMainOeuvre": formattedMainOeuvre
-                            });
-
-                            delete oPayload.to_BudgetPxSTI;
-                            delete oPayload.to_Previsionel;
-
-                            oPayload.VAT = oPayload.VAT ? oPayload.VAT.toString() : oPayload.VAT;
-                            const updatedFGA = await utilitiesModel.deepUpsertFGA(oPayload);
-                            this._setBusy(false);
-
-                            if (updatedFGA) {
-                                Helper.validMessage("FGA updated: " + updatedFGA.BusinessNo, this.getView(), this.onAfterSaveAction.bind(this));
-                                finalResolve(updatedFGA);
-                            } else {
-                                this._setBusy(false);
-                                Helper.errorMessage("FGA updated fail");
-                                finalReject("No data returned");
-                            }
-
-                        } catch (error) {
-                            this._setBusy(false);
-                            Helper.errorMessage("FGA updated fail");
-                            console.log(error);
-                            finalReject(error);
-                        }
-                    });
-                },
-
-
-                beforeSaveExtension() { 
+                /*beforeSaveExtension1() {
                     try {
                         const utilitiesModel = this.getModel("utilities");
 
@@ -294,6 +255,7 @@ sap.ui.define(
                             delete oPayload.to_BudgetPxSTI;
                             delete oPayload.to_Previsionel;
 
+
                             try {
                                 oPayload.VAT = oPayload.VAT ? oPayload.VAT.toString() : oPayload.VAT;
                                 const updatedFGA = await utilitiesModel.deepUpsertFGA(oPayload);
@@ -319,10 +281,142 @@ sap.ui.define(
                         console.log(error);
                         return Promise.reject(error);
                     }
-                },
+                },*/
 
             },
 
+            // The Actual saving logic
+            _executeSave: function (utilitiesModel, oView, oContext, resolve, reject) {
+                return new Promise(async (innerResolve, innerReject) => {
+                    // Use the provided resolve/reject or create new ones for the inner promise
+                    const finalResolve = resolve || innerResolve;
+                    const finalReject = reject || innerReject;
+
+                    try {
+                        let oPayload;
+                        const isForecastMode = utilitiesModel.getProperty("/isForecastMode");
+                        const dataMode = utilitiesModel.getProperty("/DataMode");
+
+                        if (!isForecastMode) {
+
+                            const formattedMissions = utilitiesModel.getFormattedMissions();
+                            const formattedPxAutre = utilitiesModel.getFormattedPxAutre();
+                            const formattedPxSubContractingExt = utilitiesModel.formattedPxSubContractingExt();
+                            const formattedPxRecetteExt = utilitiesModel.formattedPxRecetteExt();
+                            const formattedMainOeuvre = utilitiesModel.formattedPxMainOeuvre();
+                            oPayload = Helper.extractPlainData({
+                                ...oContext.getObject(),
+                                "to_Missions": formattedMissions,
+                                "to_BudgetPxAutre": formattedPxAutre,
+                                "to_BudgetPxSubContracting": formattedPxSubContractingExt,
+                                "to_BudgetPxRecetteExt": formattedPxRecetteExt,
+                                "to_BudgetPxSTI": [],
+                                "to_Previsionel": [],
+                                "to_BudgetPxMainOeuvre": formattedMainOeuvre
+                            });
+
+                            delete oPayload.to_BudgetPxSTI;
+                            delete oPayload.to_Previsionel;
+                            oPayload.VAT = oPayload.VAT ? oPayload.VAT.toString() : oPayload.VAT;
+
+                        }
+                        else if (isForecastMode && dataMode === 'M') {
+                            oPayload = Helper.extractPlainData({
+                                ...oContext.getObject(),
+                                "to_Missions": [],
+                                "to_BudgetPxAutre": [],
+                                "to_BudgetPxSubContracting": [],
+                                "to_BudgetPxRecetteExt": [],
+                                "to_BudgetPxSTI": [],
+                                "to_Previsionel": [],
+                                "to_BudgetPxMainOeuvre": []
+                            });
+
+                            const previsionel = utilitiesModel.getProperty("/previsionel") || [];
+                            let filtredPrevisionel = previsionel.filter(item => item.DataMode === "M");
+
+                            // Fix numeric field types and remove "is" properties from filteredPrevisionel
+                            filtredPrevisionel.forEach(item => {
+                                this._fixNumericFieldTypes(item);
+                                this._cleanupPrevisionelItem(item);
+                            });
+
+                            oPayload.to_Previsionel = filtredPrevisionel;
+
+                        } else {
+                            finalReject("Aucune modification n’a été effectuée sur cette vue");
+                            //return;
+                        }
+
+                        const updatedFGA = await utilitiesModel.deepUpsertFGA(oPayload);
+                        this._setBusy(false);
+
+                        if (updatedFGA) {
+                            Helper.validMessage("FGA updated: " + updatedFGA.BusinessNo, this.getView(), this.onAfterSaveAction.bind(this));
+                            finalResolve(updatedFGA);
+                        } else {
+                            this._setBusy(false);
+                            Helper.errorMessage("FGA updated fail");
+                            finalReject("No data returned");
+                        }
+
+                    } catch (error) {
+                        this._setBusy(false);
+                        Helper.errorMessage("FGA updated fail");
+                        console.log(error);
+                        finalReject(error);
+                    }
+                });
+            },
+
+            _fixNumericFieldTypes: function (previsionelItem) {
+                if (!previsionelItem) return;
+
+                const numericFields = [
+                    'JanvN', 'FevrN', 'MarsN', 'AvrN', 'MaiN', 'JuinN', 'JuilN', 'AoutN',
+                    'SeptN', 'OctN', 'NovN', 'DecN', 'JanvN1', 'FevrN1', 'MarsN1', 'AvrN1',
+                    'MaiN1', 'JuinN1', 'JuilN1', 'AoutN1', 'SeptN1', 'OctN1', 'NovN1', 'DecN1',
+                    'TotalN', 'TotalN1', 'Audela', 'ResteAFacturer', 'ResteADepenser'
+                ];
+
+                numericFields.forEach(field => {
+                    if (previsionelItem.hasOwnProperty(field)) {
+                        const value = previsionelItem[field];
+
+                        if (value === null || value === undefined || value === '') {
+                            previsionelItem[field] = "0.00";
+                        } else if (typeof value === 'number') {
+                            // Convert number to string with 2 decimal places
+                            previsionelItem[field] = value.toFixed(2);
+                        } else if (typeof value === 'string') {
+                            // Ensure string has proper decimal format
+                            const numValue = parseFloat(value);
+                            if (!isNaN(numValue)) {
+                                previsionelItem[field] = numValue.toFixed(2);
+                            } else {
+                                previsionelItem[field] = "0.00";
+                            }
+                        }
+                    }
+                });
+            },
+
+            // Clean up previsionel item by removing unwanted properties
+            _cleanupPrevisionelItem: function (previsionelItem) {
+                if (!previsionelItem) return;
+
+                // Remove all properties that start with "is"
+                const isProperties = Object.keys(previsionelItem).filter(key => key.startsWith('is'));
+                isProperties.forEach(prop => {
+                    delete previsionelItem[prop];
+                });
+
+                // Remove FinAffaire property
+                if (previsionelItem.hasOwnProperty('FinAffaire')) {
+                    delete previsionelItem.FinAffaire;
+                    delete previsionelItem.name;
+                }
+            },
 
             _onRoutePatternMatched: function (oEvent) {
                 const sRouteName = oEvent.getParameter("name");
@@ -400,9 +494,9 @@ sap.ui.define(
                 // this.base.templateBaseExtension.getExtensionAPI().refresh();
             },
 
-            async _getTabsData(type) {
+            async _getTabsData(type, aSelectedBusinessNos = []) {
                 try {
-                    const data = await this.getInterface().getModel("utilities").getBEDatas(type);
+                    const data = await this.getInterface().getModel("utilities").getBEDatas(type, aSelectedBusinessNos);
                     return data;
                 } catch (error) {
                     console.log(error);
@@ -414,74 +508,100 @@ sap.ui.define(
             },
 
             _onObjectExtMatched: async function (e) {
-                const oUtilitiesModel = this.getInterface().getModel("utilities");
-                const oContext = e.context;
 
-                // Read the flag from the model + manage refresh
-                let isForecastMode = this.getInterface().getModel("utilities").getProperty("/isForecastMode");
-                if (isForecastMode === undefined || isForecastMode === null) {
-                    const storedValue = sessionStorage.getItem("isForecastMode");
-                    if (storedValue !== null) {
-                        isForecastMode = JSON.parse(storedValue);
-                        oUtilitiesModel.setProperty("/isForecastMode", isForecastMode);
-                    } else {
-                        isForecastMode = false;
-                    }
-                }
+                this._setBusy(true);
 
-                const utilitiesModel = this.getInterface().getModel("utilities");
-                const bCreateMode = this.getView().getModel("ui").getProperty("/createMode");
+                try {
 
-                this._extendOPUiManage._setOPView(e.context);
+                    const oUtilitiesModel = this.getInterface().getModel("utilities");
+                    const oContext = e.context;
 
-                const Percent = e.context.getProperty("Percent");
-                if (Percent === "P1" || Percent === "PI" || !Percent) {
-                    const oModel = this.getInterface().getModel();
-                    oModel.setProperty(e.context.getPath() + "/Percent", "%");
-                }
+                    // Read the flag from the model + manage refresh
+                    let aSelectedBusinessNos = [];
+                    let isForecastMode = this.getInterface().getModel("utilities").getProperty("/isForecastMode");
+                    if (isForecastMode === undefined || isForecastMode === null) {
 
-                PROJET_TYPE = e.context ? e.context.getProperty("Type") : null;
-
-                //1. if create
-                if (bCreateMode) { utilitiesModel.reInit(); return }
-
-                const sPeriod = e.context.getProperty("p_period");
-                if (sPeriod) { utilitiesModel.setYearByPeriod(sPeriod); }
-
-                const sBusinessNo = e.context.getProperty("BusinessNo");
-                if (sBusinessNo) { utilitiesModel.setBusinessNo(sBusinessNo); }
-
-                //redirection, si pas de period ou non en création mode
-                if (!utilitiesModel.getYear() && !bCreateMode) {
-                    window.location.hash = "";
-                    return;
-                }
-
-                if (sPeriod && sBusinessNo && !bCreateMode) {
-                    try {
-
-                        if (isForecastMode) {
-                            console.log("Mode PREVISION détecté !");
-                            var type = 'previsionel';
-                        }
-
-                        const tabData = await this._getTabsData(type);
-
-                        //2. Display Different Fragments Based on Company Code Country
-                        const sCountry = e.context.getProperty("CompanyCountry");
-
-                        if (sCountry === "FR") {
-                            this._loadFragment("Missions");
+                        let type = null;
+                        const storedValue = sessionStorage.getItem("isForecastMode");
+                        if (storedValue !== null) {
+                            isForecastMode = JSON.parse(storedValue);
+                            oUtilitiesModel.setProperty("/isForecastMode", isForecastMode);
                         } else {
-                            this._loadFragment("hoai");
+                            isForecastMode = false;
                         }
 
-                    } catch (error) {
-                        console.logs(error);
+                    } else if (isForecastMode === true) {
+
+
+                        const storedSelection = sessionStorage.getItem("selectedBusinessNos");
+                        if (storedSelection) {
+                            aSelectedBusinessNos = JSON.parse(storedSelection);
+                            console.log("Loaded selected BusinessNos:", storedSelection);
+                        }
                     }
+
+                    const utilitiesModel = this.getInterface().getModel("utilities");
+                    const bCreateMode = this.getView().getModel("ui").getProperty("/createMode");
+
+                    this._extendOPUiManage._setOPView(e.context);
+
+                    const Percent = e.context.getProperty("Percent");
+                    if (Percent === "P1" || Percent === "PI" || !Percent) {
+                        const oModel = this.getInterface().getModel();
+                        oModel.setProperty(e.context.getPath() + "/Percent", "%");
+                    }
+
+                    PROJET_TYPE = e.context ? e.context.getProperty("Type") : null;
+
+                    //1. if create
+                    if (bCreateMode) { utilitiesModel.reInit(); return }
+
+                    const sPeriod = e.context.getProperty("p_period");
+                    if (sPeriod) { utilitiesModel.setYearByPeriod(sPeriod); }
+
+                    const sBusinessNo = e.context.getProperty("BusinessNo");
+                    if (sBusinessNo) { utilitiesModel.setBusinessNo(sBusinessNo); }
+
+                    //redirection, si pas de period ou non en création mode
+                    if (!utilitiesModel.getYear() && !bCreateMode) {
+                        window.location.hash = "";
+                        return;
+                    }
+
+                    if (sPeriod && sBusinessNo && !bCreateMode) {
+                        try {
+
+                            if (isForecastMode) {
+                                console.log("Mode PREVISION détecté !");
+                                var type = 'previsionel';
+                            }
+
+                            const tabData = await this._getTabsData(type, aSelectedBusinessNos);
+
+                            // this._loadFragment("Missions");
+
+                            await this._loadFragment("Missions");
+
+                            this._setBusy(false);
+
+                            /*
+                            //2. Display Different Fragments Based on Company Code Country
+                            const sCountry = e.context.getProperty("CompanyCountry");
+    
+                            if (sCountry === "FR") {
+                                this._loadFragment("Missions");
+                            } else {
+                                this._loadFragment("hoai");
+                            }*/
+
+                        } catch (error) {
+                            console.logs(error);
+                        }
+                    }
+
+                } catch (error) {
+                    console.log(error);
                 }
-
-
             },
 
             _loadFragment: async function (sFragmentName) {
@@ -491,52 +611,60 @@ sap.ui.define(
 
                 if (!oContainer) {
                     console.error("Dynamic container not found");
-                    return;
+                    return Promise.resolve();
+                    //return;
                 }
 
                 // Clear any existing content
                 oContainer.destroyItems();
+                return new Promise(async (resolve, reject) => {
+                    //if missions -- clean this !
+                    if (sFragmentName === "Missions") {
+                        try {
+                            const oFragment = await sap.ui.core.Fragment.load({
+                                name: "com.avv.ingerop.ingeropfga.ext.view.tab.detail." + sFragmentName,
+                                id: sViewId,
+                                controller: this
+                            });
 
-                //if missions -- clean this !
-                if (sFragmentName === "Missions") {
-                    try {
-                        const oFragment = await sap.ui.core.Fragment.load({
-                            name: "com.avv.ingerop.ingeropfga.ext.view.tab.detail." + sFragmentName,
-                            id: sViewId,
-                            controller: this
-                        });
+                            oContainer.addItem(oFragment);
+                        } catch (oError) {
+                            sap.m.MessageBox.error("Failed to load fragment: " + oError.message);
+                            reject(oError);
+                        }
 
-                        oContainer.addItem(oFragment);
-                    } catch (oError) {
-                        sap.m.MessageBox.error("Failed to load fragment: " + oError.message);
+                        //Prepare tree for missions
+                        this.prepareMissionsTreeData();
+                        this.preparePxAutreTreeData();
+                        this.preparePxSubContractingTreeData();
+                        this.preparePxRecetteExtTreeData();
+                        this.preparePxMainOeuvreTreeData();
+                        this.preparePxSTITreeData();
+                        this.preparePrevisionelTreeData();
+
+                        resolve();
                     }
+                    else {
 
-                    //Prepare tree for missions
-                    this.prepareMissionsTreeData();
-                    this.preparePxAutreTreeData();
-                    this.preparePxSubContractingTreeData();
-                    this.preparePxRecetteExtTreeData();
-                    this.preparePxMainOeuvreTreeData();
-                    this.preparePxSTITreeData();
-                    this.preparePrevisionelTreeData();
-                }
-                else {
+                        try {
+                            const oFragment = await sap.ui.core.Fragment.load({
+                                name: "com.avv.ingerop.ingeropfga.ext.view.tab.DetailsTab", //change to Hoai tab
+                                id: sViewId,
+                                controller: this
+                            });
 
-                    try {
-                        const oFragment = await sap.ui.core.Fragment.load({
-                            name: "com.avv.ingerop.ingeropfga.ext.view.tab.DetailsTab", //change to Hoai tab
-                            id: sViewId,
-                            controller: this
-                        });
+                            oContainer.addItem(oFragment);
 
-                        oContainer.addItem(oFragment);
-                    } catch (oError) {
-                        sap.m.MessageBox.error("Failed to load fragment: " + oError.message);
+                            resolve();
+
+                        } catch (oError) {
+                            sap.m.MessageBox.error("Failed to load fragment: " + oError.message);
+                        }
+
                     }
-
-                }
-
+                });
             },
+
 
             _onRouteMatched(event) {
                 console.logs(event);
@@ -735,18 +863,57 @@ sap.ui.define(
 
             // Delegates submit logic to specialized handler : Budget Prévisionel
             preparePrevisionelTreeData: function () {
-                this._setBusy(true);
                 this._budgetPrevisionel.preparePrevisionelTreeData();
-                this._setBusy(false);
             },
 
             onPrevisionelSubmit: function (oEvent) {
                 if (!this._budgetPrevisionel) {
-                    this._budgetPrevisionel = new _budgetPrevisionel();
+                    this._budgetPrevisionel = new BudgetPrevisionel();
                     this._budgetPrevisionel.oView = this.oView;
                 }
                 this._budgetPrevisionel.onSubmit(oEvent);
             },
+
+            onSearchPrevisionel: function (oEvent) {
+                if (!this._budgetPrevisionel) {
+                    this._budgetPrevisionel = new BudgetPrevisionel();
+                    this._budgetPrevisionel.oView = this.oView;
+                }
+                this._budgetPrevisionel.onSearch(oEvent);
+            },
+
+            onCompanyValueHelp: function (oEvent) {
+                if (!this._budgetPrevisionel) {
+                    this._budgetPrevisionel = new BudgetPrevisionel();
+                    this._budgetPrevisionel.oView = this.oView;
+                }
+                this._budgetPrevisionel.onCompanyValueHelp(oEvent);
+            },
+
+            onProfitCenterValueHelp: function (oEvent) {
+                if (!this._budgetPrevisionel) {
+                    this._budgetPrevisionel = new BudgetPrevisionel();
+                    this._budgetPrevisionel.oView = this.oView;
+                }
+                this._budgetPrevisionel.onProfitCenterValueHelp(oEvent);
+            },
+
+            onUFOValueHelp: function (oEvent) {
+                if (!this._budgetPrevisionel) {
+                    this._budgetPrevisionel = new BudgetPrevisionel();
+                    this._budgetPrevisionel.oView = this.oView;
+                }
+                this._budgetPrevisionel.onUFOValueHelp(oEvent);
+            },
+
+            onBusinessNoValueHelp: function (oEvent) {
+                if (!this._budgetPrevisionel) {
+                    this._budgetPrevisionel = new BudgetPrevisionel();
+                    this._budgetPrevisionel.oView = this.oView;
+                }
+                this._budgetPrevisionel.onBusinessNoValueHelp(oEvent);
+            },
+            
 
             // ==============================================
             // Move to formatter !!!!

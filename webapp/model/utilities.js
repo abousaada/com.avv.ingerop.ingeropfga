@@ -60,17 +60,17 @@ sap.ui.define([
                 return this.oMainOeuvre.reCalcMainOeuvreTable();
             },
 
-            async getBEDatas(type) {
+            async getBEDatas(type, aSelectedBusinessNos = []) {
                 try {
-                    
+
                     if (type === 'previsionel') {
-                        const previsionel = await this.getBEPrevisionel();
+                        const previsionel = await this.getBEPrevisionel(aSelectedBusinessNos);
                         this.setPrevisionel(previsionel || []);
                         return;
                     }
                     const [missions, previsions, recaps, opport, risque, charts,
                         chartsadddata, pxRecettes, pxAutres, pxSubContracting,
-                        pxMainOeuvre, pxSTI, pSTI, notes, sfgp, previsionel]
+                        pxMainOeuvre, pxSTI, pSTI, notes, sfgp]
                         = await Promise.all([
 
                             this.getBEMissions(),
@@ -93,7 +93,7 @@ sap.ui.define([
                             this.getBENotes(),
                             this.getBESfgp(),
 
-                            this.getBEPrevisionel(),
+                            //this.getBEPrevisionel(),
 
                         ]);
 
@@ -121,7 +121,7 @@ sap.ui.define([
 
                     this.setSfgp(sfgp || []);
 
-                    this.setPrevisionel(previsionel || []);
+                    //this.setPrevisionel(previsionel || []);
 
 
                 } catch (error) {
@@ -770,14 +770,15 @@ sap.ui.define([
                 }
             },
 
-            async getBEPrevisionel() {
+            /*async getBEPrevisionel1() {
                 try {
                     this.setChartBusy(true);
                     const businessNo = this.getBusinessNo();
                     const period = this.getPeriod();
                     const urlBusinessNo = encodeURIComponent(businessNo);
                     const urlPeriod = encodeURIComponent(period);
-                    const sPath = `/ZC_FGASet(BusinessNo='${urlBusinessNo}',p_period='${urlPeriod}')/to_Previsionel`;
+                    //const sPath = `/ZC_FGASet(BusinessNo='${urlBusinessNo}',p_period='${urlPeriod}')/to_Previsionel`;
+                    const sPath = `/ZC_FGA_Forecast?$filter=BusinessNo eq '${businessNo}'`;
                     console.log(`retrieve Previsionel report data with period: ${period} and BusinessNo: ${businessNo}`);
                     const previsionel = await this.read(sPath);
                     this.setChartBusy(false);
@@ -786,7 +787,97 @@ sap.ui.define([
                     this.setChartBusy(false);
                     console.log(error);
                 }
+            },*/
+
+            async getBEPrevisionel_filtre(filterParams = {}) {
+                try {
+                    this.setChartBusy(true);
+                    const period = this.getPeriod();
+
+                    let urlParameters = {};
+                    let filterConditions = [];
+
+                    // Build filter conditions using supported operators
+                    if (filterParams.selectedBusinessNos && filterParams.selectedBusinessNos.length > 0) {
+                        const businessFilters = filterParams.selectedBusinessNos.map(bn => `BusinessNo eq '${bn}'`).join(' or ');
+                        filterConditions.push(`(${businessFilters})`);
+                        console.log(`Retrieving Previsionel data for BusinessNos: ${filterParams.selectedBusinessNos.join(", ")}`);
+                    } else if (filterParams.businessNo) {
+                        filterConditions.push(`BusinessNo eq '${filterParams.businessNo}'`);
+                        console.log(`Retrieving Previsionel data for BusinessNo: ${filterParams.businessNo}`);
+                    } else {
+                        console.log(`Retrieving all Previsionel data`);
+                    }
+
+                    // UFO filter - use substringof instead of contains
+                    if (filterParams.ufo) {
+                        filterConditions.push(`substringof('${filterParams.ufo}', business_p_ufo)`);
+                    }
+
+                    // Label/Description filter - use substringof instead of contains
+                    if (filterParams.label) {
+                        filterConditions.push(`substringof('${filterParams.label}', business_no_p_t)`);
+                    }
+
+                    // Societe filter - use substringof instead of contains
+                    if (filterParams.societe) {
+                        filterConditions.push(`substringof('${filterParams.societe}', business_p_cmp)`);
+                    }
+
+                    // BusinessManager filter - use substringof instead of contains
+                    if (filterParams.profitCenter) {
+                        filterConditions.push(`substringof('${filterParams.profitCenter}', business_p_cdp)`);
+                    }
+
+                    // STIsLiees filter - use substringof instead of contains
+                    if (filterParams.businessNo) {
+                        filterConditions.push(`substringof('${filterParams.businessNo}', MissionId)`);
+                    }
+
+                    // Combine all filters with AND
+                    if (filterConditions.length > 0) {
+                        urlParameters.$filter = filterConditions.join(' and ');
+                    }
+
+                    console.log("OData URL Parameters:", urlParameters);
+
+                    const previsionel = await this.read("/ZC_FGA_Forecast", { urlParameters });
+                    return previsionel?.results || [];
+                } catch (error) {
+                    console.error("Error in getBEPrevisionel:", error);
+                    throw error;
+                } finally {
+                    this.setChartBusy(false);
+                }
             },
+
+            async getBEPrevisionel(aSelectedBusinessNos = []) {
+                try {
+                    this.setChartBusy(true);
+                    const period = this.getPeriod();
+
+                    let filters = [];
+                    if (aSelectedBusinessNos.length > 0) {
+                        // Build OR filters for multiple selections
+                        const businessFilters = aSelectedBusinessNos.map(bn =>
+                            new sap.ui.model.Filter("BusinessNo", sap.ui.model.FilterOperator.EQ, bn)
+                        );
+                        filters.push(new sap.ui.model.Filter({ filters: businessFilters, and: false }));
+                        console.log(`Retrieving Previsionel data for BusinessNos: ${aSelectedBusinessNos.join(", ")} and period: ${period}`);
+                    } else {
+                        console.log(`Retrieving all Previsionel data for period: ${period}`);
+                    }
+
+                    const previsionel = await this.read("/ZC_FGA_Forecast", { filters });
+                    return previsionel?.results || [];
+                } catch (error) {
+                    console.error(error);
+                } finally {
+                    this.setChartBusy(false);
+                }
+            },
+
+
 
             async getBEClientById(ClientNo) {
                 try {

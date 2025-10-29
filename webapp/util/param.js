@@ -5,26 +5,26 @@ sap.ui.define([
     return {
         defaultNA:
         {
-            "RF":[
+            "RF": [
                 { identifier: "Garantie", field: "Assurance", value: "NA" }
             ],
-            "FG":[
+            "FG": [
                 { identifier: "Identification", field: "Activity", value: "FGE" },
                 { identifier: "Identification", field: "Soufam", value: "" },
                 { identifier: "Garantie", field: "Assurance", value: "NA" },
                 { identifier: "Contrat", field: "Mission", value: "NOTA" },
             ],
-            "FS":[
+            "FS": [
                 { identifier: "Identification", field: "Activity", value: "FGE" },
                 { identifier: "Identification", field: "Soufam", value: "NAA" },
                 { identifier: "Garantie", field: "Assurance", value: "NA" },
                 { identifier: "Contrat", field: "Mission", value: "NOTA" },
             ],
-            "OF":[
+            "OF": [
                 { identifier: "Garantie", field: "Assurance", value: "NA" },
                 { identifier: "Contrat", field: "Mission", value: "NOTA" },
             ],
-            "PI":[
+            "PI": [
                 { identifier: "Identification", field: "Activity", value: "FGE" },
                 { identifier: "Identification", field: "Soufam", value: "NAA" },
                 { identifier: "Garantie", field: "Assurance", value: "NA" },
@@ -295,7 +295,7 @@ sap.ui.define([
                 defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: false },
-                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI","PC"], default: true, create: true, modify: true },
+                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI", "PC"], default: true, create: true, modify: true },
                 action: "onTypeChange"
             },
             BusinessName: {
@@ -303,7 +303,7 @@ sap.ui.define([
                 defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
-                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI","PC"], default: false, create: true, modify: true },
+                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI", "PC"], default: false, create: true, modify: true },
                 action: null
             },
             BusinessStatus: {
@@ -319,7 +319,7 @@ sap.ui.define([
                 defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: false },
-                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI","PC"], default: false, create: true, modify: true },
+                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI", "PC"], default: false, create: true, modify: true },
                 action: null
             },
             CDG: {
@@ -327,7 +327,7 @@ sap.ui.define([
                 defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
-                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI","PC"], default: false, create: true, modify: true },
+                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI", "PC"], default: false, create: true, modify: true },
                 action: 'onCDGChange'
             },
             CompanyCode: {
@@ -367,7 +367,7 @@ sap.ui.define([
                 defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
-                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI","PC"], default: false, create: true, modify: true },
+                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI", "PC"], default: false, create: true, modify: true },
                 action: null
             },
             Site: {
@@ -375,7 +375,7 @@ sap.ui.define([
                 defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: false },
                 enabled: { create: true, modify: true },
-                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI","PC"], default: false, create: true, modify: true },
+                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI", "PC"], default: false, create: true, modify: true },
                 action: null
             },
             International: {
@@ -383,7 +383,7 @@ sap.ui.define([
                 defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: false },
                 enabled: { create: true, modify: true },
-                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI","PC"], default: false, create: true, modify: true },
+                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI", "PC"], default: false, create: true, modify: true },
                 action: null
             },
             AncienNumero: {
@@ -448,7 +448,7 @@ sap.ui.define([
                 defaultValue: { create: 20, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
-                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI","PC"], default: false, create: true, modify: true },
+                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI", "PC"], default: false, create: true, modify: true },
                 action: null
             },
             Currency: {
@@ -456,7 +456,7 @@ sap.ui.define([
                 defaultValue: { create: "EUR", modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
-                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI","PC"], default: false, create: true, modify: true },
+                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI", "PC"], default: false, create: true, modify: true },
                 action: "onCurrencyChange"
             },
 
@@ -673,7 +673,7 @@ sap.ui.define([
                 defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
-                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI","PC"], default: false, create: true, modify: true },
+                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI", "PC"], default: false, create: true, modify: true },
                 action: "onDateChange"
             },
             EndDate: {
@@ -681,7 +681,7 @@ sap.ui.define([
                 defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
-                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI","PC"], default: false, create: true, modify: true },
+                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI", "PC"], default: false, create: true, modify: true },
                 action: "onDateChange"
             },
             NbOfMonth: {
@@ -730,12 +730,20 @@ sap.ui.define([
         },
         //All Section except header fields Section
         headerSectionList: {
+            generalInfoMain: {
+                key: "com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--GeneralInfo::SubSection", 
+                visible: {
+                    create: true,
+                    modify: true,
+                    forecast: false,
+                }
+            },
             summary: {
                 key: "AfterFacet::ZC_FGASet::GeneralInfo::Section",
                 visible: {
                     create: false,
                     modify: true,
-                    forecast: true,
+                    forecast: false,
                 }
             },
             tabRacap: {

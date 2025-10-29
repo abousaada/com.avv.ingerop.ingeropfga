@@ -1,10 +1,13 @@
-<core:FragmentDefinition
-    xmlns="sap.m"
+<mvc:View
     xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:html="http://www.w3.org/1999/xhtml"
     xmlns:table="sap.ui.table"
     xmlns:rm="sap.ui.table.rowmodes"
     xmlns:layout="sap.ui.layout"
     xmlns:fb="sap.ui.comp.filterbar"
+    controllerName="com.avv.ingerop.ingeropfga.ext.controller.extendOP"
 >
     <VBox
         width="100%"
@@ -13,11 +16,11 @@
     >
         <!-- ===== FILTER BAR (classic, comp) ===== -->
         <fb:FilterBar
-            id="filterBar1"
+            id="filterBar"
             showGoOnFB="true"
             showClearOnFB="false"
             showRestoreButton="false"
-            search=".onSearch"
+            search=".onSearchPrevisionel"
             filterBarExpanded="true"
         >
             <!-- Use filterGroupItems  -->
@@ -34,6 +37,7 @@
                             value="{filtersModel>/Period}"
                             placeholder="MMYYYY"
                             width="8rem"
+                            liveChange=".onPeriodLiveChange"
                         />
                     </fb:control>
                 </fb:FilterGroupItem>
@@ -45,7 +49,20 @@
                     visibleInFilterBar="true"
                 >
                     <fb:control>
-                        <Input value="{filtersModel>/Affaire}" />
+                        <Input
+                            value="{filtersModel>/Affaire}"
+                            showValueHelp="true"
+                            valueHelpRequest=".onBusinessNoValueHelp"
+                            showSuggestion="true"
+                            suggestionItems="{
+                path: '/ZC_FGA_VH',
+                sorter: { path: 'BusinessNo' }
+            }"
+                        >
+                            <suggestionItems>
+                                <core:Item text="{BusinessNo}" />
+                            </suggestionItems>
+                        </Input>
                     </fb:control>
                 </fb:FilterGroupItem>
 
@@ -56,7 +73,20 @@
                     visibleInFilterBar="true"
                 >
                     <fb:control>
-                        <Input value="{filtersModel>/UFO}" />
+                        <Input
+                            value="{filtersModel>/UFO}"
+                            showValueHelp="true"
+                            valueHelpRequest=".onUFOValueHelp"
+                            showSuggestion="true"
+                            suggestionItems="{
+                path: '/ZI_FGA_UFO_VH',
+                sorter: { path: 'UFO' }
+            }"
+                        >
+                            <suggestionItems>
+                                <core:Item text="{UFO}" />
+                            </suggestionItems>
+                        </Input>
                     </fb:control>
                 </fb:FilterGroupItem>
 
@@ -78,7 +108,20 @@
                     visibleInFilterBar="true"
                 >
                     <fb:control>
-                        <Input value="{filtersModel>/Societe}" />
+                        <Input
+                            value="{filtersModel>/Societe}"
+                            showValueHelp="true"
+                            valueHelpRequest=".onCompanyValueHelp"
+                            showSuggestion="true"
+                            suggestionItems="{
+                path: '/I_CompanyCodeVH',
+                sorter: { path: 'CompanyCode' }
+            }"
+                        >
+                            <suggestionItems>
+                                <core:Item text="{CompanyCode}" />
+                            </suggestionItems>
+                        </Input>
                     </fb:control>
                 </fb:FilterGroupItem>
 
@@ -89,7 +132,20 @@
                     visibleInFilterBar="true"
                 >
                     <fb:control>
-                        <Input value="{filtersModel>/ProfitCenter}" />
+                        <Input
+                            value="{filtersModel>/ProfitCenter}"
+                            showValueHelp="true"
+                            valueHelpRequest=".onProfitCenterValueHelp"
+                            showSuggestion="true"
+                            suggestionItems="{
+                path: '/ZI_FGA_PROFITCENTER_VH',
+                sorter: { path: 'ProfitCenter' }
+            }"
+                        >
+                            <suggestionItems>
+                                <core:Item text="{ProfitCenter}" />
+                            </suggestionItems>
+                        </Input>
                     </fb:control>
                 </fb:FilterGroupItem>
 
@@ -130,7 +186,7 @@
 
         <!-- ===== TREE TABLE BELOW ===== -->
         <table:TreeTable
-            id="PrevisionnelTreeTable1"
+            id="PrevisionnelTreeTable"
             width="100%"
             rowsUpdated="onRowsUpdatedBudgetPXTab"
             class="sapUiMediumMarginTop"
@@ -150,8 +206,8 @@
             <table:extension>
                 <MessageStrip
                     text="{= ${utilities>/DataMode} === 'M'
-            ? 'Mode manuel : les valeurs affichées ont été saisies manuellement.'
-            : 'Mode automatique : les valeurs sont calculées automatiquement.'}"
+            ? 'Mode manuel : ce tableau comporte des valeurs saisies manuellement..'
+            : 'Mode automatique : les valeurs dans ce tableau sont calculées automatiquement.'}"
                     type="{= ${utilities>/DataMode} === 'M' ? 'Information' : 'Warning'}"
                     showIcon="true"
                     showCloseButton="false"
@@ -203,19 +259,18 @@
                         <!--Text text="{utilities>name}" /-->
                         <HBox alignItems="Center">
                             <items>
-<ObjectStatus
-    text="{utilities>name}"
-    icon="{= (${utilities>isFactDepGroup} || ${utilities>isRegroupement} || 
-           (!${utilities>isNode} &amp;&amp; !${utilities>isTotalRow})) &amp;&amp;
-           !${utilities>isMission}
-           ? (${utilities>DataMode} === 'M' 
-               ? 'sap-icon://edit' 
-               : 'sap-icon://action-settings') 
-           : ''
-    }"
-    state="{= ${utilities>DataMode} === 'M' ? 'Information' : 'None'}"
-/>
-
+                                <ObjectStatus
+                                    text="{utilities>name}"
+                                    icon="{= (${utilities>isFactDepGroup} || ${utilities>isRegroupement} || 
+                                        (!${utilities>isNode} &amp;&amp; !${utilities>isTotalRow})) &amp;&amp;
+                                        !${utilities>isMission}
+                                        ? (${utilities>DataMode} === 'M' 
+                                            ? 'sap-icon://edit' 
+                                            : 'sap-icon://action-settings') 
+                                        : ''
+                                    }"
+                                    state="{= ${utilities>DataMode} === 'M' ? 'Information' : 'None'}"
+                                />
                             </items>
                         </HBox>
                     </table:template>
@@ -302,7 +357,7 @@
 
                 <!-- === Année N (2025) === -->
                 <table:Column
-                    width="6rem"
+                    width="7rem"
                     headerSpan="12,1"
                     hAlign="Center"
                 >
@@ -328,11 +383,19 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableJanvN} }"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                             />
+                            <ObjectStatus
+                                text=""
+                                state="Information"
+                                icon="sap-icon://information"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader} &amp;&amp;
+                                !${utilities>isEditableJanvN} &amp;&amp; 1 &gt; ${utilities>/periodMonth} }"
+                                tooltip="{= 'Prévisionel Janv ' + ${utilities>/currentYear}}"
+                            />
                         </HBox>
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Févr ' + ${utilities>/currentYear}}" />
@@ -350,11 +413,19 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableFevrN}}"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                             />
+                            <ObjectStatus
+                                text=""
+                                state="Information"
+                                icon="sap-icon://information"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader} &amp;&amp;
+                                !${utilities>isEditableFevrN} &amp;&amp; 2 &gt; ${utilities>/periodMonth} }"
+                                tooltip="{= 'Prévisionel Fevr ' + ${utilities>/currentYear}}"
+                            />
                         </HBox>
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Mars ' + ${utilities>/currentYear}}" />
@@ -372,11 +443,19 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableMarsN}}"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                             />
+                            <ObjectStatus
+                                text=""
+                                state="Information"
+                                icon="sap-icon://information"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader} &amp;&amp;
+                                !${utilities>isEditableMarsN} &amp;&amp; 3 &gt; ${utilities>/periodMonth} }"
+                                tooltip="{= 'Prévisionel Mars ' + ${utilities>/currentYear}}"
+                            />
                         </HBox>
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Avr ' + ${utilities>/currentYear}}" />
@@ -394,11 +473,19 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableAvrN}}"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                             />
+                            <ObjectStatus
+                                text=""
+                                state="Information"
+                                icon="sap-icon://information"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader} &amp;&amp;
+                                !${utilities>isEditableAvrN} &amp;&amp; 4 &gt; ${utilities>/periodMonth} }"
+                                tooltip="{= 'Prévisionel Avr ' + ${utilities>/currentYear}}"
+                            />
                         </HBox>
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Mai ' + ${utilities>/currentYear}}" />
@@ -416,11 +503,19 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableMaiN}}"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                             />
+                            <ObjectStatus
+                                text=""
+                                state="Information"
+                                icon="sap-icon://information"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader} &amp;&amp;
+                                !${utilities>isEditableMaiN} &amp;&amp; 5 &gt; ${utilities>/periodMonth} }"
+                                tooltip="{= 'Prévisionel Mai ' + ${utilities>/currentYear}}"
+                            />
                         </HBox>
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Juin ' + ${utilities>/currentYear}}" />
@@ -438,11 +533,19 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableJuinN}}"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                             />
+                            <ObjectStatus
+                                text=""
+                                state="Information"
+                                icon="sap-icon://information"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader} &amp;&amp;
+                                !${utilities>isEditableJuinN} &amp;&amp; 6 &gt; ${utilities>/periodMonth} }"
+                                tooltip="{= 'Prévisionel Juin ' + ${utilities>/currentYear}}"
+                            />
                         </HBox>
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Juil ' + ${utilities>/currentYear}}" />
@@ -460,12 +563,20 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableJuilN}}"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                             />
+                            <ObjectStatus
+                                text=""
+                                state="Information"
+                                icon="sap-icon://information"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader} &amp;&amp;
+                                !${utilities>isEditableJuilN} &amp;&amp; 7 &gt; ${utilities>/periodMonth} }"
+                                tooltip="{= 'Prévisionel Juil ' + ${utilities>/currentYear}}"
+                            />
                         </HBox>
                     </table:template>
                 </table:Column>
 
                 <!-- === Editable fields (Août → Déc N) === -->
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Août ' + ${utilities>/currentYear}}" />
@@ -483,11 +594,19 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableAoutN}}"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                             />
+                            <ObjectStatus
+                                text=""
+                                state="Information"
+                                icon="sap-icon://information"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader} &amp;&amp;
+                                !${utilities>isEditableAoutN} &amp;&amp; 8 &gt; ${utilities>/periodMonth} }"
+                                tooltip="{= 'Prévisionel Aout ' + ${utilities>/currentYear}}"
+                            />
                         </HBox>
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Sept ' + ${utilities>/currentYear}}" />
@@ -505,11 +624,19 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableSeptN}}"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                             />
+                            <ObjectStatus
+                                text=""
+                                state="Information"
+                                icon="sap-icon://information"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader} &amp;&amp;
+                                !${utilities>isEditableSeptN} &amp;&amp; 9 &gt; ${utilities>/periodMonth} }"
+                                tooltip="{= 'Prévisionel Sept ' + ${utilities>/currentYear}}"
+                            />
                         </HBox>
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Oct ' + ${utilities>/currentYear}}" />
@@ -527,11 +654,19 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableOctN}}"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                             />
+                            <ObjectStatus
+                                text=""
+                                state="Information"
+                                icon="sap-icon://information"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader} &amp;&amp;
+                                !${utilities>isEditableOctN} &amp;&amp; 10 &gt; ${utilities>/periodMonth} }"
+                                tooltip="{= 'Prévisionel Oct ' + ${utilities>/currentYear}}"
+                            />
                         </HBox>
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Nov ' + ${utilities>/currentYear}}" />
@@ -549,11 +684,19 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableNovN}}"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                             />
+                            <ObjectStatus
+                                text=""
+                                state="Information"
+                                icon="sap-icon://information"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader} &amp;&amp;
+                                !${utilities>isEditableNovN} &amp;&amp; 11 &gt; ${utilities>/periodMonth} }"
+                                tooltip="{= 'Prévisionel Nov ' + ${utilities>/currentYear}}"
+                            />
                         </HBox>
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Déc ' + ${utilities>/currentYear}}" />
@@ -571,6 +714,14 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableDecN}}"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                             />
+                            <ObjectStatus
+                                text=""
+                                state="Information"
+                                icon="sap-icon://information"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader} &amp;&amp;
+                                !${utilities>isEditableDecN} &amp;&amp; 12 &gt; ${utilities>/periodMonth} }"
+                                tooltip="{= 'Prévisionel Dec ' + ${utilities>/currentYear}}"
+                            />
                         </HBox>
                     </table:template>
                 </table:Column>
@@ -578,7 +729,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                 <!-- === Année N+1 (2026) — all editable === -->
                 <!-- === Année N+1 (2026) === -->
                 <table:Column
-                    width="6rem"
+                    width="7rem"
                     headerSpan="12,1"
                     hAlign="Center"
                 >
@@ -603,7 +754,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Févr ' + ${utilities>/nextYear}}" />
@@ -625,7 +776,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Mars ' + ${utilities>/nextYear}}" />
@@ -647,7 +798,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Avr ' + ${utilities>/nextYear}}" />
@@ -669,7 +820,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Mai ' + ${utilities>/nextYear}}" />
@@ -691,7 +842,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Juin ' + ${utilities>/nextYear}}" />
@@ -713,7 +864,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Juil ' + ${utilities>/nextYear}}" />
@@ -735,7 +886,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Août ' + ${utilities>/nextYear}}" />
@@ -757,7 +908,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Sept ' + ${utilities>/nextYear}}" />
@@ -779,7 +930,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Oct ' + ${utilities>/nextYear}}" />
@@ -801,7 +952,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Nov ' + ${utilities>/nextYear}}" />
@@ -823,7 +974,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                     </table:template>
                 </table:Column>
 
-                <table:Column width="6rem">
+                <table:Column width="7rem">
                     <table:multiLabels>
                         <Label text="" />
                         <Label text="{= 'Déc ' + ${utilities>/nextYear}}" />
@@ -889,4 +1040,4 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
             </table:columns>
         </table:TreeTable>
     </VBox>
-</core:FragmentDefinition>
+</mvc:View>

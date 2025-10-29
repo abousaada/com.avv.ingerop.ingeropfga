@@ -334,6 +334,13 @@
                     "id": "onPrevPressButton",
                     "text": "Prévision",
                     "press": "onPrevPress",
+                    "requiresSelection": false
+                  },
+                  "onDummyPress": {
+                    "id": "onDummyPressButton",
+                    "text": "||",
+                    "visible": false,
+                    "flexEnabled": false,
                     "requiresSelection": true
                   }
                 }
@@ -397,12 +404,9 @@
               }
             },
             "AfterFacet|ZC_FGASet|Prevision": {
-              "className": "sap.ui.core.Fragment",
-              "fragmentName": "com.avv.ingerop.ingeropfga.ext.view.tab.budget.Previsionel",
-              "type": "XML",
-              "sap.ui.generic.app": {
-                "title": "Prévisionel"
-              }
+              "className": "sap.ui.core.mvc.View",
+              "viewName": "com.avv.ingerop.ingeropfga.ext.view.Previsionel",
+              "type": "XML"
             }
           }
         }
@@ -434,8 +438,9 @@
             },
             "tableSettings": {
               "type": "AnalyticalTable",
-              "multiSelect": false,
-              "copy": false
+              "copy": false,
+              "multiSelect": true,
+              "selectAll": true
             },
             "dataLoadSettings": {
               "loadDataOnAppLaunch": "always"

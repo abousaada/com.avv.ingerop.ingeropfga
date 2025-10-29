@@ -518,7 +518,7 @@
                 <Property Name="MissionId" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="N°Affaire Partenaire (Fille ou petite)" sap:quickinfo="Zone de caractères de longueur 24" sap:creatable="false" sap:updatable="false"/>
                 <Property Name="BusinessNo" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="N° Affaire Emettrice" sap:quickinfo="Zone de caractères de longueur 24" sap:value-list="standard"/>
                 <Property Name="ParentMissionId" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="Elément d'OTP" sap:quickinfo="Elément d'organigramme technique de projet (élt OTP)"/>
-                <Property Name="HierarchyLevel" Type="Edm.Byte"/>
+                <Property Name="HierarchyLevel" Type="Edm.Int32"/>
                 <Property Name="Libelle" Type="Edm.String" MaxLength="40" sap:label="Libellé Mission" sap:quickinfo="PS: désignation (première ligne de texte)"/>
                 <Property Name="Description" Type="Edm.String" MaxLength="40" sap:label="Description" sap:quickinfo="PS: désignation (première ligne de texte)"/>
                 <Property Name="FacturationDepense" Type="Edm.String" MaxLength="20" sap:label="Type (Facturation / Dépenses)"/>
@@ -551,8 +551,13 @@
                 <Property Name="TotalN" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Total Année N"/>
                 <Property Name="TotalN1" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Total Année N+1"/>
                 <Property Name="Audela" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Au-dela"/>
-                <Property Name="Regroupement" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="UFO Affaire partenaire" sap:quickinfo="Nom de set" sap:value-list="standard"/>
+                <Property Name="Regroupement" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="UFO Affaire partenaire" sap:quickinfo="Zone de 10 caractères" sap:value-list="standard"/>
                 <Property Name="account" Type="Edm.String" MaxLength="10"/>
+                <Property Name="business_p_cmp" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Société Affaire partenaire" sap:quickinfo="Société de l'élément d'OTP" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="business_no_p_t" Type="Edm.String" MaxLength="40" sap:label="Libellé Affaire partenaire" sap:quickinfo="PS: désignation (première ligne de texte)"/>
+                <Property Name="business_p_cdp" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Centre de profit Affaire partenaire" sap:quickinfo="Centre de profit" sap:value-list="standard"/>
+                <Property Name="business_p_ufo" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="UFO Affaire partenaire" sap:quickinfo="Zone de 10 caractères" sap:value-list="standard"/>
+                <Property Name="mask" Type="Edm.String" MaxLength="3" sap:display-format="NonNegative"/>
                 <Property Name="DataMode" Type="Edm.String" MaxLength="1"/>
             </EntityType>
             <EntityType Name="ZC_FGA_MISSIONType" sap:label="FGA Missions" sap:content-version="1">
@@ -961,10 +966,10 @@
                 <Property Name="business_e_curr" Type="Edm.String" MaxLength="5" sap:display-format="UpperCase" sap:label="Currency" sap:quickinfo="Clé de devise" sap:semantics="currency-code"/>
                 <Property Name="business_no_p" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="N°Affaire Partenaire (Fille ou petite)" sap:quickinfo="Zone de caractères de longueur 24" sap:creatable="false" sap:updatable="false"/>
                 <Property Name="business_no_p_t" Type="Edm.String" MaxLength="40" sap:label="Libellé Affaire partenaire" sap:quickinfo="PS: désignation (première ligne de texte)"/>
-                <Property Name="business_p_ufo" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="UFO Affaire partenaire" sap:quickinfo="Nom de set" sap:value-list="standard"/>
+                <Property Name="business_p_ufo" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="UFO Affaire partenaire" sap:quickinfo="Zone de 10 caractères" sap:value-list="standard"/>
                 <Property Name="business_p_cmp" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Société Affaire partenaire" sap:quickinfo="Société de l'élément d'OTP" sap:creatable="false" sap:updatable="false"/>
-                <Property Name="business_p_cdp" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Centre de profit Affaire partenaire" sap:quickinfo="FGA Profit Center" sap:value-list="standard"/>
-                <Property Name="business_p_bm" Type="Edm.String" MaxLength="25" sap:label="Responsable Affaire partenaire" sap:quickinfo="FGA Business Manager"/>
+                <Property Name="business_p_cdp" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Centre de profit Affaire partenaire" sap:quickinfo="Centre de profit" sap:value-list="standard"/>
+                <Property Name="business_p_bm" Type="Edm.String" MaxLength="25" sap:label="Responsable Affaire partenaire" sap:quickinfo="Responsable (chef de projet)"/>
                 <Property Name="business_p_mis" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Mission" sap:quickinfo="Elément de donnée MISSION"/>
                 <Property Name="business_p_projm" Type="Edm.String" MaxLength="8" sap:display-format="NonNegative" sap:text="business_p_projm_t" sap:label="Chef de projet" sap:quickinfo="Numéro du responsable (chef de projet)" sap:value-list="standard"/>
                 <Property Name="business_p_projm_t" Type="Edm.String" MaxLength="25" sap:label="Project Manager Name" sap:quickinfo="Responsable (chef de projet)"/>
@@ -2926,6 +2931,50 @@
                             <Collection>
                                 <Record Type="Common.ValueListParameterInOut">
                                     <PropertyValue Property="LocalDataProperty" PropertyPath="Regroupement"/>
+                                    <PropertyValue Property="ValueListProperty" String="UFO"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="description"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGA_ForecastType/business_p_cdp" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.ValueList">
+                    <Record>
+                        <PropertyValue Property="Label" String="Aide à la recherche Centre de profit"/>
+                        <PropertyValue Property="CollectionPath" String="ZI_FGA_PROFITCENTER_VH"/>
+                        <PropertyValue Property="SearchSupported" Bool="false"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="business_p_cdp"/>
+                                    <PropertyValue Property="ValueListProperty" String="ProfitCenter"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterIn">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="business_p_ufo"/>
+                                    <PropertyValue Property="ValueListProperty" String="UFO"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="description"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGA_ForecastType/business_p_ufo" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.ValueList">
+                    <Record>
+                        <PropertyValue Property="Label" String="Aide à la recherche d''UFO Délégué"/>
+                        <PropertyValue Property="CollectionPath" String="ZI_FGA_UFO_VH"/>
+                        <PropertyValue Property="SearchSupported" Bool="false"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="business_p_ufo"/>
                                     <PropertyValue Property="ValueListProperty" String="UFO"/>
                                 </Record>
                                 <Record Type="Common.ValueListParameterDisplayOnly">
