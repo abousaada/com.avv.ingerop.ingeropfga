@@ -825,12 +825,12 @@ sap.ui.define([
                     }
 
                     // BusinessManager filter - use substringof instead of contains
-                    if (filterParams.businessManager) {
+                    if (filterParams.profitCenter) {
                         filterConditions.push(`substringof('${filterParams.profitCenter}', business_p_cdp)`);
                     }
 
                     // STIsLiees filter - use substringof instead of contains
-                    if (filterParams.stIsLiees) {
+                    if (filterParams.businessNo) {
                         filterConditions.push(`substringof('${filterParams.businessNo}', MissionId)`);
                     }
 

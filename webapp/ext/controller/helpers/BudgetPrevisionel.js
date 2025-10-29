@@ -1487,7 +1487,7 @@ sap.ui.define([
                 console.error("View not set in BudgetPrevisionel");
                 return;
             }
-
+                        
             // Check if filters model already exists
             var oFiltersModel = this.oView.getModel("filtersModel");
 
