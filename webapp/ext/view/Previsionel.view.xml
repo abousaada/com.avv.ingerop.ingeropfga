@@ -383,6 +383,14 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableJanvN} }"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                             />
+                            <ObjectStatus
+                                text=""
+                                state="Information"
+                                icon="sap-icon://information"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader} &amp;&amp;
+                                !${utilities>isEditableJanvN} &amp;&amp; 1 &gt; ${utilities>/periodMonth} }"
+                                tooltip="{= 'Prévisionel Janv ' + ${utilities>/currentYear}}"
+                            />
                         </HBox>
                     </table:template>
                 </table:Column>
@@ -404,6 +412,14 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 submit=".onPrevisionelSubmit"
                                 editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableFevrN}}"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
+                            />
+                            <ObjectStatus
+                                text=""
+                                state="Information"
+                                icon="sap-icon://information"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader} &amp;&amp;
+                                !${utilities>isEditableFevrN} &amp;&amp; 2 &gt; ${utilities>/periodMonth} }"
+                                tooltip="{= 'Prévisionel Fevr ' + ${utilities>/currentYear}}"
                             />
                         </HBox>
                     </table:template>
@@ -427,6 +443,14 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableMarsN}}"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                             />
+                            <ObjectStatus
+                                text=""
+                                state="Information"
+                                icon="sap-icon://information"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader} &amp;&amp;
+                                !${utilities>isEditableMarsN} &amp;&amp; 3 &gt; ${utilities>/periodMonth} }"
+                                tooltip="{= 'Prévisionel Mars ' + ${utilities>/currentYear}}"
+                            />
                         </HBox>
                     </table:template>
                 </table:Column>
@@ -448,6 +472,14 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 submit=".onPrevisionelSubmit"
                                 editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableAvrN}}"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
+                            />
+                            <ObjectStatus
+                                text=""
+                                state="Information"
+                                icon="sap-icon://information"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader} &amp;&amp;
+                                !${utilities>isEditableAvrN} &amp;&amp; 4 &gt; ${utilities>/periodMonth} }"
+                                tooltip="{= 'Prévisionel Avr ' + ${utilities>/currentYear}}"
                             />
                         </HBox>
                     </table:template>
@@ -471,6 +503,14 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableMaiN}}"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                             />
+                            <ObjectStatus
+                                text=""
+                                state="Information"
+                                icon="sap-icon://information"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader} &amp;&amp;
+                                !${utilities>isEditableMaiN} &amp;&amp; 5 &gt; ${utilities>/periodMonth} }"
+                                tooltip="{= 'Prévisionel Mai ' + ${utilities>/currentYear}}"
+                            />
                         </HBox>
                     </table:template>
                 </table:Column>
@@ -493,6 +533,14 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableJuinN}}"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                             />
+                            <ObjectStatus
+                                text=""
+                                state="Information"
+                                icon="sap-icon://information"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader} &amp;&amp;
+                                !${utilities>isEditableJuinN} &amp;&amp; 6 &gt; ${utilities>/periodMonth} }"
+                                tooltip="{= 'Prévisionel Juin ' + ${utilities>/currentYear}}"
+                            />
                         </HBox>
                     </table:template>
                 </table:Column>
@@ -514,6 +562,14 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 submit=".onPrevisionelSubmit"
                                 editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableJuilN}}"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
+                            />
+                            <ObjectStatus
+                                text=""
+                                state="Information"
+                                icon="sap-icon://information"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader} &amp;&amp;
+                                !${utilities>isEditableJuilN} &amp;&amp; 7 &gt; ${utilities>/periodMonth} }"
+                                tooltip="{= 'Prévisionel Juil ' + ${utilities>/currentYear}}"
                             />
                         </HBox>
                     </table:template>
@@ -538,6 +594,14 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableAoutN}}"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                             />
+                            <ObjectStatus
+                                text=""
+                                state="Information"
+                                icon="sap-icon://information"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader} &amp;&amp;
+                                !${utilities>isEditableAoutN} &amp;&amp; 8 &gt; ${utilities>/periodMonth} }"
+                                tooltip="{= 'Prévisionel Aout ' + ${utilities>/currentYear}}"
+                            />
                         </HBox>
                     </table:template>
                 </table:Column>
@@ -559,6 +623,14 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 submit=".onPrevisionelSubmit"
                                 editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableSeptN}}"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
+                            />
+                            <ObjectStatus
+                                text=""
+                                state="Information"
+                                icon="sap-icon://information"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader} &amp;&amp;
+                                !${utilities>isEditableSeptN} &amp;&amp; 9 &gt; ${utilities>/periodMonth} }"
+                                tooltip="{= 'Prévisionel Sept ' + ${utilities>/currentYear}}"
                             />
                         </HBox>
                     </table:template>
@@ -582,6 +654,14 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableOctN}}"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                             />
+                            <ObjectStatus
+                                text=""
+                                state="Information"
+                                icon="sap-icon://information"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader} &amp;&amp;
+                                !${utilities>isEditableOctN} &amp;&amp; 10 &gt; ${utilities>/periodMonth} }"
+                                tooltip="{= 'Prévisionel Oct ' + ${utilities>/currentYear}}"
+                            />
                         </HBox>
                     </table:template>
                 </table:Column>
@@ -604,6 +684,14 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableNovN}}"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                             />
+                            <ObjectStatus
+                                text=""
+                                state="Information"
+                                icon="sap-icon://information"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader} &amp;&amp;
+                                !${utilities>isEditableNovN} &amp;&amp; 11 &gt; ${utilities>/periodMonth} }"
+                                tooltip="{= 'Prévisionel Nov ' + ${utilities>/currentYear}}"
+                            />
                         </HBox>
                     </table:template>
                 </table:Column>
@@ -625,6 +713,14 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 submit=".onPrevisionelSubmit"
                                 editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableDecN}}"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
+                            />
+                            <ObjectStatus
+                                text=""
+                                state="Information"
+                                icon="sap-icon://information"
+                                visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader} &amp;&amp;
+                                !${utilities>isEditableDecN} &amp;&amp; 12 &gt; ${utilities>/periodMonth} }"
+                                tooltip="{= 'Prévisionel Dec ' + ${utilities>/currentYear}}"
                             />
                         </HBox>
                     </table:template>

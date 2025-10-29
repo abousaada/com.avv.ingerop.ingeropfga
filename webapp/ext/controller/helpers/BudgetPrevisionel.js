@@ -44,7 +44,8 @@ sap.ui.define([
                 const utilitiesModel = self.getView().getModel("utilities");
                 utilitiesModel.setProperty("/currentYear", periodYear);
                 utilitiesModel.setProperty("/nextYear", nextYear);
-
+                utilitiesModel.setProperty("/periodMonth", periodMonth);
+                
                 items.forEach(function (item) {
                     item.isTotalRow = false;
 
@@ -494,6 +495,7 @@ sap.ui.define([
             const utilitiesModel = this.getView().getModel("utilities");
             utilitiesModel.setProperty("/currentYear", periodYear);
             utilitiesModel.setProperty("/nextYear", nextYear);
+            utilitiesModel.setProperty("/periodMonth", periodMonth);
 
             const currentMonth = periodMonth;
             const currentYear = periodYear;
