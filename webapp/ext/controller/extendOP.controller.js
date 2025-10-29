@@ -509,7 +509,7 @@ sap.ui.define(
 
             _onObjectExtMatched: async function (e) {
 
-                this._setBusy(true);
+                //this._setBusy(true);
 
                 try {
 
@@ -582,7 +582,7 @@ sap.ui.define(
 
                             await this._loadFragment("Missions");
 
-                            this._setBusy(false);
+                            //this._setBusy(false);
 
                             /*
                             //2. Display Different Fragments Based on Company Code Country
