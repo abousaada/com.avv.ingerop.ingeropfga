@@ -811,12 +811,12 @@ sap.ui.define([
 
                     // UFO filter - use substringof instead of contains
                     if (filterParams.ufo) {
-                        filterConditions.push(`substringof('${filterParams.ufo}', Regroupement)`);
+                        filterConditions.push(`substringof('${filterParams.ufo}', business_p_ufo)`);
                     }
 
                     // Label/Description filter - use substringof instead of contains
                     if (filterParams.label) {
-                        filterConditions.push(`substringof('${filterParams.label}', Description)`);
+                        filterConditions.push(`substringof('${filterParams.label}', business_no_p_t)`);
                     }
 
                     // Societe filter - use substringof instead of contains
@@ -826,12 +826,12 @@ sap.ui.define([
 
                     // BusinessManager filter - use substringof instead of contains
                     if (filterParams.businessManager) {
-                        filterConditions.push(`substringof('${filterParams.businessManager}', business_p_cdp)`);
+                        filterConditions.push(`substringof('${filterParams.profitCenter}', business_p_cdp)`);
                     }
 
                     // STIsLiees filter - use substringof instead of contains
                     if (filterParams.stIsLiees) {
-                        filterConditions.push(`substringof('${filterParams.stIsLiees}', MissionId)`);
+                        filterConditions.push(`substringof('${filterParams.businessNo}', MissionId)`);
                     }
 
                     // Combine all filters with AND

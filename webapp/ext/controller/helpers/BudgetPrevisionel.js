@@ -1288,16 +1288,13 @@ sap.ui.define([
             // Prepare filter object to pass to backend
             var filterParams = {
                 societe: societe,
-                /*period: period,
+                //period: period,
                 businessNo: businessNo,
                 ufo: ufo,
                 label: label,
                 societe: societe,
                 profitCenter: profitCenter,
-                businessManager: businessManager,
-                chefProjet: chefProjet,
-                stIsLiees: stIsLiees,
-                selectedBusinessNos: aSelectedBusinessNos*/
+                selectedBusinessNos: aSelectedBusinessNos
             };
 
             utilitiesModel.getBEPrevisionel_filtre(filterParams)
@@ -1538,27 +1535,42 @@ sap.ui.define([
             }
         },
 
-
         onCompanyValueHelp: function (oEvent) {
             var oInput = oEvent.getSource();
             var oView = this.getView();
 
             if (!this._oValueHelpDialog) {
-                // Create value help dialog
                 this._oValueHelpDialog = new sap.m.TableSelectDialog({
                     title: "Select Company",
                     noDataText: "No companies found",
                     rememberSelections: true,
                     contentWidth: "30%",
-                    items: {
-                        path: '/I_CompanyCodeVH',
-                        template: new sap.m.ColumnListItem({
-                            cells: [
-                                new sap.m.Text({ text: "{CompanyCode}" }),
-                                new sap.m.Text({ text: "{CompanyCodeName}" })
-                            ]
-                        })
+
+                    search: function (oEvent) {
+                        var sValue = oEvent.getParameter("value");
+                        var oFilter = new sap.ui.model.Filter(
+                            "CompanyCode",
+                            sap.ui.model.FilterOperator.Contains,
+                            sValue
+                        );
+                        oEvent.getSource().getBinding("items").filter([oFilter]);
                     },
+
+                    confirm: function (oEvent) {
+                        var aSelectedItems = oEvent.getParameter("selectedItems");
+                        if (aSelectedItems && aSelectedItems.length > 0) {
+                            var sSelectedValue = aSelectedItems[0]
+                                .getBindingContext()
+                                .getObject()
+                                .CompanyCode;
+                            oInput.setValue(sSelectedValue);
+                        }
+                    },
+
+                    // Optional: handle cancel
+                    cancel: function () { },
+
+                    // Table columns
                     columns: [
                         new sap.m.Column({
                             header: new sap.m.Text({ text: "Company Code" })
@@ -1569,118 +1581,184 @@ sap.ui.define([
                     ]
                 });
 
-                // Handle selection
-                this._oValueHelpDialog.attachConfirm(function (oEvent) {
-                    var aSelectedItems = oEvent.getParameter("selectedItems");
-                    if (aSelectedItems && aSelectedItems.length > 0) {
-                        var sSelectedValue = aSelectedItems[0].getBindingContext().getObject().CompanyCode;
-                        oInput.setValue(sSelectedValue);
-                    }
-                });
-
-                // Handle cancel
-                this._oValueHelpDialog.attachCancel(function (oEvent) {
-                    // Optional: handle cancel
+                this._oValueHelpDialog.bindAggregation("items", {
+                    path: "/I_CompanyCodeVH",
+                    template: new sap.m.ColumnListItem({
+                        cells: [
+                            new sap.m.Text({ text: "{CompanyCode}" }),
+                            new sap.m.Text({ text: "{CompanyCodeName}" })
+                        ]
+                    })
                 });
 
                 oView.addDependent(this._oValueHelpDialog);
             }
 
-            // Open the dialog
+            this._oValueHelpDialog.getBinding("items").filter([]);
+
             this._oValueHelpDialog.open();
         },
-
 
         onProfitCenterValueHelp: function (oEvent) {
             var oInput = oEvent.getSource();
             var oView = this.getView();
 
             if (!this._oProfitCenterDialog) {
-                // Create value help dialog
                 this._oProfitCenterDialog = new sap.m.TableSelectDialog({
                     title: "Select Profit Center",
                     noDataText: "No profit centers found",
                     rememberSelections: true,
                     contentWidth: "40%",
-                    items: {
-                        path: '/ZI_FGA_PROFITCENTER_VH',
-                        template: new sap.m.ColumnListItem({
-                            cells: [
-                                new sap.m.Text({ text: "{ProfitCenter}" }),
-                                new sap.m.Text({ text: "{description}" })
-                            ]
-                        })
+
+                    // 🔍 Search only on ProfitCenter
+                    search: function (oEvent) {
+                        var sValue = oEvent.getParameter("value");
+                        var oFilter = new sap.ui.model.Filter(
+                            "ProfitCenter",
+                            sap.ui.model.FilterOperator.Contains,
+                            sValue
+                        );
+                        oEvent.getSource().getBinding("items").filter([oFilter]);
                     },
+
+                    confirm: function (oEvent) {
+                        var aSelectedItems = oEvent.getParameter("selectedItems");
+                        if (aSelectedItems && aSelectedItems.length > 0) {
+                            var sSelectedValue = aSelectedItems[0].getBindingContext().getObject().ProfitCenter;
+                            oInput.setValue(sSelectedValue);
+                        }
+                    },
+
                     columns: [
-                        new sap.m.Column({
-                            header: new sap.m.Text({ text: "Profit Center" })
-                        }),
-                        new sap.m.Column({
-                            header: new sap.m.Text({ text: "Description" })
-                        })
+                        new sap.m.Column({ header: new sap.m.Text({ text: "Profit Center" }) }),
+                        new sap.m.Column({ header: new sap.m.Text({ text: "Description" }) })
                     ]
                 });
 
-                // Handle selection
-                this._oProfitCenterDialog.attachConfirm(function (oEvent) {
-                    var aSelectedItems = oEvent.getParameter("selectedItems");
-                    if (aSelectedItems && aSelectedItems.length > 0) {
-                        var sSelectedValue = aSelectedItems[0].getBindingContext().getObject().ProfitCenter;
-                        oInput.setValue(sSelectedValue);
-                    }
+                // Bind aggregation
+                this._oProfitCenterDialog.bindAggregation("items", {
+                    path: "/ZI_FGA_PROFITCENTER_VH",
+                    template: new sap.m.ColumnListItem({
+                        cells: [
+                            new sap.m.Text({ text: "{ProfitCenter}" }),
+                            new sap.m.Text({ text: "{description}" })
+                        ]
+                    })
                 });
 
                 oView.addDependent(this._oProfitCenterDialog);
             }
 
-            // Open the dialog
+            this._oProfitCenterDialog.getBinding("items").filter([]);
             this._oProfitCenterDialog.open();
         },
+
 
         onUFOValueHelp: function (oEvent) {
             var oInput = oEvent.getSource();
             var oView = this.getView();
 
             if (!this._oUFODialog) {
-                // Create value help dialog
                 this._oUFODialog = new sap.m.TableSelectDialog({
                     title: "Select UFO Délégué",
                     noDataText: "No UFOs found",
                     rememberSelections: true,
                     contentWidth: "40%",
-                    items: {
-                        path: '/ZI_FGA_UFO_VH',
-                        template: new sap.m.ColumnListItem({
-                            cells: [
-                                new sap.m.Text({ text: "{UFO}" }),
-                                new sap.m.Text({ text: "{description}" })
-                            ]
-                        })
+
+                    // Search only on UFO
+                    search: function (oEvent) {
+                        var sValue = oEvent.getParameter("value");
+                        var oFilter = new sap.ui.model.Filter(
+                            "UFO",
+                            sap.ui.model.FilterOperator.Contains,
+                            sValue
+                        );
+                        oEvent.getSource().getBinding("items").filter([oFilter]);
                     },
+
+                    confirm: function (oEvent) {
+                        var aSelectedItems = oEvent.getParameter("selectedItems");
+                        if (aSelectedItems && aSelectedItems.length > 0) {
+                            var sSelectedValue = aSelectedItems[0].getBindingContext().getObject().UFO;
+                            oInput.setValue(sSelectedValue);
+                        }
+                    },
+
                     columns: [
-                        new sap.m.Column({
-                            header: new sap.m.Text({ text: "UFO" })
-                        }),
-                        new sap.m.Column({
-                            header: new sap.m.Text({ text: "Description" })
-                        })
+                        new sap.m.Column({ header: new sap.m.Text({ text: "UFO" }) }),
+                        new sap.m.Column({ header: new sap.m.Text({ text: "Description" }) })
                     ]
                 });
 
-                // Handle selection
-                this._oUFODialog.attachConfirm(function (oEvent) {
-                    var aSelectedItems = oEvent.getParameter("selectedItems");
-                    if (aSelectedItems && aSelectedItems.length > 0) {
-                        var sSelectedValue = aSelectedItems[0].getBindingContext().getObject().UFO;
-                        oInput.setValue(sSelectedValue);
-                    }
+                this._oUFODialog.bindAggregation("items", {
+                    path: "/ZI_FGA_UFO_VH",
+                    template: new sap.m.ColumnListItem({
+                        cells: [
+                            new sap.m.Text({ text: "{UFO}" }),
+                            new sap.m.Text({ text: "{description}" })
+                        ]
+                    })
                 });
 
                 oView.addDependent(this._oUFODialog);
             }
 
-            // Open the dialog
+            this._oUFODialog.getBinding("items").filter([]);
             this._oUFODialog.open();
+        },
+
+
+        onBusinessNoValueHelp: function (oEvent) {
+            var oInput = oEvent.getSource();
+            var oView = this.getView();
+
+            if (!this._oBusinessNoDialog) {
+                this._oBusinessNoDialog = new sap.m.TableSelectDialog({
+                    title: "Sélectionner N°Affaire",
+                    noDataText: "Aucune affaire trouvée",
+                    rememberSelections: true,
+                    contentWidth: "40%",
+
+                    // Search only on BusinessNo
+                    search: function (oEvent) {
+                        var sValue = oEvent.getParameter("value");
+                        var oFilter = new sap.ui.model.Filter(
+                            "BusinessNo",
+                            sap.ui.model.FilterOperator.Contains,
+                            sValue
+                        );
+                        oEvent.getSource().getBinding("items").filter([oFilter]);
+                    },
+
+                    confirm: function (oEvent) {
+                        var aSelectedItems = oEvent.getParameter("selectedItems");
+                        if (aSelectedItems && aSelectedItems.length > 0) {
+                            var sSelectedValue = aSelectedItems[0].getBindingContext().getObject().BusinessNo;
+                            oInput.setValue(sSelectedValue);
+                        }
+                    },
+
+                    columns: [
+                        new sap.m.Column({ header: new sap.m.Text({ text: "N°Affaire" }) }),
+                        new sap.m.Column({ header: new sap.m.Text({ text: "Description" }) })
+                    ]
+                });
+
+                this._oBusinessNoDialog.bindAggregation("items", {
+                    path: "/ZC_FGA_VH",
+                    template: new sap.m.ColumnListItem({
+                        cells: [
+                            new sap.m.Text({ text: "{BusinessNo}" }),
+                            new sap.m.Text({ text: "{BusinessName}" })
+                        ]
+                    })
+                });
+
+                oView.addDependent(this._oBusinessNoDialog);
+            }
+
+            this._oBusinessNoDialog.getBinding("items").filter([]);
+            this._oBusinessNoDialog.open();
         },
 
     });

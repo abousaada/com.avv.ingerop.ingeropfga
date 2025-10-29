@@ -42,16 +42,29 @@
                     </fb:control>
                 </fb:FilterGroupItem>
 
-                <fb:FilterGroupItem
-                    groupName="_BASIC"
-                    name="BusinessNo"
-                    label="N°Affaire"
-                    visibleInFilterBar="true"
-                >
-                    <fb:control>
-                        <Input value="{filtersModel>/Affaire}" />
-                    </fb:control>
-                </fb:FilterGroupItem>
+<fb:FilterGroupItem
+    groupName="_BASIC"
+    name="BusinessNo"
+    label="N°Affaire"
+    visibleInFilterBar="true"
+>
+    <fb:control>
+        <Input
+            value="{filtersModel>/Affaire}"
+            showValueHelp="true"
+            valueHelpRequest=".onBusinessNoValueHelp"
+            showSuggestion="true"
+            suggestionItems="{
+                path: '/ZC_FGA_VH',
+                sorter: { path: 'BusinessNo' }
+            }"
+        >
+            <suggestionItems>
+                <core:Item text="{BusinessNo}" />
+            </suggestionItems>
+        </Input>
+    </fb:control>
+</fb:FilterGroupItem>
 
                 <fb:FilterGroupItem
                     groupName="_BASIC"

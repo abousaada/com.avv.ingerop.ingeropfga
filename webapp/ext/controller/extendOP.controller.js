@@ -906,6 +906,15 @@ sap.ui.define(
                 this._budgetPrevisionel.onUFOValueHelp(oEvent);
             },
 
+            onBusinessNoValueHelp: function (oEvent) {
+                if (!this._budgetPrevisionel) {
+                    this._budgetPrevisionel = new BudgetPrevisionel();
+                    this._budgetPrevisionel.oView = this.oView;
+                }
+                this._budgetPrevisionel.onBusinessNoValueHelp(oEvent);
+            },
+            
+
             // ==============================================
             // Move to formatter !!!!
             // ==============================================
