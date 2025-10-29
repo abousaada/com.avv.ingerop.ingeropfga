@@ -32,18 +32,69 @@ sap.ui.define([
                 if (!items) return treeData;
 
                 // === CONFIGURATION D'ÉDITION ===
-                var editableConfig = self.getEditableMonthsConfig();
+                //var editableConfig = self.getEditableMonthsConfig();
+
+                const period = self.getView().getModel("utilities").getProperty("/period");
+                const periodMonth = parseInt(period.substring(0, 2), 10);
+                const periodYear = parseInt(period.substring(2, 6), 10);
+
+                const nextYear = periodYear + 1;
+
+                // Save these years for bindings
+                const utilitiesModel = self.getView().getModel("utilities");
+                utilitiesModel.setProperty("/currentYear", periodYear);
+                utilitiesModel.setProperty("/nextYear", nextYear);
 
                 items.forEach(function (item) {
                     item.isTotalRow = false;
 
+                    // === APPLY EDITABLE CONFIGURATION PER ITEM BASED ON MASK ===
+                    var mask = parseInt(item.mask, 10) || 0;
+                    var cutoffMonth;
+
+                    if (mask >= periodMonth) {
+                        // If mask >= period: non-editable up to mask
+                        cutoffMonth = mask;
+                    } else {
+                        // If period > mask: non-editable up to period - 1
+                        cutoffMonth = periodMonth - 1;
+                    }
+
+                    // Apply editable configuration for year N months
+                    item.isEditableJanvN = 1 > cutoffMonth;
+                    item.isEditableFevrN = 2 > cutoffMonth;
+                    item.isEditableMarsN = 3 > cutoffMonth;
+                    item.isEditableAvrN = 4 > cutoffMonth;
+                    item.isEditableMaiN = 5 > cutoffMonth;
+                    item.isEditableJuinN = 6 > cutoffMonth;
+                    item.isEditableJuilN = 7 > cutoffMonth;
+                    item.isEditableAoutN = 8 > cutoffMonth;
+                    item.isEditableSeptN = 9 > cutoffMonth;
+                    item.isEditableOctN = 10 > cutoffMonth;
+                    item.isEditableNovN = 11 > cutoffMonth;
+                    item.isEditableDecN = 12 > cutoffMonth;
+
+                    // Year N+1 months are always editable
+                    item.isEditableJanvN1 = true;
+                    item.isEditableFevrN1 = true;
+                    item.isEditableMarsN1 = true;
+                    item.isEditableAvrN1 = true;
+                    item.isEditableMaiN1 = true;
+                    item.isEditableJuinN1 = true;
+                    item.isEditableJuilN1 = true;
+                    item.isEditableAoutN1 = true;
+                    item.isEditableSeptN1 = true;
+                    item.isEditableOctN1 = true;
+                    item.isEditableNovN1 = true;
+                    item.isEditableDecN1 = true;
+
                     // === Applique la configuration d'édition ===
-                    Object.keys(editableConfig.N).forEach(function (key) {
+                    /*Object.keys(editableConfig.N).forEach(function (key) {
                         item["isEditable" + key] = editableConfig.N[key];
                     });
                     Object.keys(editableConfig.N1).forEach(function (key) {
                         item["isEditable" + key] = editableConfig.N1[key];
-                    });
+                    });*/
 
                     // === Calcule FinAffaire ===
                     item.FinAffaire = (Number(item.VoyageDeplacement) || 0) +
@@ -430,7 +481,79 @@ sap.ui.define([
         },
 
         // Configuration des mois editables
+
+        // Configuration des mois editables
         getEditableMonthsConfig: function () {
+            const period = this.getView().getModel("utilities").getProperty("/period"); // e.g. "102025"
+            const periodMonth = parseInt(period.substring(0, 2), 10); // "10" → 10
+            const periodYear = parseInt(period.substring(2, 6), 10);  // "2025" → 2025
+
+            const nextYear = periodYear + 1;
+
+            // Save these years for bindings
+            const utilitiesModel = this.getView().getModel("utilities");
+            utilitiesModel.setProperty("/currentYear", periodYear);
+            utilitiesModel.setProperty("/nextYear", nextYear);
+
+            const currentMonth = periodMonth;
+            const currentYear = periodYear;
+
+            // Get the mask value from the current context (item)
+            var oContext = this.getView().getBindingContext("utilities");
+            var mask = 0;
+
+            if (oContext) {
+                var itemData = oContext.getObject();
+                mask = parseInt(itemData.mask, 10) || 0;
+            }
+
+            // Determine the cutoff month based on mask vs period comparison
+            var cutoffMonth;
+            if (mask >= periodMonth) {
+                // If mask >= period: non-editable up to mask
+                cutoffMonth = mask;
+            } else {
+                // If period > mask: non-editable up to period - 1
+                cutoffMonth = periodMonth - 1;
+            }
+
+            var config = {
+                // Pour l'année N, seuls les mois futurs sont editables
+                N: {
+                    JanvN: 1 > cutoffMonth,
+                    FevrN: 2 > cutoffMonth,
+                    MarsN: 3 > cutoffMonth,
+                    AvrN: 4 > cutoffMonth,
+                    MaiN: 5 > cutoffMonth,
+                    JuinN: 6 > cutoffMonth,
+                    JuilN: 7 > cutoffMonth,
+                    AoutN: 8 > cutoffMonth,
+                    SeptN: 9 > cutoffMonth,
+                    OctN: 10 > cutoffMonth,
+                    NovN: 11 > cutoffMonth,
+                    DecN: 12 > cutoffMonth
+                },
+                // Pour l'année N+1, tout est toujours editable
+                N1: {
+                    JanvN1: true,
+                    FevrN1: true,
+                    MarsN1: true,
+                    AvrN1: true,
+                    MaiN1: true,
+                    JuinN1: true,
+                    JuilN1: true,
+                    AoutN1: true,
+                    SeptN1: true,
+                    OctN1: true,
+                    NovN1: true,
+                    DecN1: true
+                }
+            };
+
+            return config;
+        },
+
+        getEditableMonthsConfig1: function () {
 
             const period = this.getView().getModel("utilities").getProperty("/period"); // e.g. "102025"
             const periodMonth = parseInt(period.substring(0, 2), 10); // "10" → 10
@@ -1487,7 +1610,7 @@ sap.ui.define([
                 console.error("View not set in BudgetPrevisionel");
                 return;
             }
-                        
+
             // Check if filters model already exists
             var oFiltersModel = this.oView.getModel("filtersModel");
 
