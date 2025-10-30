@@ -770,24 +770,6 @@ sap.ui.define([
                 }
             },
 
-            /*async getBEPrevisionel1() {
-                try {
-                    this.setChartBusy(true);
-                    const businessNo = this.getBusinessNo();
-                    const period = this.getPeriod();
-                    const urlBusinessNo = encodeURIComponent(businessNo);
-                    const urlPeriod = encodeURIComponent(period);
-                    //const sPath = `/ZC_FGASet(BusinessNo='${urlBusinessNo}',p_period='${urlPeriod}')/to_Previsionel`;
-                    const sPath = `/ZC_FGA_Forecast?$filter=BusinessNo eq '${businessNo}'`;
-                    console.log(`retrieve Previsionel report data with period: ${period} and BusinessNo: ${businessNo}`);
-                    const previsionel = await this.read(sPath);
-                    this.setChartBusy(false);
-                    return previsionel?.results || [];
-                } catch (error) {
-                    this.setChartBusy(false);
-                    console.log(error);
-                }
-            },*/
 
             async getBEPrevisionel_filtre(filterParams = {}) {
                 try {
@@ -858,7 +840,8 @@ sap.ui.define([
 
                     let filters = [];
                     if (aSelectedBusinessNos.length > 0) {
-                        // Build OR filters for multiple selections
+                        filters.push(new sap.ui.model.Filter("Period", sap.ui.model.FilterOperator.EQ, period));
+
                         const businessFilters = aSelectedBusinessNos.map(bn =>
                             new sap.ui.model.Filter("BusinessNo", sap.ui.model.FilterOperator.EQ, bn)
                         );

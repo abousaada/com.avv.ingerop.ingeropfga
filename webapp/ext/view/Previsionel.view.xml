@@ -388,7 +388,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 state="Information"
                                 icon="sap-icon://information"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader} &amp;&amp;
-                                !${utilities>isEditableJanvN} &amp;&amp; 1 &gt; ${utilities>/periodMonth} }"
+                                !${utilities>isEditableJanvN} &amp;&amp; 1 &gt;= ${utilities>/periodMonth} }"
                                 tooltip="{= 'Prévisionel Janv ' + ${utilities>/currentYear}}"
                             />
                         </HBox>
@@ -418,7 +418,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 state="Information"
                                 icon="sap-icon://information"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader} &amp;&amp;
-                                !${utilities>isEditableFevrN} &amp;&amp; 2 &gt; ${utilities>/periodMonth} }"
+                                !${utilities>isEditableFevrN} &amp;&amp; 2 &gt;= ${utilities>/periodMonth} }"
                                 tooltip="{= 'Prévisionel Fevr ' + ${utilities>/currentYear}}"
                             />
                         </HBox>
@@ -448,7 +448,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 state="Information"
                                 icon="sap-icon://information"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader} &amp;&amp;
-                                !${utilities>isEditableMarsN} &amp;&amp; 3 &gt; ${utilities>/periodMonth} }"
+                                !${utilities>isEditableMarsN} &amp;&amp; 3 &gt;= ${utilities>/periodMonth} }"
                                 tooltip="{= 'Prévisionel Mars ' + ${utilities>/currentYear}}"
                             />
                         </HBox>
@@ -478,7 +478,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 state="Information"
                                 icon="sap-icon://information"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader} &amp;&amp;
-                                !${utilities>isEditableAvrN} &amp;&amp; 4 &gt; ${utilities>/periodMonth} }"
+                                !${utilities>isEditableAvrN} &amp;&amp; 4 &gt;= ${utilities>/periodMonth} }"
                                 tooltip="{= 'Prévisionel Avr ' + ${utilities>/currentYear}}"
                             />
                         </HBox>
@@ -508,7 +508,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 state="Information"
                                 icon="sap-icon://information"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader} &amp;&amp;
-                                !${utilities>isEditableMaiN} &amp;&amp; 5 &gt; ${utilities>/periodMonth} }"
+                                !${utilities>isEditableMaiN} &amp;&amp; 5 &gt;= ${utilities>/periodMonth} }"
                                 tooltip="{= 'Prévisionel Mai ' + ${utilities>/currentYear}}"
                             />
                         </HBox>
@@ -538,7 +538,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 state="Information"
                                 icon="sap-icon://information"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader} &amp;&amp;
-                                !${utilities>isEditableJuinN} &amp;&amp; 6 &gt; ${utilities>/periodMonth} }"
+                                !${utilities>isEditableJuinN} &amp;&amp; 6 &gt;= ${utilities>/periodMonth} }"
                                 tooltip="{= 'Prévisionel Juin ' + ${utilities>/currentYear}}"
                             />
                         </HBox>
@@ -568,7 +568,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 state="Information"
                                 icon="sap-icon://information"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader} &amp;&amp;
-                                !${utilities>isEditableJuilN} &amp;&amp; 7 &gt; ${utilities>/periodMonth} }"
+                                !${utilities>isEditableJuilN} &amp;&amp; 7 &gt;= ${utilities>/periodMonth} }"
                                 tooltip="{= 'Prévisionel Juil ' + ${utilities>/currentYear}}"
                             />
                         </HBox>
@@ -599,7 +599,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 state="Information"
                                 icon="sap-icon://information"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader} &amp;&amp;
-                                !${utilities>isEditableAoutN} &amp;&amp; 8 &gt; ${utilities>/periodMonth} }"
+                                !${utilities>isEditableAoutN} &amp;&amp; 8 &gt;= ${utilities>/periodMonth} }"
                                 tooltip="{= 'Prévisionel Aout ' + ${utilities>/currentYear}}"
                             />
                         </HBox>
@@ -629,7 +629,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 state="Information"
                                 icon="sap-icon://information"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader} &amp;&amp;
-                                !${utilities>isEditableSeptN} &amp;&amp; 9 &gt; ${utilities>/periodMonth} }"
+                                !${utilities>isEditableSeptN} &amp;&amp; 9 &gt;= ${utilities>/periodMonth} }"
                                 tooltip="{= 'Prévisionel Sept ' + ${utilities>/currentYear}}"
                             />
                         </HBox>
@@ -659,7 +659,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 state="Information"
                                 icon="sap-icon://information"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader} &amp;&amp;
-                                !${utilities>isEditableOctN} &amp;&amp; 10 &gt; ${utilities>/periodMonth} }"
+                                !${utilities>isEditableOctN} &amp;&amp; 10 &gt;= ${utilities>/periodMonth} }"
                                 tooltip="{= 'Prévisionel Oct ' + ${utilities>/currentYear}}"
                             />
                         </HBox>
@@ -689,7 +689,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 state="Information"
                                 icon="sap-icon://information"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader} &amp;&amp;
-                                !${utilities>isEditableNovN} &amp;&amp; 11 &gt; ${utilities>/periodMonth} }"
+                                !${utilities>isEditableNovN} &amp;&amp; 11 &gt;= ${utilities>/periodMonth} }"
                                 tooltip="{= 'Prévisionel Nov ' + ${utilities>/currentYear}}"
                             />
                         </HBox>
@@ -719,7 +719,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 state="Information"
                                 icon="sap-icon://information"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader} &amp;&amp;
-                                !${utilities>isEditableDecN} &amp;&amp; 12 &gt; ${utilities>/periodMonth} }"
+                                !${utilities>isEditableDecN} &amp;&amp; 12 &gt;= ${utilities>/periodMonth} }"
                                 tooltip="{= 'Prévisionel Dec ' + ${utilities>/currentYear}}"
                             />
                         </HBox>

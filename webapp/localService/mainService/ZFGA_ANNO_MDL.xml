@@ -633,6 +633,12 @@
             <Annotations Target="ZFGA_SRV.ZC_FGA_ForecastType/business_p_ufo">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGA_ForecastType/mask">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGA_ForecastType/Period">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_FGA_ForecastType/DataMode">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>

@@ -558,6 +558,7 @@
                 <Property Name="business_p_cdp" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Centre de profit Affaire partenaire" sap:quickinfo="Centre de profit" sap:value-list="standard"/>
                 <Property Name="business_p_ufo" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="UFO Affaire partenaire" sap:quickinfo="Zone de 10 caractères" sap:value-list="standard"/>
                 <Property Name="mask" Type="Edm.String" MaxLength="3" sap:display-format="NonNegative"/>
+                <Property Name="Period" Type="Edm.String" MaxLength="6"/>
                 <Property Name="DataMode" Type="Edm.String" MaxLength="1"/>
             </EntityType>
             <EntityType Name="ZC_FGA_MISSIONType" sap:label="FGA Missions" sap:content-version="1">
@@ -1190,7 +1191,7 @@
                 <Key>
                     <PropertyRef Name="ProfitCenter"/>
                 </Key>
-                <Property Name="ProfitCenter" Type="Edm.String" Nullable="false" MaxLength="40" sap:display-format="UpperCase" sap:label="De la valeur" sap:heading=""/>
+                <Property Name="ProfitCenter" Type="Edm.String" Nullable="false" MaxLength="40" sap:display-format="UpperCase" sap:text="description" sap:label="De la valeur" sap:heading=""/>
                 <Property Name="UFO" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="Nom de set" sap:heading=""/>
                 <Property Name="description" Type="Edm.String" MaxLength="40" sap:label="Description" sap:heading="" sap:quickinfo="Désignation synthétique d'un set"/>
             </EntityType>
