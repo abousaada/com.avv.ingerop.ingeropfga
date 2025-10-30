@@ -54,6 +54,7 @@
                             showValueHelp="true"
                             valueHelpRequest=".onBusinessNoValueHelp"
                             showSuggestion="true"
+                            showClearIcon="true"
                             suggestionItems="{
                 path: '/ZC_FGA_VH',
                 sorter: { path: 'BusinessNo' }
@@ -77,6 +78,7 @@
                             value="{filtersModel>/UFO}"
                             showValueHelp="true"
                             valueHelpRequest=".onUFOValueHelp"
+                            showClearIcon="true"
                             showSuggestion="true"
                             suggestionItems="{
                 path: '/ZI_FGA_UFO_VH',
@@ -113,6 +115,7 @@
                             showValueHelp="true"
                             valueHelpRequest=".onCompanyValueHelp"
                             showSuggestion="true"
+                            showClearIcon="true"
                             suggestionItems="{
                 path: '/I_CompanyCodeVH',
                 sorter: { path: 'CompanyCode' }
@@ -137,6 +140,7 @@
                             showValueHelp="true"
                             valueHelpRequest=".onProfitCenterValueHelp"
                             showSuggestion="true"
+                            showClearIcon="true"
                             suggestionItems="{
                 path: '/ZI_FGA_PROFITCENTER_VH',
                 sorter: { path: 'ProfitCenter' }

@@ -771,7 +771,80 @@ sap.ui.define([
             },
 
 
-            async getBEPrevisionel_filtre(filterParams = {}) {
+            async getBEPrevisionel(filterParams = []) {
+                try {
+                    this.setChartBusy(true);
+                    const period = this.getPeriod();
+
+                    // Gestion de la compatibilité avec l'ancien appel
+                    // Si filterParams est un array, c'est l'ancien format avec aSelectedBusinessNos
+                    if (Array.isArray(filterParams)) {
+                        filterParams = { aSelectedBusinessNos: filterParams };
+                    }
+
+                    let urlParameters = {};
+                    let filterConditions = [];
+
+                    // Gestion des BusinessNo (support multiple formats)
+                    const businessNos = filterParams.aSelectedBusinessNos || filterParams.selectedBusinessNos || [];
+                    const singleBusinessNo = filterParams.businessNo;
+
+                    if (businessNos.length > 0) {
+                        // Multi-sélection BusinessNo
+                        const businessFilters = businessNos.map(bn => `BusinessNo eq '${bn}'`).join(' or ');
+                        filterConditions.push(`(${businessFilters})`);
+                        console.log(`Retrieving Previsionel data for BusinessNos: ${businessNos.join(", ")}`);
+                    } else if (singleBusinessNo) {
+                        // Sélection unique BusinessNo
+                        filterConditions.push(`BusinessNo eq '${singleBusinessNo}'`);
+                        console.log(`Retrieving Previsionel data for BusinessNo: ${singleBusinessNo}`);
+                    } else {
+                        console.log(`Retrieving all Previsionel data`);
+                    }
+
+                    // Filtre période (toujours appliqué)
+                    if (period) {
+                        filterConditions.push(`Period eq '${period}'`);
+                    }
+
+                    // Filtres additionnels optionnels
+                    const filtersConfig = [
+                        { param: 'ufo', field: 'business_p_ufo' },
+                        { param: 'label', field: 'business_no_p_t' },
+                        { param: 'societe', field: 'business_p_cmp' },
+                        { param: 'profitCenter', field: 'business_p_cdp' }
+                    ];
+
+                    filtersConfig.forEach(({ param, field }) => {
+                        if (filterParams[param]) {
+                            filterConditions.push(`substringof('${filterParams[param]}', ${field})`);
+                        }
+                    });
+
+                    // Filtre STIsLiees (spécial) - seulement si businessNo est fourni
+                    if (filterParams.businessNo) {
+                        filterConditions.push(`substringof('${filterParams.businessNo}', MissionId)`);
+                    }
+
+                    // Combinaison des filtres
+                    if (filterConditions.length > 0) {
+                        urlParameters.$filter = filterConditions.join(' and ');
+                    }
+
+                    console.log("OData URL Parameters:", urlParameters);
+
+                    const previsionel = await this.read("/ZC_FGA_Forecast", { urlParameters });
+                    return previsionel?.results || [];
+                } catch (error) {
+                    console.error("Error in getBEPrevisionel:", error);
+                    throw error;
+                } finally {
+                    this.setChartBusy(false);
+                }
+            },
+
+            async getBEPrevisionel_filtre1(filterParams = {}) {
+
                 try {
                     this.setChartBusy(true);
                     const period = this.getPeriod();
@@ -780,11 +853,25 @@ sap.ui.define([
                     let filterConditions = [];
 
                     // Build filter conditions using supported operators
-                    if (filterParams.selectedBusinessNos && filterParams.selectedBusinessNos.length > 0) {
+                    /*if (filterParams.selectedBusinessNos && filterParams.selectedBusinessNos.length > 0) {
                         const businessFilters = filterParams.selectedBusinessNos.map(bn => `BusinessNo eq '${bn}'`).join(' or ');
                         filterConditions.push(`(${businessFilters})`);
                         console.log(`Retrieving Previsionel data for BusinessNos: ${filterParams.selectedBusinessNos.join(", ")}`);
                     } else if (filterParams.businessNo) {
+                        filterConditions.push(`BusinessNo eq '${filterParams.businessNo}'`);
+                        console.log(`Retrieving Previsionel data for BusinessNo: ${filterParams.businessNo}`);
+                    } else {
+                        console.log(`Retrieving all Previsionel data`);
+                    }*/
+
+
+                    // Build filter conditions using supported operators
+                    if (filterParams.aSelectedBusinessNos && filterParams.aSelectedBusinessNos.length > 0) {
+                        const businessFilters = filterParams.aSelectedBusinessNos.map(bn => `BusinessNo eq '${bn}'`).join(' or ');
+                        filterConditions.push(`(${businessFilters})`);
+                        console.log(`Retrieving Previsionel data for BusinessNos: ${filterParams.aSelectedBusinessNos.join(", ")}`);
+                    }
+                    else if (filterParams.businessNo) {
                         filterConditions.push(`BusinessNo eq '${filterParams.businessNo}'`);
                         console.log(`Retrieving Previsionel data for BusinessNo: ${filterParams.businessNo}`);
                     } else {
@@ -833,7 +920,7 @@ sap.ui.define([
                 }
             },
 
-            async getBEPrevisionel(aSelectedBusinessNos = []) {
+            async getBEPrevisionel1(aSelectedBusinessNos = []) {
                 try {
                     this.setChartBusy(true);
                     const period = this.getPeriod();

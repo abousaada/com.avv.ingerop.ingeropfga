@@ -8,6 +8,8 @@ sap.ui.define([
         preparePrevisionelTreeData: function () {
             var self = this;
 
+            this.setBusy(true);
+
             var previsionel = this.getView().getModel("utilities").getProperty("/previsionel");
 
             // Check if any line has DataMode = "M"
@@ -384,6 +386,8 @@ sap.ui.define([
             var totalRows = this.countRows(previsionelTreeData);
             this.updateRowCountPrev(totalRows);
 
+            
+            this.setBusy(false);
         },
 
         // Helper function to create mission type totals (Facturation/Dépense)
@@ -1437,7 +1441,8 @@ sap.ui.define([
                 selectedBusinessNos: aSelectedBusinessNos
             };
 
-            utilitiesModel.getBEPrevisionel_filtre(filterParams)
+            //utilitiesModel.getBEPrevisionel_filtre(filterParams)
+            utilitiesModel.getBEPrevisionel(filterParams)
                 .then(function (result) {
                     // The result should already be filtered from the backend
                     // Update the model with the filtered data
