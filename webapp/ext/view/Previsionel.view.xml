@@ -99,7 +99,7 @@
                     visibleInFilterBar="true"
                 >
                     <fb:control>
-                        <Input value="{filtersModel>/Label}" />
+                        <Input value="{filtersModel>/Label}" showClearIcon="true" />
                     </fb:control>
                 </fb:FilterGroupItem>
 
