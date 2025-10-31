@@ -60,9 +60,9 @@ sap.ui.define([
                 if (storedSelection) {
                     try {
                         const businessNosArray = JSON.parse(storedSelection);
-                        
+
                         const displayValue = businessNosArray.join(", ");
-                        
+
                         // Set the display value in the filter
                         filtersModel.setProperty("/Affaire", displayValue);
                         var businessNoInput = self.byId("businessNoFilter");
@@ -1855,61 +1855,6 @@ sap.ui.define([
             this._oValueHelpDialog.open();
         },
 
-        onProfitCenterValueHelp: function (oEvent) {
-            var oInput = oEvent.getSource();
-            var oView = this.getView();
-
-            if (!this._oProfitCenterDialog) {
-                this._oProfitCenterDialog = new sap.m.TableSelectDialog({
-                    title: "Select Profit Center",
-                    noDataText: "No profit centers found",
-                    rememberSelections: true,
-                    contentWidth: "40%",
-
-                    // 🔍 Search only on ProfitCenter
-                    search: function (oEvent) {
-                        var sValue = oEvent.getParameter("value");
-                        var oFilter = new sap.ui.model.Filter(
-                            "ProfitCenter",
-                            sap.ui.model.FilterOperator.Contains,
-                            sValue
-                        );
-                        oEvent.getSource().getBinding("items").filter([oFilter]);
-                    },
-
-                    confirm: function (oEvent) {
-                        var aSelectedItems = oEvent.getParameter("selectedItems");
-                        if (aSelectedItems && aSelectedItems.length > 0) {
-                            var sSelectedValue = aSelectedItems[0].getBindingContext().getObject().ProfitCenter;
-                            oInput.setValue(sSelectedValue);
-                        }
-                    },
-
-                    columns: [
-                        new sap.m.Column({ header: new sap.m.Text({ text: "Profit Center" }) }),
-                        new sap.m.Column({ header: new sap.m.Text({ text: "Description" }) })
-                    ]
-                });
-
-                // Bind aggregation
-                this._oProfitCenterDialog.bindAggregation("items", {
-                    path: "/ZI_FGA_PROFITCENTER_VH",
-                    template: new sap.m.ColumnListItem({
-                        cells: [
-                            new sap.m.Text({ text: "{ProfitCenter}" }),
-                            new sap.m.Text({ text: "{description}" })
-                        ]
-                    })
-                });
-
-                oView.addDependent(this._oProfitCenterDialog);
-            }
-
-            this._oProfitCenterDialog.getBinding("items").filter([]);
-            this._oProfitCenterDialog.open();
-        },
-
-
         onUFOValueHelp: function (oEvent) {
             var oInput = oEvent.getSource();
             var oView = this.getView();
@@ -1966,146 +1911,252 @@ sap.ui.define([
         onBusinessNoValueHelp: function (oEvent) {
             var oInput = oEvent.getSource();
             var oView = this.getView();
+            var self = this;
 
-            if (!this._oBusinessNoDialog) {
-                this._oBusinessNoDialog = new sap.m.TableSelectDialog({
-                    title: "Sélectionner N°Affaire",
-                    noDataText: "Aucune affaire trouvée",
-                    rememberSelections: true,
-                    multiSelect: true, // Enable multi-select
-                    contentWidth: "60%", // Increased width to show more data
+            // First, ensure data is loaded
+            var oModel = this.getView().getModel();
 
-                    // Search on both BusinessNo and BusinessName
-                    search: function (oEvent) {
-                        var sValue = oEvent.getParameter("value");
-                        var aFilters = [];
-                        if (sValue) {
-                            aFilters = [
-                                new sap.ui.model.Filter("BusinessNo", sap.ui.model.FilterOperator.Contains, sValue),
-                                new sap.ui.model.Filter("BusinessName", sap.ui.model.FilterOperator.Contains, sValue)
-                            ];
-                        }
-                        oEvent.getSource().getBinding("items").filter(new sap.ui.model.Filter({
-                            filters: aFilters,
-                            and: false // OR operation between filters
-                        }));
+            // Check if data is already loaded
+            var aData = oModel.getProperty("/ZC_FGA_VH");
+            if (!aData || aData.length === 0) {
+                console.log("🔄 Loading BusinessNo data...");
+
+                // Show busy indicator
+                var oBusyDialog = new sap.m.BusyDialog({
+                    text: "Chargement des données...",
+                    title: "Veuillez patienter"
+                });
+                oBusyDialog.open();
+
+                // Load data first
+                oModel.read("/ZC_FGA_VH", {
+                    success: function (oData) {
+                        console.log("✅ Data loaded successfully:", oData.results.length, "items");
+                        oBusyDialog.close();
+                        self._openBusinessNoDialog(oInput, oView, oData.results);
                     },
+                    error: function (oError) {
+                        console.error("❌ Error loading data:", oError);
+                        oBusyDialog.close();
+                        sap.m.MessageBox.error("Erreur lors du chargement des données");
+                    }
+                });
+            } else {
+                console.log("✅ Data already loaded:", aData.length, "items");
+                this._openBusinessNoDialog(oInput, oView, aData);
+            }
+        },
 
-                    confirm: function (oEvent) {
-                        var aSelectedItems = oEvent.getParameter("selectedItems");
-                        if (aSelectedItems && aSelectedItems.length > 0) {
-                            // Extract BusinessNo from all selected items
-                            var aSelectedBusinessNos = aSelectedItems.map(function (oItem) {
-                                return oItem.getBindingContext().getObject().BusinessNo;
-                            });
+        _openBusinessNoDialog: function (oInput, oView, aData) {
+            // Create a new dialog each time to avoid binding issues
+            if (this._oBusinessNoDialog) {
+                this._oBusinessNoDialog.destroy();
+            }
 
-                            // Join with comma separator for display
+            this._oBusinessNoDialog = new sap.m.TableSelectDialog({
+                title: "Sélectionner N°Affaire",
+                noDataText: "Aucune affaire trouvée",
+                rememberSelections: false, // Set to false to avoid issues
+                multiSelect: true,
+                contentWidth: "60%",
+
+                search: function (oEvent) {
+                    var sValue = oEvent.getParameter("value").toLowerCase();
+                    var oTable = oEvent.getSource();
+                    var aAllItems = oTable.getModel().getProperty("/allItems");
+
+                    if (sValue) {
+                        var aFilteredItems = aAllItems.filter(function (oItem) {
+                            return oItem.BusinessNo && oItem.BusinessNo.toLowerCase().includes(sValue) ||
+                                oItem.BusinessName && oItem.BusinessName.toLowerCase().includes(sValue);
+                        });
+                        oTable.getModel().setProperty("/items", aFilteredItems);
+                    } else {
+                        oTable.getModel().setProperty("/items", aAllItems);
+                    }
+                },
+
+                confirm: function (oEvent) {
+                    var aSelectedItems = oEvent.getParameter("selectedItems");
+                    console.log("🎯 Selected items:", aSelectedItems);
+
+                    if (aSelectedItems && aSelectedItems.length > 0) {
+                        var aSelectedBusinessNos = aSelectedItems.map(function (oItem) {
+                            var oCtx = oItem.getBindingContext(); // get context from the model
+                            return oCtx ? oCtx.getProperty("BusinessNo") : undefined;
+                        }).filter(function (bn) {
+                            return bn;
+                        });
+
+                        console.log("🎯 BusinessNos selected:", aSelectedBusinessNos);
+
+                        if (aSelectedBusinessNos.length > 0) {
                             var sDisplayValue = aSelectedBusinessNos.join(", ");
                             oInput.setValue(sDisplayValue);
-
-                            // Store the array of selected business numbers in a custom data property
                             oInput.data("selectedBusinessNos", aSelectedBusinessNos);
-                        } else {
-                            oInput.setValue("");
-                            oInput.data("selectedBusinessNos", []);
+
+                            try {
+                                sessionStorage.setItem("selectedBusinessNos", JSON.stringify(aSelectedBusinessNos));
+                            } catch (error) {
+                                console.error("Error saving to sessionStorage:", error);
+                            }
+
+                            sap.m.MessageToast.show(aSelectedBusinessNos.length + " affaire(s) sélectionnée(s)");
                         }
-                    },
+                    }
+                },
 
-                    cancel: function (oEvent) {
-                        // Optional: Handle cancel if needed
-                    },
-
-                    columns: [
-                        new sap.m.Column({
-                            header: new sap.m.Text({ text: "N°Affaire" }),
-                            width: "30%"
-                        }),
-                        new sap.m.Column({
-                            header: new sap.m.Text({ text: "Description" }),
-                            width: "70%"
-                        })
-                    ]
-                });
-
-                this._oBusinessNoDialog.bindAggregation("items", {
-                    path: "/ZC_FGA_VH",
-                    template: new sap.m.ColumnListItem({
-                        type: "Active", // Makes rows selectable
-                        cells: [
-                            new sap.m.Text({ text: "{BusinessNo}" }),
-                            new sap.m.Text({ text: "{BusinessName}" })
-                        ]
+                columns: [
+                    new sap.m.Column({
+                        header: new sap.m.Text({ text: "N°Affaire" })
+                    }),
+                    new sap.m.Column({
+                        header: new sap.m.Text({ text: "Description" })
                     })
-                });
+                ]
+            });
 
-                oView.addDependent(this._oBusinessNoDialog);
-            }
+            // Create and set the model
+            var oModel = new sap.ui.model.json.JSONModel({
+                allItems: aData,
+                items: aData
+            });
+            this._oBusinessNoDialog.setModel(oModel);
 
-            // Clear previous selections and filters
-            this._oBusinessNoDialog.getBinding("items").filter([]);
+            this._oBusinessNoDialog.bindAggregation("items", {
+                path: "/items",
+                template: new sap.m.ColumnListItem({
+                    type: "Active",
+                    cells: [
+                        new sap.m.Text({ text: "{BusinessNo}" }),
+                        new sap.m.Text({ text: "{BusinessName}" })
+                    ]
+                })
+            });
 
-            // If there are previously selected values, pre-select them
-            var aCurrentSelections = oInput.data("selectedBusinessNos");
-            if (aCurrentSelections && aCurrentSelections.length > 0) {
-                // This would require additional logic to pre-select items
-                // You might need to manually set selections based on the stored business numbers
-            }
-
+            oView.addDependent(this._oBusinessNoDialog);
             this._oBusinessNoDialog.open();
         },
 
-        onBusinessNoValueHelp1: function (oEvent) {
+        onProfitCenterValueHelp: function (oEvent) {
             var oInput = oEvent.getSource();
             var oView = this.getView();
+            var self = this;
 
-            if (!this._oBusinessNoDialog) {
-                this._oBusinessNoDialog = new sap.m.TableSelectDialog({
-                    title: "Sélectionner N°Affaire",
-                    noDataText: "Aucune affaire trouvée",
-                    rememberSelections: true,
-                    contentWidth: "40%",
+            var oModel = this.getView().getModel(); // OData model
 
-                    // Search only on BusinessNo
-                    search: function (oEvent) {
-                        var sValue = oEvent.getParameter("value");
-                        var oFilter = new sap.ui.model.Filter(
-                            "BusinessNo",
-                            sap.ui.model.FilterOperator.Contains,
-                            sValue
-                        );
-                        oEvent.getSource().getBinding("items").filter([oFilter]);
-                    },
+            // Try to get existing data
+            var aData = oModel.getProperty("/ZI_FGA_PROFITCENTER_VH");
 
-                    confirm: function (oEvent) {
-                        var aSelectedItems = oEvent.getParameter("selectedItems");
-                        if (aSelectedItems && aSelectedItems.length > 0) {
-                            var sSelectedValue = aSelectedItems[0].getBindingContext().getObject().BusinessNo;
-                            oInput.setValue(sSelectedValue);
-                        }
-                    },
+            if (!aData || aData.length === 0) {
+                console.log("🔄 Loading Profit Center data...");
 
-                    columns: [
-                        new sap.m.Column({ header: new sap.m.Text({ text: "N°Affaire" }) }),
-                        new sap.m.Column({ header: new sap.m.Text({ text: "Description" }) })
-                    ]
+                var oBusyDialog = new sap.m.BusyDialog({
+                    text: "Chargement des centres de profit...",
+                    title: "Veuillez patienter"
                 });
+                oBusyDialog.open();
 
-                this._oBusinessNoDialog.bindAggregation("items", {
-                    path: "/ZC_FGA_VH",
-                    template: new sap.m.ColumnListItem({
-                        cells: [
-                            new sap.m.Text({ text: "{BusinessNo}" }),
-                            new sap.m.Text({ text: "{BusinessName}" })
-                        ]
-                    })
+                // Load via OData read
+                oModel.read("/ZI_FGA_PROFITCENTER_VH", {
+                    success: function (oData) {
+                        console.log("✅ Profit Centers loaded:", oData.results.length);
+                        oBusyDialog.close();
+                        self._openProfitCenterDialog(oInput, oView, oData.results);
+                    },
+                    error: function (oError) {
+                        console.error("❌ Error loading Profit Centers:", oError);
+                        oBusyDialog.close();
+                        sap.m.MessageBox.error("Erreur lors du chargement des centres de profit");
+                    }
                 });
+            } else {
+                console.log("✅ Profit Centers already loaded:", aData.length);
+                this._openProfitCenterDialog(oInput, oView, aData);
+            }
+        },
 
-                oView.addDependent(this._oBusinessNoDialog);
+        _openProfitCenterDialog: function (oInput, oView, aData) {
+            // Destroy existing dialog to avoid duplicates/binding conflicts
+            if (this._oProfitCenterDialog) {
+                this._oProfitCenterDialog.destroy();
             }
 
-            this._oBusinessNoDialog.getBinding("items").filter([]);
-            this._oBusinessNoDialog.open();
-        },
+            this._oProfitCenterDialog = new sap.m.TableSelectDialog({
+                title: "Sélectionner Centre de Profit",
+                noDataText: "Aucun centre de profit trouvé",
+                rememberSelections: false,
+                multiSelect: false,
+                contentWidth: "50%",
+
+                search: function (oEvent) {
+                    var sValue = oEvent.getParameter("value").toLowerCase();
+                    var oTable = oEvent.getSource();
+                    var aAllItems = oTable.getModel().getProperty("/allItems");
+
+                    if (sValue) {
+                        var aFilteredItems = aAllItems.filter(function (oItem) {
+                            return (
+                                (oItem.ProfitCenter && oItem.ProfitCenter.toLowerCase().includes(sValue)) ||
+                                (oItem.Description && oItem.Description.toLowerCase().includes(sValue))
+                            );
+                        });
+                        oTable.getModel().setProperty("/items", aFilteredItems);
+                    } else {
+                        oTable.getModel().setProperty("/items", aAllItems);
+                    }
+                },
+
+                confirm: function (oEvent) {
+                    var aSelectedItems = oEvent.getParameter("selectedItems");
+                    if (aSelectedItems && aSelectedItems.length > 0) {
+                        var oCtx = aSelectedItems[0].getBindingContext();
+                        var oSelected = oCtx ? oCtx.getObject() : null;
+
+                        if (oSelected) {
+                            console.log("🎯 Selected Profit Center:", oSelected.ProfitCenter);
+                            oInput.setValue(oSelected.ProfitCenter);
+                            oInput.data("selectedProfitCenter", oSelected.ProfitCenter);
+
+                            try {
+                                sessionStorage.setItem("selectedProfitCenter", oSelected.ProfitCenter);
+                            } catch (err) {
+                                console.error("Error saving ProfitCenter to sessionStorage:", err);
+                            }
+
+                            sap.m.MessageToast.show("Centre de profit sélectionné : " + oSelected.ProfitCenter);
+                        }
+                    }
+                },
+
+                columns: [
+                    new sap.m.Column({ header: new sap.m.Text({ text: "Centre de profit" }) }),
+                    new sap.m.Column({ header: new sap.m.Text({ text: "Description" }) })
+                ]
+            });
+
+            // Create local model with all and filtered items
+            var oLocalModel = new sap.ui.model.json.JSONModel({
+                allItems: aData,
+                items: aData
+            });
+            this._oProfitCenterDialog.setModel(oLocalModel);
+
+            this._oProfitCenterDialog.bindAggregation("items", {
+                path: "/items",
+                template: new sap.m.ColumnListItem({
+                    type: "Active",
+                    cells: [
+                        new sap.m.Text({ text: "{ProfitCenter}" }),
+                        new sap.m.Text({ text: "{Description}" })
+                    ]
+                })
+            });
+
+            oView.addDependent(this._oProfitCenterDialog);
+            this._oProfitCenterDialog.open();
+        }
+
 
     });
 });
