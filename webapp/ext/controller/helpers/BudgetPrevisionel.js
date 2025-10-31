@@ -54,7 +54,7 @@ sap.ui.define([
                         return;
                     }
                 }
-                filtersModel.setProperty("/period", period);
+                filtersModel.setProperty("/Period", period);
 
                 const storedSelection = sessionStorage.getItem("selectedBusinessNos");
                 if (storedSelection) {
