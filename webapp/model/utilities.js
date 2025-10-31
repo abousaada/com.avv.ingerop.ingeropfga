@@ -777,7 +777,6 @@ sap.ui.define([
                     const period = this.getPeriod();
 
                     // Gestion de la compatibilité avec l'ancien appel
-                    // Si filterParams est un array, c'est l'ancien format avec aSelectedBusinessNos
                     if (Array.isArray(filterParams)) {
                         filterParams = { aSelectedBusinessNos: filterParams };
                     }
@@ -785,29 +784,36 @@ sap.ui.define([
                     let urlParameters = {};
                     let filterConditions = [];
 
-                    // Gestion des BusinessNo (support multiple formats)
-                    const businessNos = filterParams.aSelectedBusinessNos || filterParams.selectedBusinessNos || [];
-                    const singleBusinessNo = filterParams.businessNo;
+                    // Use aSelectedBusinessNos directly
+                    let businessNos = filterParams.aSelectedBusinessNos || [];
+
+                    // Ensure businessNos is an array
+                    if (!Array.isArray(businessNos)) {
+                        businessNos = [businessNos];
+                    }
+                    businessNos = businessNos
+                        .flatMap(bn => {
+                            if (typeof bn === 'string' && bn.includes(',')) {
+                                // Split comma-separated string into individual items
+                                return bn.split(',').map(item => item.trim());
+                            }
+                            return bn;
+                        })
+                        .map(bn => bn.toString().trim())
+                        .filter(bn => bn.length > 0);
 
                     if (businessNos.length > 0) {
                         // Multi-sélection BusinessNo
                         const businessFilters = businessNos.map(bn => `BusinessNo eq '${bn}'`).join(' or ');
                         filterConditions.push(`(${businessFilters})`);
-                        console.log(`Retrieving Previsionel data for BusinessNos: ${businessNos.join(", ")}`);
-                    } else if (singleBusinessNo) {
-                        // Sélection unique BusinessNo
-                        filterConditions.push(`BusinessNo eq '${singleBusinessNo}'`);
-                        console.log(`Retrieving Previsionel data for BusinessNo: ${singleBusinessNo}`);
-                    } else {
-                        console.log(`Retrieving all Previsionel data`);
+
                     }
 
-                    // Filtre période (toujours appliqué)
                     if (period) {
                         filterConditions.push(`Period eq '${period}'`);
                     }
 
-                    // Filtres additionnels optionnels
+                    // Filtres additionnels
                     const filtersConfig = [
                         { param: 'ufo', field: 'business_p_ufo' },
                         { param: 'label', field: 'business_no_p_t' },
@@ -821,8 +827,7 @@ sap.ui.define([
                         }
                     });
 
-                    // Filtre STIsLiees (spécial) - seulement si businessNo est fourni
-                    if (filterParams.businessNo) {
+                    if (filterParams.businessNo && businessNos.length === 0) {
                         filterConditions.push(`substringof('${filterParams.businessNo}', MissionId)`);
                     }
 
@@ -830,9 +835,6 @@ sap.ui.define([
                     if (filterConditions.length > 0) {
                         urlParameters.$filter = filterConditions.join(' and ');
                     }
-
-                    console.log("OData URL Parameters:", urlParameters);
-
                     const previsionel = await this.read("/ZC_FGA_Forecast", { urlParameters });
                     return previsionel?.results || [];
                 } catch (error) {

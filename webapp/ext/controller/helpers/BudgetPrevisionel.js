@@ -56,6 +56,26 @@ sap.ui.define([
                 }
                 filtersModel.setProperty("/period", period);
 
+                const storedSelection = sessionStorage.getItem("selectedBusinessNos");
+                if (storedSelection) {
+                    try {
+                        const businessNosArray = JSON.parse(storedSelection);
+                        
+                        const displayValue = businessNosArray.join(", ");
+                        
+                        // Set the display value in the filter
+                        filtersModel.setProperty("/Affaire", displayValue);
+                        var businessNoInput = self.byId("businessNoFilter");
+                        if (businessNoInput) {
+                            businessNoInput.data("selectedBusinessNos", businessNosArray);
+                        }
+                    } catch (error) {
+                        console.error("Error parsing stored BusinessNos:", error);
+                        filtersModel.setProperty("/Affaire", "");
+                    }
+                } else {
+                    filtersModel.setProperty("/Affaire", "");
+                }
 
                 // Save these years for bindings
                 const utilitiesModel = self.getView().getModel("utilities");
@@ -386,7 +406,7 @@ sap.ui.define([
             var totalRows = this.countRows(previsionelTreeData);
             this.updateRowCountPrev(totalRows);
 
-            
+
             this.setBusy(false);
         },
 
@@ -1381,8 +1401,99 @@ sap.ui.define([
             return monthsToReset;
         },
 
-
         onSearch: function (oEvent) {
+            var self = this;
+            var filtersModel = this.getView().getModel("filtersModel");
+            if (!filtersModel) {
+                console.error("Filters model not found. Initializing...");
+                this._initializeFiltersModel();
+                filtersModel = this.oView.getModel("filtersModel");
+
+                if (!filtersModel) {
+                    sap.m.MessageBox.error("Erreur d'initialisation des filtres");
+                    return;
+                }
+            }
+
+            // Get filter values
+            var period = filtersModel.getProperty("/Period");
+            var businessNoInput = this.byId("businessNoFilter"); // Get the input field reference
+            var ufo = filtersModel.getProperty("/UFO");
+            var label = filtersModel.getProperty("/Label");
+            var societe = filtersModel.getProperty("/Societe");
+            var profitCenter = filtersModel.getProperty("/ProfitCenter");
+
+            // Validate period (mandatory field)
+            if (!period) {
+                sap.m.MessageBox.error("La période (MMYYYY) est obligatoire");
+                return;
+            }
+
+            // Update period in utilities model (important for getBEDatas)
+            var utilitiesModel = this.getView().getModel("utilities");
+            utilitiesModel.setProperty("/period", period);
+
+            // Get selected business numbers from the input's custom data
+            var aSelectedBusinessNos = [];
+            if (businessNoInput) {
+                aSelectedBusinessNos = businessNoInput.data("selectedBusinessNos") || [];
+            }
+
+            // Fallback to single businessNo if no multi-select data found
+            if (aSelectedBusinessNos.length === 0) {
+                var singleBusinessNo = filtersModel.getProperty("/Affaire");
+                if (singleBusinessNo) {
+                    aSelectedBusinessNos.push(singleBusinessNo);
+                }
+            }
+
+            // Show busy indicator
+            this.setBusy(true);
+
+            if (!utilitiesModel) {
+                sap.m.MessageBox.error("Méthode getBEPrevisionel non disponible");
+                this.setBusy(false);
+                return;
+            }
+
+            // Prepare filter object to pass to backend
+            var filterParams = {
+                societe: societe,
+                businessNo: aSelectedBusinessNos.length > 0 ? aSelectedBusinessNos[0] : "", // Single value for backward compatibility
+                ufo: ufo,
+                label: label,
+                societe: societe,
+                profitCenter: profitCenter,
+                selectedBusinessNos: aSelectedBusinessNos, // Array for multi-select
+                aSelectedBusinessNos: aSelectedBusinessNos // Alternative name for compatibility
+            };
+
+            utilitiesModel.getBEPrevisionel(filterParams)
+                .then(function (result) {
+                    // The result should already be filtered from the backend
+                    // Update the model with the filtered data
+                    utilitiesModel.setProperty("/previsionel", result);
+
+                    // Rebuild the tree with the filtered data
+                    self.preparePrevisionelTreeData();
+
+                    // Show success message
+                    var message = `Données actualisées: ${result.length} ligne(s) trouvée(s)`;
+                    if (aSelectedBusinessNos.length > 0) {
+                        message += ` pour ${aSelectedBusinessNos.length} affaire(s) sélectionnée(s)`;
+                    }
+                    sap.m.MessageToast.show(message);
+                })
+                .catch(function (error) {
+                    console.error("Error fetching previsionel data:", error);
+                    sap.m.MessageBox.error("Erreur lors du chargement des données: " + error.message);
+                })
+                .finally(function () {
+                    self.setBusy(false);
+                });
+        },
+
+        onSearch1: function (oEvent) {
             var self = this;
             var filtersModel = this.getView().getModel("filtersModel");
             if (!filtersModel) {
@@ -1852,8 +1963,98 @@ sap.ui.define([
             this._oUFODialog.open();
         },
 
-
         onBusinessNoValueHelp: function (oEvent) {
+            var oInput = oEvent.getSource();
+            var oView = this.getView();
+
+            if (!this._oBusinessNoDialog) {
+                this._oBusinessNoDialog = new sap.m.TableSelectDialog({
+                    title: "Sélectionner N°Affaire",
+                    noDataText: "Aucune affaire trouvée",
+                    rememberSelections: true,
+                    multiSelect: true, // Enable multi-select
+                    contentWidth: "60%", // Increased width to show more data
+
+                    // Search on both BusinessNo and BusinessName
+                    search: function (oEvent) {
+                        var sValue = oEvent.getParameter("value");
+                        var aFilters = [];
+                        if (sValue) {
+                            aFilters = [
+                                new sap.ui.model.Filter("BusinessNo", sap.ui.model.FilterOperator.Contains, sValue),
+                                new sap.ui.model.Filter("BusinessName", sap.ui.model.FilterOperator.Contains, sValue)
+                            ];
+                        }
+                        oEvent.getSource().getBinding("items").filter(new sap.ui.model.Filter({
+                            filters: aFilters,
+                            and: false // OR operation between filters
+                        }));
+                    },
+
+                    confirm: function (oEvent) {
+                        var aSelectedItems = oEvent.getParameter("selectedItems");
+                        if (aSelectedItems && aSelectedItems.length > 0) {
+                            // Extract BusinessNo from all selected items
+                            var aSelectedBusinessNos = aSelectedItems.map(function (oItem) {
+                                return oItem.getBindingContext().getObject().BusinessNo;
+                            });
+
+                            // Join with comma separator for display
+                            var sDisplayValue = aSelectedBusinessNos.join(", ");
+                            oInput.setValue(sDisplayValue);
+
+                            // Store the array of selected business numbers in a custom data property
+                            oInput.data("selectedBusinessNos", aSelectedBusinessNos);
+                        } else {
+                            oInput.setValue("");
+                            oInput.data("selectedBusinessNos", []);
+                        }
+                    },
+
+                    cancel: function (oEvent) {
+                        // Optional: Handle cancel if needed
+                    },
+
+                    columns: [
+                        new sap.m.Column({
+                            header: new sap.m.Text({ text: "N°Affaire" }),
+                            width: "30%"
+                        }),
+                        new sap.m.Column({
+                            header: new sap.m.Text({ text: "Description" }),
+                            width: "70%"
+                        })
+                    ]
+                });
+
+                this._oBusinessNoDialog.bindAggregation("items", {
+                    path: "/ZC_FGA_VH",
+                    template: new sap.m.ColumnListItem({
+                        type: "Active", // Makes rows selectable
+                        cells: [
+                            new sap.m.Text({ text: "{BusinessNo}" }),
+                            new sap.m.Text({ text: "{BusinessName}" })
+                        ]
+                    })
+                });
+
+                oView.addDependent(this._oBusinessNoDialog);
+            }
+
+            // Clear previous selections and filters
+            this._oBusinessNoDialog.getBinding("items").filter([]);
+
+            // If there are previously selected values, pre-select them
+            var aCurrentSelections = oInput.data("selectedBusinessNos");
+            if (aCurrentSelections && aCurrentSelections.length > 0) {
+                // This would require additional logic to pre-select items
+                // You might need to manually set selections based on the stored business numbers
+            }
+
+            this._oBusinessNoDialog.open();
+        },
+
+        onBusinessNoValueHelp1: function (oEvent) {
             var oInput = oEvent.getSource();
             var oView = this.getView();
 
