@@ -77,6 +77,8 @@ sap.ui.define([
                     filtersModel.setProperty("/Affaire", "");
                 }
 
+                filtersModel.refresh(true);
+
                 // Save these years for bindings
                 const utilitiesModel = self.getView().getModel("utilities");
                 utilitiesModel.setProperty("/currentYear", periodYear);

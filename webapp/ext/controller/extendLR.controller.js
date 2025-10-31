@@ -161,10 +161,20 @@ sap.ui.define(
                 const oUtilitiesModel = oView.getModel("utilities");
                 const oNavController = this.extensionAPI.getNavigationController();
 
+                //const period = oUtilitiesModel.getProperty("/period");
+
+                const oPeriodControl = oView.byId("com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ListReport.view.ListReport::ZC_FGASet--listReportFilter-filterItemControlA_-_Parameter.p_period");
+
+                let period;
+                if (oPeriodControl) {
+                    period = oPeriodControl.getValue();
+                    oUtilitiesModel.setProperty("/period", period);
+
+                }
                 const oContext = oModel.createEntry("/ZC_FGASet", {
                     properties: {
                         BusinessNo: "DUMMY",
-                        p_period: oUtilitiesModel.getProperty("/period") || (() => {
+                        p_period: period || (() => {
                             const now = new Date();
                             const month = String(now.getMonth() + 1).padStart(2, "0");
                             const year = String(now.getFullYear());
