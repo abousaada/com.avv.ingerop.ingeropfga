@@ -1928,7 +1928,7 @@ sap.ui.define([
             // Check if data is already loaded
             var aData = oModel.getProperty("/ZC_FGA_VH");
             if (!aData || aData.length === 0) {
-                console.log("🔄 Loading BusinessNo data...");
+                console.log("Loading BusinessNo data...");
 
                 // Show busy indicator
                 var oBusyDialog = new sap.m.BusyDialog({
@@ -1940,18 +1940,18 @@ sap.ui.define([
                 // Load data first
                 oModel.read("/ZC_FGA_VH", {
                     success: function (oData) {
-                        console.log("✅ Data loaded successfully:", oData.results.length, "items");
+                        console.log("Data loaded successfully:", oData.results.length, "items");
                         oBusyDialog.close();
                         self._openBusinessNoDialog(oInput, oView, oData.results);
                     },
                     error: function (oError) {
-                        console.error("❌ Error loading data:", oError);
+                        console.error("Error loading data:", oError);
                         oBusyDialog.close();
                         sap.m.MessageBox.error("Erreur lors du chargement des données");
                     }
                 });
             } else {
-                console.log("✅ Data already loaded:", aData.length, "items");
+                console.log("Data already loaded:", aData.length, "items");
                 this._openBusinessNoDialog(oInput, oView, aData);
             }
         },
@@ -1987,7 +1987,7 @@ sap.ui.define([
 
                 confirm: function (oEvent) {
                     var aSelectedItems = oEvent.getParameter("selectedItems");
-                    console.log("🎯 Selected items:", aSelectedItems);
+                    console.log("Selected items:", aSelectedItems);
 
                     if (aSelectedItems && aSelectedItems.length > 0) {
                         var aSelectedBusinessNos = aSelectedItems.map(function (oItem) {
@@ -1997,7 +1997,7 @@ sap.ui.define([
                             return bn;
                         });
 
-                        console.log("🎯 BusinessNos selected:", aSelectedBusinessNos);
+                        console.log("BusinessNos selected:", aSelectedBusinessNos);
 
                         if (aSelectedBusinessNos.length > 0) {
                             var sDisplayValue = aSelectedBusinessNos.join(", ");
@@ -2058,7 +2058,7 @@ sap.ui.define([
             var aData = oModel.getProperty("/ZI_FGA_PROFITCENTER_VH");
 
             if (!aData || aData.length === 0) {
-                console.log("🔄 Loading Profit Center data...");
+                console.log("Loading Profit Center data...");
 
                 var oBusyDialog = new sap.m.BusyDialog({
                     text: "Chargement des centres de profit...",
@@ -2069,18 +2069,18 @@ sap.ui.define([
                 // Load via OData read
                 oModel.read("/ZI_FGA_PROFITCENTER_VH", {
                     success: function (oData) {
-                        console.log("✅ Profit Centers loaded:", oData.results.length);
+                        console.log("Profit Centers loaded:", oData.results.length);
                         oBusyDialog.close();
                         self._openProfitCenterDialog(oInput, oView, oData.results);
                     },
                     error: function (oError) {
-                        console.error("❌ Error loading Profit Centers:", oError);
+                        console.error("Error loading Profit Centers:", oError);
                         oBusyDialog.close();
                         sap.m.MessageBox.error("Erreur lors du chargement des centres de profit");
                     }
                 });
             } else {
-                console.log("✅ Profit Centers already loaded:", aData.length);
+                console.log("Profit Centers already loaded:", aData.length);
                 this._openProfitCenterDialog(oInput, oView, aData);
             }
         },
@@ -2123,7 +2123,7 @@ sap.ui.define([
                         var oSelected = oCtx ? oCtx.getObject() : null;
 
                         if (oSelected) {
-                            console.log("🎯 Selected Profit Center:", oSelected.ProfitCenter);
+                            console.log("Selected Profit Center:", oSelected.ProfitCenter);
                             oInput.setValue(oSelected.ProfitCenter);
                             oInput.data("selectedProfitCenter", oSelected.ProfitCenter);
 
