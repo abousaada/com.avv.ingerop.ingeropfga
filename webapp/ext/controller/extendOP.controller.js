@@ -182,6 +182,7 @@ sap.ui.define(
                                             if (sAction === sap.m.MessageBox.Action.OK) {
                                                 // User confirmed - proceed with save
                                                 self._executeSave(utilitiesModel, oView, oContext, resolve, reject);
+                                                reject("Save cancelled by user");
                                             } else {
                                                 // User cancelled
                                                 this._setBusy(false);
@@ -366,6 +367,8 @@ sap.ui.define(
                         console.log(error);
                         finalReject(error);
                     }
+
+                    return Promise.reject(error);
                 });
             },
 
