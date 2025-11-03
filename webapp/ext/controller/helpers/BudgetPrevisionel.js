@@ -1200,6 +1200,13 @@ sap.ui.define([
         },
 
         onSubmit: function (oEvent) {
+
+            const dataMode = this.getView().getModel("utilities").getProperty("/DataMode");
+
+            if (dataMode === 'M') {
+                return;
+            }
+
             var self = this;
             var utilitiesModel = this.getView().getModel("utilities");
 

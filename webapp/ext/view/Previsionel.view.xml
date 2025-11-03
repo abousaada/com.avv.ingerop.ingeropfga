@@ -382,7 +382,17 @@
                             editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableJanvN} }"
 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"                        /-->
                             <Input
-                                value="{utilities>JanvN}"
+                                value="{
+                                    path: 'utilities>JanvN',
+                                    type: 'sap.ui.model.type.Float',
+                                    formatOptions: {
+                                        minFractionDigits: 2,
+                                        maxFractionDigits: 2,
+                                        groupingEnabled: true,
+                                        groupingSeparator: ' ',
+                                        decimalSeparator: ','
+                                    }
+                                }"
                                 submit=".onPrevisionelSubmit"
                                 editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableJanvN} }"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
@@ -412,7 +422,17 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 class="boldText"
                             />
                             <Input
-                                value="{utilities>FevrN}"
+                                value="{
+                                    path: 'utilities>FevrN',
+                                    type: 'sap.ui.model.type.Float',
+                                    formatOptions: {
+                                        minFractionDigits: 2,
+                                        maxFractionDigits: 2,
+                                        groupingEnabled: true,
+                                        groupingSeparator: ' ',
+                                        decimalSeparator: ','
+                                    }
+                                }"
                                 submit=".onPrevisionelSubmit"
                                 editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableFevrN}}"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
@@ -442,7 +462,17 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 class="{= 'sapMTextStrong' }"
                             />
                             <Input
-                                value="{utilities>MarsN}"
+                                value="{
+                                    path: 'utilities>MarsN',
+                                    type: 'sap.ui.model.type.Float',
+                                    formatOptions: {
+                                        minFractionDigits: 2,
+                                        maxFractionDigits: 2,
+                                        groupingEnabled: true,
+                                        groupingSeparator: ' ',
+                                        decimalSeparator: ','
+                                    }
+                                }"
                                 submit=".onPrevisionelSubmit"
                                 editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableMarsN}}"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
@@ -472,7 +502,17 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 class="{= 'sapMTextStrong' }"
                             />
                             <Input
-                                value="{utilities>AvrN}"
+                                value="{
+                                    path: 'utilities>AvrN',
+                                    type: 'sap.ui.model.type.Float',
+                                    formatOptions: {
+                                        minFractionDigits: 2,
+                                        maxFractionDigits: 2,
+                                        groupingEnabled: true,
+                                        groupingSeparator: ' ',
+                                        decimalSeparator: ','
+                                    }
+                                }"
                                 submit=".onPrevisionelSubmit"
                                 editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableAvrN}}"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
@@ -502,7 +542,17 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 class="{= 'sapMTextStrong' }"
                             />
                             <Input
-                                value="{utilities>MaiN}"
+                                value="{
+                                    path: 'utilities>MaiN',
+                                    type: 'sap.ui.model.type.Float',
+                                    formatOptions: {
+                                        minFractionDigits: 2,
+                                        maxFractionDigits: 2,
+                                        groupingEnabled: true,
+                                        groupingSeparator: ' ',
+                                        decimalSeparator: ','
+                                    }
+                                }"
                                 submit=".onPrevisionelSubmit"
                                 editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableMaiN}}"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
@@ -532,7 +582,17 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 class="{= 'sapMTextStrong' }"
                             />
                             <Input
-                                value="{utilities>JuinN}"
+                                value="{
+                                    path: 'utilities>JuinN',
+                                    type: 'sap.ui.model.type.Float',
+                                    formatOptions: {
+                                        minFractionDigits: 2,
+                                        maxFractionDigits: 2,
+                                        groupingEnabled: true,
+                                        groupingSeparator: ' ',
+                                        decimalSeparator: ','
+                                    }
+                                }"
                                 submit=".onPrevisionelSubmit"
                                 editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableJuinN}}"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
@@ -562,7 +622,17 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 class="{= 'sapMTextStrong' }"
                             />
                             <Input
-                                value="{utilities>JuilN}"
+                                value="{
+                                    path: 'utilities>JuilN',
+                                    type: 'sap.ui.model.type.Float',
+                                    formatOptions: {
+                                        minFractionDigits: 2,
+                                        maxFractionDigits: 2,
+                                        groupingEnabled: true,
+                                        groupingSeparator: ' ',
+                                        decimalSeparator: ','
+                                    }
+                                }"
                                 submit=".onPrevisionelSubmit"
                                 editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableJuilN}}"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
@@ -593,7 +663,17 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 class="{= 'sapMTextStrong' }"
                             />
                             <Input
-                                value="{utilities>AoutN}"
+                                value="{
+                                    path: 'utilities>AoutN',
+                                    type: 'sap.ui.model.type.Float',
+                                    formatOptions: {
+                                        minFractionDigits: 2,
+                                        maxFractionDigits: 2,
+                                        groupingEnabled: true,
+                                        groupingSeparator: ' ',
+                                        decimalSeparator: ','
+                                    }
+                                }"
                                 submit=".onPrevisionelSubmit"
                                 editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableAoutN}}"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
@@ -623,7 +703,17 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 class="{= 'sapMTextStrong' }"
                             />
                             <Input
-                                value="{utilities>SeptN}"
+                                value="{
+                                    path: 'utilities>SeptN',
+                                    type: 'sap.ui.model.type.Float',
+                                    formatOptions: {
+                                        minFractionDigits: 2,
+                                        maxFractionDigits: 2,
+                                        groupingEnabled: true,
+                                        groupingSeparator: ' ',
+                                        decimalSeparator: ','
+                                    }
+                                }"
                                 submit=".onPrevisionelSubmit"
                                 editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableSeptN}}"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
@@ -653,7 +743,17 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 class="{= 'sapMTextStrong' }"
                             />
                             <Input
-                                value="{utilities>OctN}"
+                                value="{
+                                    path: 'utilities>OctN',
+                                    type: 'sap.ui.model.type.Float',
+                                    formatOptions: {
+                                        minFractionDigits: 2,
+                                        maxFractionDigits: 2,
+                                        groupingEnabled: true,
+                                        groupingSeparator: ' ',
+                                        decimalSeparator: ','
+                                    }
+                                }"
                                 submit=".onPrevisionelSubmit"
                                 editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableOctN}}"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
@@ -683,7 +783,17 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 class="{= 'sapMTextStrong' }"
                             />
                             <Input
-                                value="{utilities>NovN}"
+                                value="{
+                                    path: 'utilities>NovN',
+                                    type: 'sap.ui.model.type.Float',
+                                    formatOptions: {
+                                        minFractionDigits: 2,
+                                        maxFractionDigits: 2,
+                                        groupingEnabled: true,
+                                        groupingSeparator: ' ',
+                                        decimalSeparator: ','
+                                    }
+                                }"
                                 submit=".onPrevisionelSubmit"
                                 editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableNovN}}"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
@@ -713,7 +823,17 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 class="{= 'sapMTextStrong' }"
                             />
                             <Input
-                                value="{utilities>DecN}"
+                                value="{
+                                    path: 'utilities>DecN',
+                                    type: 'sap.ui.model.type.Float',
+                                    formatOptions: {
+                                        minFractionDigits: 2,
+                                        maxFractionDigits: 2,
+                                        groupingEnabled: true,
+                                        groupingSeparator: ' ',
+                                        decimalSeparator: ','
+                                    }
+                                }"
                                 submit=".onPrevisionelSubmit"
                                 editable="{= ${ui>/editable} &amp;&amp; ${utilities>isEditableDecN}}"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
@@ -744,12 +864,22 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                     <table:template>
                         <HBox>
                             <Text
-                                text="{utilities>JanvN1}"
+                                text="{utilities>JanvN1}" 
                                 visible="{= ${utilities>isTotalRow}}"
                                 class="{= 'sapMTextStrong' }"
                             />
                             <Input
-                                value="{utilities>JanvN1}"
+                                value="{
+                                    path: 'utilities>JanvN1',
+                                    type: 'sap.ui.model.type.Float',
+                                    formatOptions: {
+                                        minFractionDigits: 2,
+                                        maxFractionDigits: 2,
+                                        groupingEnabled: true,
+                                        groupingSeparator: ' ',
+                                        decimalSeparator: ','
+                                    }
+                                }"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                                 editable="{ui>/editable}"
                                 submit=".onPrevisionelSubmit"
@@ -771,7 +901,17 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 class="{= 'sapMTextStrong' }"
                             />
                             <Input
-                                value="{utilities>FevrN1}"
+                                value="{
+                                    path: 'utilities>FevrN1',
+                                    type: 'sap.ui.model.type.Float',
+                                    formatOptions: {
+                                        minFractionDigits: 2,
+                                        maxFractionDigits: 2,
+                                        groupingEnabled: true,
+                                        groupingSeparator: ' ',
+                                        decimalSeparator: ','
+                                    }
+                                }"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                                 editable="{ui>/editable}"
                                 submit=".onPrevisionelSubmit"
@@ -793,7 +933,17 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 class="{= 'sapMTextStrong' }"
                             />
                             <Input
-                                value="{utilities>MarsN1}"
+                                value="{
+                                    path: 'utilities>MarsN1',
+                                    type: 'sap.ui.model.type.Float',
+                                    formatOptions: {
+                                        minFractionDigits: 2,
+                                        maxFractionDigits: 2,
+                                        groupingEnabled: true,
+                                        groupingSeparator: ' ',
+                                        decimalSeparator: ','
+                                    }
+                                }"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                                 editable="{ui>/editable}"
                                 submit=".onPrevisionelSubmit"
@@ -815,7 +965,17 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 class="{= 'sapMTextStrong' }"
                             />
                             <Input
-                                value="{utilities>AvrN1}"
+                                value="{
+                                    path: 'utilities>AvrN1',
+                                    type: 'sap.ui.model.type.Float',
+                                    formatOptions: {
+                                        minFractionDigits: 2,
+                                        maxFractionDigits: 2,
+                                        groupingEnabled: true,
+                                        groupingSeparator: ' ',
+                                        decimalSeparator: ','
+                                    }
+                                }"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                                 editable="{ui>/editable}"
                                 submit=".onPrevisionelSubmit"
@@ -837,7 +997,17 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 class="{= 'sapMTextStrong' }"
                             />
                             <Input
-                                value="{utilities>MaiN1}"
+                                value="{
+                                    path: 'utilities>MaiN1',
+                                    type: 'sap.ui.model.type.Float',
+                                    formatOptions: {
+                                        minFractionDigits: 2,
+                                        maxFractionDigits: 2,
+                                        groupingEnabled: true,
+                                        groupingSeparator: ' ',
+                                        decimalSeparator: ','
+                                    }
+                                }"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                                 editable="{ui>/editable}"
                                 submit=".onPrevisionelSubmit"
@@ -859,7 +1029,17 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 class="{= 'sapMTextStrong' }"
                             />
                             <Input
-                                value="{utilities>JuinN1}"
+                                value="{
+                                    path: 'utilities>JuinN1',
+                                    type: 'sap.ui.model.type.Float',
+                                    formatOptions: {
+                                        minFractionDigits: 2,
+                                        maxFractionDigits: 2,
+                                        groupingEnabled: true,
+                                        groupingSeparator: ' ',
+                                        decimalSeparator: ','
+                                    }
+                                }"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                                 editable="{ui>/editable}"
                                 submit=".onPrevisionelSubmit"
@@ -881,7 +1061,17 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 class="{= 'sapMTextStrong' }"
                             />
                             <Input
-                                value="{utilities>JuilN1}"
+                                value="{
+                                    path: 'utilities>JuilN1',
+                                    type: 'sap.ui.model.type.Float',
+                                    formatOptions: {
+                                        minFractionDigits: 2,
+                                        maxFractionDigits: 2,
+                                        groupingEnabled: true,
+                                        groupingSeparator: ' ',
+                                        decimalSeparator: ','
+                                    }
+                                }"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                                 editable="{ui>/editable}"
                                 submit=".onPrevisionelSubmit"
@@ -903,7 +1093,17 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 class="{= 'sapMTextStrong' }"
                             />
                             <Input
-                                value="{utilities>AoutN1}"
+                                value="{
+                                    path: 'utilities>AoutN1',
+                                    type: 'sap.ui.model.type.Float',
+                                    formatOptions: {
+                                        minFractionDigits: 2,
+                                        maxFractionDigits: 2,
+                                        groupingEnabled: true,
+                                        groupingSeparator: ' ',
+                                        decimalSeparator: ','
+                                    }
+                                }"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                                 editable="{ui>/editable}"
                                 submit=".onPrevisionelSubmit"
@@ -925,7 +1125,17 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 class="{= 'sapMTextStrong' }"
                             />
                             <Input
-                                value="{utilities>SeptN1}"
+                                value="{
+                                    path: 'utilities>SeptN1',
+                                    type: 'sap.ui.model.type.Float',
+                                    formatOptions: {
+                                        minFractionDigits: 2,
+                                        maxFractionDigits: 2,
+                                        groupingEnabled: true,
+                                        groupingSeparator: ' ',
+                                        decimalSeparator: ','
+                                    }
+                                }"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                                 editable="{ui>/editable}"
                                 submit=".onPrevisionelSubmit"
@@ -947,7 +1157,17 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 class="{= 'sapMTextStrong' }"
                             />
                             <Input
-                                value="{utilities>OctN1}"
+                                value="{
+                                    path: 'utilities>OctN1',
+                                    type: 'sap.ui.model.type.Float',
+                                    formatOptions: {
+                                        minFractionDigits: 2,
+                                        maxFractionDigits: 2,
+                                        groupingEnabled: true,
+                                        groupingSeparator: ' ',
+                                        decimalSeparator: ','
+                                    }
+                                }"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                                 editable="{ui>/editable}"
                                 submit=".onPrevisionelSubmit"
@@ -969,7 +1189,17 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 class="{= 'sapMTextStrong' }"
                             />
                             <Input
-                                value="{utilities>NovN1}"
+                                value="{
+                                    path: 'utilities>NovN1',
+                                    type: 'sap.ui.model.type.Float',
+                                    formatOptions: {
+                                        minFractionDigits: 2,
+                                        maxFractionDigits: 2,
+                                        groupingEnabled: true,
+                                        groupingSeparator: ' ',
+                                        decimalSeparator: ','
+                                    }
+                                }"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                                 editable="{ui>/editable}"
                                 submit=".onPrevisionelSubmit"
@@ -991,7 +1221,17 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                 class="{= 'sapMTextStrong' }"
                             />
                             <Input
-                                value="{utilities>DecN1}"
+                                value="{
+                                    path: 'utilities>DecN1',
+                                    type: 'sap.ui.model.type.Float',
+                                    formatOptions: {
+                                        minFractionDigits: 2,
+                                        maxFractionDigits: 2,
+                                        groupingEnabled: true,
+                                        groupingSeparator: ' ',
+                                        decimalSeparator: ','
+                                    }
+                                }"
                                 visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; !${utilities>isSectionHeader}}"
                                 editable="{ui>/editable}"
                                 submit=".onPrevisionelSubmit"
