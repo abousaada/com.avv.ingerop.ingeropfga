@@ -44,7 +44,7 @@ sap.ui.define(
             },
 
             onEMXPress: function (oEvent) {
-                MessageToast.show("onEMXPress invoked.");
+                // MessageToast.show("onEMXPress invoked.");
                 if (!this._oMenu) {
                     this._oMenu = new Menu({
                         items: [
@@ -61,7 +61,7 @@ sap.ui.define(
                             new MenuItem({
                                 text: "Manage EMP",
                                 icon: "sap-icon://pie-chart",
-                                press: this._onAction2.bind(this)
+                                press: this._onAction3.bind(this)
                             }),
                             new MenuItem({
                                 text: "Export",
@@ -104,7 +104,7 @@ sap.ui.define(
 
                     window.open(sHash, "_blank", "noopener,noreferrer");
 
-                    MessageToast.show("onEMXPress invoked.");
+                    // MessageToast.show("onEMXPress invoked.");
 
                 } catch (err) {
                     console.error("Error during navigation:", err);
@@ -114,6 +114,31 @@ sap.ui.define(
             _onAction2: function () {
                 MessageToast.show("Action 2 executed");
                 // Add logic
+            },
+
+            _onAction3: function () {
+                try {
+                    const oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
+
+                    var aFAGs = this.getSelectedBusinessNumbers();
+
+                    const sHash = oCrossAppNavigator.hrefForExternal({
+                        target: {
+                            semanticObject: "ZEMP",
+                            action: "display"
+                        }
+                        // ,params: {
+                        //     FGA: aFAGs
+                        // }
+                    });
+
+                    window.open(sHash, "_blank", "noopener,noreferrer");
+
+                    // MessageToast.show("onEMXPress invoked.");
+
+                } catch (err) {
+                    console.error("Error during navigation:", err);
+                }
             },
 
             _onExportExcel: function () {
