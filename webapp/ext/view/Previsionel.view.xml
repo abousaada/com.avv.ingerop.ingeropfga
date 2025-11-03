@@ -1000,7 +1000,17 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                     </table:multiLabels>
                     <table:template>
                         <Text
-                            text="{utilities>TotalN}"
+                            text="{
+                                    path: 'utilities>TotalN',
+                                    type: 'sap.ui.model.type.Float',
+                                    formatOptions: {
+                                        minFractionDigits: 2,
+                                        maxFractionDigits: 2,
+                                        groupingEnabled: true,
+                                        groupingSeparator: ' ',
+                                        decimalSeparator: ','
+                                    }
+                                }"
                             visible="{= (!${utilities>isNode} || ${utilities>isL0})}"
                         />
                     </table:template>
