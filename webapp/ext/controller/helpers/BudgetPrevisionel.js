@@ -1203,10 +1203,6 @@ sap.ui.define([
 
             const dataMode = this.getView().getModel("utilities").getProperty("/DataMode");
 
-            if (dataMode === 'M') {
-                return;
-            }
-
             var self = this;
             var utilitiesModel = this.getView().getModel("utilities");
 
@@ -1272,6 +1268,9 @@ sap.ui.define([
             var editedFlatLine = flatData[flatLineIndex];
             console.log("Found corresponding line in flat data at index:", flatLineIndex);
 
+            // Store old DataMode before we change it
+            var previousDataMode = editedFlatLine.DataMode;
+
             // Determine which months should be reset
             var monthsToReset = this._getMonthsToReset(periodMonth, fieldName, currentYear);
             console.log("Months to reset:", monthsToReset);
@@ -1291,26 +1290,35 @@ sap.ui.define([
 
             // Reset the specified months to zero in the flat data
             var hasChanges = false;
-            monthsToReset.forEach(function (monthField) {
-                if (editedFlatLine[monthField] !== 0 && editedFlatLine[monthField] !== "0") {
-                    console.log("Resetting", monthField, "from", editedFlatLine[monthField], "to 0 in flat data");
-                    editedFlatLine[monthField] = 0;
-                    hasChanges = true;
+
+            // If DataMode was 'A', switch it to 'M'
+            if (previousDataMode === "A") {
+                monthsToReset.forEach(function (monthField) {
+                    if (editedFlatLine[monthField] !== 0 && editedFlatLine[monthField] !== "0") {
+                        console.log("Resetting", monthField, "from", editedFlatLine[monthField], "to 0 in flat data");
+                        editedFlatLine[monthField] = 0;
+                        hasChanges = true;
+                    }
+                });
+
+                if (hasChanges) {
+                    console.log("Flat data after changes:", editedFlatLine);
+
+                    // Update the flat data model
+                    utilitiesModel.setProperty("/previsionel", flatData);
+
+                    // REBUILD THE ENTIRE TREE with the updated flat data
+                    //this.preparePrevisionelTreeData();
+
+                    // Show message to user
+                    sap.m.MessageToast.show("Ligne passée en mode manuel. Les mois suivants ont été réinitialisés à zéro: " + monthsToReset.join(", "));
                 }
-            });
-
-            if (hasChanges) {
-                console.log("Flat data after changes:", editedFlatLine);
-
-                // Update the flat data model
-                utilitiesModel.setProperty("/previsionel", flatData);
-
-                // REBUILD THE ENTIRE TREE with the updated flat data
-                this.preparePrevisionelTreeData();
-
-                // Show message to user
-                sap.m.MessageToast.show("Ligne passée en mode manuel. Les mois suivants ont été réinitialisés à zéro: " + monthsToReset.join(", "));
+            } else {
+                console.log("DataMode was already 'M' — no months reset.");
             }
+            
+            utilitiesModel.setProperty("/previsionel", flatData);
+            this.preparePrevisionelTreeData();
         },
 
         // Simple path finder that works with your tree structure
