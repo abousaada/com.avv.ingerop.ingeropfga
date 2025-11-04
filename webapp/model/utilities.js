@@ -459,7 +459,7 @@ sap.ui.define([
                     delete dataToSend.FinAffaire;
                     delete dataToSend.isNode;
 
-                    if (dataToSend.to_BudgetPxAutre) {
+                    if (dataToSend.to_BudgetPxAutre && Array.isArray(dataToSend.to_BudgetPxAutre) ) {
                         dataToSend.to_BudgetPxAutre = dataToSend.to_BudgetPxAutre.map(item => {
                             const newItem = { ...item };
                             delete newItem.isTotalRow;
@@ -468,7 +468,7 @@ sap.ui.define([
                         });
                     }
 
-                    if (dataToSend.to_Missions) {
+                    if (dataToSend.to_Missions && Array.isArray(dataToSend.to_Missions)) {
                         dataToSend.to_Missions = dataToSend.to_Missions.map(item => {
                             const newItem = { ...item };
                             delete newItem.isNode;

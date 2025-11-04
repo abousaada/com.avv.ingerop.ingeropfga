@@ -324,13 +324,27 @@ sap.ui.define(
                         else if (isForecastMode && dataMode === 'M') {
                             oPayload = Helper.extractPlainData({
                                 ...oContext.getObject(),
-                                "to_Missions": [],
-                                "to_BudgetPxAutre": [],
-                                "to_BudgetPxSubContracting": [],
-                                "to_BudgetPxRecetteExt": [],
-                                "to_BudgetPxSTI": [],
-                                "to_Previsionel": [],
-                                "to_BudgetPxMainOeuvre": []
+                                "to_Missions": {
+                                    results: []
+                                },
+                                "to_BudgetPxAutre": {
+                                    results: []
+                                },
+                                "to_BudgetPxSubContracting": {
+                                    results: []
+                                },
+                                "to_BudgetPxRecetteExt": {
+                                    results: []
+                                },
+                                "to_BudgetPxSTI": {
+                                    results: []
+                                },
+                                "to_Previsionel": {
+                                    results: []
+                                },
+                                "to_BudgetPxMainOeuvre": {
+                                    results: []
+                                }
                             });
 
                             const previsionel = utilitiesModel.getProperty("/previsionel") || [];
@@ -344,15 +358,37 @@ sap.ui.define(
 
                             oPayload.to_Previsionel = filtredPrevisionel;
 
+                            // Handle DUMMY BusinessNo - use first BusinessNo from filtredPrevisionel if available
+                            if (oPayload.BusinessNo === "DUMMY" && filtredPrevisionel.length > 0) {
+                                const firstBusinessNo = filtredPrevisionel[0].BusinessNo;
+                                if (firstBusinessNo) {
+                                    oPayload.BusinessNo = firstBusinessNo;
+                                }
+                            }
+
                         } else {
                             finalReject("Aucune modification n’a été effectuée sur cette vue");
-                            //return;
+                            return;
                         }
 
                         const updatedFGA = await utilitiesModel.deepUpsertFGA(oPayload);
                         this._setBusy(false);
 
-                        if (updatedFGA) {
+                        if (isForecastMode && dataMode === 'M') {
+                            const message = isForecastMode && dataMode === 'M'
+                                ? "Prévisionnel FGA mis à jour"
+                                : "FGA updated: " + updatedFGA.BusinessNo;
+
+                            setTimeout(() => {
+                                sap.m.MessageBox.success(message, {
+                                    actions: [sap.m.MessageBox.Action.CLOSE],
+                                    dependentOn: this.getView()
+                                });
+                            }, 100);
+
+                            return updatedFGA;
+
+                        } else if (updatedFGA) {
                             Helper.validMessage("FGA updated: " + updatedFGA.BusinessNo, this.getView(), this.onAfterSaveAction.bind(this));
                             finalResolve(updatedFGA);
                         } else {
@@ -368,7 +404,7 @@ sap.ui.define(
                         finalReject(error);
                     }
 
-                    return Promise.reject(error);
+                    return Promise.reject();
                 });
             },
 
@@ -916,7 +952,7 @@ sap.ui.define(
                 }
                 this._budgetPrevisionel.onBusinessNoValueHelp(oEvent);
             },
-            
+
 
             // ==============================================
             // Move to formatter !!!!
