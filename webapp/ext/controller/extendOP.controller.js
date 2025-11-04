@@ -470,6 +470,8 @@ sap.ui.define(
                 if (oUtilitiesModel) {
                     oUtilitiesModel.setProperty("/isForecastMode", false);
                 }
+                sessionStorage.removeItem("isForecastMode");
+                sessionStorage.removeItem("selectedBusinessNos");
             },
 
             _cleanModification() {
