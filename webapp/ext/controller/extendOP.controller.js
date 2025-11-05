@@ -1227,7 +1227,7 @@ sap.ui.define(
                         ["ecart objectif", { header: "orangeHeader", body: "orangeColumn" }],
                         ["budget actif n", { header: "pinkHeader", body: "pinkColumn" }],
                         ["budget actif m-1 n", { header: "pinkHeader", body: "pinkColumn" }],
-                        ["ecart n", { header: "pinkHeader", body: "pinkColumn" }],
+                        ["ecart m", { header: "pinkHeader", body: "pinkColumn" }],
                         ["budget n-1", { header: "pinkHeader", body: "pinkColumn" }],
                     ]);
                     const norm = s => (s || "").trim().toLowerCase();

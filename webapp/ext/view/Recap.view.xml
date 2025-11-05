@@ -164,7 +164,7 @@
                 </table:template>
             </table:Column>
             <table:Column>
-                <Label text="Ecart N" />
+                <Label text="Ecart M" />
                 <table:template>
                     <!--Text text="{utilities>ecart}" /-->
                     <Text
