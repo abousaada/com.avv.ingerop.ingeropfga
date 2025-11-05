@@ -64,6 +64,100 @@ sap.ui.define(
                     const oRouter = this._getOwnerComponent().getRouter();
                     oRouter.attachRoutePatternMatched(this._onRoutePatternMatched.bind(this));
 
+
+                    // ABO to rework
+                    const isForecastMode = sessionStorage.getItem("isForecastMode") === "true";
+                    const selectedBusinessNos = sessionStorage.getItem("selectedBusinessNos");
+
+                    if (isForecastMode) {
+                        console.log("Object Page opened in forecast mode - recreating navigation context");
+
+                        const oView = this.getView();
+                        const oModel = this._getOwnerComponent().getModel();
+                        const oUtilitiesModel = this._getOwnerComponent().getModel("utilities");
+                        const oNavController = this._getExtensionAPI().getNavigationController();
+
+                        // Get period from control or use default (same logic as onPrevPress)
+                        const oPeriodControl = oView.byId("com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ListReport.view.ListReport::ZC_FGASet--listReportFilter-filterItemControlA_-_Parameter.p_period");
+
+                        let period;
+                        if (oPeriodControl) {
+                            period = oPeriodControl.getValue();
+                            oUtilitiesModel.setProperty("/period", period);
+                        }
+
+                        // Create the same entry context as in onPrevPress
+                        const oContext = oModel.createEntry("/ZC_FGASet", {
+                            properties: {
+                                BusinessNo: "DUMMY",
+                                p_period: period || (() => {
+                                    const now = new Date();
+                                    const month = String(now.getMonth() + 1).padStart(2, "0");
+                                    const year = String(now.getFullYear());
+                                    return `${month}${year}`;
+                                })()
+                            }
+                        });
+
+                        oUtilitiesModel.setProperty("/isForecastMode", true);
+
+                        // Clean previous tree data
+                        oUtilitiesModel.setProperty("/previsionelHierarchyWithTotals", []);
+                        const oTable = this.byId("com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--PrevisionnelTreeTable");
+                        if (oTable && oTable.getBinding("rows")) {
+                            oTable.getBinding("rows").refresh(true);
+                        }
+
+                        let oNavigationContext;
+
+                        if (selectedBusinessNos) {
+                            try {
+                                const aSelectedBusinessNos = JSON.parse(selectedBusinessNos);
+                                console.log("Navigating to selected BusinessNos:", aSelectedBusinessNos);
+
+                                if (aSelectedBusinessNos.length === 1) {
+                                    // For single selection, try to get the existing context
+                                    // or create a navigation context with the first BusinessNo
+                                    oNavigationContext = oModel.createEntry("/ZC_FGASet", {
+                                        properties: {
+                                            BusinessNo: aSelectedBusinessNos[0],
+                                            p_period: period || (() => {
+                                                const now = new Date();
+                                                const month = String(now.getMonth() + 1).padStart(2, "0");
+                                                const year = String(now.getFullYear());
+                                                return `${month}${year}`;
+                                            })()
+                                        }
+                                    });
+                                } else {
+                                    // For multiple selection, use the dummy context
+                                    oNavigationContext = oContext;
+                                }
+                            } catch (error) {
+                                console.error("Error parsing selectedBusinessNos:", error);
+                                oNavigationContext = oContext;
+                            }
+                        } else {
+                            console.log("No items selected — navigating to forecast (all data)");
+                            oNavigationContext = oContext;
+                        }
+
+                        // Perform the navigation
+                        try {
+                            await oNavController.navigateInternal(oNavigationContext, {
+                                navigationMode: "inplace"
+                            });
+                            console.log("Forecast navigation completed successfully");
+                        } catch (error) {
+                            console.error("Error navigating in forecast mode:", error);
+                        }
+
+                        // sessionStorage.removeItem("isForecastMode");
+                        // sessionStorage.removeItem("selectedBusinessNos");
+                    }
+                    // ABO end to rework
+
+
                     // Initializes the Create Missions tab
                     this._missionsTab = new Missions();
                     this._missionsTab.oView = this.getView();
@@ -618,8 +712,6 @@ sap.ui.define(
 
                             const tabData = await this._getTabsData(type, aSelectedBusinessNos);
 
-                            // this._loadFragment("Missions");
-
                             await this._loadFragment("Missions");
 
                             //this._setBusy(false);
@@ -655,11 +747,13 @@ sap.ui.define(
                     //return;
                 }
 
-                // Clear any existing content
-                oContainer.destroyItems();
+                const isForecastMode = this.getInterface().getModel("utilities").getProperty("/isForecastMode");
+
                 return new Promise(async (resolve, reject) => {
-                    //if missions -- clean this !
-                    if (sFragmentName === "Missions") {
+
+                    oContainer.destroyItems();
+
+                    if (sFragmentName === "Missions" && !isForecastMode) {
                         try {
                             const oFragment = await sap.ui.core.Fragment.load({
                                 name: "com.avv.ingerop.ingeropfga.ext.view.tab.detail." + sFragmentName,
@@ -673,7 +767,6 @@ sap.ui.define(
                             reject(oError);
                         }
 
-                        //Prepare tree for missions
                         this.prepareMissionsTreeData();
                         this.preparePxAutreTreeData();
                         this.preparePxSubContractingTreeData();
@@ -681,10 +774,16 @@ sap.ui.define(
                         this.preparePxMainOeuvreTreeData();
                         this.preparePxSTITreeData();
                         this.preparePrevisionelTreeData();
-
-                        resolve();
                     }
-                    else {
+
+                    if (isForecastMode) {
+                        this.preparePrevisionelTreeData();
+                    }
+
+                    resolve();
+
+
+                    /*else {
 
                         try {
                             const oFragment = await sap.ui.core.Fragment.load({
@@ -701,7 +800,7 @@ sap.ui.define(
                             sap.m.MessageBox.error("Failed to load fragment: " + oError.message);
                         }
 
-                    }
+                    }*/
                 });
             },
 
@@ -1587,6 +1686,76 @@ sap.ui.define(
                 return bEditable && sIsSTI !== "X";
             },
 
+            // ================================================
+            // Table Design Budgets Prévisionel Section !!!!
+            // ================================================
+            onRowsUpdatedBudgetPrevisionelTab: function () {
+                var stableName = "PrevisionnelTreeTable";
+                this.onBudgetPrevisionelUpdated(stableName);
+            },
+            onBudgetPrevisionelUpdated: function (stableName) {
+                try {
+                    var sViewId = this.oView.sId;
+                    const oTable = sap.ui.getCore().byId(
+                        sViewId + "--" + stableName);
+                    if (oTable) {
+                        const oDomRef = oTable.getDomRef();
+                        if (!oDomRef) {
+                            console.warn("DOM ref not ready for table:", stableName);
+                            return;
+                        }
+                        const aRows = oTable.getRows();
+                        const aExclure = new Set(["cumule", "cumulé", "pourcentage", "rad"]);
+
+                        jQuery(oDomRef).find("tr").removeClass("pxNodeRow pxSubTotalRow pxTotalRow");
+
+                        aRows.forEach(oRow => {
+
+                            // Header cell (color whole header cell, not just the label)
+                            oDomRef.querySelectorAll(".sapUiTableColHdrTr.pxHeader")
+                                .forEach(tr => tr.classList.remove("pxHeader"));
+                            const aHeaderRows = oDomRef.querySelectorAll(".sapUiTableColHdrTr");
+                            const oLast = aHeaderRows[aHeaderRows.length - 1];
+                            const oFirst = aHeaderRows[aHeaderRows.length / 2 - 1];
+                            if (oLast && oFirst) {
+                                oFirst.classList.add("pxHeader");
+                                oLast.classList.add("pxHeader");
+
+                            }
+                            const oContext = oRow.getBindingContext("utilities");
+                            if (oContext) {
+                                const bIsTotal = !!oContext.getProperty("isTotalRow");
+                                const bIsNode = !!oContext.getProperty("isNode");
+                                const sName = String(oContext.getProperty("name") || "").trim().toLowerCase();
+                                const $row = oRow.$();
+                                // Enlever les anciens styles
+                                $row.removeClass("pxTotalRow pxSubTotalRow pxNodeRow");
+
+                                if (aExclure.has(sName)) {
+                                    return;
+                                }
+
+                                // 👉 Forcer les lignes "node" à rester blanches
+                                if (bIsNode && !bIsTotal) {
+                                    $row.addClass("pxNodeRow");
+                                    return; // ne pas appliquer les autres styles
+                                }
+
+                                if (sName === "total dépense" || sName === "total facturation") {
+                                    // Sous-total (violet clair + texte noir)
+                                    oRow.addStyleClass("pxSubTotalRow");
+                                }
+
+
+                            }
+                        });
+                    }
+
+                } catch (err) {
+                    console.error("onBudgetPXUpdated failed:", err);
+                }
+
+            },
 
 
         });

@@ -192,7 +192,7 @@
         <table:TreeTable
             id="PrevisionnelTreeTable"
             width="100%"
-            rowsUpdated="onRowsUpdatedBudgetPXTab"
+            rowsUpdated="onRowsUpdatedBudgetPrevisionelTab"
             class="sapUiMediumMarginTop"
             rows="{
             path: 'utilities>/previsionelHierarchyWithTotals',
@@ -1009,6 +1009,7 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
                                         groupingEnabled: true,
                                         groupingSeparator: ' ',
                                         decimalSeparator: ','
+                                        
                                     }
                                 }"
                             visible="{= (!${utilities>isNode} || ${utilities>isL0})}"
