@@ -197,7 +197,6 @@
             <GenericTile
                 header="Total Facturé"
                 class="sapUiTinyMarginEnd"
-                press=".onKPIPress"
             >
                 <TileContent unit="€">
                     <NumericContent
@@ -216,7 +215,6 @@
             <GenericTile
                 header="Total Dépensé"
                 class="sapUiTinyMarginEnd"
-                press=".onKPIPress"
             >
                 <TileContent unit="€">
                     <NumericContent
@@ -235,7 +233,6 @@
             <GenericTile
                 header="Ratio Dépenses/Facturation"
                 class="sapUiTinyMarginStart"
-                press=".onKPIPress"
             >
                 <TileContent unit="%">
                     <NumericContent
