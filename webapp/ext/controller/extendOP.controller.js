@@ -1053,7 +1053,61 @@ sap.ui.define(
                 this._budgetPrevisionel.onBusinessNoValueHelp(oEvent);
             },
 
+            onExpandCollapseAll: function (oEvent) {
+                if (!this._budgetPrevisionel) {
+                    this._budgetPrevisionel = new BudgetPrevisionel();
+                    this._budgetPrevisionel.oView = this.oView;
+                }
+                this._budgetPrevisionel.onExpandCollapseAll(oEvent);
+            },
 
+            calculateTotalFacturer: function (oEvent) {
+                if (!this._budgetPrevisionel) {
+                    this._budgetPrevisionel = new BudgetPrevisionel();
+                    this._budgetPrevisionel.oView = this.oView;
+                }
+                return  this._budgetPrevisionel.calculateTotalFacturer(oEvent);
+            },
+
+            calculateTotalDepenser: function (oEvent) {
+                if (!this._budgetPrevisionel) {
+                    this._budgetPrevisionel = new BudgetPrevisionel();
+                    this._budgetPrevisionel.oView = this.oView;
+                }
+                return  this._budgetPrevisionel.calculateTotalDepenser(oEvent);
+            },
+
+            calculateRatio: function (oEvent) {
+                if (!this._budgetPrevisionel) {
+                    this._budgetPrevisionel = new BudgetPrevisionel();
+                    this._budgetPrevisionel.oView = this.oView;
+                }
+                return  this._budgetPrevisionel.calculateRatio(oEvent);
+            },
+            
+            formatRatioColorFromData: function (oEvent) {
+                if (!this._budgetPrevisionel) {
+                    this._budgetPrevisionel = new BudgetPrevisionel();
+                    this._budgetPrevisionel.oView = this.oView;
+                }
+                return  this._budgetPrevisionel.formatRatioColorFromData(oEvent);
+            },
+
+            formatRatioIndicatorFromData: function (oEvent) {
+                if (!this._budgetPrevisionel) {
+                    this._budgetPrevisionel = new BudgetPrevisionel();
+                    this._budgetPrevisionel.oView = this.oView;
+                }
+                return  this._budgetPrevisionel.formatRatioIndicatorFromData(oEvent);
+            },
+
+            calculateRatioValue: function (oEvent) {
+                if (!this._budgetPrevisionel) {
+                    this._budgetPrevisionel = new BudgetPrevisionel();
+                    this._budgetPrevisionel.oView = this.oView;
+                }
+                return  this._budgetPrevisionel.calculateRatioValue(oEvent);
+            },
             // ==============================================
             // Move to formatter !!!!
             // ==============================================
@@ -1735,7 +1789,7 @@ sap.ui.define(
                                     return;
                                 }
 
-                                // 👉 Forcer les lignes "node" à rester blanches
+                                // Forcer les lignes "node" à rester blanches
                                 if (bIsNode && !bIsTotal) {
                                     $row.addClass("pxNodeRow");
                                     return; // ne pas appliquer les autres styles

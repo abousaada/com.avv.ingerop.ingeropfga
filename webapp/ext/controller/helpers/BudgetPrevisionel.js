@@ -1,12 +1,368 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel"
-], function (Controller,JSONModel) {
+], function (Controller, JSONModel) {
     "use strict";
 
     return Controller.extend("com.avv.ingerop.ingeropfga.ext.controller.BudgetPrevisionel", {
 
         preparePrevisionelTreeData: function () {
+            var self = this;
+
+            this.setBusy(true);
+
+            var previsionel = this.getView().getModel("utilities").getProperty("/previsionel");
+
+            // Check if any line has DataMode = "M"
+            var hasManualData = false;
+            if (previsionel && previsionel.length > 0) {
+                hasManualData = previsionel.some(function (item) {
+                    return item.DataMode === "M";
+                });
+            }
+
+            // Set global DataMode based on individual lines
+            if (hasManualData) {
+                this.getView().getModel("utilities").setProperty("/DataMode", "M");
+            } else {
+                this.getView().getModel("utilities").setProperty("/DataMode", "A");
+            }
+
+            var buildTree = function (items) {
+                var treeData = [];
+                var fgaGroups = {};
+
+                if (!items) return treeData;
+
+                // === CONFIGURATION D'ÉDITION ===
+                //var editableConfig = self.getEditableMonthsConfig();
+
+                const period = self.getView().getModel("utilities").getProperty("/period");
+                const periodMonth = parseInt(period.substring(0, 2), 10);
+                const periodYear = parseInt(period.substring(2, 6), 10);
+
+                const nextYear = periodYear + 1;
+
+                //Init period
+                var filtersModel = self.getView().getModel("filtersModel");
+                if (!filtersModel) {
+                    console.error("Filters model not found. Initializing...");
+                    self._initializeFiltersModel();
+                    filtersModel = self.oView.getModel("filtersModel");
+
+                    if (!filtersModel) {
+                        sap.m.MessageBox.error("Erreur d'initialisation des filtres");
+                        return;
+                    }
+                }
+                filtersModel.setProperty("/Period", period);
+
+                const storedSelection = sessionStorage.getItem("selectedBusinessNos");
+                if (storedSelection) {
+                    try {
+                        const businessNosArray = JSON.parse(storedSelection);
+
+                        const displayValue = businessNosArray.join(", ");
+
+                        // Set the display value in the filter
+                        filtersModel.setProperty("/Affaire", displayValue);
+                        var businessNoInput = self.byId("businessNoFilter");
+                        if (businessNoInput) {
+                            businessNoInput.data("selectedBusinessNos", businessNosArray);
+                        }
+                    } catch (error) {
+                        console.error("Error parsing stored BusinessNos:", error);
+                        filtersModel.setProperty("/Affaire", "");
+                    }
+                } else {
+                    filtersModel.setProperty("/Affaire", "");
+                }
+
+                filtersModel.refresh(true);
+
+                // Save these years for bindings
+                const utilitiesModel = self.getView().getModel("utilities");
+                utilitiesModel.setProperty("/currentYear", periodYear);
+                utilitiesModel.setProperty("/nextYear", nextYear);
+                utilitiesModel.setProperty("/periodMonth", periodMonth);
+
+                items.forEach(function (item) {
+                    item.isTotalRow = false;
+
+                    // === APPLY EDITABLE CONFIGURATION PER ITEM BASED ON MASK ===
+                    var mask = parseInt(item.mask, 10) || 0;
+                    var cutoffMonth;
+
+                    if (mask >= periodMonth) {
+                        // If mask >= period: non-editable up to mask
+                        cutoffMonth = mask;
+                    } else {
+                        // If period > mask: non-editable up to period - 1
+                        cutoffMonth = periodMonth - 1;
+                    }
+
+                    // Apply editable configuration for year N months
+                    item.isEditableJanvN = 1 > cutoffMonth;
+                    item.isEditableFevrN = 2 > cutoffMonth;
+                    item.isEditableMarsN = 3 > cutoffMonth;
+                    item.isEditableAvrN = 4 > cutoffMonth;
+                    item.isEditableMaiN = 5 > cutoffMonth;
+                    item.isEditableJuinN = 6 > cutoffMonth;
+                    item.isEditableJuilN = 7 > cutoffMonth;
+                    item.isEditableAoutN = 8 > cutoffMonth;
+                    item.isEditableSeptN = 9 > cutoffMonth;
+                    item.isEditableOctN = 10 > cutoffMonth;
+                    item.isEditableNovN = 11 > cutoffMonth;
+                    item.isEditableDecN = 12 > cutoffMonth;
+
+                    // Year N+1 months are always editable
+                    item.isEditableJanvN1 = true;
+                    item.isEditableFevrN1 = true;
+                    item.isEditableMarsN1 = true;
+                    item.isEditableAvrN1 = true;
+                    item.isEditableMaiN1 = true;
+                    item.isEditableJuinN1 = true;
+                    item.isEditableJuilN1 = true;
+                    item.isEditableAoutN1 = true;
+                    item.isEditableSeptN1 = true;
+                    item.isEditableOctN1 = true;
+                    item.isEditableNovN1 = true;
+                    item.isEditableDecN1 = true;
+
+                    // === Applique la configuration d'édition ===
+                    /*Object.keys(editableConfig.N).forEach(function (key) {
+                        item["isEditable" + key] = editableConfig.N[key];
+                    });
+                    Object.keys(editableConfig.N1).forEach(function (key) {
+                        item["isEditable" + key] = editableConfig.N1[key];
+                    });*/
+
+                    // === Calcule FinAffaire ===
+                    item.FinAffaire = (Number(item.VoyageDeplacement) || 0) +
+                        (Number(item.AutresFrais) || 0) +
+                        (Number(item.CreancesDouteuses) || 0) +
+                        (Number(item.EtudesTravaux) || 0) +
+                        (Number(item.SinistreContentieux) || 0) +
+                        (Number(item.AleasDivers) || 0);
+
+                    // === SET MEANINGFUL DISPLAY NAMES ===
+                    if (item.Regroupement !== "FGA0" || (item.MissionId !== "FGA0" && !item.isNode)) {
+                        // For data lines, create descriptive names using available properties
+                        if (item.Description && item.Description !== item.MissionId) {
+                            item.name = item.FacturationDepense + " - " + item.Description;
+                        } else if (item.Libelle && item.Libelle !== item.MissionId && item.Libelle !== "Affaire" + item.MissionId) {
+                            item.name = item.FacturationDepense + " - " + item.Libelle;
+                        } else {
+                            item.name = item.FacturationDepense + " - " + item.MissionId;
+                        }
+                    } else {
+                        // For header nodes, use MissionId
+                        item.name = item.MissionId || "FGA0";
+                    }
+
+                    // === Initialise le groupe BusinessNo ===
+                    if (!fgaGroups[item.BusinessNo]) {
+                        fgaGroups[item.BusinessNo] = {
+                            businessNo: item.BusinessNo,
+                            rootNode: null,
+                            directLines: {
+                                facturation: [],
+                                depense: []
+                            },
+                            missions: {}
+                        };
+                    }
+
+                    var fgaGroup = fgaGroups[item.BusinessNo];
+
+                    // === CAS 1 : LIGNE PRINCIPALE FGA0 ===
+                    if (item.Regroupement === "FGA0") {
+                        // Check if this is the FGA0 header node or a data line
+                        if (item.MissionId === "FGA0" || item.isNode) {
+                            // This is the FGA0 header node
+                            item.isNode = true;
+                            item.isL0 = true;
+                            fgaGroup.rootNode = item;
+                            fgaGroup.rootNode.children = [];
+                            item.name = item.MissionId || "FGA0";
+                        } else {
+                            // This is a data line under FGA0 - add to direct lines
+                            var lineType = (item.FacturationDepense || "").toLowerCase();
+                            if (lineType === "facturation") {
+                                fgaGroup.directLines.facturation.push(item);
+                            } else if (lineType === "dépense" || lineType === "depense") {
+                                fgaGroup.directLines.depense.push(item);
+                            }
+                        }
+                    }
+                    // === CAS 2 : AUTRES MISSIONS DANS LES REGROUPEMENTS ===
+                    else {
+                        // Create mission level if it doesn't exist
+                        if (!fgaGroup.missions[item.MissionId]) {
+                            fgaGroup.missions[item.MissionId] = {
+                                name: item.MissionId,
+                                description: item.Description,
+                                isNode: true,
+                                isL1: true,
+                                regroupement: item.Regroupement,
+                                facturationLines: [],
+                                depenseLines: [],
+                                totals: self._createEmptyMonthlyTotals()
+                            };
+                        }
+
+                        var mission = fgaGroup.missions[item.MissionId];
+
+                        // Separate lines by Facturation/Depense
+                        var lineType = (item.FacturationDepense || "").toLowerCase();
+                        if (lineType === "facturation") {
+                            mission.facturationLines.push(item);
+                        } else if (lineType === "dépense" || lineType === "depense") {
+                            mission.depenseLines.push(item);
+                        }
+
+                        // Cumulate totals for the mission
+                        mission.totals.ResteAFacturer += Number(item.ResteAFacturer) || 0;
+                        mission.totals.ResteADepenser += Number(item.ResteADepenser) || 0;
+                        mission.totals.TotalN += Number(item.TotalN) || 0;
+                        mission.totals.TotalN1 += Number(item.TotalN1) || 0;
+                        mission.totals.Audela += Number(item.Audela) || 0;
+
+                        // Cumulate months for year N
+                        [
+                            "JanvN", "FevrN", "MarsN", "AvrN", "MaiN", "JuinN",
+                            "JuilN", "AoutN", "SeptN", "OctN", "NovN", "DecN"
+                        ].forEach(function (month) {
+                            mission.totals[month] += Number(item[month]) || 0;
+                        });
+
+                        // Cumulate months for year N+1
+                        [
+                            "JanvN1", "FevrN1", "MarsN1", "AvrN1", "MaiN1", "JuinN1",
+                            "JuilN1", "AoutN1", "SeptN1", "OctN1", "NovN1", "DecN1"
+                        ].forEach(function (month) {
+                            mission.totals[month] += Number(item[month]) || 0;
+                        });
+                    }
+                });
+
+                // === CONSTRUCTION DE L'ARBRE FINAL ===
+                for (var fga in fgaGroups) {
+                    var group = fgaGroups[fga];
+                    var rootChildren = [];
+
+                    // === ADD DIRECT LINES UNDER FGA0 - SANS NIVEAUX INTERMÉDIAIRES ===
+                    // Add direct Facturation lines directly to root
+                    if (group.directLines.facturation.length > 0) {
+                        rootChildren = rootChildren.concat(group.directLines.facturation);
+                    }
+
+                    // Add direct Dépense lines directly to root
+                    if (group.directLines.depense.length > 0) {
+                        rootChildren = rootChildren.concat(group.directLines.depense);
+                    }
+
+                    // === ADD MISSIONS GROUPED BY REGROUPEMENT ===
+                    // Build missions array with proper hierarchy
+                    var missionsArray = [];
+                    for (var missionKey in group.missions) {
+                        if (group.missions.hasOwnProperty(missionKey)) {
+                            var mission = group.missions[missionKey];
+
+                            // Create mission children array - SANS NIVEAUX INTERMÉDIAIRES
+                            mission.children = [];
+
+                            // Add Facturation lines directly to mission
+                            if (mission.facturationLines.length > 0) {
+                                mission.children = mission.children.concat(mission.facturationLines);
+                            }
+
+                            // Add Dépense lines directly to mission
+                            if (mission.depenseLines.length > 0) {
+                                mission.children = mission.children.concat(mission.depenseLines);
+                            }
+
+                            missionsArray.push(mission);
+                        }
+                    }
+
+                    // Group missions by Regroupement
+                    var regroupementGroups = {};
+                    missionsArray.forEach(function (mission) {
+                        if (!regroupementGroups[mission.regroupement]) {
+                            regroupementGroups[mission.regroupement] = {
+                                name: mission.regroupement,
+                                isNode: true,
+                                isL1: true,
+                                children: [],
+                                totals: self._createEmptyMonthlyTotals()
+                            };
+                        }
+                        regroupementGroups[mission.regroupement].children.push(mission);
+
+                        // Cumulate regroupement totals
+                        var regGroup = regroupementGroups[mission.regroupement];
+                        Object.keys(mission.totals).forEach(function (key) {
+                            regGroup.totals[key] += mission.totals[key] || 0;
+                        });
+                    });
+
+                    // Add regroupement totals and append to root children
+                    for (var regKey in regroupementGroups) {
+                        if (regroupementGroups.hasOwnProperty(regKey)) {
+                            var regroupement = regroupementGroups[regKey];
+                            regroupement.children.push(
+                                self.createRegroupementTotalRow(regroupement.totals, regKey)
+                            );
+                            rootChildren.push(regroupement);
+                        }
+                    }
+
+                    // If FGA0 root exists, use it as root with all children
+                    if (group.rootNode) {
+                        group.rootNode.children = rootChildren;
+                        treeData.push(group.rootNode);
+                    } else {
+                        // Otherwise create default business node
+                        treeData.push({
+                            name: group.businessNo,
+                            FacturationDepense: "Affaire",
+                            isNode: true,
+                            isL0: true,
+                            children: rootChildren
+                        });
+                    }
+                }
+
+                return treeData;
+
+            };
+
+            // Build trees
+            var previsionelTreeData = buildTree(previsionel);
+
+            // Calculate global totals
+            var globalTotals = this.calculateGlobalTotals(previsionelTreeData);
+
+            // Create summary rows
+            var summaryRows = [
+                this.createSummaryRow("Total facturation", globalTotals.totalFacturation, false),
+                this.createSummaryRow("Total dépense", globalTotals.totalDepense, false)
+            ];
+
+            // Add summary rows to root
+            previsionelTreeData = previsionelTreeData.concat(summaryRows);
+
+            // Set tree
+            this.getView().getModel("utilities").setProperty("/previsionelHierarchyWithTotals", previsionelTreeData);
+
+            var totalRows = this.countRows(previsionelTreeData);
+            this.updateRowCountPrev(totalRows);
+
+            this.setBusy(false);
+        },
+
+        preparePrevisionelTreeData1: function () {
             var self = this;
 
             this.setBusy(true);
@@ -473,7 +829,6 @@ sap.ui.define([
             return row;
         },
 
-        // Keep existing helper methods unchanged
         _createEmptyMonthlyTotals: function () {
             return {
                 JanvN: 0, FevrN: 0, MarsN: 0, AvrN: 0, MaiN: 0, JuinN: 0,
@@ -1317,7 +1672,7 @@ sap.ui.define([
             } else {
                 console.log("DataMode was already 'M' — no months reset.");
             }
-            
+
             utilitiesModel.setProperty("/previsionel", flatData);
             this.preparePrevisionelTreeData();
         },
@@ -2173,8 +2528,127 @@ sap.ui.define([
 
             oView.addDependent(this._oProfitCenterDialog);
             this._oProfitCenterDialog.open();
-        }
+        },
 
+        onExpandCollapseAll: function () {
+            var oTreeTable = this.byId("PrevisionnelTreeTable");
+            var oLocalModel = this.getView().getModel("localModel");
+
+            if (!oTreeTable) {
+                sap.m.MessageToast.show("Tree table not found");
+                return;
+            }
+
+            var bIsExpanded = oLocalModel.getProperty("/isExpandedAll");
+
+            if (!bIsExpanded) {
+                // Expand all nodes
+                oTreeTable.expandToLevel(999);
+                sap.m.MessageToast.show("Tous les nœuds développés");
+            } else {
+                // Collapse all nodes
+                oTreeTable.collapseAll();
+                sap.m.MessageToast.show("Tous les nœuds réduits");
+            }
+
+            // Inverser l’état
+            oLocalModel.setProperty("/isExpandedAll", !bIsExpanded);
+        },
+
+
+        calculateTotalFacturer: function (oBindingContext) {
+            const oModel = this.getView().getModel("utilities");
+            const aData = oModel.getProperty("/previsionelHierarchyWithTotals");
+
+            if (!aData || !aData.length) return 0;
+
+            // Trouver la ligne avec le nom "Total facturation"
+            const totalRow = aData.find(function (item) {
+                return item.name === "Total facturation" || item.name === "Total Facturation";
+            });
+
+            // Si trouvé, retourner la valeur, sinon 0
+            return totalRow ? (parseFloat(totalRow.ResteAFacturer) || 0) : 0;
+        },
+        
+calculateTotalDepenser: function (oBindingContext) {
+            const oModel = this.getView().getModel("utilities");
+            const aData = oModel.getProperty("/previsionelHierarchyWithTotals");
+
+            if (!aData || !aData.length) return 0;
+
+            // Trouver la ligne avec le nom "Total dépense"
+            const totalRow = aData.find(function (item) {
+                return item.name === "Total dépense" || item.name === "Total Dépense";
+            });
+
+            return totalRow ? (parseFloat(totalRow.ResteADepenser) || 0) : 0;
+        },
+
+   // Calcul direct du ratio depuis les données (comme pour Total Dépensé)
+calculateRatio: function(aData) {
+    if (!aData || !aData.length) return "0";
+
+    // Trouver la ligne "Total facturation"
+    const totalFacturation = aData.find(function(item) {
+        return item.name === "Total facturation" || item.name === "Total Facturation";
+    });
+
+    // Trouver la ligne "Total dépense"
+    const totalDepense = aData.find(function(item) {
+        return item.name === "Total dépense" || item.name === "Total Dépense";
+    });
+
+    const facture = totalFacturation ? (parseFloat(totalFacturation.ResteAFacturer) || 0) : 0;
+    const depense = totalDepense ? (parseFloat(totalDepense.ResteADepenser) || 0) : 0;
+
+    // Éviter la division par zéro
+    if (facture === 0) return "0";
+
+    // Calculer le ratio (dépenses / facturation) et formater
+    const ratio = (depense / facture) * 100;
+    return ratio === 0 ? "0" : ratio.toFixed(1);
+},
+
+// Formatter pour la couleur basé directement sur les données
+formatRatioColorFromData: function(aData) {
+    const ratioValue = this.calculateRatioValue(aData);
+    const numValue = parseFloat(ratioValue);
+    
+    if (numValue > 100) return "Error";
+    if (numValue < 80) return "Good";
+    return "Critical";
+},
+
+// Formatter pour l'indicateur basé directement sur les données
+formatRatioIndicatorFromData: function(aData) {
+    const ratioValue = this.calculateRatioValue(aData);
+    const numValue = parseFloat(ratioValue);
+    
+    if (numValue > 100) return "Down";
+    if (numValue < 80) return "Up";
+    return "None";
+},
+
+// Méthode utilitaire pour calculer la valeur numérique du ratio
+calculateRatioValue: function(aData) {
+    if (!aData || !aData.length) return 0;
+
+    const totalFacturation = aData.find(function(item) {
+        return item.name === "Total facturation" || item.name === "Total Facturation";
+    });
+
+    const totalDepense = aData.find(function(item) {
+        return item.name === "Total dépense" || item.name === "Total Dépense";
+    });
+
+    const facture = totalFacturation ? (parseFloat(totalFacturation.ResteAFacturer) || 0) : 0;
+    const depense = totalDepense ? (parseFloat(totalDepense.ResteADepenser) || 0) : 0;
+
+    if (facture === 0) return 0;
+    
+    return (depense / facture) * 100;
+}
 
     });
 });

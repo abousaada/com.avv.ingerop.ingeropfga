@@ -99,7 +99,10 @@
                     visibleInFilterBar="true"
                 >
                     <fb:control>
-                        <Input value="{filtersModel>/Label}" showClearIcon="true" />
+                        <Input
+                            value="{filtersModel>/Label}"
+                            showClearIcon="true"
+                        />
                     </fb:control>
                 </fb:FilterGroupItem>
 
@@ -188,6 +191,72 @@
             </fb:filterGroupItems>
         </fb:FilterBar>
 
+        <!-- ===== KPI CARDS (Option 1) ===== -->
+        <HBox class="sapUiSmallMargin">
+            <!-- KPI Facturation -->
+            <GenericTile
+                header="Total Facturé"
+                class="sapUiTinyMarginEnd"
+                press=".onKPIPress"
+            >
+                <TileContent unit="€">
+                    <NumericContent
+                        value="{
+        parts: [{ path: 'utilities>/previsionelHierarchyWithTotals' }],
+        formatter: '.calculateTotalFacturer'
+    }"
+                        valueColor="Good"
+                        indicator="Up"
+                        scale="K"
+                    />
+                </TileContent>
+            </GenericTile>
+
+            <!-- KPI Dépenses -->
+            <GenericTile
+                header="Total Dépensé"
+                class="sapUiTinyMarginEnd"
+                press=".onKPIPress"
+            >
+                <TileContent unit="€">
+                    <NumericContent
+                        value="{
+                    path: 'utilities>/previsionelHierarchyWithTotals',
+                    formatter: '.calculateTotalDepenser'
+                }"
+                        valueColor="Critical"
+                        indicator="Down"
+                        scale="K"
+                    />
+                </TileContent>
+            </GenericTile>
+
+            <!-- KPI Ratio -->
+<GenericTile
+    header="Ratio Dépenses/Facturation"
+    class="sapUiTinyMarginStart"
+    press=".onKPIPress"
+>
+    <TileContent unit="%">
+        <NumericContent
+            value="{
+                path: 'utilities>/previsionelHierarchyWithTotals',
+                formatter: '.calculateRatio'
+            }"
+            valueColor="{
+                path: 'utilities>/previsionelHierarchyWithTotals',
+                formatter: '.formatRatioColorFromData'
+            }"
+            indicator="{
+                path: 'utilities>/previsionelHierarchyWithTotals',
+                formatter: '.formatRatioIndicatorFromData'
+            }"
+            scale="M"
+        />
+    </TileContent>
+</GenericTile>
+        </HBox>
+
         <!-- ===== TREE TABLE BELOW ===== -->
         <table:TreeTable
             id="PrevisionnelTreeTable"
@@ -249,18 +318,26 @@
                 <table:Column width="23rem">
                     <table:multiLabels>
                         <Label text="" />
-                        <Label text="Hierarchy/Mission" />
+                        <HBox
+                            justifyContent="SpaceBetween"
+                            alignItems="Center"
+                            width="100%"
+                        >
+                            <Label
+                                text="Hierarchy/Mission"
+                                class="sapUiTinyMarginEnd"
+                            />
+                            <Button
+                                id="expandCollapseButton"
+                                icon="{= ${localModel>/isExpandedAll} ? 'sap-icon://collapse-group' : 'sap-icon://expand-group'}"
+                                tooltip="{= ${localModel>/isExpandedAll} ? 'Collapse All' : 'Expand All'}"
+                                type="Default"
+                                press="onExpandCollapseAll"
+                                class="sapUiSizeCompact customExpandButton"
+                            />
+                        </HBox>
                     </table:multiLabels>
                     <table:template>
-                        <!--Text
-                        text="{= ${utilities>isTotalRow} ? ${utilities>name} : 
-                                 ${utilities>isSectionHeader} ? ${utilities>name} :
-                                 ${utilities>isL2} ? ${utilities>name} :
-                                 ${utilities>isL1} ? ${utilities>name} :
-                                 ${utilities>isL0} ? ${utilities>name} : 
-                                 ${utilities>MissionId}}"
-                    /-->
-                        <!--Text text="{utilities>name}" /-->
                         <HBox alignItems="Center">
                             <items>
                                 <ObjectStatus
@@ -1530,10 +1607,16 @@ visible="{= !${utilities>isTotalRow} &amp;&amp; !${utilities>isNode} &amp;&amp; 
 
                 <!-- Totaux N1 -->
 
-                <table:Column width="7rem" class="boldColumn">
+                <table:Column
+                    width="7rem"
+                    class="boldColumn"
+                >
                     <table:multiLabels>
                         <Label text="" />
-                        <Label text="{= 'Total ' + ${utilities>/nextYear}}" class="sapMTextStrong"/>
+                        <Label
+                            text="{= 'Total ' + ${utilities>/nextYear}}"
+                            class="sapMTextStrong"
+                        />
                     </table:multiLabels>
                     <table:template>
                         <Text
