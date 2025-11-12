@@ -232,29 +232,29 @@
             </GenericTile>
 
             <!-- KPI Ratio -->
-<GenericTile
-    header="Ratio Dépenses/Facturation"
-    class="sapUiTinyMarginStart"
-    press=".onKPIPress"
->
-    <TileContent unit="%">
-        <NumericContent
-            value="{
+            <GenericTile
+                header="Ratio Dépenses/Facturation"
+                class="sapUiTinyMarginStart"
+                press=".onKPIPress"
+            >
+                <TileContent unit="%">
+                    <NumericContent
+                        value="{
                 path: 'utilities>/previsionelHierarchyWithTotals',
                 formatter: '.calculateRatio'
             }"
-            valueColor="{
+                        valueColor="{
                 path: 'utilities>/previsionelHierarchyWithTotals',
                 formatter: '.formatRatioColorFromData'
             }"
-            indicator="{
+                        indicator="{
                 path: 'utilities>/previsionelHierarchyWithTotals',
                 formatter: '.formatRatioIndicatorFromData'
             }"
-            scale="M"
-        />
-    </TileContent>
-</GenericTile>
+                        scale="M"
+                    />
+                </TileContent>
+            </GenericTile>
         </HBox>
 
         <!-- ===== TREE TABLE BELOW ===== -->

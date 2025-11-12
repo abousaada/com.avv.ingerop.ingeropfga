@@ -1576,6 +1576,9 @@ sap.ui.define([
                 return;
             }
 
+            // Recalculate the totals
+            this.recalculateTotalsForLine(bindingContext);
+
             // Get the path and property that was changed
             var path = bindingContext.getPath();
             var property = sourceInput.getBindingPath("value");
@@ -2570,8 +2573,8 @@ sap.ui.define([
             // Si trouvé, retourner la valeur, sinon 0
             return totalRow ? (parseFloat(totalRow.ResteAFacturer) || 0) : 0;
         },
-        
-calculateTotalDepenser: function (oBindingContext) {
+
+        calculateTotalDepenser: function (oBindingContext) {
             const oModel = this.getView().getModel("utilities");
             const aData = oModel.getProperty("/previsionelHierarchyWithTotals");
 
@@ -2585,70 +2588,125 @@ calculateTotalDepenser: function (oBindingContext) {
             return totalRow ? (parseFloat(totalRow.ResteADepenser) || 0) : 0;
         },
 
-   // Calcul direct du ratio depuis les données (comme pour Total Dépensé)
-calculateRatio: function(aData) {
-    if (!aData || !aData.length) return "0";
+        // Calcul direct du ratio depuis les données (comme pour Total Dépensé)
+        calculateRatio: function (aData) {
+            if (!aData || !aData.length) return "0";
 
-    // Trouver la ligne "Total facturation"
-    const totalFacturation = aData.find(function(item) {
-        return item.name === "Total facturation" || item.name === "Total Facturation";
-    });
+            // Trouver la ligne "Total facturation"
+            const totalFacturation = aData.find(function (item) {
+                return item.name === "Total facturation" || item.name === "Total Facturation";
+            });
 
-    // Trouver la ligne "Total dépense"
-    const totalDepense = aData.find(function(item) {
-        return item.name === "Total dépense" || item.name === "Total Dépense";
-    });
+            // Trouver la ligne "Total dépense"
+            const totalDepense = aData.find(function (item) {
+                return item.name === "Total dépense" || item.name === "Total Dépense";
+            });
 
-    const facture = totalFacturation ? (parseFloat(totalFacturation.ResteAFacturer) || 0) : 0;
-    const depense = totalDepense ? (parseFloat(totalDepense.ResteADepenser) || 0) : 0;
+            const facture = totalFacturation ? (parseFloat(totalFacturation.ResteAFacturer) || 0) : 0;
+            const depense = totalDepense ? (parseFloat(totalDepense.ResteADepenser) || 0) : 0;
 
-    // Éviter la division par zéro
-    if (facture === 0) return "0";
+            // Éviter la division par zéro
+            if (facture === 0) return "0";
 
-    // Calculer le ratio (dépenses / facturation) et formater
-    const ratio = (depense / facture) * 100;
-    return ratio === 0 ? "0" : ratio.toFixed(1);
+            // Calculer le ratio (dépenses / facturation) et formater
+            const ratio = (depense / facture) * 100;
+            return ratio === 0 ? "0" : ratio.toFixed(1);
+        },
+
+        // Formatter pour la couleur basé directement sur les données
+        formatRatioColorFromData: function (aData) {
+            const ratioValue = this.calculateRatioValue(aData);
+            const numValue = parseFloat(ratioValue);
+
+            if (numValue > 100) return "Error";
+            if (numValue < 80) return "Good";
+            return "Critical";
+        },
+
+        // Formatter pour l'indicateur basé directement sur les données
+        formatRatioIndicatorFromData: function (aData) {
+            const ratioValue = this.calculateRatioValue(aData);
+            const numValue = parseFloat(ratioValue);
+
+            if (numValue > 100) return "Down";
+            if (numValue < 80) return "Up";
+            return "None";
+        },
+
+        // Méthode utilitaire pour calculer la valeur numérique du ratio
+        calculateRatioValue: function (aData) {
+            if (!aData || !aData.length) return 0;
+
+            const totalFacturation = aData.find(function (item) {
+                return item.name === "Total facturation" || item.name === "Total Facturation";
+            });
+
+            const totalDepense = aData.find(function (item) {
+                return item.name === "Total dépense" || item.name === "Total Dépense";
+            });
+
+            const facture = totalFacturation ? (parseFloat(totalFacturation.ResteAFacturer) || 0) : 0;
+            const depense = totalDepense ? (parseFloat(totalDepense.ResteADepenser) || 0) : 0;
+
+            if (facture === 0) return 0;
+
+            return (depense / facture) * 100;
+        },
+
+        
+recalculateTotalsForLine: function(bindingContext) {
+    var utilitiesModel = this.getView().getModel("utilities");
+    var lineData = bindingContext.getObject();
+    
+    // Calculate totals (same logic as above)
+    var totalN = this.calculateMonthlyTotal(lineData, "N");
+    var totalN1 = this.calculateMonthlyTotal(lineData, "N1");
+    var audela = this.calculateAudela(lineData, totalN, totalN1);
+    
+    // Update the line
+    var path = bindingContext.getPath();
+    utilitiesModel.setProperty(path + "/TotalN", totalN);
+    utilitiesModel.setProperty(path + "/TotalN1", totalN1);
+    utilitiesModel.setProperty(path + "/Audela", audela);
+    
+    // Update all parent totals in the hierarchy
+    this.updateAllTotalsInHierarchy();
 },
 
-// Formatter pour la couleur basé directement sur les données
-formatRatioColorFromData: function(aData) {
-    const ratioValue = this.calculateRatioValue(aData);
-    const numValue = parseFloat(ratioValue);
+// Helper method to calculate monthly total for a year
+calculateMonthlyTotal: function(lineData, year) {
+    var months = year === "N" ? 
+        ["JanvN", "FevrN", "MarsN", "AvrN", "MaiN", "JuinN", 
+         "JuilN", "AoutN", "SeptN", "OctN", "NovN", "DecN"] :
+        ["JanvN1", "FevrN1", "MarsN1", "AvrN1", "MaiN1", "JuinN1",
+         "JuilN1", "AoutN1", "SeptN1", "OctN1", "NovN1", "DecN1"];
     
-    if (numValue > 100) return "Error";
-    if (numValue < 80) return "Good";
-    return "Critical";
+    var total = 0;
+    months.forEach(function(month) {
+        total += Number(lineData[month]) || 0;
+    });
+    
+    return Math.round(total * 100) / 100;
 },
 
-// Formatter pour l'indicateur basé directement sur les données
-formatRatioIndicatorFromData: function(aData) {
-    const ratioValue = this.calculateRatioValue(aData);
-    const numValue = parseFloat(ratioValue);
+// Helper method to calculate audela
+calculateAudela: function(lineData, totalN, totalN1) {
+    var audela = 0;
+    if (lineData.FacturationDepense === 'Facturation') {
+        var resteAFacturer = Number(lineData.ResteAFacturer) || 0;
+        audela = resteAFacturer - (totalN + totalN1);
+    } else if (lineData.FacturationDepense === 'Dépense' || lineData.FacturationDepense === 'Depense') {
+        var resteADepenser = Number(lineData.ResteADepenser) || 0;
+        audela = resteADepenser - (totalN + totalN1);
+    }
     
-    if (numValue > 100) return "Down";
-    if (numValue < 80) return "Up";
-    return "None";
+    return Math.round(audela * 100) / 100;
 },
 
-// Méthode utilitaire pour calculer la valeur numérique du ratio
-calculateRatioValue: function(aData) {
-    if (!aData || !aData.length) return 0;
-
-    const totalFacturation = aData.find(function(item) {
-        return item.name === "Total facturation" || item.name === "Total Facturation";
-    });
-
-    const totalDepense = aData.find(function(item) {
-        return item.name === "Total dépense" || item.name === "Total Dépense";
-    });
-
-    const facture = totalFacturation ? (parseFloat(totalFacturation.ResteAFacturer) || 0) : 0;
-    const depense = totalDepense ? (parseFloat(totalDepense.ResteADepenser) || 0) : 0;
-
-    if (facture === 0) return 0;
-    
-    return (depense / facture) * 100;
+// Update all hierarchy totals
+updateAllTotalsInHierarchy: function() {
+    // This will recalculate all parent nodes and global totals
+    this.updateTotals();
 }
-
     });
 });
