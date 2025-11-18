@@ -192,68 +192,77 @@
         </fb:FilterBar>
 
         <!-- ===== KPI CARDS (Option 1) ===== -->
-        <HBox class="sapUiSmallMargin">
-            <!-- KPI Facturation -->
-            <GenericTile
-                header="Total Facturé"
-                class="sapUiTinyMarginEnd"
-            >
-                <TileContent unit="€">
-                    <NumericContent
-                        value="{
+        <Panel
+            headerText="Indicateurs Clés"
+            expandable="true"
+            expanded="true"
+            width="auto"
+            class="sapUiSmallMargin"
+        >
+            <content>
+                <HBox class="sapUiSmallMargin">
+                    <!-- KPI Facturation -->
+                    <GenericTile
+                        header="Total Facturé"
+                        class="sapUiTinyMarginEnd"
+                    >
+                        <TileContent unit="€">
+                            <NumericContent
+                                value="{
         parts: [{ path: 'utilities>/previsionelHierarchyWithTotals' }],
         formatter: '.calculateTotalFacturer'
     }"
-                        valueColor="Good"
-                        indicator="Up"
-                        scale="K"
-                    />
-                </TileContent>
-            </GenericTile>
+                                valueColor="Good"
+                                indicator="Up"
+                                scale="K"
+                            />
+                        </TileContent>
+                    </GenericTile>
 
-            <!-- KPI Dépenses -->
-            <GenericTile
-                header="Total Dépensé"
-                class="sapUiTinyMarginEnd"
-            >
-                <TileContent unit="€">
-                    <NumericContent
-                        value="{
+                    <!-- KPI Dépenses -->
+                    <GenericTile
+                        header="Total Dépensé"
+                        class="sapUiTinyMarginEnd"
+                    >
+                        <TileContent unit="€">
+                            <NumericContent
+                                value="{
                     path: 'utilities>/previsionelHierarchyWithTotals',
                     formatter: '.calculateTotalDepenser'
                 }"
-                        valueColor="Critical"
-                        indicator="Down"
-                        scale="K"
-                    />
-                </TileContent>
-            </GenericTile>
+                                valueColor="Critical"
+                                indicator="Down"
+                                scale="K"
+                            />
+                        </TileContent>
+                    </GenericTile>
 
-            <!-- KPI Ratio -->
-            <GenericTile
-                header="Ratio Dépenses/Facturation"
-                class="sapUiTinyMarginStart"
-            >
-                <TileContent unit="%">
-                    <NumericContent
-                        value="{
+                    <!-- KPI Ratio -->
+                    <GenericTile
+                        header="Ratio Dépenses/Facturation"
+                        class="sapUiTinyMarginStart"
+                    >
+                        <TileContent unit="%">
+                            <NumericContent
+                                value="{
                 path: 'utilities>/previsionelHierarchyWithTotals',
                 formatter: '.calculateRatio'
             }"
-                        valueColor="{
+                                valueColor="{
                 path: 'utilities>/previsionelHierarchyWithTotals',
                 formatter: '.formatRatioColorFromData'
             }"
-                        indicator="{
+                                indicator="{
                 path: 'utilities>/previsionelHierarchyWithTotals',
                 formatter: '.formatRatioIndicatorFromData'
             }"
-                        scale="M"
-                    />
-                </TileContent>
-            </GenericTile>
-        </HBox>
-
+                                scale="M"
+                            />
+                        </TileContent>
+                    </GenericTile>
+                </HBox>
+            </content>
+        </Panel>
         <!-- ===== TREE TABLE BELOW ===== -->
         <table:TreeTable
             id="PrevisionnelTreeTable"

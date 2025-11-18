@@ -46,7 +46,7 @@ sap.ui.define([
                 //Init period
                 var filtersModel = self.getView().getModel("filtersModel");
                 if (!filtersModel) {
-                    console.error("Filters model not found. Initializing...");
+                    //console.error("Filters model not found. Initializing...");
                     self._initializeFiltersModel();
                     filtersModel = self.oView.getModel("filtersModel");
 
@@ -93,13 +93,20 @@ sap.ui.define([
                     var mask = parseInt(item.mask, 10) || 0;
                     var cutoffMonth;
 
-                    if (mask >= periodMonth) {
+                    /*if (mask >= periodMonth) {
                         // If mask >= period: non-editable up to mask
                         cutoffMonth = mask;
                     } else {
                         // If period > mask: non-editable up to period - 1
                         cutoffMonth = periodMonth - 1;
-                    }
+                    }*/
+
+                    // Get current date
+                    var now = new Date();
+                    var currentMonth = now.getMonth();
+
+                    cutoffMonth = currentMonth;
+
 
                     // Apply editable configuration for year N months
                     item.isEditableJanvN = 1 > cutoffMonth;
@@ -402,7 +409,7 @@ sap.ui.define([
                 //Init period
                 var filtersModel = self.getView().getModel("filtersModel");
                 if (!filtersModel) {
-                    console.error("Filters model not found. Initializing...");
+                    //console.error("Filters model not found. Initializing...");
                     self._initializeFiltersModel();
                     filtersModel = self.oView.getModel("filtersModel");
 
@@ -2653,60 +2660,60 @@ sap.ui.define([
             return (depense / facture) * 100;
         },
 
-        
-recalculateTotalsForLine: function(bindingContext) {
-    var utilitiesModel = this.getView().getModel("utilities");
-    var lineData = bindingContext.getObject();
-    
-    // Calculate totals (same logic as above)
-    var totalN = this.calculateMonthlyTotal(lineData, "N");
-    var totalN1 = this.calculateMonthlyTotal(lineData, "N1");
-    var audela = this.calculateAudela(lineData, totalN, totalN1);
-    
-    // Update the line
-    var path = bindingContext.getPath();
-    utilitiesModel.setProperty(path + "/TotalN", totalN);
-    utilitiesModel.setProperty(path + "/TotalN1", totalN1);
-    utilitiesModel.setProperty(path + "/Audela", audela);
-    
-    // Update all parent totals in the hierarchy
-    this.updateAllTotalsInHierarchy();
-},
 
-// Helper method to calculate monthly total for a year
-calculateMonthlyTotal: function(lineData, year) {
-    var months = year === "N" ? 
-        ["JanvN", "FevrN", "MarsN", "AvrN", "MaiN", "JuinN", 
-         "JuilN", "AoutN", "SeptN", "OctN", "NovN", "DecN"] :
-        ["JanvN1", "FevrN1", "MarsN1", "AvrN1", "MaiN1", "JuinN1",
-         "JuilN1", "AoutN1", "SeptN1", "OctN1", "NovN1", "DecN1"];
-    
-    var total = 0;
-    months.forEach(function(month) {
-        total += Number(lineData[month]) || 0;
-    });
-    
-    return Math.round(total * 100) / 100;
-},
+        recalculateTotalsForLine: function (bindingContext) {
+            var utilitiesModel = this.getView().getModel("utilities");
+            var lineData = bindingContext.getObject();
 
-// Helper method to calculate audela
-calculateAudela: function(lineData, totalN, totalN1) {
-    var audela = 0;
-    if (lineData.FacturationDepense === 'Facturation') {
-        var resteAFacturer = Number(lineData.ResteAFacturer) || 0;
-        audela = resteAFacturer - (totalN + totalN1);
-    } else if (lineData.FacturationDepense === 'Dépense' || lineData.FacturationDepense === 'Depense') {
-        var resteADepenser = Number(lineData.ResteADepenser) || 0;
-        audela = resteADepenser - (totalN + totalN1);
-    }
-    
-    return Math.round(audela * 100) / 100;
-},
+            // Calculate totals (same logic as above)
+            var totalN = this.calculateMonthlyTotal(lineData, "N");
+            var totalN1 = this.calculateMonthlyTotal(lineData, "N1");
+            var audela = this.calculateAudela(lineData, totalN, totalN1);
 
-// Update all hierarchy totals
-updateAllTotalsInHierarchy: function() {
-    // This will recalculate all parent nodes and global totals
-    this.updateTotals();
-}
+            // Update the line
+            var path = bindingContext.getPath();
+            utilitiesModel.setProperty(path + "/TotalN", totalN);
+            utilitiesModel.setProperty(path + "/TotalN1", totalN1);
+            utilitiesModel.setProperty(path + "/Audela", audela);
+
+            // Update all parent totals in the hierarchy
+            this.updateAllTotalsInHierarchy();
+        },
+
+        // Helper method to calculate monthly total for a year
+        calculateMonthlyTotal: function (lineData, year) {
+            var months = year === "N" ?
+                ["JanvN", "FevrN", "MarsN", "AvrN", "MaiN", "JuinN",
+                    "JuilN", "AoutN", "SeptN", "OctN", "NovN", "DecN"] :
+                ["JanvN1", "FevrN1", "MarsN1", "AvrN1", "MaiN1", "JuinN1",
+                    "JuilN1", "AoutN1", "SeptN1", "OctN1", "NovN1", "DecN1"];
+
+            var total = 0;
+            months.forEach(function (month) {
+                total += Number(lineData[month]) || 0;
+            });
+
+            return Math.round(total * 100) / 100;
+        },
+
+        // Helper method to calculate audela
+        calculateAudela: function (lineData, totalN, totalN1) {
+            var audela = 0;
+            if (lineData.FacturationDepense === 'Facturation') {
+                var resteAFacturer = Number(lineData.ResteAFacturer) || 0;
+                audela = resteAFacturer - (totalN + totalN1);
+            } else if (lineData.FacturationDepense === 'Dépense' || lineData.FacturationDepense === 'Depense') {
+                var resteADepenser = Number(lineData.ResteADepenser) || 0;
+                audela = resteADepenser - (totalN + totalN1);
+            }
+
+            return Math.round(audela * 100) / 100;
+        },
+
+        // Update all hierarchy totals
+        updateAllTotalsInHierarchy: function () {
+            // This will recalculate all parent nodes and global totals
+            this.updateTotals();
+        }
     });
 });
