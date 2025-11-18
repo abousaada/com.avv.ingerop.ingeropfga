@@ -397,9 +397,9 @@ sap.ui.define([
             Rgfact: {
                 identifier: "Identification",
                 defaultValue: { create: null, modify: null },
-                visible: { create: true, modify: true },
-                enabled: { create: true, modify: true },
-                mandatory: { type: [], default: false, create: true, modify: true },
+                visible: { create: false, modify: false },
+                enabled: { create: false, modify: false },
+                mandatory: { type: [], default: false, create: false, modify: false },
                 action: null
             },
             Reflet: {
@@ -445,7 +445,7 @@ sap.ui.define([
             },
             VAT: {
                 identifier: "Facturation",
-                defaultValue: { create: 20, modify: null },
+                defaultValue: { create: "20", modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: true },
                 mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI", "PC"], default: false, create: true, modify: true },
