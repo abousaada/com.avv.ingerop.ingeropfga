@@ -326,7 +326,7 @@ sap.ui.define([
                 identifier: "Identification",
                 defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
-                enabled: { create: true, modify: true },
+                enabled: { create: true, modify: false },
                 mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI", "PC"], default: false, create: true, modify: true },
                 action: 'onCDGChange'
             },
@@ -390,7 +390,7 @@ sap.ui.define([
                 identifier: "Identification",
                 defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
-                enabled: { create: true, modify: false },
+                enabled: { create: true, modify: true },
                 mandatory: { type: [], default: false, create: true, modify: true },
                 action: null
             },
