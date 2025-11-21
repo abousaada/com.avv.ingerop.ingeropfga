@@ -1043,47 +1043,54 @@ sap.ui.define([
                     regroupement.totals = this._createEmptyMonthlyTotals();
 
                     // Recalculate totals
-                    // Recalculate totals
-                    regroupement.children.forEach(function (item) {
-                        if (!item.isTotalRow) {
+                    if (regroupement.children && regroupement.children.forEach) {
+                        regroupement.children.forEach(function (item) {
+                            if (!item.isTotalRow) {
 
-                            regroupement.totals.ResteAFacturer += Number(item.ResteAFacturer) || 0;
-                            regroupement.totals.ResteADepenser += Number(item.ResteADepenser) || 0;
-                            regroupement.totals.TotalN += Number(item.TotalN) || 0;
-                            regroupement.totals.TotalN1 += Number(item.TotalN1) || 0;
-                            regroupement.totals.Audela += Number(item.Audela) || 0;
+                                regroupement.totals.ResteAFacturer += Number(item.ResteAFacturer) || 0;
+                                regroupement.totals.ResteADepenser += Number(item.ResteADepenser) || 0;
+                                regroupement.totals.TotalN += Number(item.TotalN) || 0;
+                                regroupement.totals.TotalN1 += Number(item.TotalN1) || 0;
+                                regroupement.totals.Audela += Number(item.Audela) || 0;
 
-                            // Sum months N
-                            [
-                                "JanvN", "FevrN", "MarsN", "AvrN", "MaiN", "JuinN",
-                                "JuilN", "AoutN", "SeptN", "OctN", "NovN", "DecN"
-                            ].forEach(function (month) {
-                                regroupement.totals[month] += Number(item[month]) || 0;
-                            });
+                                // Sum months N
+                                [
+                                    "JanvN", "FevrN", "MarsN", "AvrN", "MaiN", "JuinN",
+                                    "JuilN", "AoutN", "SeptN", "OctN", "NovN", "DecN"
+                                ].forEach(function (month) {
+                                    regroupement.totals[month] += Number(item[month]) || 0;
+                                });
 
-                            // Sum months N+1
-                            [
-                                "JanvN1", "FevrN1", "MarsN1", "AvrN1", "MaiN1", "JuinN1",
-                                "JuilN1", "AoutN1", "SeptN1", "OctN1", "NovN1", "DecN1"
-                            ].forEach(function (month) {
-                                regroupement.totals[month] += Number(item[month]) || 0;
-                            });
-                        }
-                    });
+                                // Sum months N+1
+                                [
+                                    "JanvN1", "FevrN1", "MarsN1", "AvrN1", "MaiN1", "JuinN1",
+                                    "JuilN1", "AoutN1", "SeptN1", "OctN1", "NovN1", "DecN1"
+                                ].forEach(function (month) {
+                                    regroupement.totals[month] += Number(item[month]) || 0;
+                                });
+                            }
+                        });
+                    }
 
 
                     // Update the regroupement total row
-                    var existingTotalIndex = regroupement.children.findIndex(function (child) {
-                        return child.isRegroupementTotal;
-                    });
+                    var existingTotalIndex = -1;
+                    if (regroupement.children && Array.isArray(regroupement.children)) {
+                        regroupement.children.findIndex(function (child) {
+                            return child.isRegroupementTotal;
+                        });
+                    }
 
-                    var totalRow = this.createRegroupementTotalRow(regroupement.totals, entry.name);
+                    /*var totalRow = this.createRegroupementTotalRow(regroupement.totals, entry.name);
 
                     if (existingTotalIndex >= 0) {
                         regroupement.children[existingTotalIndex] = totalRow;
                     } else {
+                        if (!regroupement.children) {
+                            regroupement.children = [];
+                        }
                         regroupement.children.push(totalRow);
-                    }
+                    }*/
 
                     return regroupement;
                 }.bind(this));

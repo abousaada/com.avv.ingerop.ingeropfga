@@ -39,7 +39,7 @@
             <table:columns>
                 <!-- Hierarchy Column -->
                 <table:Column width="20rem">
-                    <Label text="Hierarchy" />
+                    <Label text="Hiérarchie" />
                     <table:template>
                         <HBox>
                             <Text
@@ -135,7 +135,7 @@
 
                 <!-- Mission Status Column -->
                 <table:Column width="8rem">
-                    <Label text="Status" />
+                    <Label text="Statut" />
                     <table:template>
                         <HBox>
                             <ComboBox
