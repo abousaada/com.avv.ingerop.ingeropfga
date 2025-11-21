@@ -155,6 +155,11 @@ sap.ui.define([
             this._getField("Identification", "Soufam").setValue(null);
         },
 
+        onUFOChange(oEvent){
+            this._getField("Identification", "CDG").setValue(null);
+            this._getField("Identification", "CompanyCode").setValue(null);
+        },
+
         onDateChange(oEvent) {
             const { StartDate, EndDate } = this.oView.getBindingContext().getObject();
             let diffFromNow = null, diff = null;

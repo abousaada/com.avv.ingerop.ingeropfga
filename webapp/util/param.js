@@ -320,7 +320,7 @@ sap.ui.define([
                 visible: { create: true, modify: true },
                 enabled: { create: true, modify: false },
                 mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI", "PC"], default: false, create: true, modify: true },
-                action: null
+                action: 'onUFOChange'
             },
             CDG: {
                 identifier: "Identification",
