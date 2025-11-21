@@ -459,7 +459,7 @@ sap.ui.define([
                     delete dataToSend.FinAffaire;
                     delete dataToSend.isNode;
 
-                    if (dataToSend.to_BudgetPxAutre && Array.isArray(dataToSend.to_BudgetPxAutre) ) {
+                    if (dataToSend.to_BudgetPxAutre && Array.isArray(dataToSend.to_BudgetPxAutre)) {
                         dataToSend.to_BudgetPxAutre = dataToSend.to_BudgetPxAutre.map(item => {
                             const newItem = { ...item };
                             delete newItem.isTotalRow;
@@ -476,6 +476,16 @@ sap.ui.define([
                         });
                     }
 
+                    if (dataToSend.to_Previsionel && Array.isArray(dataToSend.to_Previsionel)) {
+                        dataToSend.to_Previsionel = dataToSend.to_Previsionel.map(item => {
+                            const newItem = { ...item };
+                            delete newItem.totals;
+                            delete newItem.children;
+                            delete newItem.mask;
+                            return newItem;
+                        });
+                    }
+                    
                     const createdFGA = await this.create("/ZC_FGASet", dataToSend);
                     console.log(createdFGA);
                     return createdFGA;
