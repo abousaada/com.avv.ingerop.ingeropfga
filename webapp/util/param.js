@@ -31,8 +31,11 @@ sap.ui.define([
                 { identifier: "Garantie", field: "Assurance", value: "NA" },
                 { identifier: "Contrat", field: "Mission", value: "NOTA" },
             ],
-            "RC": [
+            "PC": [
+                { identifier: "Identification", field: "Activity", value: "FGE" },
                 { identifier: "Identification", field: "Soufam", value: "NAA" },
+                { identifier: "Garantie", field: "Assurance", value: "NA" },
+                { identifier: "Contrat", field: "Mission", value: "NOTA" },
             ],
         },
         headerProjectFieldList: {
