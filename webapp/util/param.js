@@ -10,7 +10,7 @@ sap.ui.define([
             ],
             "FG": [
                 { identifier: "Identification", field: "Activity", value: "FGE" },
-                { identifier: "Identification", field: "Soufam", value: "" },
+                { identifier: "Identification", field: "Soufam", value: "NAA" },
                 { identifier: "Garantie", field: "Assurance", value: "NA" },
                 { identifier: "Contrat", field: "Mission", value: "NOTA" },
             ],
@@ -23,13 +23,17 @@ sap.ui.define([
             "OF": [
                 { identifier: "Garantie", field: "Assurance", value: "NA" },
                 { identifier: "Contrat", field: "Mission", value: "NOTA" },
+                { identifier: "Identification", field: "Soufam", value: "NAA" },
             ],
             "PI": [
                 { identifier: "Identification", field: "Activity", value: "FGE" },
                 { identifier: "Identification", field: "Soufam", value: "NAA" },
                 { identifier: "Garantie", field: "Assurance", value: "NA" },
                 { identifier: "Contrat", field: "Mission", value: "NOTA" },
-            ]
+            ],
+            "RC": [
+                { identifier: "Identification", field: "Soufam", value: "NAA" },
+            ],
         },
         headerProjectFieldList: {
             BusinessNo: {
@@ -689,7 +693,7 @@ sap.ui.define([
                 defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: false, modify: false },
-                mandatory: { type: [], default: false, create: true, modify: true },
+                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI", "PC"], default: false, create: true, modify: true },
                 action: null
             },
             RemainingMonth: {
@@ -697,7 +701,7 @@ sap.ui.define([
                 defaultValue: { create: null, modify: null },
                 visible: { create: true, modify: true },
                 enabled: { create: false, modify: false },
-                mandatory: { type: [], default: false, create: true, modify: true },
+                mandatory: { type: ["PO", "OI", "RF", "FG", "FS", "OF", "PI", "PC"], default: false, create: true, modify: true },
                 action: null
             },
             // "Qualite"
