@@ -303,6 +303,7 @@
                 <rm:Interactive
                     rowCount="15"
                     minRowCount="5"
+                    fixedBottomRowCount="2"
                 />
             </table:rowMode>
 
