@@ -112,8 +112,28 @@ sap.ui.define(
             },
 
             _onAction2: function () {
-                MessageToast.show("Action 2 executed");
-                // Add logic
+                 try {
+                    const oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
+
+                    var aFAGs = this.getSelectedBusinessNumbers();
+
+                    const sHash = oCrossAppNavigator.hrefForExternal({
+                        target: {
+                            semanticObject: "ZEMU",
+                            action: "display"
+                        }
+                        // ,params: {
+                        //     FGA: aFAGs
+                        // }
+                    });
+
+                    window.open(sHash, "_blank", "noopener,noreferrer");
+
+                    // MessageToast.show("onEMXPress invoked.");
+
+                } catch (err) {
+                    console.error("Error during navigation:", err);
+                }
             },
 
             _onAction3: function () {
