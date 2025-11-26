@@ -57,9 +57,9 @@
                 <Property Name="Cumul" Type="Edm.Decimal" Nullable="false" Precision="24" Scale="3" sap:unicode="false" sap:label="Mtt dev. transaction" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="SupplierNo" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Fournisseur" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="SupplierCoef" Type="Edm.Decimal" Nullable="false" Precision="4" Scale="2" sap:unicode="false" sap:label="Coef fournisseur" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Country" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Pays/Région" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="Nom 1" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="CompanyPartner" Type="Edm.String" Nullable="false" MaxLength="6" sap:unicode="false" sap:label="Nº société G/L" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Country" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Clé de pays/région" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="Nom" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CompanyPartner" Type="Edm.String" Nullable="false" MaxLength="6" sap:unicode="false" sap:label="Sté S/L parten." sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
             </EntityType>
             <EntityType Name="Profil" sap:content-version="1">
                 <Key>
@@ -1195,7 +1195,7 @@
                 <Property Name="UFO" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="Nom de set" sap:heading=""/>
                 <Property Name="description" Type="Edm.String" MaxLength="40" sap:label="Description" sap:heading="" sap:quickinfo="Désignation synthétique d'un set"/>
             </EntityType>
-            <EntityType Name="ZI_FGA_PROJATYPE_VHType" sap:label="Aide à la recherche Project Type" sap:content-version="1">
+            <EntityType Name="ZI_FGA_PROJATYPE_VHType" sap:label="Aide à la recherche Project Type" sap:value-list="true" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Type"/>
                 </Key>
@@ -1209,7 +1209,7 @@
                 <Property Name="UsrId" Type="Edm.String" Nullable="false" MaxLength="8" sap:display-format="NonNegative" sap:text="description" sap:label="Responsable" sap:quickinfo="Numéro du responsable (chef de projet)"/>
                 <Property Name="description" Type="Edm.String" MaxLength="25" sap:label="Responsable (nom)" sap:quickinfo="Responsable (chef de projet)"/>
             </EntityType>
-            <EntityType Name="ZI_FGA_PTYPE_VHType" sap:value-list="true" sap:content-version="1">
+            <EntityType Name="ZI_FGA_PTYPE_VHType" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Type"/>
                     <PropertyRef Name="spras"/>
@@ -1665,19 +1665,19 @@
                     <End EntitySet="I_ProfitCenterStdVH" Role="FromRole_assoc_24FC23D321DDD66B6ED917396AA49B5A"/>
                     <End EntitySet="I_ProfitCenterText" Role="ToRole_assoc_24FC23D321DDD66B6ED917396AA49B5A"/>
                 </AssociationSet>
-                <FunctionImport Name="GetCompanyCodeByProfitCenter" ReturnType="ZFGA_SRV.Company" EntitySet="CompanyCollection" m:HttpMethod="GET" sap:action-for="ZFGA_SRV.Company">
-                    <Parameter Name="ProfitCenterCode" Type="Edm.String" Mode="In" MaxLength="10"/>
+                <FunctionImport Name="GetCompanyCodeByProfitCenter" ReturnType="ZFGA_SRV.Company" EntitySet="CompanyCollection" m:HttpMethod="GET" sap:label="GetCompanyCode" sap:action-for="ZFGA_SRV.Company">
+                    <Parameter Name="ProfitCenterCode" Type="Edm.String" Mode="In" MaxLength="10" sap:label="Profit Center"/>
                 </FunctionImport>
-                <FunctionImport Name="GetSupplier" ReturnType="ZFGA_SRV.Supplier" EntitySet="SupplierCollection" m:HttpMethod="GET" sap:action-for="ZFGA_SRV.Supplier">
-                    <Parameter Name="SupplierNo" Type="Edm.String" Mode="In" MaxLength="10"/>
+                <FunctionImport Name="GetSupplier" ReturnType="ZFGA_SRV.Supplier" EntitySet="SupplierCollection" m:HttpMethod="GET" sap:label="GetSupplier" sap:action-for="ZFGA_SRV.Supplier">
+                    <Parameter Name="SupplierNo" Type="Edm.String" Mode="In" MaxLength="10" sap:label="SupplierNo"/>
                 </FunctionImport>
-                <FunctionImport Name="GetClient" ReturnType="ZFGA_SRV.Client" EntitySet="ClientCollection" m:HttpMethod="GET" sap:action-for="ZFGA_SRV.Client">
-                    <Parameter Name="ClientNo" Type="Edm.String" Mode="In" MaxLength="10"/>
+                <FunctionImport Name="GetClient" ReturnType="ZFGA_SRV.Client" EntitySet="ClientCollection" m:HttpMethod="GET" sap:label="GetClient" sap:action-for="ZFGA_SRV.Client">
+                    <Parameter Name="ClientNo" Type="Edm.String" Mode="In" MaxLength="10" sap:label="ClientNo"/>
                 </FunctionImport>
-                <FunctionImport Name="GetProfil" ReturnType="ZFGA_SRV.Profil" EntitySet="ProfilCollection" m:HttpMethod="GET" sap:action-for="ZFGA_SRV.Profil">
-                    <Parameter Name="ProfilNo" Type="Edm.String" Mode="In" MaxLength="6"/>
-                    <Parameter Name="Period" Type="Edm.String" Mode="In" MaxLength="6"/>
-                    <Parameter Name="BusinessNo" Type="Edm.String" Mode="In" MaxLength="24"/>
+                <FunctionImport Name="GetProfil" ReturnType="ZFGA_SRV.Profil" EntitySet="ProfilCollection" m:HttpMethod="GET" sap:label="GetProfil" sap:action-for="ZFGA_SRV.Profil">
+                    <Parameter Name="ProfilNo" Type="Edm.String" Mode="In" MaxLength="6" sap:label="Profil"/>
+                    <Parameter Name="Period" Type="Edm.String" Mode="In" MaxLength="6" sap:label="Period"/>
+                    <Parameter Name="BusinessNo" Type="Edm.String" Mode="In" MaxLength="24" sap:label="BusinessNo"/>
                 </FunctionImport>
             </EntityContainer>
             <Annotation Term="Core.SchemaVersion" String="1.0.0" xmlns="http://docs.oasis-open.org/odata/ns/edm"/>
@@ -2548,7 +2548,7 @@
                 <Annotation Term="Common.ValueList">
                     <Record>
                         <PropertyValue Property="Label" String="Aide à la recherche Project Type"/>
-                        <PropertyValue Property="CollectionPath" String="ZI_FGA_PTYPE_VH"/>
+                        <PropertyValue Property="CollectionPath" String="ZI_FGA_PROJATYPE_VH"/>
                         <PropertyValue Property="SearchSupported" Bool="true"/>
                         <PropertyValue Property="Parameters">
                             <Collection>
