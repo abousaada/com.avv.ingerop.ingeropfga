@@ -214,51 +214,51 @@
                             <PropertyValue Property="Facets">
                                 <Collection>
                                     <Record Type="UI.ReferenceFacet">
-                                        <PropertyValue Property="Label" String="Budget"/>
+                                        <PropertyValue Property="Label" String="Général"/>
                                         <PropertyValue Property="Target" AnnotationPath="@UI.Identification"/>
                                     </Record>
                                     <Record Type="UI.ReferenceFacet">
-                                        <PropertyValue Property="Label" String="Facturation"/>
+                                        <PropertyValue Property="Label" String="Identification"/>
                                         <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Identification"/>
                                     </Record>
                                     <Record Type="UI.ReferenceFacet">
-                                        <PropertyValue Property="Label" String="Client"/>
+                                        <PropertyValue Property="Label" String="Facturation"/>
                                         <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Facturation"/>
                                     </Record>
                                     <Record Type="UI.ReferenceFacet">
-                                        <PropertyValue Property="Label" String="Garantie"/>
+                                        <PropertyValue Property="Label" String="Client"/>
                                         <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Client"/>
                                     </Record>
                                     <Record Type="UI.ReferenceFacet">
-                                        <PropertyValue Property="Label" String="Contrat"/>
+                                        <PropertyValue Property="Label" String="Garantie"/>
                                         <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Garantie"/>
                                     </Record>
                                     <Record Type="UI.ReferenceFacet">
-                                        <PropertyValue Property="Label" String="Prix"/>
+                                        <PropertyValue Property="Label" String="Contrat"/>
                                         <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Contrat"/>
                                     </Record>
                                     <Record Type="UI.ReferenceFacet">
-                                        <PropertyValue Property="Label" String="Travaux"/>
+                                        <PropertyValue Property="Label" String="Prix"/>
                                         <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Prix"/>
                                     </Record>
                                     <Record Type="UI.ReferenceFacet">
-                                        <PropertyValue Property="Label" String="Info"/>
+                                        <PropertyValue Property="Label" String="Travaux"/>
                                         <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Travaux"/>
                                     </Record>
                                     <Record Type="UI.ReferenceFacet">
-                                        <PropertyValue Property="Label" String="Durée"/>
+                                        <PropertyValue Property="Label" String="Info"/>
                                         <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Info"/>
                                     </Record>
                                     <Record Type="UI.ReferenceFacet">
-                                        <PropertyValue Property="Label" String="Qualité"/>
+                                        <PropertyValue Property="Label" String="Durée"/>
                                         <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Duree"/>
                                     </Record>
                                     <Record Type="UI.ReferenceFacet">
-                                        <PropertyValue Property="Label" String="Budget sur Objectif"/>
+                                        <PropertyValue Property="Label" String="Qualité"/>
                                         <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Qualite"/>
                                     </Record>
                                     <Record Type="UI.ReferenceFacet">
-                                        <PropertyValue Property="Label" String="Qualité"/>
+                                        <PropertyValue Property="Label" String="Budget sur Objectif"/>
                                         <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#BudgetObjectif"/>
                                     </Record>
                                 </Collection>
@@ -274,14 +274,14 @@
                                         <PropertyValue Property="Target" AnnotationPath="@UI.Identification"/>
                                     </Record>
                                     <Record Type="UI.ReferenceFacet">
-                                        <PropertyValue Property="Label" String="Identification"/>
+                                        <PropertyValue Property="Label" String="Budget"/>
                                         <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Table"/>
                                     </Record>
                                 </Collection>
                             </PropertyValue>
                         </Record>
                         <Record Type="UI.CollectionFacet">
-                            <PropertyValue Property="Label" String="Général"/>
+                            <PropertyValue Property="Label" String="Prévision"/>
                             <PropertyValue Property="ID" String="Prevision"/>
                             <PropertyValue Property="Facets">
                                 <Collection/>
@@ -1185,7 +1185,7 @@
                             <PropertyValue Property="Value" Path="id_formulaire"/>
                         </Record>
                         <Record Type="UI.DataField">
-                            <PropertyValue Property="Value" Path="status_text"/>
+                            <PropertyValue Property="Value" Path="stext"/>
                         </Record>
                         <Record Type="UI.DataField">
                             <PropertyValue Property="Value" Path="proprio_sti"/>
@@ -1247,9 +1247,6 @@
                             <PropertyValue Property="Value" Path="id_formulaire"/>
                         </Record>
                         <Record Type="UI.DataField">
-                            <PropertyValue Property="Value" Path="status_text"/>
-                        </Record>
-                        <Record Type="UI.DataField">
                             <PropertyValue Property="Value" Path="stidescr"/>
                         </Record>
                         <Record Type="UI.DataField">
@@ -1300,6 +1297,9 @@
                         <Record Type="UI.DataField">
                             <PropertyValue Property="Value" Path="business_p_projm"/>
                         </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="stext"/>
+                        </Record>
                     </Collection>
                 </Annotation>
                 <Annotation Term="UI.PresentationVariant">
@@ -1316,11 +1316,10 @@
                     <Collection>
                         <PropertyPath>id_formulaire</PropertyPath>
                         <PropertyPath>business_no_e</PropertyPath>
-                        <PropertyPath>status_text</PropertyPath>
                         <PropertyPath>business_e_t</PropertyPath>
                         <PropertyPath>business_e_cmp</PropertyPath>
-                        <PropertyPath>business_e_cdp</PropertyPath>
                         <PropertyPath>business_e_ufo</PropertyPath>
+                        <PropertyPath>business_e_cdp</PropertyPath>
                         <PropertyPath>business_e_bm</PropertyPath>
                         <PropertyPath>business_e_clt</PropertyPath>
                         <PropertyPath>business_no_p</PropertyPath>
