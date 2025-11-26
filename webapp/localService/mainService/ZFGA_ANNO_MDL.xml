@@ -597,6 +597,7 @@
                         <PropertyPath>ProfitCenter</PropertyPath>
                         <PropertyPath>PROJM</PropertyPath>
                         <PropertyPath>STILinkedCount</PropertyPath>
+                        <PropertyPath>Type</PropertyPath>
                     </Collection>
                 </Annotation>
             </Annotations>
