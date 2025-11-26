@@ -1199,8 +1199,8 @@
                 <Key>
                     <PropertyRef Name="Type"/>
                 </Key>
-                <Property Name="Type" Type="Edm.String" Nullable="false" MaxLength="2" sap:display-format="UpperCase" sap:label="Type de projet"/>
-                <Property Name="pratx" Type="Edm.String" MaxLength="40" sap:label="Désignation" sap:quickinfo="Désignation du type de projet"/>
+                <Property Name="Type" Type="Edm.String" Nullable="false" MaxLength="2" sap:display-format="UpperCase" sap:text="description" sap:label="Type de projet"/>
+                <Property Name="description" Type="Edm.String" MaxLength="40" sap:label="Désignation" sap:quickinfo="Désignation du type de projet"/>
             </EntityType>
             <EntityType Name="ZI_FGA_PROJM_VHType" sap:value-list="true" sap:content-version="1">
                 <Key>
