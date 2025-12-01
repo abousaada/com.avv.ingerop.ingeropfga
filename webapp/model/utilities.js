@@ -472,6 +472,7 @@ sap.ui.define([
                         dataToSend.to_Missions = dataToSend.to_Missions.map(item => {
                             const newItem = { ...item };
                             delete newItem.isNode;
+                            delete newItem.isNew;
                             return newItem;
                         });
                     }

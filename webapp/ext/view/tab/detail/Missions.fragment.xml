@@ -257,7 +257,14 @@
                                 icon="sap-icon://decline"
                                 tooltip="Delete Mission"
                                 press="onDeleteMission"
-                                visible="{= ${ui>/editable} &amp;&amp; !${utilities>isNode}}"
+                                visible="{
+                                parts: [
+                                    {path: 'ui>/editable'},
+                                    {path: 'utilities>isNode'},
+                                    {path: 'utilities>isNew'}
+                                        ],
+                                        formatter: '.isDeleteVisible'
+                                    }"
                                 type="Reject"
                             />
                         </HBox>

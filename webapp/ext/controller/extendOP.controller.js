@@ -465,6 +465,11 @@ sap.ui.define(
                         }
 
                         const updatedFGA = await utilitiesModel.deepUpsertFGA(oPayload);
+
+                        if (!isForecastMode && updatedFGA) {
+                            this._resetNewMissionFlags(utilitiesModel);
+                        }
+
                         this._setBusy(false);
 
                         if (isForecastMode && dataMode === 'M') {
@@ -848,8 +853,8 @@ sap.ui.define(
             isFGAAddVisible: function (editable, isNode, isL0) {
                 return this._missionsTab.isFGAAddVisible(editable, isNode, isL0);
             },
-            isDeleteVisible: function (editable, isNode) {
-                return this._missionsTab.isDeleteVisible(editable, isNode);
+            isDeleteVisible: function (editable, isNode,isNew) {
+                return this._missionsTab.isDeleteVisible(editable, isNode,isNew);
             },
 
             onAddGroupement: function (oEvent) {
@@ -1066,7 +1071,7 @@ sap.ui.define(
                     this._budgetPrevisionel = new BudgetPrevisionel();
                     this._budgetPrevisionel.oView = this.oView;
                 }
-                return  this._budgetPrevisionel.calculateTotalFacturer(oEvent);
+                return this._budgetPrevisionel.calculateTotalFacturer(oEvent);
             },
 
             calculateTotalDepenser: function (oEvent) {
@@ -1074,7 +1079,7 @@ sap.ui.define(
                     this._budgetPrevisionel = new BudgetPrevisionel();
                     this._budgetPrevisionel.oView = this.oView;
                 }
-                return  this._budgetPrevisionel.calculateTotalDepenser(oEvent);
+                return this._budgetPrevisionel.calculateTotalDepenser(oEvent);
             },
 
             calculateRatio: function (oEvent) {
@@ -1082,15 +1087,15 @@ sap.ui.define(
                     this._budgetPrevisionel = new BudgetPrevisionel();
                     this._budgetPrevisionel.oView = this.oView;
                 }
-                return  this._budgetPrevisionel.calculateRatio(oEvent);
+                return this._budgetPrevisionel.calculateRatio(oEvent);
             },
-            
+
             formatRatioColorFromData: function (oEvent) {
                 if (!this._budgetPrevisionel) {
                     this._budgetPrevisionel = new BudgetPrevisionel();
                     this._budgetPrevisionel.oView = this.oView;
                 }
-                return  this._budgetPrevisionel.formatRatioColorFromData(oEvent);
+                return this._budgetPrevisionel.formatRatioColorFromData(oEvent);
             },
 
             formatRatioIndicatorFromData: function (oEvent) {
@@ -1098,7 +1103,7 @@ sap.ui.define(
                     this._budgetPrevisionel = new BudgetPrevisionel();
                     this._budgetPrevisionel.oView = this.oView;
                 }
-                return  this._budgetPrevisionel.formatRatioIndicatorFromData(oEvent);
+                return this._budgetPrevisionel.formatRatioIndicatorFromData(oEvent);
             },
 
             calculateRatioValue: function (oEvent) {
@@ -1106,7 +1111,7 @@ sap.ui.define(
                     this._budgetPrevisionel = new BudgetPrevisionel();
                     this._budgetPrevisionel.oView = this.oView;
                 }
-                return  this._budgetPrevisionel.calculateRatioValue(oEvent);
+                return this._budgetPrevisionel.calculateRatioValue(oEvent);
             },
             // ==============================================
             // Move to formatter !!!!
@@ -1811,7 +1816,27 @@ sap.ui.define(
 
             },
 
+            _resetNewMissionFlags: function (utilitiesModel) {
+                try {
+                    // Get all missions from the model
+                    const missions = utilitiesModel.getProperty("/missions") || [];
 
+                    // Set isNew to false for all missions
+                    missions.forEach(mission => {
+                        mission.isNew = false;
+                    });
+
+                    // Update the model
+                    utilitiesModel.setProperty("/missions", missions);
+
+                    // Also update the missionsHierarchy to reflect the changes
+                    this._missionsTab.prepareMissionsTreeData();
+
+                    console.log("Reset isNew flags for all missions after save");
+                } catch (error) {
+                    console.error("Error resetting new mission flags:", error);
+                }
+            },
         });
 
     });

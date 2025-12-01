@@ -11,6 +11,13 @@ sap.ui.define([
         prepareMissionsTreeData: function () {
             var missions = this.getView().getModel("utilities").getProperty("/missions");
 
+            missions.forEach(function (mission) {
+                if (mission.isNew === undefined || mission.isNew === null) {
+                    mission.isNew = true;
+                }
+            });
+
+
             // Create tree builder function
             var buildTree = function (items) {
                 var treeData = [];
@@ -68,8 +75,9 @@ sap.ui.define([
         isFGAAddVisible: function (editable, isNode, isL0) {
             return editable === true && isNode === true && isL0 === true;
         },
-        isDeleteVisible: function (editable, isNode) {
-            return editable === true && isNode !== true;
+        isDeleteVisible: function (editable, isNode, isNew) {
+            console.log('isNEw : ' , isNew);
+            return editable === true && isNode === false && isNew === true;
         },
 
         onAddGroupement: function (oEvent) {
@@ -194,7 +202,8 @@ sap.ui.define([
                 ExternalRevenue: 0,
                 LaborBudget: 0,
                 isSTI: '',
-                isNode: false
+                isNode: false,
+                isNew: true
             };
 
             // 1. Add to the 'main' missions list
