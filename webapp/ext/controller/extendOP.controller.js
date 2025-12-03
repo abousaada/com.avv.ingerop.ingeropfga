@@ -287,10 +287,15 @@ sap.ui.define(
                             });
                         } else {
                             // No manual changes - proceed directly with save
-                            //return self._executeSave(utilitiesModel, oView, oContext, resolve, reject);
-                            return new Promise((resolve, reject) => {
+                            /*return new Promise((resolve, reject) => {
                                 self._executeSave(utilitiesModel, oView, oContext, resolve, reject);
-                            });
+                            }); */
+
+                            return self._executeSave(utilitiesModel, oView, oContext)
+                                .then(result => Promise.reject())
+                                .catch(err => Promise.reject(err));
+
+
                         }
                     } catch (error) {
                         this._setBusy(false);
@@ -575,10 +580,13 @@ sap.ui.define(
             _cleanModification() {
                 const oModel = this.getInterface().getView().getModel();
                 const mPendingChanges = oModel.getPendingChanges();
+                const bCreateMode = this.getView().getModel("ui").getProperty("/createMode");
                 // Parcours des entités modifiées
-                Object.keys(mPendingChanges).forEach(function (sPath) {
-                    oModel.resetChanges([`/${sPath}`]);
-                });
+                if (!bCreateMode) {
+                    Object.keys(mPendingChanges).forEach(function (sPath) {
+                        oModel.resetChanges([`/${sPath}`]);
+                    });
+                }
                 // oModel.refresh(true);
             },
 
@@ -853,8 +861,8 @@ sap.ui.define(
             isFGAAddVisible: function (editable, isNode, isL0) {
                 return this._missionsTab.isFGAAddVisible(editable, isNode, isL0);
             },
-            isDeleteVisible: function (editable, isNode,isNew) {
-                return this._missionsTab.isDeleteVisible(editable, isNode,isNew);
+            isDeleteVisible: function (editable, isNode, isNew) {
+                return this._missionsTab.isDeleteVisible(editable, isNode, isNew);
             },
 
             onAddGroupement: function (oEvent) {
