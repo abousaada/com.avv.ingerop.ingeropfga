@@ -1004,7 +1004,7 @@ sap.ui.define(
                     this._budgetPxSTI = new BudgetPxSTI();
                     this._budgetPxSTI.oView = this.oView;
                 }
-                this._budgetPxSTI.onCumuleClick(oEvent);
+                this._budgetPxSTI._onCumulativeLinkPress(oEvent);
             },
 
             // ==============================================
