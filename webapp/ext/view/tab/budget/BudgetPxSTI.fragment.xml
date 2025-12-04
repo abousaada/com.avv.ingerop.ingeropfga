@@ -6,6 +6,13 @@
     xmlns:f="sap.ui.layout.form"
     xmlns:rm="sap.ui.table.rowmodes"
 >
+
+    <VBox
+        width="100%"
+        class=""
+        height="600px"
+        renderType="Bare"
+    >
     <table:TreeTable
         id="BudgetPxSTITreeTable"
         width="100%"
@@ -109,4 +116,5 @@
             <rm:Auto minRowCount= "{localModel>/tableSettings/minRowCount}" />
         </table:rowMode>
     </table:TreeTable>
+        </VBox>
 </core:FragmentDefinition>
