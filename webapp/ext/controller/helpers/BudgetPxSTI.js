@@ -150,8 +150,8 @@ sap.ui.define([
             }.bind(this));
 
             // Add Intercompagnie static column and dynamic columns if needed
-            var intercompagnieColumn = new Column({
-                width: "8rem",
+            /*var intercompagnieColumn = new Column({
+                width: "9rem",
                 template: new HBox({
                     items: [
                         new Text({
@@ -172,7 +172,7 @@ sap.ui.define([
                 var column = this._createDynamicColumn(compoundKey);
                 this._dynamicColumns.push(column);
                 treeTable.addColumn(column);
-            }.bind(this));
+            }.bind(this));*/
         },
 
         _createDynamicColumns2: function () {
@@ -299,7 +299,7 @@ sap.ui.define([
             var displayName = compoundKey;
 
             return new Column({
-                width: "13rem",
+                width: "18rem",
                 template: new HBox({
                     items: [
                         // Link for cumulative row only
