@@ -38,18 +38,6 @@ sap.ui.define([
             return uniqueBusinessNos;
         },
 
-        _getUniqueBusinessNos1: function (pSTIs) {
-            var uniqueBusinessNos = [];
-            if (!pSTIs) return uniqueBusinessNos;
-
-            pSTIs.forEach(function (item) {
-                if (item.business_no_p && !uniqueBusinessNos.includes(item.business_no_p)) {
-                    uniqueBusinessNos.push(item.business_no_p);
-                }
-            });
-
-            return uniqueBusinessNos;
-        },
 
         _createDynamicColumns: function () {
             var treeTable = this.byId("com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--budgets--BudgetPxSTITreeTable");
@@ -176,12 +164,85 @@ sap.ui.define([
         },
 
         
+        _createDynamicColumn___: function (compoundKey) {
+    // Extract business_no_p from compound key for display
+    var displayName = compoundKey.split('_')[0];
+    
+    // Get the pSTIs data to find the business_p_cdp
+    var pSTIs = this.getView().getModel("utilities").getProperty("/pSTI") || [];
+    
+    // Find the matching pSTI item to get business_p_cdp
+    var businessPCDP = "";
+    pSTIs.forEach(function(pSTI) {
+        // Create compound key for this pSTI
+        var pSTICompoundKey = pSTI.id_formulaire ?
+            pSTI.business_no_p + "_" + pSTI.id_formulaire :
+            pSTI.business_no_p;
+            
+        if (pSTICompoundKey === compoundKey && pSTI.business_p_cdp) {
+            businessPCDP = pSTI.business_p_cdp;
+        }
+    }.bind(this));
+    
+    // Create a VBox for the header label to display two lines
+    var headerLabel = new HBox({
+        direction: "Column",
+        alignItems: "Start",
+        justifyContent: "Center",
+        items: [
+            new Label({
+                text: displayName,
+                width: "100%",
+                textAlign: "Center",
+                //design: "Bold"
+            }),
+            new Label({
+                text: businessPCDP,
+                width: "100%",
+                textAlign: "Center"
+                
+            })
+        ]
+    });
+    
+    return new Column({
+        width: "13rem",
+        template: new HBox({
+            items: [
+                // Link for cumulative row only
+                new sap.m.Link({
+                    text: {
+                        path: 'utilities>dynamicColumns/' + compoundKey,
+                        formatter: function (value) {
+                            return value || "0";
+                        }
+                    },
+                    // Fixed visibility binding - check isCumulativeRow property
+                    visible: "{= ${utilities>isCumulativeRow} === true}",
+                    press: this._onCumulativeLinkPress.bind(this, compoundKey)
+                }),
+                // Text for all other rows (non-cumulative)
+                new Text({
+                    text: {
+                        path: 'utilities>dynamicColumns/' + compoundKey,
+                        formatter: function (value) {
+                            return value || "0";
+                        }
+                    },
+                    // Show text for non-cumulative rows
+                    visible: "{= ${utilities>isCumulativeRow} !== true}"
+                })
+            ]
+        }),
+        label: headerLabel
+    });
+},
         _createDynamicColumn: function (compoundKey) {
             // Extract business_no_p from compound key for display
             var displayName = compoundKey.split('_')[0]; //compoundKey;
 
             return new Column({
-                width: "18rem",
+                width: "13rem",
                 template: new HBox({
                     items: [
                         // Link for cumulative row only
@@ -299,7 +360,9 @@ sap.ui.define([
                     });
 
                     if (matchingBudg && matchingBudg.BudgetAlloue) {
-                        var budgetValue = Number(matchingBudg.BudgetAlloue) || 0;
+                        var budgetValue = - Number(matchingBudg.BudgetAlloue) || 0;
+
+                        var negativeBudgetValue = -budgetValue;
 
                         // Create compound key for this pSTI
                         var pSTICompoundKey = pSTI.id_formulaire ?
@@ -312,15 +375,15 @@ sap.ui.define([
                         switch (pSTI.TypeBudg) {
                             case "INTRAUFO":
                             case "intraUFO":
-                                intraUfoSum += budgetValue;
+                                intraUfoSum += negativeBudgetValue; // budgetValue;
                                 break;
                             case "INTERCO":
                             case "interCO":
-                                intercompanySum += budgetValue;
+                                intercompanySum += negativeBudgetValue; //budgetValue;
                                 break;
                             case "INTERUFO":
                             case "interUFO":
-                                interUfoSum += budgetValue;
+                                interUfoSum += negativeBudgetValue; //budgetValue;
                                 break;
                         }
                     }
