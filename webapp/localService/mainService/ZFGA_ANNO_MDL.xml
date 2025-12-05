@@ -202,6 +202,9 @@
             <Annotations Target="ZFGA_SRV.ZC_FGAType/p_period">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGAType/BusinessName">
+                <Annotation Term="UI.MultiLineText"/>
+            </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_FGAType">
                 <Annotation Term="UI.Facets">
                     <Collection>
@@ -627,6 +630,7 @@
             </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_FGA_ForecastType/business_no_p_t">
                 <Annotation Term="UI.Hidden"/>
+                <Annotation Term="UI.MultiLineText"/>
             </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_FGA_ForecastType/business_p_cdp">
                 <Annotation Term="UI.Hidden"/>
@@ -642,6 +646,9 @@
             </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_FGA_ForecastType/DataMode">
                 <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGA_ForecastType/Description">
+                <Annotation Term="UI.MultiLineText"/>
             </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_FGA_ForecastType">
                 <Annotation Term="UI.FieldGroup" Qualifier="PartenaireFields">
@@ -1032,6 +1039,12 @@
             </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_STIType/p_period">
                 <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_STIType/business_no_p_t">
+                <Annotation Term="UI.MultiLineText"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_STIType/business_p_projm_t">
+                <Annotation Term="UI.MultiLineText"/>
             </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_STIType">
                 <Annotation Term="UI.Facets">
