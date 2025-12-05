@@ -22,9 +22,9 @@
         fixedColumnCount="1"
         rowsUpdated="onRowsUpdatedBudgetPXSubCTab"
     >
-        <table:rowMode>
+        <!--<table:rowMode>
             <rm:Auto minRowCount= "{localModel>/tableSettings/minRowCount}" />
-        </table:rowMode>
+        </table:rowMode>-->
         <table:extension>
             <Toolbar class="sapMTBHeader-CTX">
                 <ToolbarSpacer />
@@ -98,7 +98,7 @@
             <table:Column
                 width="6rem"
                 headerSpan="2,2,2,2,1"
-                hAlign= "End"
+                hAlign="End"
             >
                 <table:multiLabels>
                     <Label
@@ -204,5 +204,13 @@
                 </table:template>
             </table:Column>
         </table:columns>
+
+        <table:rowMode>
+            <rm:Interactive
+                rowCount="15"
+                minRowCount="5"
+                fixedBottomRowCount="4"
+            />
+        </table:rowMode>
     </table:TreeTable>
 </core:FragmentDefinition>

@@ -9,7 +9,7 @@
     <table:TreeTable
         id="BudgetPxAutreTreeTable"
         width="100%"
-            rowsUpdated="onRowsUpdatedBudgetPXTab"
+        rowsUpdated="onRowsUpdatedBudgetPXTab"
         rows="{
                 path: 'utilities>/PxAutreHierarchyWithTotals',
                 parameters: {
@@ -24,9 +24,9 @@
         enableColumnFreeze="true"
         fixedColumnCount="1"
     >
-        <table:rowMode>
+        <!--<table:rowMode>
             <rm:Auto minRowCount= "{localModel>/tableSettings/minRowCount}" />
-        </table:rowMode>
+        </table:rowMode>-->
         <table:columns>
             <!-- Hierarchy Column -->
             <table:Column width="17rem">
@@ -308,5 +308,12 @@
                 </table:template>
             </table:Column>
         </table:columns>
+        <table:rowMode>
+            <rm:Interactive
+                rowCount="15"
+                minRowCount="5"
+                fixedBottomRowCount="4"
+            />
+        </table:rowMode>
     </table:TreeTable>
 </core:FragmentDefinition>

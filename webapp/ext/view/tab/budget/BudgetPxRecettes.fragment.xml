@@ -22,9 +22,9 @@
         fixedColumnCount="1"
         rowsUpdated="onRowsUpdatedBudgetPXRecetteTab"
     >
-        <table:rowMode>
+        <!--<table:rowMode>
             <rm:Auto minRowCount= "{localModel>/tableSettings/minRowCount}" />
-        </table:rowMode>
+        </table:rowMode>-->
         <!-- <table:extension>
             <Toolbar class="sapMTBHeader-CTX">
                 <ToolbarSpacer />
@@ -360,5 +360,13 @@
             </table:Column>
 
         </table:columns>
+
+        <table:rowMode>
+            <rm:Interactive
+                rowCount="15"
+                minRowCount="5"
+                fixedBottomRowCount="2"
+            />
+        </table:rowMode>
     </table:TreeTable>
 </core:FragmentDefinition>
