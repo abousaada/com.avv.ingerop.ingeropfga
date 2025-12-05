@@ -237,45 +237,7 @@ sap.ui.define([
                 label: headerLabel
             });
         },
-        _createDynamicColumn1: function (compoundKey) {
-            // Extract business_no_p from compound key for display
-            var displayName = compoundKey.split('_')[0]; //compoundKey;
-
-            return new Column({
-                width: "13rem",
-                template: new HBox({
-                    items: [
-                        // Link for cumulative row only
-                        new sap.m.Link({
-                            text: {
-                                path: 'utilities>dynamicColumns/' + compoundKey,
-                                formatter: function (value) {
-                                    return value || "0";
-                                }
-                            },
-                            // Fixed visibility binding - check isCumulativeRow property
-                            visible: "{= ${utilities>isCumulativeRow} === true}",
-                            press: this._onCumulativeLinkPress.bind(this, compoundKey)
-                        }),
-                        // Text for all other rows (non-cumulative)
-                        new Text({
-                            text: {
-                                path: 'utilities>dynamicColumns/' + compoundKey,
-                                formatter: function (value) {
-                                    return value || "0";
-                                }
-                            },
-                            // Show text for non-cumulative rows
-                            visible: "{= ${utilities>isCumulativeRow} !== true}"
-                        })
-                    ]
-                }),
-                label: new Label({
-                    text: displayName
-                })
-            });
-        },
-
+        
 
         _addStaticColumns: function (treeTable) {
             // Only add Inter UFO column here, Intra UFO and Intercompagnie will be added in _createDynamicColumns
@@ -360,7 +322,7 @@ sap.ui.define([
                     });
 
                     if (matchingBudg && matchingBudg.BudgetAlloue) {
-                        var budgetValue = - Number(matchingBudg.BudgetAlloue) || 0;
+                        var budgetValue = Number(matchingBudg.BudgetAlloue) || 0;
 
                         var negativeBudgetValue = -budgetValue;
 
@@ -391,9 +353,9 @@ sap.ui.define([
             }.bind(this));
 
             // Convert sums to strings for display
-            item.InterUFOBudget = (- interUfoSum).toString();
-            item.IntraUFOBudget = (- intraUfoSum).toString();
-            item.IntercompagnieBudget = (-intercompanySum).toString();
+            item.InterUFOBudget = interUfoSum.toString();
+            item.IntraUFOBudget = intraUfoSum.toString();
+            item.IntercompagnieBudget = intercompanySum.toString();
         },
 
         createRegroupementTotalRow: function (totals, regroupementName) {

@@ -343,7 +343,7 @@
                 </Key>
                 <Property Name="p_period" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase" sap:label="Période MMYYYY"/>
                 <Property Name="BusinessNo" Type="Edm.String" Nullable="false" MaxLength="24" sap:label="N°Affaire"/>
-                <Property Name="BusinessName" Type="Edm.String" MaxLength="40" sap:label="Libellé" sap:quickinfo="PS: désignation (première ligne de texte)"/>
+                <Property Name="BusinessName" Type="Edm.String" MaxLength="100" sap:display-format="UpperCase" sap:label="Libellé" sap:quickinfo="Description Mission"/>
                 <Property Name="UFOName" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="UFO Délégué" sap:quickinfo="Nom de set" sap:value-list="standard"/>
                 <Property Name="Activity" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="Activité" sap:quickinfo="FGA Business activity" sap:value-list="fixed-values"/>
                 <Property Name="CDG" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Centre de profit" sap:quickinfo="FGA Profit Center" sap:value-list="standard"/>
@@ -520,7 +520,7 @@
                 <Property Name="ParentMissionId" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="Elément d'OTP" sap:quickinfo="Elément d'organigramme technique de projet (élt OTP)"/>
                 <Property Name="HierarchyLevel" Type="Edm.Int32"/>
                 <Property Name="Libelle" Type="Edm.String" MaxLength="40" sap:label="Libellé Mission" sap:quickinfo="PS: désignation (première ligne de texte)"/>
-                <Property Name="Description" Type="Edm.String" MaxLength="40" sap:label="Description" sap:quickinfo="PS: désignation (première ligne de texte)"/>
+                <Property Name="Description" Type="Edm.String" MaxLength="100" sap:display-format="UpperCase" sap:label="Description" sap:quickinfo="Description Mission"/>
                 <Property Name="FacturationDepense" Type="Edm.String" MaxLength="20" sap:label="Type (Facturation / Dépenses)"/>
                 <Property Name="ResteAFacturer" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Reste à facturer"/>
                 <Property Name="ResteADepenser" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Reste à dépenser"/>
@@ -554,7 +554,7 @@
                 <Property Name="Regroupement" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="UFO Affaire partenaire" sap:quickinfo="Zone de 10 caractères" sap:value-list="standard"/>
                 <Property Name="account" Type="Edm.String" MaxLength="10"/>
                 <Property Name="business_p_cmp" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Société Affaire partenaire" sap:quickinfo="Société de l'élément d'OTP" sap:creatable="false" sap:updatable="false"/>
-                <Property Name="business_no_p_t" Type="Edm.String" MaxLength="40" sap:label="Libellé Affaire partenaire" sap:quickinfo="PS: désignation (première ligne de texte)"/>
+                <Property Name="business_no_p_t" Type="Edm.String" MaxLength="100" sap:display-format="UpperCase" sap:label="Libellé Affaire partenaire" sap:quickinfo="Description Mission"/>
                 <Property Name="business_p_cdp" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Centre de profit Affaire partenaire" sap:quickinfo="Centre de profit" sap:value-list="standard"/>
                 <Property Name="business_p_ufo" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="UFO Affaire partenaire" sap:quickinfo="Zone de 10 caractères" sap:value-list="standard"/>
                 <Property Name="mask" Type="Edm.String" MaxLength="3" sap:display-format="NonNegative"/>
@@ -575,7 +575,7 @@
                 <Property Name="LaborBudget" Type="Edm.Decimal" Precision="14" Scale="3" sap:label="Labor Budget"/>
                 <Property Name="Regroupement" Type="Edm.String" MaxLength="40" sap:label="Regroupement mission"/>
                 <Property Name="statutmission" Type="Edm.String" MaxLength="1" sap:label="Statut mission"/>
-                <Property Name="description" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="description" sap:quickinfo="Description Mission"/>
+                <Property Name="description" Type="Edm.String" MaxLength="100" sap:display-format="UpperCase" sap:label="description" sap:quickinfo="Description Mission"/>
                 <Property Name="isSTI" Type="Edm.String" MaxLength="1"/>
             </EntityType>
             <EntityType Name="zc_fga_opportType" sap:label="zc_fga_opport" sap:content-version="1">
@@ -710,7 +710,7 @@
                 <Property Name="MissionCode" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Zone d'une longueur de 3 octets" sap:heading=""/>
                 <Property Name="StartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date" sap:heading="" sap:quickinfo="Zone de type DATS"/>
                 <Property Name="EndDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date" sap:heading="" sap:quickinfo="Zone de type DATS"/>
-                <Property Name="Libelle" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="description" sap:heading="" sap:quickinfo="Description Mission"/>
+                <Property Name="Libelle" Type="Edm.String" MaxLength="100" sap:display-format="UpperCase" sap:label="description" sap:heading="" sap:quickinfo="Description Mission"/>
                 <Property Name="Statut" Type="Edm.String" MaxLength="1" sap:label="Statut mission" sap:heading=""/>
                 <Property Name="Regroupement" Type="Edm.String" MaxLength="40" sap:label="Regroupement mission"/>
                 <Property Name="Tjm" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
@@ -732,7 +732,7 @@
                 <Property Name="MissionCode" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Zone d'une longueur de 3 octets" sap:heading=""/>
                 <Property Name="StartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date" sap:heading="" sap:quickinfo="Zone de type DATS"/>
                 <Property Name="EndDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date" sap:heading="" sap:quickinfo="Zone de type DATS"/>
-                <Property Name="Libelle" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="description" sap:heading="" sap:quickinfo="Description Mission"/>
+                <Property Name="Libelle" Type="Edm.String" MaxLength="100" sap:display-format="UpperCase" sap:label="description" sap:heading="" sap:quickinfo="Description Mission"/>
                 <Property Name="Statut" Type="Edm.String" MaxLength="1" sap:label="Statut mission" sap:heading=""/>
                 <Property Name="Regroupement" Type="Edm.String" MaxLength="40" sap:label="Regroupement mission"/>
                 <Property Name="Montant" Type="Edm.Decimal" Precision="15" Scale="2" sap:label=""/>
@@ -861,7 +861,7 @@
                     <PropertyRef Name="BusinessNo"/>
                 </Key>
                 <Property Name="BusinessNo" Type="Edm.String" Nullable="false" MaxLength="24" sap:label="Business Number"/>
-                <Property Name="BusinessName" Type="Edm.String" MaxLength="40" sap:label="Business Name" sap:quickinfo="PS: désignation (première ligne de texte)"/>
+                <Property Name="BusinessName" Type="Edm.String" MaxLength="100" sap:display-format="UpperCase" sap:label="Business Name" sap:quickinfo="Description Mission"/>
                 <Property Name="UFOName" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="UFO" sap:quickinfo="Nom de set"/>
                 <Property Name="Activity" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="Activity" sap:quickinfo="FGA Business activity"/>
                 <Property Name="CDG" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Profit Center" sap:quickinfo="FGA Profit Center"/>
@@ -954,7 +954,7 @@
                 <Property Name="Criticality" Type="Edm.Byte"/>
                 <Property Name="stext" Type="Edm.String" MaxLength="14" sap:label="Status formulaire" sap:creatable="false" sap:updatable="false"/>
                 <Property Name="status" Type="Edm.String" MaxLength="15" sap:display-format="UpperCase" sap:label="Status" sap:quickinfo="Status STI"/>
-                <Property Name="business_e_t" Type="Edm.String" MaxLength="40" sap:label="Libellé Affaire Emettrice" sap:quickinfo="PS: désignation (première ligne de texte)" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="business_e_t" Type="Edm.String" MaxLength="100" sap:display-format="UpperCase" sap:label="Libellé Affaire Emettrice" sap:quickinfo="Description Mission" sap:creatable="false" sap:updatable="false"/>
                 <Property Name="business_e_cmp" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Société Affaire Emettrice" sap:quickinfo="Société de l'élément d'OTP" sap:creatable="false" sap:updatable="false" sap:value-list="standard"/>
                 <Property Name="business_e_SDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Start Date" sap:quickinfo="Élément d'OTP : date de début de base"/>
                 <Property Name="business_e_EDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="End Date" sap:quickinfo="Élément d'OTP : date de fin de base"/>
@@ -966,7 +966,7 @@
                 <Property Name="business_e_clt" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Client" sap:quickinfo="Elément de donnée pour Client" sap:creatable="false" sap:updatable="false"/>
                 <Property Name="business_e_curr" Type="Edm.String" MaxLength="5" sap:display-format="UpperCase" sap:label="Currency" sap:quickinfo="Clé de devise" sap:semantics="currency-code"/>
                 <Property Name="business_no_p" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="N°Affaire Partenaire (Fille ou petite)" sap:quickinfo="Zone de caractères de longueur 24" sap:creatable="false" sap:updatable="false"/>
-                <Property Name="business_no_p_t" Type="Edm.String" MaxLength="40" sap:label="Libellé Affaire partenaire" sap:quickinfo="PS: désignation (première ligne de texte)"/>
+                <Property Name="business_no_p_t" Type="Edm.String" MaxLength="100" sap:display-format="UpperCase" sap:label="Libellé Affaire partenaire" sap:quickinfo="Description Mission"/>
                 <Property Name="business_p_ufo" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="UFO Affaire partenaire" sap:quickinfo="Zone de 10 caractères" sap:value-list="standard"/>
                 <Property Name="business_p_cmp" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Société Affaire partenaire" sap:quickinfo="Société de l'élément d'OTP" sap:creatable="false" sap:updatable="false"/>
                 <Property Name="business_p_cdp" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Centre de profit Affaire partenaire" sap:quickinfo="Centre de profit" sap:value-list="standard"/>
@@ -999,7 +999,7 @@
                 <Property Name="business_no_p" Type="Edm.String" MaxLength="24" sap:display-format="UpperCase" sap:label="Texte 24" sap:quickinfo="Zone de caractères de longueur 24"/>
                 <Property Name="StartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Début de base" sap:quickinfo="Élément d'OTP : date de début de base"/>
                 <Property Name="EndDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date de fin de base" sap:quickinfo="Élément d'OTP : date de fin de base"/>
-                <Property Name="Libelle" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="description" sap:quickinfo="Description Mission"/>
+                <Property Name="Libelle" Type="Edm.String" MaxLength="100" sap:display-format="UpperCase" sap:label="description" sap:quickinfo="Description Mission"/>
                 <Property Name="BudgetAlloue" Type="Edm.Int64" sap:label="BUDGET ALLOUE" sap:heading=""/>
                 <Property Name="Currency" Type="Edm.String" MaxLength="5" sap:display-format="UpperCase" sap:label="Devise" sap:quickinfo="Clé de devise" sap:semantics="currency-code"/>
                 <Property Name="Regroupement" Type="Edm.String" MaxLength="40" sap:label="Regroupement mission"/>
@@ -1024,7 +1024,7 @@
                 <Property Name="OriginalBudget" Type="Edm.Decimal" Precision="15" Scale="2"/>
                 <Property Name="Regroupement" Type="Edm.String" MaxLength="40" sap:label="Regroupement mission"/>
                 <Property Name="statutmission" Type="Edm.String" MaxLength="1" sap:label="Statut mission"/>
-                <Property Name="description" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="description" sap:quickinfo="Description Mission"/>
+                <Property Name="description" Type="Edm.String" MaxLength="100" sap:display-format="UpperCase" sap:label="description" sap:quickinfo="Description Mission"/>
             </EntityType>
             <EntityType Name="ZI_FGA_ACTIVITY_VHType" sap:value-list="true" sap:content-version="1">
                 <Key>
