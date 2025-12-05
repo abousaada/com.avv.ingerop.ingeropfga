@@ -1679,7 +1679,71 @@ sap.ui.define(
                 var stableName = "BudgetPxSTITreeTable";
                 this.onBudgetPXSTIUpdated(stableName);
             },
+
             onBudgetPXSTIUpdated: function (stableName) {
+                try {
+                    var sViewId = this.oView.sId;
+                    const oTable = sap.ui.getCore().byId(sViewId + "--" + stableName);
+                    if (oTable) {
+                        const oDomRef = oTable.getDomRef();
+                        if (!oDomRef) {
+                            console.warn("DOM ref not ready for table:", stableName);
+                            return;
+                        }
+                        const aRows = oTable.getRows();
+                        const aExclure = new Set(["cumule", "cumulé", "pourcentage", "rad"]);
+
+                        // FIX 1: Add initial cleanup
+                        jQuery(oDomRef).find("tr").removeClass("pxNodeRow pxSubTotalRow pxTotalRow");
+
+                        // FIX 2: Apply header styling (same as working code)
+                        oDomRef.querySelectorAll(".sapUiTableColHdrTr.pxHeader")
+                            .forEach(tr => tr.classList.remove("pxHeader"));
+                        const aHeaderRows = oDomRef.querySelectorAll(".sapUiTableColHdrTr");
+                        const oLast = aHeaderRows[aHeaderRows.length - 1];
+                        const oFirst = aHeaderRows[aHeaderRows.length / 2 - 1];
+                        if (oLast && oFirst) {
+                            oFirst.classList.add("pxHeader");
+                            oLast.classList.add("pxHeader");
+                        }
+
+                        aRows.forEach(oRow => {
+                            const oContext = oRow.getBindingContext("utilities");
+                            if (oContext) {
+                                const bIsTotal = !!oContext.getProperty("isTotalRow");
+                                const bIsNode = !!oContext.getProperty("isNode");
+                                const sName = String(oContext.getProperty("name") || "").trim().toLowerCase();
+                                const $row = oRow.$();
+
+                                // FIX 3: Remove all classes (including pxNodeRow)
+                                $row.removeClass("pxTotalRow pxSubTotalRow pxNodeRow");
+
+                                if (aExclure.has(sName)) {
+                                    return;
+                                }
+
+                                // FIX 4: Add node handling logic
+                                if (bIsNode && !bIsTotal) {
+                                    $row.addClass("pxNodeRow");
+                                    return;
+                                }
+
+                                // Keep your existing STI logic
+                                if (bIsTotal) {
+                                    if (sName === "budget sti") {
+                                        oRow.addStyleClass("pxTotalRow");
+                                    } else if (sName.startsWith("total")) {
+                                        oRow.addStyleClass("pxSubTotalRow");
+                                    }
+                                }
+                            }
+                        });
+                    }
+                } catch (err) {
+                    console.error("onBudgetPXSTIUpdated failed:", err);
+                }
+            },
+            onBudgetPXSTIUpdated1: function (stableName) {
                 try {
                     var sViewId = this.oView.sId;
                     const oTable = sap.ui.getCore().byId(
