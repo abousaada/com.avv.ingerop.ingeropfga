@@ -369,7 +369,7 @@ sap.ui.define([
                             pSTI.business_no_p + "_" + pSTI.id_formulaire :
                             pSTI.business_no_p;
 
-                        item.dynamicColumns[pSTICompoundKey] = budgetValue.toString();
+                        item.dynamicColumns[pSTICompoundKey] = negativeBudgetValue.toString();
 
                         // Distribute the sum based on TypeBudg
                         switch (pSTI.TypeBudg) {
