@@ -4,8 +4,9 @@ sap.ui.define([
     "sap/m/Text",
     "sap/m/HBox",
     "sap/ui/table/Column",
-    "sap/m/Label"
-], function (Controller, Text, HBox, Column, Label) {
+    "sap/m/Label",
+    "sap/ui/model/type/Float"
+], function (Controller, Text, HBox, Column, Label, Float) {
     "use strict";
 
     return Controller.extend("com.avv.ingerop.ingeropfga.ext.controller.BudgetPxSTI", {
@@ -111,15 +112,35 @@ sap.ui.define([
                 treeTable.addColumn(column);
             }.bind(this));
 
+            var floatFormatter = new Float({
+                minFractionDigits: 2,
+                maxFractionDigits: 2
+            });
             // Add static Intra UFO column
             var intraUfoColumn = new Column({
                 width: "5rem",
                 template: new HBox({
                     items: [
-                        new Text({
+                        /*new Text({
                             text: "{utilities>IntraUFOBudget}",
+                            
                             visible: "{= !${isNode}}"
+                        })*/
+
+                        new Text({
+                            //text: "{utilities>IntraUFOBudget}",
+                            text: {
+                                path: 'utilities>IntraUFOBudget',
+                                type: floatFormatter,  // Use Float type
+                                formatter: function (value) {
+                                    return value || "0.00";
+                                }
+                            },
+                            //visible: "{= !${isNode}}"
+                            visible: "{= !${utilities>isNode} && !${utilities>isRegroupementTotal}}"
                         })
+
+
                     ]
                 }),
                 label: new Label({
@@ -195,6 +216,7 @@ sap.ui.define([
                         width: "100%",
                         textAlign: "Center",
                         //design: "Bold"
+                        design: displayName.includes("###") ? "Bold" : "Standard"
                     }),
                     new Label({
                         text: businessPCDP,
@@ -205,6 +227,10 @@ sap.ui.define([
                 ]
             });
 
+            var floatFormatter = new Float({
+                minFractionDigits: 2,
+                maxFractionDigits: 2
+            });
             return new Column({
                 width: "13rem",
                 template: new HBox({
@@ -213,6 +239,7 @@ sap.ui.define([
                         new sap.m.Link({
                             text: {
                                 path: 'utilities>dynamicColumns/' + compoundKey,
+                                type: floatFormatter,
                                 formatter: function (value) {
                                     return value || "0";
                                 }
@@ -225,29 +252,46 @@ sap.ui.define([
                         new Text({
                             text: {
                                 path: 'utilities>dynamicColumns/' + compoundKey,
+                                type: floatFormatter,
                                 formatter: function (value) {
                                     return value || "0";
                                 }
                             },
                             // Show text for non-cumulative rows
-                            visible: "{= ${utilities>isCumulativeRow} !== true}"
+                            //visible: "{= ${utilities>isCumulativeRow} !== true}"
+                            visible: "{= ${utilities>isCumulativeRow} !== true && !${utilities>isNode} && !${utilities>isRegroupementTotal}}"
                         })
                     ]
                 }),
                 label: headerLabel
             });
         },
-        
+
 
         _addStaticColumns: function (treeTable) {
+
+            var floatFormatter = new Float({
+                minFractionDigits: 2,
+                maxFractionDigits: 2
+            });
+
             // Only add Inter UFO column here, Intra UFO and Intercompagnie will be added in _createDynamicColumns
             var interUfoColumn = new Column({
                 width: "5rem",
                 template: new HBox({
                     items: [
                         new Text({
-                            text: "{utilities>InterUFOBudget}",
-                            visible: "{= !${isNode}}"
+                            //text: "{utilities>InterUFOBudget}",
+                            text: {
+                                path: 'utilities>InterUFOBudget',
+                                type: floatFormatter,  // Use Float type
+                                formatter: function (value) {
+                                    return value || "0.00";
+                                }
+                            },
+                            //visible: "{= !${isNode}}"
+                            visible: "{= !${utilities>isNode} && !${utilities>isRegroupementTotal}}"
+
                         })
                     ]
                 }),
@@ -435,6 +479,7 @@ sap.ui.define([
                 totals.rad[compoundKey] = 0;
             }.bind(this));
 
+
             // Rest of the method remains the same for static columns...
             // Init static columns
             var staticCols = ["InterUFOBudget", "IntraUFOBudget", "IntercompagnieBudget"];
@@ -490,18 +535,47 @@ sap.ui.define([
             items.forEach(sumValues);
 
             // Calculate Pourcentage + Reste
-            allBusinessNos.forEach(function (compoundKey) {
+            /*allBusinessNos.forEach(function (compoundKey) {
                 totals.pourcentage[compoundKey] = totals.totalAcquis[compoundKey] > 0
                     ? (totals.cumule[compoundKey] / totals.totalAcquis[compoundKey] * 100)
                     : 0;
                 totals.rad[compoundKey] = totals.totalAcquis[compoundKey] - totals.cumule[compoundKey];
+            });*/
+
+            allBusinessNos.forEach(function (compoundKey) {
+                // Use Math.abs() to get absolute values for percentage calculation
+                // totalAcquis is negative, cumule is positive
+                var absoluteTotalAcquis = Math.abs(totals.totalAcquis[compoundKey]);
+                var absoluteCumule = Math.abs(totals.cumule[compoundKey]);
+
+                // Calculate percentage based on absolute values
+                totals.pourcentage[compoundKey] = absoluteTotalAcquis > 0
+                    ? (absoluteCumule / absoluteTotalAcquis * 100)
+                    : 0;
+
+                // For RAD: Remaining = Absolute total - Cumulative
+                // This shows how much budget is left to use
+                totals.rad[compoundKey] = absoluteTotalAcquis - absoluteCumule;
             });
 
-            staticCols.forEach(function (col) {
+
+            /*staticCols.forEach(function (col) {
                 totals.pourcentage[col] = totals.totalAcquis[col] > 0
                     ? (totals.cumule[col] / totals.totalAcquis[col] * 100)
                     : 0;
                 totals.rad[col] = totals.totalAcquis[col] - totals.cumule[col];
+            });*/
+            staticCols.forEach(function (col) {
+                // Use Math.abs() to get absolute values for percentage calculation
+                var absoluteTotalAcquis = Math.abs(totals.totalAcquis[col]);
+                var absoluteCumule = Math.abs(totals.cumule[col]);
+
+                // Calculate percentage based on absolute values
+                totals.pourcentage[col] = absoluteTotalAcquis > 0
+                    ? (absoluteCumule / absoluteTotalAcquis * 100)
+                    : 0;
+
+                totals.rad[col] = absoluteTotalAcquis - absoluteCumule;
             });
 
             return totals;
@@ -846,7 +920,7 @@ sap.ui.define([
 
                     if (!fgaGroups[item.BusinessNo].children[item.Regroupement]) {
                         fgaGroups[item.BusinessNo].children[item.Regroupement] = {
-                            name: item.Regroupement,
+                            name: item.Regroupement || "Sans groupement",
                             isNode: true,
                             isL0: false,
                             children: [],
