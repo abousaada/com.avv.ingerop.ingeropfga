@@ -131,7 +131,7 @@ sap.ui.define([
                             //text: "{utilities>IntraUFOBudget}",
                             text: {
                                 path: 'utilities>IntraUFOBudget',
-                                type: floatFormatter,  // Use Float type
+                                //type: floatFormatter,  // Use Float type
                                 /*formatter: function (value) {
                                     return value || "0.00";
                                 }*/
@@ -325,7 +325,7 @@ sap.ui.define([
                             //text: "{utilities>InterUFOBudget}",
                             text: {
                                 path: 'utilities>InterUFOBudget',
-                                type: floatFormatter,  // Use Float type
+                                //type: floatFormatter,  // Use Float type
                                 /*formatter: function (value) {
                                     return value || "0.00";
                                 }*/
