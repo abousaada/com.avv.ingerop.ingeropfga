@@ -118,7 +118,7 @@ sap.ui.define([
             });
             // Add static Intra UFO column
             var intraUfoColumn = new Column({
-                width: "5rem",
+                width: "7rem",
                 template: new HBox({
                     items: [
                         /*new Text({
@@ -132,9 +132,27 @@ sap.ui.define([
                             text: {
                                 path: 'utilities>IntraUFOBudget',
                                 type: floatFormatter,  // Use Float type
-                                formatter: function (value) {
+                                /*formatter: function (value) {
                                     return value || "0.00";
+                                }*/
+                               formatter: function (value) {
+                                    if (!value) return "0";
+
+                                    // If the value is a string with %, return as is
+                                    if (typeof value === "string" && value.includes("%")) {
+                                        return value;
+                                    }
+
+                                    // Otherwise, format as float with 2 decimals
+                                    var number = parseFloat(value);
+                                    if (isNaN(number)) return value;
+                                    return new Intl.NumberFormat('fr-FR', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2,
+                                        useGrouping: true
+                                    }).format(number);
                                 }
+                               
                             },
                             //visible: "{= !${isNode}}"
                             visible: "{= !${utilities>isNode} && !${utilities>isRegroupementTotal}}"
@@ -270,7 +288,7 @@ sap.ui.define([
 
                                     // Otherwise, format as float with 2 decimals
                                     var number = parseFloat(value);
-                                    if (isNaN(number)) return value; 
+                                    if (isNaN(number)) return value;
                                     return new Intl.NumberFormat('fr-FR', {
                                         minimumFractionDigits: 2,
                                         maximumFractionDigits: 2,
@@ -300,7 +318,7 @@ sap.ui.define([
 
             // Only add Inter UFO column here, Intra UFO and Intercompagnie will be added in _createDynamicColumns
             var interUfoColumn = new Column({
-                width: "5rem",
+                width: "7rem",
                 template: new HBox({
                     items: [
                         new Text({
@@ -308,8 +326,25 @@ sap.ui.define([
                             text: {
                                 path: 'utilities>InterUFOBudget',
                                 type: floatFormatter,  // Use Float type
-                                formatter: function (value) {
+                                /*formatter: function (value) {
                                     return value || "0.00";
+                                }*/
+                                formatter: function (value) {
+                                    if (!value) return "0";
+
+                                    // If the value is a string with %, return as is
+                                    if (typeof value === "string" && value.includes("%")) {
+                                        return value;
+                                    }
+
+                                    // Otherwise, format as float with 2 decimals
+                                    var number = parseFloat(value);
+                                    if (isNaN(number)) return value;
+                                    return new Intl.NumberFormat('fr-FR', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2,
+                                        useGrouping: true
+                                    }).format(number);
                                 }
                             },
                             //visible: "{= !${isNode}}"
