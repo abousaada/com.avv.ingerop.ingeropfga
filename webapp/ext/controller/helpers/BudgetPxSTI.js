@@ -155,7 +155,8 @@ sap.ui.define([
                                
                             },
                             //visible: "{= !${isNode}}"
-                            visible: "{= !${utilities>isNode} && !${utilities>isRegroupementTotal}}"
+                            //visible: "{= !${utilities>isNode} && !${utilities>isRegroupementTotal}}"
+                            visible: "{= ${utilities>isCumulativeRow} !== true && (!${utilities>isNode} || ${utilities>isRegroupementTotal})}"
                         })
 
 
@@ -299,8 +300,8 @@ sap.ui.define([
 
                             // Show text for non-cumulative rows
                             //visible: "{= ${utilities>isCumulativeRow} !== true}"
-                            visible: "{= ${utilities>isCumulativeRow} !== true && !${utilities>isNode} && !${utilities>isRegroupementTotal}}"
-                        })
+                            //visible: "{= ${utilities>isCumulativeRow} !== true && !${utilities>isNode} && !${utilities>isRegroupementTotal}}"
+                        visible: "{= ${utilities>isCumulativeRow} !== true && (!${utilities>isNode} || ${utilities>isRegroupementTotal})}"})
 
                     ]
                 }),
@@ -348,8 +349,8 @@ sap.ui.define([
                                 }
                             },
                             //visible: "{= !${isNode}}"
-                            visible: "{= !${utilities>isNode} && !${utilities>isRegroupementTotal}}"
-
+                            //visible: "{= !${utilities>isNode} && !${utilities>isRegroupementTotal}}"
+visible: "{= ${utilities>isCumulativeRow} !== true && (!${utilities>isNode} || ${utilities>isRegroupementTotal})}"
                         })
                     ]
                 }),
