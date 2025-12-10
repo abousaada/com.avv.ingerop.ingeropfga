@@ -60,7 +60,7 @@
                 </table:Column>
 
                 <!-- Mission Type Column -->
-                <table:Column width="13rem">
+                <table:Column width="13rem" id="MissionCodeComboBoxId">
                     <Label text="Mission" />
 
                     <table:template>

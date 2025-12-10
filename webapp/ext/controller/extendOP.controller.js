@@ -45,6 +45,7 @@ sap.ui.define(
                     if (oTreeTable) {
                         oTreeTable.setFixedColumnCount(99);
                     }
+                    
                 },
 
                 /**

@@ -367,17 +367,40 @@ sap.ui.define([
                     const aCells = oRow.getCells();
 
                     // Type validation
+                    /* const typeContainer = aCells[1];
+                     if (typeContainer && typeContainer.isA("sap.m.HBox")) {
+                         const typeControl = this._findInputControl(typeContainer);
+                         if (typeControl && typeControl.setValueState) {
+                             const typeValue = this._getControlValue(typeControl);
+                             if (!typeValue) {
+                                 typeControl.setValueState("Error");
+                                 typeControl.setValueStateText("Type required");
+                                 isValid = false;
+                             } 
+                             else {
+                                 typeControl.setValueState("None");
+                             }
+                         }
+                     }*/
                     const typeContainer = aCells[1];
                     if (typeContainer && typeContainer.isA("sap.m.HBox")) {
                         const typeControl = this._findInputControl(typeContainer);
                         if (typeControl && typeControl.setValueState) {
                             const typeValue = this._getControlValue(typeControl);
+
                             if (!typeValue) {
                                 typeControl.setValueState("Error");
                                 typeControl.setValueStateText("Type required");
                                 isValid = false;
-                            } else {
+                            }
+                            else if (typeValue.length > 15) {
+                                typeControl.setValueState("Error");
+                                typeControl.setValueStateText("Length must be < 15 characters");
+                                isValid = false;
+                            }
+                            else {
                                 typeControl.setValueState("None");
+                                typeControl.setValueStateText(""); // reset text
                             }
                         }
                     }
@@ -516,11 +539,7 @@ sap.ui.define([
             var sValue = oComboBox.getValue();
             var oBindingContext = oComboBox.getBindingContext("utilities");
 
-            var oComboBox = oEvent.getSource();
-            var sKey = oComboBox.getSelectedKey();
-            var sValue = oComboBox.getValue();
-
-            if (sValue && sValue.length > 15) {
+            /*if (sValue && sValue.length > 15) {
                 // Truncate to 15 characters
                 sValue = sValue.substring(0, 15);
 
@@ -528,7 +547,7 @@ sap.ui.define([
 
                 sap.m.MessageToast.show("Value limited to 15 characters");
 
-            }
+            }*/
             if (oBindingContext) {
                 oBindingContext.getModel().setProperty(oBindingContext.getPath() + "/MissionCode", sValue);
             }
