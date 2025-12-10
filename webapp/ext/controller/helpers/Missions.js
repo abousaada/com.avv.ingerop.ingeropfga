@@ -76,7 +76,7 @@ sap.ui.define([
             return editable === true && isNode === true && isL0 === true;
         },
         isDeleteVisible: function (editable, isNode, isNew) {
-            console.log('isNEw : ' , isNew);
+            console.log('isNEw : ', isNew);
             return editable === true && isNode === false && isNew === true;
         },
 
@@ -516,6 +516,19 @@ sap.ui.define([
             var sValue = oComboBox.getValue();
             var oBindingContext = oComboBox.getBindingContext("utilities");
 
+            var oComboBox = oEvent.getSource();
+            var sKey = oComboBox.getSelectedKey();
+            var sValue = oComboBox.getValue();
+
+            if (sValue && sValue.length > 15) {
+                // Truncate to 15 characters
+                sValue = sValue.substring(0, 15);
+
+                oComboBox.setValue(sValue);
+
+                sap.m.MessageToast.show("Value limited to 15 characters");
+
+            }
             if (oBindingContext) {
                 oBindingContext.getModel().setProperty(oBindingContext.getPath() + "/MissionCode", sValue);
             }
