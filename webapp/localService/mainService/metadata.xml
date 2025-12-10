@@ -568,7 +568,7 @@
                 </Key>
                 <Property Name="MissionId" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Texte 24" sap:quickinfo="Zone de caractères de longueur 24"/>
                 <Property Name="BusinessNo" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Numéro de business" sap:quickinfo="FGA Numéro de business"/>
-                <Property Name="MissionCode" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Mission Code" sap:quickinfo="Zone d'une longueur de 3 octets"/>
+                <Property Name="MissionCode" Type="Edm.String" MaxLength="15" sap:display-format="UpperCase" sap:label="Mission Code" sap:quickinfo="Char 15"/>
                 <Property Name="StartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Start Date" sap:quickinfo="Zone de type DATS"/>
                 <Property Name="EndDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="End Date" sap:quickinfo="Zone de type DATS"/>
                 <Property Name="ExternalRevenue" Type="Edm.Decimal" Precision="14" Scale="3" sap:label="External Revenue"/>
@@ -654,7 +654,7 @@
                 </Key>
                 <Property Name="MissionId" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Texte 24" sap:quickinfo="Zone de caractères de longueur 24"/>
                 <Property Name="BusinessNo" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Numéro de business" sap:quickinfo="FGA Numéro de business"/>
-                <Property Name="MissionCode" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Mission Code" sap:quickinfo="Zone d'une longueur de 3 octets"/>
+                <Property Name="MissionCode" Type="Edm.String" MaxLength="15" sap:display-format="UpperCase" sap:label="Mission Code" sap:quickinfo="Char 15"/>
                 <Property Name="Libelle" Type="Edm.String" MaxLength="40" sap:label="Libelle" sap:quickinfo="PS: désignation (première ligne de texte)"/>
                 <Property Name="Statut" Type="Edm.String" MaxLength="60" sap:label="Statut" sap:quickinfo="Statut mission (Descr.)"/>
                 <Property Name="StartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Start Date" sap:quickinfo="Zone de type DATS"/>
@@ -707,7 +707,7 @@
                 <Property Name="Profil" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase" sap:label="Type d'activité" sap:heading=""/>
                 <Property Name="costCenter" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Centre de coûts" sap:heading=""/>
                 <Property Name="ProfilDescription" Type="Edm.String" MaxLength="20" sap:label="Nom" sap:heading="" sap:quickinfo="Nom général"/>
-                <Property Name="MissionCode" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Zone d'une longueur de 3 octets" sap:heading=""/>
+                <Property Name="MissionCode" Type="Edm.String" MaxLength="15" sap:display-format="UpperCase" sap:label="char15" sap:heading="" sap:quickinfo="Char 15"/>
                 <Property Name="StartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date" sap:heading="" sap:quickinfo="Zone de type DATS"/>
                 <Property Name="EndDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date" sap:heading="" sap:quickinfo="Zone de type DATS"/>
                 <Property Name="Libelle" Type="Edm.String" MaxLength="100" sap:display-format="UpperCase" sap:label="description" sap:heading="" sap:quickinfo="Description Mission"/>
@@ -729,7 +729,7 @@
                 </Key>
                 <Property Name="BusinessNo" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Numéro de business" sap:quickinfo="FGA Numéro de business"/>
                 <Property Name="MissionId" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Texte 24" sap:quickinfo="Zone de caractères de longueur 24"/>
-                <Property Name="MissionCode" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Zone d'une longueur de 3 octets" sap:heading=""/>
+                <Property Name="MissionCode" Type="Edm.String" MaxLength="15" sap:display-format="UpperCase" sap:label="char15" sap:heading="" sap:quickinfo="Char 15"/>
                 <Property Name="StartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date" sap:heading="" sap:quickinfo="Zone de type DATS"/>
                 <Property Name="EndDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date" sap:heading="" sap:quickinfo="Zone de type DATS"/>
                 <Property Name="Libelle" Type="Edm.String" MaxLength="100" sap:display-format="UpperCase" sap:label="description" sap:heading="" sap:quickinfo="Description Mission"/>
@@ -748,7 +748,7 @@
                 </Key>
                 <Property Name="MissionId" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Texte 24" sap:quickinfo="Zone de caractères de longueur 24"/>
                 <Property Name="BusinessNo" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Numéro de business" sap:quickinfo="FGA Numéro de business"/>
-                <Property Name="MissionCode" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Mission Code" sap:quickinfo="Zone d'une longueur de 3 octets"/>
+                <Property Name="MissionCode" Type="Edm.String" MaxLength="15" sap:display-format="UpperCase" sap:label="Mission Code" sap:quickinfo="Char 15"/>
                 <Property Name="Libelle" Type="Edm.String" MaxLength="40" sap:label="Libelle" sap:quickinfo="PS: désignation (première ligne de texte)"/>
                 <Property Name="Statut" Type="Edm.String" MaxLength="60" sap:label="Statut" sap:quickinfo="Statut mission (Descr.)"/>
                 <Property Name="StartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Start Date" sap:quickinfo="Zone de type DATS"/>
@@ -849,7 +849,7 @@
                 <Property Name="Mois" Type="Edm.String" MaxLength="2" sap:display-format="NonNegative" sap:label="Période comptable" sap:heading="" sap:quickinfo="Mois d'exercice"/>
                 <Property Name="Annee" Type="Edm.String" MaxLength="4" sap:display-format="NonNegative" sap:label="Exercice comptable" sap:heading=""/>
                 <Property Name="Cumul" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Montant" sap:heading="" sap:quickinfo="Montant en devise de la pièce"/>
-                <Property Name="MissionCode" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Zone d'une longueur de 3 octets" sap:heading=""/>
+                <Property Name="MissionCode" Type="Edm.String" MaxLength="15" sap:display-format="UpperCase" sap:label="char15" sap:heading="" sap:quickinfo="Char 15"/>
                 <Property Name="Libelle" Type="Edm.String" MaxLength="40" sap:label="Désignation" sap:heading="" sap:quickinfo="PS: désignation (première ligne de texte)"/>
                 <Property Name="Statut" Type="Edm.String" MaxLength="1" sap:label="Statut mission" sap:heading=""/>
                 <Property Name="StartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date" sap:heading="" sap:quickinfo="Zone de type DATS"/>
@@ -1014,7 +1014,7 @@
                 </Key>
                 <Property Name="MissionId" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Texte 24" sap:quickinfo="Zone de caractères de longueur 24"/>
                 <Property Name="BusinessNo" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Numéro de business" sap:quickinfo="FGA Numéro de business"/>
-                <Property Name="MissionCode" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Mission Code" sap:quickinfo="Zone d'une longueur de 3 octets"/>
+                <Property Name="MissionCode" Type="Edm.String" MaxLength="15" sap:display-format="UpperCase" sap:label="Mission Code" sap:quickinfo="Char 15"/>
                 <Property Name="StartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Start Date" sap:quickinfo="Zone de type DATS"/>
                 <Property Name="EndDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="End Date" sap:quickinfo="Zone de type DATS"/>
                 <Property Name="GlobalBudget" Type="Edm.Decimal" Precision="15" Scale="2" sap:label="Budget global (recette)"/>

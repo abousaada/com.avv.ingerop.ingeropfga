@@ -40,6 +40,19 @@
                 </table:template>
             </table:Column>
 
+            <!-- Mission Column -->
+            <table:Column width="13rem">
+                <Label text="Mission" />
+                <table:template>
+                    <HBox>
+                        <Text
+                            text="{utilities>MissionCode}"
+                            visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
+                        />
+                    </HBox>
+                </table:template>
+            </table:Column>
+
             <!-- Libelle Column -->
             <table:Column width="5rem">
                 <Label text="Libellé" />

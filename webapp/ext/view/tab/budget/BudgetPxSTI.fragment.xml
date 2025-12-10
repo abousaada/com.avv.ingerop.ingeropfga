@@ -39,7 +39,7 @@
                 </table:Column>
 
                 <!-- Mission Column -->
-                <table:Column width="5rem">
+                <table:Column width="13rem">
                     <Label text="Mission" />
                     <table:template>
                         <HBox>

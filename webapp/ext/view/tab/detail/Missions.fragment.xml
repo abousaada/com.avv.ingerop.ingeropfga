@@ -60,18 +60,20 @@
                 </table:Column>
 
                 <!-- Mission Type Column -->
-                <table:Column width="8rem">
+                <table:Column width="13rem">
                     <Label text="Mission" />
 
                     <table:template>
                         <HBox>
                             <ComboBox
-                                selectedKey="{utilities>MissionCode}"
+                                
                                 value="{utilities>MissionCode}"
                                 items="{
                                         path: 'utilities>/missionTypes',
                                         templateShareable: false
                                     }"
+                                showSecondaryValues="true"
+                                filterSecondaryValues="false"
                                 editable="{ui>/editable}"
                                 width="100%"
                                 visible="{= !${utilities>isNode}}"
