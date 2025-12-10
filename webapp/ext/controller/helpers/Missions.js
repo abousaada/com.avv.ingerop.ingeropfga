@@ -395,7 +395,7 @@ sap.ui.define([
                             }
                             else if (typeValue.length > 15) {
                                 typeControl.setValueState("Error");
-                                typeControl.setValueStateText("Length must be < 15 characters");
+                                typeControl.setValueStateText("La longueur doit être inférieure à 15 caractères");
                                 isValid = false;
                             }
                             else {
