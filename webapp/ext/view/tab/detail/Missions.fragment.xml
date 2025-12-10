@@ -83,6 +83,7 @@
                                 <core:Item
                                     key="{utilities>code}"
                                     text="{utilities>description}"
+                                    
                                 />
                             </ComboBox>
                             <Label
