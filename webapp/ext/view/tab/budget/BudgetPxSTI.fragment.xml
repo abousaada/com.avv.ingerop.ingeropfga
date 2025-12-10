@@ -28,7 +28,7 @@
             <table:columns>
                 <!-- Hierarchy Column -->
                 <table:Column width="17rem">
-                    <Label text="Hierarchy/Mission" />
+                    <Label text="Hierarchy" />
                     <table:template>
                         <Text
                             text="{= ${utilities>isTotalRow} ? ${utilities>name} : 
@@ -52,12 +52,13 @@
                 </table:Column>
 
                 <!-- Libelle Column -->
-                <table:Column width="5rem">
+                <table:Column width="15rem">
                     <Label text="Libellé" />
                     <table:template>
                         <HBox>
                             <Text
                                 text="{utilities>Libelle}"
+                                wrapping="true"
                                 visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
                             />
                         </HBox>

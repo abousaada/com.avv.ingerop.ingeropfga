@@ -34,6 +34,7 @@
             <table:rowMode>
                 <rm:Auto
                     minRowCount="{localModel>/tableSettings/minRowCount}"
+                    rowContentHeight="Auto"
                 />
             </table:rowMode>
             <table:columns>
@@ -60,13 +61,12 @@
                 </table:Column>
 
                 <!-- Mission Type Column -->
-                <table:Column width="13rem" id="MissionCodeComboBoxId">
+                <table:Column width="13rem">
                     <Label text="Mission" />
 
                     <table:template>
                         <HBox>
                             <ComboBox
-                               
                                 value="{utilities>MissionCode}"
                                 items="{
                                         path: 'utilities>/missionTypes',
@@ -83,7 +83,6 @@
                                 <core:Item
                                     key="{utilities>code}"
                                     text="{utilities>description}"
-                                    
                                 />
                             </ComboBox>
                             <Label
@@ -96,14 +95,20 @@
                 </table:Column>
 
                 <!-- Description Column -->
-                <table:Column width="10rem">
+                <table:Column width="15rem">
                     <Label text="Description" />
                     <table:template>
-                        <Input
+                        <TextArea
                             value="{utilities>description}"
                             editable="{ui>/editable}"
                             width="100%"
                             visible="{= !${utilities>isNode}}"
+                            rows="1"
+                            growing="true"
+                            growingMaxLines="10"
+                            maxLength="100"
+                            wrapping="Soft"
+                            placeholder="Entrer description..."
                         />
                     </table:template>
                 </table:Column>
