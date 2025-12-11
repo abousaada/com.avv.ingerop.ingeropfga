@@ -183,7 +183,7 @@
                     <table:template>
                         <HBox>
                             <DatePicker
-                                value="{path: 'utilities>StartDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd' }}"
+                                value="{path: 'utilities>StartDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.yyyy', UTC: true}}"
                                 displayFormat="short"
                                 editable="{ui>/editable}"
                                 width="100%"
@@ -205,7 +205,7 @@
                     <table:template>
                         <HBox>
                             <DatePicker
-                                value="{path: 'utilities>EndDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd' }}"
+                                value="{path: 'utilities>EndDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.yyyy', UTC: true }}"
                                 displayFormat="short"
                                 editable="{ui>/editable}"
                                 width="100%"
