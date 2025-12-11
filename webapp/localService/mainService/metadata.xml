@@ -655,7 +655,7 @@
                 <Property Name="MissionId" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Texte 24" sap:quickinfo="Zone de caractères de longueur 24"/>
                 <Property Name="BusinessNo" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Numéro de business" sap:quickinfo="FGA Numéro de business"/>
                 <Property Name="MissionCode" Type="Edm.String" MaxLength="15" sap:display-format="UpperCase" sap:label="Mission Code" sap:quickinfo="Char 15"/>
-                <Property Name="Libelle" Type="Edm.String" MaxLength="40" sap:label="Libelle" sap:quickinfo="PS: désignation (première ligne de texte)"/>
+                <Property Name="Libelle" Type="Edm.String" MaxLength="100" sap:display-format="UpperCase" sap:label="Libelle" sap:quickinfo="Description Mission"/>
                 <Property Name="Statut" Type="Edm.String" MaxLength="60" sap:label="Statut" sap:quickinfo="Statut mission (Descr.)"/>
                 <Property Name="StartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Start Date" sap:quickinfo="Zone de type DATS"/>
                 <Property Name="EndDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="End Date" sap:quickinfo="Zone de type DATS"/>
@@ -749,7 +749,7 @@
                 <Property Name="MissionId" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Texte 24" sap:quickinfo="Zone de caractères de longueur 24"/>
                 <Property Name="BusinessNo" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Numéro de business" sap:quickinfo="FGA Numéro de business"/>
                 <Property Name="MissionCode" Type="Edm.String" MaxLength="15" sap:display-format="UpperCase" sap:label="Mission Code" sap:quickinfo="Char 15"/>
-                <Property Name="Libelle" Type="Edm.String" MaxLength="40" sap:label="Libelle" sap:quickinfo="PS: désignation (première ligne de texte)"/>
+                <Property Name="Libelle" Type="Edm.String" MaxLength="100" sap:display-format="UpperCase" sap:label="Libelle" sap:quickinfo="Description Mission"/>
                 <Property Name="Statut" Type="Edm.String" MaxLength="60" sap:label="Statut" sap:quickinfo="Statut mission (Descr.)"/>
                 <Property Name="StartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Start Date" sap:quickinfo="Zone de type DATS"/>
                 <Property Name="EndDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="End Date" sap:quickinfo="Zone de type DATS"/>
@@ -982,6 +982,7 @@
                 <Property Name="glaccountPxSTI" Type="Edm.String" MaxLength="255"/>
                 <Property Name="TypeBudg" Type="Edm.String" MaxLength="8" sap:display-format="UpperCase" sap:label="char8" sap:quickinfo="Zone de caractères, long.8"/>
                 <Property Name="p_period" Type="Edm.String" MaxLength="6"/>
+                <Property Name="date_creation" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date" sap:quickinfo="Zone de type DATS"/>
                 <NavigationProperty Name="to_BUDG" Relationship="ZFGA_SRV.assoc_4C440054DA86EB6EA9AA53AAC97FFE9D" FromRole="FromRole_assoc_4C440054DA86EB6EA9AA53AAC97FFE9D" ToRole="ToRole_assoc_4C440054DA86EB6EA9AA53AAC97FFE9D"/>
                 <NavigationProperty Name="to_Missions" Relationship="ZFGA_SRV.assoc_BDE3EF1CC903BE8B03DEE893F2059FD9" FromRole="FromRole_assoc_BDE3EF1CC903BE8B03DEE893F2059FD9" ToRole="ToRole_assoc_BDE3EF1CC903BE8B03DEE893F2059FD9"/>
             </EntityType>
