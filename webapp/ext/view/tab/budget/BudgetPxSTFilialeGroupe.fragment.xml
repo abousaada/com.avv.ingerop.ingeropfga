@@ -1,0 +1,216 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout"
+    xmlns:table="sap.ui.table"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:rm="sap.ui.table.rowmodes"
+>
+    <table:TreeTable
+        class="budgetSCExtTab"
+        id="BudgetPxSTFilialeGroupeTableId"
+        rows="{
+            path: 'utilities>/pxSubContractingHierarchy',
+            parameters: {
+                arrayNames: ['children'],
+                numberOfExpandedLevels: 3
+            }
+        }"
+        selectionMode="None"
+        ariaLabelledBy="title"
+        enableColumnReordering="false"
+        fixedColumnCount="1"
+        rowsUpdated="onRowsUpdatedBudgetPXSubCTab"
+    >
+        <!--<table:rowMode>
+            <rm:Auto minRowCount= "{localModel>/tableSettings/minRowCount}" />
+        </table:rowMode>-->
+        <table:extension>
+            <Toolbar class="sapMTBHeader-CTX">
+                <ToolbarSpacer />
+                <Button
+                    text="{i18n>btn.addSubContractor}"
+                    icon="sap-icon://add"
+                    press="onBtnAddSubContractorPress"
+                    type="Emphasized"
+                    visible="{ui>/editable}"
+                />
+            </Toolbar>
+        </table:extension>
+        <!-- <table:rowSettingsTemplate>
+            <table:RowSettings
+                highlight="{= ${budget>Status} === 'Non acquis' ? 'Error' : 'None'}"
+            />
+        </table:rowSettingsTemplate> -->
+        <table:columns>
+            <table:Column width="17rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.ext.missionHiearchie}" />
+                </table:multiLabels>
+                <table:template>
+                    <VBox>
+                        <Text text="{utilities>name}" />
+                    </VBox>
+                </table:template>
+            </table:Column>
+
+            <table:Column width="13rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.ext.missionCode}" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{utilities>code}" />
+                </table:template>
+            </table:Column>
+
+            <table:Column width="5rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.ext.missionLibelle}" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{utilities>libelle}" />
+                </table:template>
+            </table:Column>
+            <table:Column width="4rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.ext.missionStatus}" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{utilities>status}" />
+                </table:template>
+            </table:Column>
+            <table:Column
+                width="6rem"
+                headerSpan="2,2,2,2,1"
+                hAlign="End"
+            >
+                <table:multiLabels>
+                    <Label
+                        text="{i18n>budget.ext.supplierName}"
+                        class="STheaderLabel"
+                    />
+                    <Label
+                        text="{i18n>budget.ext.supplierCode}"
+                        class="STheaderLabel"
+                    />
+                    <Label
+                        text="{i18n>budget.ext.supplierType}"
+                        class="STheaderLabel"
+                    />
+                    <Label
+                        text="{i18n>budget.ext.supplierCoef}"
+                        class="STheaderLabel"
+                    />
+                    <Label text="{i18n>budget.ext.startDate}" />
+                </table:multiLabels>
+                <table:template>
+                    <HBox>
+                        <Text
+                            text="{
+                                path: 'utilities>startDate',
+                                type: 'sap.ui.model.type.Date',
+                                formatOptions: { 
+                                    style: 'short',
+                                    strictParsing: true
+                                }
+                            }"
+                        />
+                        <!-- visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}" -->
+                    </HBox>
+                </table:template>
+            </table:Column>
+            <table:Column
+                width="6rem"
+                headerSpan="2,2,2,2,1"
+            >
+                <table:multiLabels>
+                    <Label text="{i18n>budget.ext.supplierName}" />
+                    <Label text="{i18n>budget.ext.supplierCode}" />
+                    <Label text="{i18n>budget.ext.supplierType}" />
+                    <Label text="{i18n>budget.ext.supplierCoef}" />
+                    <Label text="{i18n>budget.ext.endDate}" />
+                </table:multiLabels>
+                <table:template>
+                    <HBox>
+                        <Text
+                            text="{
+                                path: 'utilities>endDate',
+                                type: 'sap.ui.model.type.Date',
+                                formatOptions: { 
+                                    style: 'short',
+                                    strictParsing: true
+                                }
+                            }"
+                        />
+                        <!-- visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}" -->
+                    </HBox>
+                </table:template>
+            </table:Column>
+
+            <table:Column width="7rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.ext.affaireHorsFrais}" />
+                </table:multiLabels>
+                <table:template>
+                    <Text
+                        text="{ 
+                            parts: [
+                                { path: 'utilities>budgetHorsFrais' },
+                                { path: 'utilities>isPercent' }
+                            ],
+                            formatter:'.Formatter.formatTotal' 
+                        }"
+                    />
+                </table:template>
+            </table:Column>
+            <table:Column width="7rem">
+                <table:multiLabels>
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="" />
+                    <Label text="{i18n>budget.ext.affaireYCFrais}" />
+                </table:multiLabels>
+                <table:template>
+                    <Text
+                        text="{ 
+                            parts: [
+                                { path: 'utilities>budgetYCFrais' },
+                                { path: 'utilities>isPercent' }
+                            ],
+                            formatter:'.Formatter.formatTotal' 
+                        }"
+                    />
+                </table:template>
+            </table:Column>
+        </table:columns>
+
+        <table:rowMode>
+            <rm:Interactive
+                rowCount="15"
+                minRowCount="5"
+                fixedBottomRowCount="4"
+            />
+        </table:rowMode>
+    </table:TreeTable>
+</core:FragmentDefinition>
