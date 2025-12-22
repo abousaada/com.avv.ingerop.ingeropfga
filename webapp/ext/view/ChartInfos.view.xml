@@ -13,7 +13,7 @@
         <VBox class="sapUiSmallMargin">
             <!-- First Table with Title -->
             <Title
-                text="Opportunités :"
+                text="Opportunités (total) :"
                 class="sapUiSmallMarginBottom"
                 level="H2"
             />
@@ -27,7 +27,7 @@
 
             <!-- Second Table with Title -->
             <Title
-                text="Risques :"
+                text="Risques (total) :"
                 class="sapUiSmallMarginBottom"
                 level="H2"
             />
