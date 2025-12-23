@@ -45,7 +45,7 @@ sap.ui.define(
                     if (oTreeTable) {
                         oTreeTable.setFixedColumnCount(99);
                     }
-                    
+
                 },
 
                 /**
@@ -663,6 +663,8 @@ sap.ui.define(
 
                     const oUtilitiesModel = this.getInterface().getModel("utilities");
                     const oContext = e.context;
+
+                    this._checkAffaireEmiseVisibility(oContext);
 
                     // Read the flag from the model + manage refresh
                     let aSelectedBusinessNos = [];
@@ -1910,6 +1912,36 @@ sap.ui.define(
                     console.error("Error resetting new mission flags:", error);
                 }
             },
+
+
+            _checkAffaireEmiseVisibility: function (oContext) {
+
+                if (!oContext) {
+                    return;
+                }
+
+                const oUtilitiesModel = this.getInterface().getModel("utilities");
+                const affaireType = oContext.getProperty("AffaireType");
+                const bVisible = (affaireType === "F" || affaireType === "P");
+
+                const view = this.getView();
+
+                const aSmartForms = view.findAggregatedObjects(true, function (oControl) {
+                    return oControl.isA("sap.ui.comp.smartform.SmartForm");
+                });
+
+                aSmartForms.forEach(function (oSmartForm) {
+
+                    oSmartForm.getGroups().forEach(function (oGroup) {
+
+                        // THIS is your FieldGroup
+                        if (oGroup.getId().includes("AffaireEmise")) {
+                            oGroup.setVisible(bVisible);
+                        }
+                    });
+                });
+            }
+
         });
 
     });
