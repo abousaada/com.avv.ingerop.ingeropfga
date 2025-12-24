@@ -1922,7 +1922,11 @@ sap.ui.define(
 
                 const oUtilitiesModel = this.getInterface().getModel("utilities");
                 const affaireType = oContext.getProperty("AffaireType");
-                const bVisible = (affaireType === "F" || affaireType === "P");
+                //const bVisible = (affaireType === "F" || affaireType === "P");
+
+                const bVisible = affaireType
+                    ? (affaireType === "F" || affaireType === "P")
+                    : false;
 
                 const view = this.getView();
 
