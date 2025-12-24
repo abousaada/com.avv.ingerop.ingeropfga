@@ -743,6 +743,15 @@ sap.ui.define([
                 mandatory: { type: [], default: false, create: true, modify: true },
                 action: null
             },
+            //AffaireEmise
+            business_e_N1: {
+                identifier: "AffaireEmise",
+                defaultValue: { create: null, modify: null },
+                visible: { create: false, modify: true },
+                enabled: { create: false, modify: false },
+                mandatory: { type: [], default: false, create: false, modify: false },
+                action: null
+            },
             business_cdp_N1: {
                 identifier: "AffaireEmise",
                 defaultValue: { create: null, modify: null },
