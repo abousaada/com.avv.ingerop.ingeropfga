@@ -486,7 +486,7 @@ sap.ui.define([
                             return newItem;
                         });
                     }
-                    
+
                     const createdFGA = await this.create("/ZC_FGASet", dataToSend);
                     console.log(createdFGA);
                     return createdFGA;
@@ -703,7 +703,14 @@ sap.ui.define([
                     const sPath = `/ZC_FGA_RISQUE(p_businessno='${urlBusinessNo}',p_period='${urlPeriod}')/Set`;
                     console.log(`retrieve risque with period: ${period} and BusinessNo: ${businessNo}`);
                     const risque = await this.read(sPath);
-                    return risque?.results || [];
+                    //return risque?.results || [];
+
+                    // Sort the results by sort_order ascending
+                    const sortedResults = (risque?.results || []).sort((a, b) => {
+                        return a.sort_order - b.sort_order;
+                    });
+
+                    return sortedResults;
                 } catch (error) {
                     console.log(error);
                 }
