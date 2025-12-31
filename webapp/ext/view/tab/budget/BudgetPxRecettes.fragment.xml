@@ -200,7 +200,7 @@
                                     decimalSeparator: ',' 
                                 }
                             }"
-                            visible="{= !${ui>/editable} &amp;&amp; ( !!${utilities>isBudget} || !!${utilities>isTotal} ) }"
+                            visible="{= !${ui>/editable} &amp;&amp; !!${utilities>isBudget} || !!${utilities>isTotal} }"
                         />
 
                         <Input  
@@ -214,7 +214,7 @@
                                     decimalSeparator: ',' 
                                 }
                             }" 
-                            visible="{= ${ui>/editable} &amp;&amp; ( !!${utilities>isBudget} || !!${utilities>isTotal} ) }"
+                            visible="{= ${ui>/editable} &amp;&amp; ( !!${utilities>isBudget} ) }"
                             change="onChangeRecetteExtMontant"
                         />
 
@@ -239,7 +239,7 @@
                                 decimalSeparator: ',' 
                             }
                         }"
-                        visible="{= !${ui>/editable} &amp;&amp; ( !!${utilities>isBudget} || !!${utilities>isTotal} ) }"
+                        visible="{= ( !${ui>/editable} &amp;&amp; ( !!${utilities>isBudget} ) ) || !!${utilities>isTotal} }"
                         />
 
                         <Input  
@@ -253,7 +253,7 @@
                                     decimalSeparator: ',' 
                                 }
                             }" 
-                            visible="{= ${ui>/editable} &amp;&amp; ( !!${utilities>isBudget} || !!${utilities>isTotal} ) }"
+                            visible="{= ${ui>/editable} &amp;&amp; ( !!${utilities>isBudget} ) }"
                             change="onChangeRecetteExtMontant"
                         />
                     </HBox>
@@ -277,7 +277,7 @@
                                 decimalSeparator: ',' 
                             }
                         }"
-                        visible="{= !${ui>/editable} &amp;&amp; ( !!${utilities>isBudget} || !!${utilities>isTotal} ) }"
+                        visible="{= (!${ui>/editable} &amp;&amp; !!${utilities>isBudget} ) || !!${utilities>isTotal} }"
                         />
 
                         <Input  
@@ -291,7 +291,7 @@
                                     decimalSeparator: ',' 
                                 }
                             }" 
-                            visible="{= ${ui>/editable} &amp;&amp; ( !!${utilities>isBudget} || !!${utilities>isTotal} ) }"
+                            visible="{= ${ui>/editable} &amp;&amp; !!${utilities>isBudget} }"
                             change="onChangeRecetteExtMontant"
                         />
                     </HBox>

@@ -9,6 +9,7 @@ sap.ui.define([
         _CONSTANT_DYNAMIC_PREFIX: "SC_",
         _CONSTANT_COLUMN_ID: "columnId",
         _CONSTANT_EXT_CONTRACTOR_TABLE_ID: "com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--budgets--BudgetPxSubContractingTreeTableId",
+        _CONSTANT_STF_TABLE_ID           : "com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--budgets--BudgetPxSTFilialeGroupeTableId",
         _CONSTANT_SUBCONTRACTOR_ID: "subContractorId",
         _CONSTANT_SUBCONTRACTOR_PARTNER: "subContractorPartner",
 
@@ -18,19 +19,19 @@ sap.ui.define([
 
         preparePxSubContractingTreeData() {
             this.getUtilitiesModel().buildPxSubContractingTreeData();
-            this.buildPxSubContractingTree();
+            this.buildPxSTExtTree();
         },
 
-        buildPxSubContractingTree() {
-            this.refreshTableColumns();
+        buildPxSTExtTree() {
+            this.refreshExternalTableColumns();
         },
 
-        refreshTableColumns() {
-            this.removeDynamicColumns();
-            this.addDynamicColumns();
+        refreshExternalTableColumns() {
+            this.removeExternalDynamicColumns();
+            this.addExternalDynamicColumns();
         },
 
-        removeDynamicColumns() {
+        removeExternalDynamicColumns() {
             const SubContractingTree = this.oView.byId(this._CONSTANT_EXT_CONTRACTOR_TABLE_ID);
             var aColumns = SubContractingTree.getColumns();
             for (var i = aColumns.length - 1; i >= 0; i--) {
@@ -40,82 +41,82 @@ sap.ui.define([
             }
         },
 
-        onContractorBudgetChange(oEvent) {
+        onExternalBudgetChange(oEvent) {
             try {
                 const { columnId } = oEvent.getSource().data();
-                this.reCalcColumnTotalById(columnId);
+                this.reCalcExternalColumnTotalById(columnId);
             } catch (error) {
                 console.log(error);
             }
         },
 
-        reCalcRowTotal(source) {
-            const binding = source.getBindingContext("utilities");
-            const bindingObject = binding.getObject();
-            const newRow = this.calcNewTotalFinAffaire(bindingObject);
-            const sPath = binding.getPath();
-            const utilitiesModel = this.getUtilitiesModel();
-            utilitiesModel.setProperty(sPath, { ...newRow });
+        onFilialeBudgetChange(oEvent) {
+            try {
+                const { columnId } = oEvent.getSource().data();
+                this.reCalcFilialeColumnTotalById(columnId);
+            } catch (error) {
+                console.log(error);
+            }
         },
 
-        reCalcColumnTotalById(columnId) {
-            // const columnId = this._CONSTANT_DYNAMIC_PREFIX + subContractorId;
-            const [root] = this.getUtilitiesModel().getPxSubContractingHierarchy();
-            const groupement = root.children.slice(0, -4);
-            const globalTotal = root.children.at(-4);
-            let cumulTotal = root.children.at(-3);
-            const percentTotal = root.children.at(-2);
-            const radTotal = root.children.at(-1);
+        // reCalcRowTotal(source) {
+        //     const binding = source.getBindingContext("utilities");
+        //     const bindingObject = binding.getObject();
+        //     const newRow = this.calcNewTotalFinAffaire(bindingObject);
+        //     const sPath = binding.getPath();
+        //     const utilitiesModel = this.getUtilitiesModel();
+        //     utilitiesModel.setProperty(sPath, { ...newRow });
+        // },
 
-            globalTotal[columnId] = 0;
-            globalTotal["budgetHorsFrais"] = 0;
-            globalTotal["budgetYCFrais"] = 0;
+        reCalcExternalColumnTotalById(columnId) {
+
+            const [root]        = this.getUtilitiesModel().getPxSubContractingHierarchy();
+            const groupement    = root.children.slice(0, -4);
+            const globalTotal   = root.children.at(-4);
+            let cumulTotal      = root.children.at(-3);
+            const percentTotal  = root.children.at(-2);
+            const radTotal      = root.children.at(-1);
+
+            const props = [columnId, "budgetHorsFrais", "budgetYCFrais"];
+
+            props.forEach(prop => { globalTotal[prop] = 0 });
 
             // 1. Recalculer chaque total de groupement
             for (const group of groupement) {
                 if (!group.isGroupe || !Array.isArray(group.children)) continue;
 
-                const oldBudgets = group.children.slice(0, -1);
-                const newBudgets = oldBudgets.map(budget => this.calcNewTotalFinAffaire(budget));
-                const totalLine = group.children.at(-1);
+                const oldBudgets    = group.children.slice(0, -1);
+                const newBudgets    = oldBudgets.map(budget => this.calcNewExternalTotalFinAffaire(budget));
+                const totalLine     = group.children.at(-1);
                 if (!totalLine) continue;
 
                 // Réinitialisation ciblée
-                totalLine[columnId] = 0;
-                totalLine["budgetHorsFrais"] = 0;
-                totalLine["budgetYCFrais"] = 0;
+                props.forEach(prop => { totalLine[prop] = 0 });
 
                 for (const child of newBudgets) {
-                    totalLine[columnId] += child[columnId] || 0;
-                    totalLine["budgetHorsFrais"] += child["budgetHorsFrais"] || 0;
-                    totalLine["budgetYCFrais"] += child["budgetYCFrais"] || 0;
 
-                    globalTotal[columnId] += child[columnId] || 0;
-                    globalTotal["budgetHorsFrais"] += child["budgetHorsFrais"] || 0;
-                    globalTotal["budgetYCFrais"] += child["budgetYCFrais"] || 0;
+                    props.forEach(prop => { 
+                        totalLine[prop]     += child[prop] || 0;
+                        globalTotal[prop]   += child[prop] || 0;
+                    });
+
                 }
                 group.children = [...newBudgets, totalLine];
             }
 
-            // cumulTotal[columnId]            = globalTotal[columnId] * 0.1;
-            // cumulTotal["budgetHorsFrais"]   = globalTotal["budgetHorsFrais"] * 0.1;
-            // cumulTotal["budgetYCFrais"]     = globalTotal["budgetYCFrais"] * 0.1;
-            cumulTotal = this.calcNewTotalFinAffaire(cumulTotal);
+            cumulTotal = this.calcNewExternalTotalFinAffaire(cumulTotal);
 
-            percentTotal[columnId] = globalTotal[columnId] > 0 ? (cumulTotal[columnId] / globalTotal[columnId]) : 0;
-            percentTotal["budgetHorsFrais"] = globalTotal["budgetHorsFrais"] > 0 ? (cumulTotal["budgetHorsFrais"] / globalTotal["budgetHorsFrais"]) : 0;
-            percentTotal["budgetYCFrais"] = globalTotal["budgetYCFrais"] > 0 ? (cumulTotal["budgetYCFrais"] / globalTotal["budgetYCFrais"]) : 0;
-
-            radTotal[columnId] = globalTotal[columnId] - cumulTotal[columnId];
-            radTotal["budgetHorsFrais"] = globalTotal["budgetHorsFrais"] - cumulTotal["budgetHorsFrais"];
-            radTotal["budgetYCFrais"] = globalTotal["budgetYCFrais"] - cumulTotal["budgetYCFrais"];
+            props.forEach(prop => { 
+                percentTotal[prop]  = (globalTotal[prop]??0) > 0 ? ((cumulTotal[prop]??0) / globalTotal[prop]) : 0;
+                radTotal[prop]      = (globalTotal[prop]??0) - (cumulTotal[prop]??0);
+            });
 
             root.children = [...groupement, globalTotal, cumulTotal, percentTotal, radTotal];
 
             this.getUtilitiesModel().setPxSubContractingHierarchy([root]);
         },
 
-        calcNewTotalFinAffaire(rowData) {
+        calcNewExternalTotalFinAffaire(rowData) {
             const columnHeaders = this.getUtilitiesModel().getPxSubContractingHeader();
 
             const coefByColumnId = columnHeaders.reduce((map, header) => {
@@ -129,24 +130,14 @@ sap.ui.define([
                     const coef = coefByColumnId[key] ?? 1;
 
                     return {
-                        budgetHorsFrais: som.budgetHorsFrais + value,
-                        budgetYCFrais: som.budgetYCFrais + value * coef
+                        budgetHorsFrais : som.budgetHorsFrais + value,
+                        budgetYCFrais   : som.budgetYCFrais + value * coef
                     };
                 },
                 { budgetHorsFrais: 0, budgetYCFrais: 0 }
             );
 
             return { ...rowData, budgetHorsFrais, budgetYCFrais }
-        },
-
-        addDynamicColumns() {
-            const SubContractingTree = this.oView.byId(this._CONSTANT_EXT_CONTRACTOR_TABLE_ID);
-            const aDynamicColumns = this.getUtilitiesModel().getPxSubContractingHeader();
-
-            aDynamicColumns.forEach((oColData, idx) => {
-                var oColumn = this._createColumn(oColData.columnId, oColData);
-                SubContractingTree.insertColumn(oColumn, 6 + idx);
-            });
         },
 
         isFiliale(subContractorPartner) {
@@ -295,21 +286,6 @@ sap.ui.define([
             return regex.test(normalized);
         },
 
-        onCoefChange(oEvent) {
-            const newValue = oEvent.getParameter("newValue");
-            if (this.isFloat(newValue)) {
-                const subContractorCoef = Number.parseFloat(newValue);
-                const columnHeader = this.getUtilitiesModel().getPxSubContractingHeader();
-                const { columnId } = oEvent.getSource().data();
-                const newHeader = columnHeader.map(h => {
-                    if (h.columnId === columnId) { return { ...h, subContractorCoef }; }
-                    return h;
-                });
-                this.getUtilitiesModel().setPxSubContractingHeader(newHeader);
-                this.reCalcColumnTotalById(columnId);
-            }
-        },
-
         async onChangeSubContractor(oEvent) {
             try {
                 const { columnId } = oEvent.getSource().data()
@@ -323,79 +299,52 @@ sap.ui.define([
             }
         },
 
-        _createColumn: function (sColumnId, { subContractorName, subContractorId, subContractorCoef, subContractorPartner, columnId }) {
-            return new sap.ui.table.Column({
-                multiLabels: [
-                    new sap.m.Label({ text: subContractorName }),
-                    new sap.m.HBox({
-                        items: [
-                            new sap.m.Text({
-                                text: subContractorId,
-                                visible: "{= !${ui>/editable} }",
-                            }),
-                            new sap.m.Input({
-                                value: subContractorId,
-                                showValueHelp: true,
-                                valueHelpOnly: true,
-                                visible: "{ui>/editable}",
-                                valueHelpRequest: this.onChangeSubContractor.bind(this)
-                            })
-                        ]
-                    }),
-                    new sap.m.Label({ text: this.isFiliale(subContractorPartner) }),
-                    new sap.m.HBox({
-                        items: [
-                            new sap.m.Text({
-                                text: subContractorCoef,
-                                visible: "{= !${ui>/editable} }",
-                            }),
-                            new sap.m.Input({
-                                value: subContractorCoef,
-                                visible: "{ui>/editable}",
-                                change: this.onCoefChange.bind(this)
-                            }).data(this._CONSTANT_COLUMN_ID, sColumnId)
-                        ]
-                    }),
-                    new sap.m.Label({ text: "{i18n>budget.ext.budget}" })
-                ],
-                template: new sap.m.HBox({
-                    items: [
-                        new sap.m.Text({
-                            text: {
-                                parts: [
-                                    { path: "utilities>" + columnId },
-                                    { path: "utilities>isPercent" }
-                                ],
-                                formatter: function (total, percent) {
-                                    return percent ? total + "%" : total;
-                                }
-                            },
-                            visible: "{= !!${utilities>isTotal} && !${utilities>isCumul} }"
-                        }),
-                        new sap.m.Input({
-                            value: {
-                                path: "utilities>" + columnId,
-                                type: new sap.ui.model.type.Float({ minFractionDigits: 2 })
-                            },
-                            editable: "{= ${ui>/editable} && ${utilities>isBudget} }",
-                            visible: "{= !!${utilities>isBudget} }",
-                            change: this.onContractorBudgetChange.bind(this)
-                        }).data(this._CONSTANT_COLUMN_ID, sColumnId),
-                        new sap.m.Link({
-                            visible: "{= !!${utilities>isTotal} && !!${utilities>isCumul} }",
-                            press: this.navToGLAccount.bind(this),
-                            text: {
-                                path: "utilities>" + columnId,
-                                type: new sap.ui.model.type.Float({ minFractionDigits: 2 })
-                            }
-                        }).data(this._CONSTANT_COLUMN_ID, subContractorId)
-                    ]
-                }),
-                width: "8rem"
-            }).data(this._CONSTANT_COLUMN_ID, sColumnId);
+        changeColumnContractorBydId(supplierData, columnId) {
+            const oldPxSubContractingHeader = this.getUtilitiesModel().getPxSubContractingHeader();
+            const filterSubContractingHeader = oldPxSubContractingHeader.filter(contractor => contractor.columnId != columnId);
+            this.getUtilitiesModel().setPxSubContractingHeader([...filterSubContractingHeader, supplierData]);
+
+            const SubContractingTree = this.oView.byId(this._CONSTANT_EXT_CONTRACTOR_TABLE_ID);
+            const [selectedColumn] = SubContractingTree.getColumns().filter(column => column.data.columnId === columnId);
+            if (selectedColumn) {
+                selectedColumn.data("columnId", supplierData.columnId);
+            }
+            this.reCalcColumnTotalById(columnId);
         },
 
-        async getNewContractorId() {
+        //External Supplier
+
+        //call from Object Page
+        async addNewExternal() {
+            try {
+                const newContractor = await this.getExternalId();
+                const newSupplierData = await this.getUtilitiesModel()
+                                                  .getBESupplierById({ SupplierNo : newContractor, isFiliale: false });
+                this.addNewExternalById(newSupplierData);
+                return;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+
+        onExternalCoefChange(oEvent) {
+            const newValue = oEvent.getParameter("newValue");
+            if (this.isFloat(newValue)) {
+                const subContractorCoef = Number.parseFloat(newValue);
+                const columnHeader = this.getUtilitiesModel().getPxSubContractingHeader();
+                const { columnId } = oEvent.getSource().data();
+                const newHeader = columnHeader.map(h => {
+                    if (h.columnId === columnId) { return { ...h, subContractorCoef }; }
+                    return h;
+                });
+                this.getUtilitiesModel().setPxSubContractingHeader(newHeader);
+                this.reCalcExternalColumnTotalById(columnId);
+            }
+        },
+
+        // get External Id from Value help
+        async getExternalId() {
             return new Promise((resolve, reject) => {
                 // ValueHelpDialog
                 var oVHD = new sap.ui.comp.valuehelpdialog.ValueHelpDialog({
@@ -428,19 +377,21 @@ sap.ui.define([
                 );
                 // Binding sur I_SUPPLIER_VH (la ValueHelp CDS)
                 oVHD.getTable().setModel(this.oView.getModel());
-                oVHD.getTable().bindRows("/I_Supplier_VH");
+                oVHD.getTable().bindRows("/ZI_External_Supplier_VH");
                 oVHD.open();
             });
         },
 
-        _addNewSupplierToHeader(newSupplier) {
+        // insert external supplier into external supplier header
+        _addNewExternalToHeader(newSupplier) {
             const { columnId } = newSupplier;
             const oldPxSubContractingHeader = this.getUtilitiesModel().getPxSubContractingHeader();
             const filterSubContractingHeader = oldPxSubContractingHeader.filter(contractor => contractor.columnId != columnId);
             this.getUtilitiesModel().setPxSubContractingHeader([...filterSubContractingHeader, newSupplier]);
         },
 
-        addNewContractorById(supplierData) {
+        // add new external id into external headers & build new column
+        addNewExternalById(supplierData) {
             const { subContractorId } = supplierData;
 
             const SubContractingTree = this.oView.byId(this._CONSTANT_EXT_CONTRACTOR_TABLE_ID);
@@ -449,34 +400,282 @@ sap.ui.define([
             const columnId = `${this._CONSTANT_DYNAMIC_PREFIX}${subContractorId}`;
             const newSupplierData = { ...supplierData, columnId };
 
-            this._addNewSupplierToHeader(newSupplierData);
-            const oColumn = this._createColumn(columnId, newSupplierData);
+            this._addNewExternalToHeader(newSupplierData);
+            const oColumn = this._createExternalColumn(columnId, newSupplierData);
             SubContractingTree.insertColumn(oColumn, aColumns.length - 2);
         },
 
-        changeColumnContractorBydId(supplierData, columnId) {
-            const oldPxSubContractingHeader = this.getUtilitiesModel().getPxSubContractingHeader();
-            const filterSubContractingHeader = oldPxSubContractingHeader.filter(contractor => contractor.columnId != columnId);
-            this.getUtilitiesModel().setPxSubContractingHeader([...filterSubContractingHeader, supplierData]);
+        _createExternalColumn: function (sColumnId, { subContractorName, subContractorId, subContractorCoef, subContractorPartner, columnId }) {
+            return new sap.ui.table.Column({
+                multiLabels: [
+                    new sap.m.Label({ text: subContractorName }),
+                    new sap.m.HBox({
+                        items: [
+                            new sap.m.Text({
+                                text: subContractorId,
+                                visible: "{= !${ui>/editable} }",
+                            }),
+                            new sap.m.Input({
+                                value: subContractorId,
+                                showValueHelp: true,
+                                valueHelpOnly: true,
+                                visible: "{ui>/editable}",
+                                valueHelpRequest: this.onChangeSubContractor.bind(this)
+                            })
+                        ]
+                    }),
+                    new sap.m.Label({ text: "{i18n>budget.ext.external}" }),
+                    new sap.m.HBox({
+                        items: [
+                            new sap.m.Text({
+                                text: subContractorCoef,
+                                visible: "{= !${ui>/editable} }",
+                            }),
+                            new sap.m.Input({
+                                value: subContractorCoef,
+                                visible: "{ui>/editable}",
+                                change: this.onExternalCoefChange.bind(this)
+                            }).data(this._CONSTANT_COLUMN_ID, sColumnId)
+                        ]
+                    }),
+                    new sap.m.Label({ text: "{i18n>budget.ext.budget}" })
+                ],
+                template: new sap.m.HBox({
+                    items: [
+                        new sap.m.Text({
+                            text: {
+                                parts: [
+                                    { path: "utilities>" + columnId },
+                                    { path: "utilities>isPercent" }
+                                ],
+                                formatter: function (total=0, percent) {
 
-            const SubContractingTree = this.oView.byId(this._CONSTANT_EXT_CONTRACTOR_TABLE_ID);
-            const [selectedColumn] = SubContractingTree.getColumns().filter(column => column.data.columnId === columnId);
-            if (selectedColumn) {
-                selectedColumn.data("columnId", supplierData.columnId);
-            }
-            this.reCalcColumnTotalById(columnId);
+                                    const formatInstance = sap.ui.core.format.NumberFormat.getFloatInstance({
+                                        groupingEnabled: true,
+                                        minFractionDigits: 2,
+                                        maxFractionDigits: 2,
+                                    });
+
+                                    const formattedTotal = formatInstance.format(total);
+
+                                    return percent ? formattedTotal + "%" : formattedTotal;
+                                }
+                            },
+                            visible: "{= !!${utilities>isTotal} && !${utilities>isCumul} }"
+                        }),
+                        new sap.m.Input({
+                            value: {
+                                path: "utilities>" + columnId,
+                                type: new sap.ui.model.type.Float({ minFractionDigits: 2 })
+                            },
+                            editable: "{= ${ui>/editable} && ${utilities>isBudget} }",
+                            visible: "{= !!${utilities>isBudget} }",
+                            change: this.onExternalBudgetChange.bind(this)
+                        }).data(this._CONSTANT_COLUMN_ID, sColumnId),
+                        new sap.m.Link({
+                            visible: "{= !!${utilities>isTotal} && !!${utilities>isCumul} }",
+                            press: this.navToGLAccount.bind(this),
+                            text: {
+                                path: "utilities>" + columnId,
+                                type: new sap.ui.model.type.Float({ minFractionDigits: 2 })
+                            }
+                        }).data(this._CONSTANT_COLUMN_ID, subContractorId)
+                    ]
+                }),
+                width: "8rem"
+            }).data(this._CONSTANT_COLUMN_ID, sColumnId);
         },
 
-        async addNewContractor() {
+        addExternalDynamicColumns() {
+            const SubContractingTree = this.oView.byId(this._CONSTANT_EXT_CONTRACTOR_TABLE_ID);
+            const aDynamicColumns = this.getUtilitiesModel().getPxSubContractingHeader();
+
+            aDynamicColumns.forEach((oColData, idx) => {
+                var oColumn = this._createExternalColumn(oColData.columnId, oColData);
+                SubContractingTree.insertColumn(oColumn, 6 + idx);
+            });
+        },
+
+        //Filiale Functions
+
+        //call from Object Page
+        async addNewFiliale() {
             try {
-                const newContractor = await this.getNewContractorId();
-                const newSupplierData = await this.getUtilitiesModel().getBESupplierById(newContractor);
-                this.addNewContractorById(newSupplierData);
+                const newContractor = await this.getFilialeId();
+                const newSupplierData = await this.getUtilitiesModel()
+                                                  .getBESupplierById({ SupplierNo : newContractor, isFiliale: true }); 
+                this.addNewFilialeById(newSupplierData);
                 return;
             } catch (error) {
                 console.log(error);
             }
-        }
+        },
+
+        //get Filiale with Value Help
+        async getFilialeId() {
+            return new Promise((resolve, reject) => {
+                // ValueHelpDialog
+                var oVHD = new sap.ui.comp.valuehelpdialog.ValueHelpDialog({
+                    supportMultiselect: false,
+                    key: "Supplier",
+                    descriptionKey: "SupplierName",
+                    title: "Select a Supplier",
+                    ok: function (oEvt) {
+                        var aTokens = oEvt.getParameter("tokens");
+                        if (aTokens.length) { resolve(aTokens[0].getKey()); }
+                        oVHD.close();
+                    }.bind(this),
+                    cancel: function () {
+                        reject();
+                        oVHD.close();
+                    }
+                });
+
+                // Table interne
+                const tableBinding = [
+                    { label: "ID", template: "Supplier" },
+                    { label: "Name", template: "SupplierName" }
+                ];
+
+                tableBinding.map(({ label, template }) =>
+                    oVHD.getTable().addColumn(new sap.ui.table.Column({
+                        label: new sap.m.Label({ text: label }),
+                        template: new sap.m.Text({ text: `{${template}}` })
+                    }))
+                );
+                // Binding sur I_SUPPLIER_VH (la ValueHelp CDS)
+                oVHD.getTable().setModel(this.oView.getModel());
+                oVHD.getTable().bindRows("/ZI_Filiale_Supplier_VH");
+                oVHD.open();
+            });
+        },
+
+        // insert new filiale into the array of filiale & build the new filiale column
+        addNewFilialeById(supplierData) {
+            const { subContractorId } = supplierData;
+
+            const SubContractingTree = this.oView.byId(this._CONSTANT_STF_TABLE_ID);
+            const aColumns = SubContractingTree.getColumns();
+
+            const columnId = `${this._CONSTANT_DYNAMIC_PREFIX}${subContractorId}`;
+            const newSupplierData = { ...supplierData, columnId };
+
+            this._addNewFilialeToHeader(newSupplierData);
+            const oColumn = this._createFilialeColumn(columnId, newSupplierData);
+            SubContractingTree.insertColumn(oColumn, aColumns.length - 2);
+        },
+
+        // insert filiale in array of filiale
+        _addNewFilialeToHeader(newSupplier) {
+            const { columnId } = newSupplier;
+            const oldPxSubContractingHeader = this.getUtilitiesModel().getPxSTFHeader();
+            const filterSubContractingHeader = oldPxSubContractingHeader.filter(contractor => contractor.columnId != columnId);
+            this.getUtilitiesModel().setPxSTFHeader([...filterSubContractingHeader, newSupplier]);
+        },
+
+        onFilialeCoefChange(oEvent) {
+            const newValue = oEvent.getParameter("newValue");
+            if (this.isFloat(newValue)) {
+                const subContractorCoef = Number.parseFloat(newValue);
+                const columnHeader = this.getUtilitiesModel().getPxSTFHeader();
+                const { columnId } = oEvent.getSource().data();
+                const newHeader = columnHeader.map(h => {
+                    if (h.columnId === columnId) { return { ...h, subContractorCoef }; }
+                    return h;
+                });
+                this.getUtilitiesModel().setPxSTFHeader(newHeader);
+                this.reCalcColumnTotalById(columnId);
+            }
+        },
+
+        _createFilialeColumn: function (sColumnId, { subContractorName, subContractorId, subContractorCoef, subContractorPartner, columnId }) {
+            return new sap.ui.table.Column({
+                multiLabels: [
+                    new sap.m.Label({ text: subContractorName }),
+                    new sap.m.HBox({
+                        items: [
+                            new sap.m.Text({
+                                text: subContractorId,
+                                visible: "{= !${ui>/editable} }",
+                            }),
+                            new sap.m.Input({
+                                value: subContractorId,
+                                showValueHelp: true,
+                                valueHelpOnly: true,
+                                visible: "{ui>/editable}",
+                                valueHelpRequest: this.onChangeSubContractor.bind(this)
+                            })
+                        ]
+                    }),
+                    new sap.m.Label({ text: this.isFiliale(subContractorPartner) }),
+                    new sap.m.HBox({
+                        items: [
+                            new sap.m.Text({
+                                text: subContractorCoef,
+                                visible: "{= !${ui>/editable} }",
+                            }),
+                            new sap.m.Input({
+                                value: subContractorCoef,
+                                visible: "{ui>/editable}",
+                                change: this.onFilialeCoefChange.bind(this)
+                            }).data(this._CONSTANT_COLUMN_ID, sColumnId)
+                        ]
+                    }),
+                    new sap.m.Label({ text: "{i18n>budget.ext.budget}" })
+                ],
+                template: new sap.m.HBox({
+                    items: [
+                        new sap.m.Text({
+                            text: {
+                                parts: [
+                                    { path: "utilities>" + columnId },
+                                    { path: "utilities>isPercent" }
+                                ],
+                                formatter: function (total=0, percent) {
+                                    const formatInstance = sap.ui.core.format.NumberFormat.getFloatInstance({
+                                        groupingEnabled: true,
+                                        minFractionDigits: 2,
+                                        maxFractionDigits: 2,
+                                    });
+
+                                    const formattedTotal = formatInstance.format(total);
+                                    return percent ? formattedTotal + "%" : formattedTotal;
+                                }
+                            },
+                            visible: "{= !!${utilities>isTotal} && !${utilities>isCumul} }"
+                        }),
+                        new sap.m.Input({
+                            value: {
+                                path: "utilities>" + columnId,
+                                type: new sap.ui.model.type.Float({ minFractionDigits: 2 })
+                            },
+                            editable: "{= ${ui>/editable} && ${utilities>isBudget} }",
+                            visible: "{= !!${utilities>isBudget} }",
+                            change: this.onFilialeBudgetChange.bind(this)
+                        }).data(this._CONSTANT_COLUMN_ID, sColumnId),
+                        new sap.m.Link({
+                            visible: "{= !!${utilities>isTotal} && !!${utilities>isCumul} }",
+                            press: this.navToGLAccount.bind(this),
+                            text: {
+                                path: "utilities>" + columnId,
+                                type: new sap.ui.model.type.Float({ minFractionDigits: 2 })
+                            }
+                        }).data(this._CONSTANT_COLUMN_ID, subContractorId)
+                    ]
+                }),
+                width: "8rem"
+            }).data(this._CONSTANT_COLUMN_ID, sColumnId);
+        },
+
+        addFilialeDynamicColumns() {
+            const SubContractingTree = this.oView.byId(this._CONSTANT_STF_TABLE_ID);
+            const aDynamicColumns = this.getUtilitiesModel().getPxSTFHeader();
+
+            aDynamicColumns.forEach((oColData, idx) => {
+                var oColumn = this._createFilialeColumn(oColData.columnId, oColData);
+                SubContractingTree.insertColumn(oColumn, 6 + idx);
+            });
+        },
     });
 });
 

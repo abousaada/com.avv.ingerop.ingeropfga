@@ -927,14 +927,33 @@ sap.ui.define(
                 this._budgetPxSubContracting.preparePxSubContractingTreeData();
             },
 
-            onBtnAddSubContractorPress: function (oEvent) {
+            // onBtnAddSubContractorPress: function (oEvent) {
+            //     if (!this._budgetPxSubContracting) {
+            //         this._budgetPxSubContracting = new BudgetPxSubContracting();
+            //         this._budgetPxSubContracting.oView = this.oView;
+            //     }
+
+            //     this._budgetPxSubContracting.addNewContractor();
+            // },
+
+            onBtnAddExternalPress: function (oEvent) {
                 if (!this._budgetPxSubContracting) {
                     this._budgetPxSubContracting = new BudgetPxSubContracting();
                     this._budgetPxSubContracting.oView = this.oView;
                 }
 
-                this._budgetPxSubContracting.addNewContractor();
+                this._budgetPxSubContracting.addNewExternal();
             },
+
+            onBtnAddFilialePress: function (oEvent) {
+                if (!this._budgetPxSubContracting) {
+                    this._budgetPxSubContracting = new BudgetPxSubContracting();
+                    this._budgetPxSubContracting.oView = this.oView;
+                }
+
+                this._budgetPxSubContracting.addNewFiliale();
+            },
+
 
             // ===========================================================
             // Handle Budget Px TAB - Budget Px Recette Externe Section
@@ -968,13 +987,13 @@ sap.ui.define(
                 this._budgetMainOeuvre.reCalcMainOeuvreTable();
             },
 
-            onBtnAddMOProfilPress: function (oEvent) {
+            onBtnManageMOProfilPress: function (oEvent) {
                 if (!this._budgetMainOeuvre) {
                     this._budgetMainOeuvre = new BudgetPxMainOeuvre();
                     this._budgetMainOeuvre.oView = this.oView;
                 }
 
-                this._budgetMainOeuvre.addNewMOProfil();
+                this._budgetMainOeuvre.manageNewMOProfil(oEvent);
             },
 
             preparePxMainOeuvreTreeData: function () {

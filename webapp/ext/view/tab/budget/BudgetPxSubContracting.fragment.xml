@@ -31,7 +31,7 @@
                 <Button
                     text="{i18n>btn.addSubContractor}"
                     icon="sap-icon://add"
-                    press="onBtnAddSubContractorPress"
+                    press="onBtnAddExternalPress"
                     type="Emphasized"
                     visible="{ui>/editable}"
                 />
