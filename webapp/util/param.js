@@ -266,12 +266,21 @@ sap.ui.define([
                 identifier: "Qualite",
                 visible: false,
             },
+            // "BudgetObjectif"
             Recettes: {
                 identifier: "BudgetObjectif",
                 visible: false,
             },
-            // "BudgetObjectif"
             Depenses: {
+                identifier: "BudgetObjectif",
+                visible: false,
+            },
+            //AffaireEmise
+            business_e_N1: {
+                identifier: "BudgetObjectif",
+                visible: false,
+            },
+            business_cdp_N1: {
                 identifier: "BudgetObjectif",
                 visible: false,
             },
@@ -734,6 +743,24 @@ sap.ui.define([
                 mandatory: { type: [], default: false, create: true, modify: true },
                 action: null
             },
+            //AffaireEmise
+            business_e_N1: {
+                identifier: "AffaireEmise",
+                defaultValue: { create: null, modify: null },
+                visible: { create: false, modify: true },
+                enabled: { create: false, modify: false },
+                mandatory: { type: [], default: false, create: false, modify: false },
+                action: null
+            },
+            business_cdp_N1: {
+                identifier: "AffaireEmise",
+                defaultValue: { create: null, modify: null },
+                visible: { create: false, modify: true },
+                enabled: { create: false, modify: false },
+                mandatory: { type: [], default: false, create: false, modify: false },
+                action: null
+            },
+
         },
         //All Section except header fields Section
         headerSectionList: {

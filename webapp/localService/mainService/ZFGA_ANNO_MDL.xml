@@ -212,12 +212,12 @@
                             <PropertyValue Property="Target" AnnotationPath="@UI.DataPoint#BusinessNo"/>
                         </Record>
                         <Record Type="UI.CollectionFacet">
-                            <PropertyValue Property="Label" String="Informations générales"/>
+                            <PropertyValue Property="Label" String="General Informations"/>
                             <PropertyValue Property="ID" String="GeneralInfo"/>
                             <PropertyValue Property="Facets">
                                 <Collection>
                                     <Record Type="UI.ReferenceFacet">
-                                        <PropertyValue Property="Label" String="Général"/>
+                                        <PropertyValue Property="Label" String="General"/>
                                         <PropertyValue Property="Target" AnnotationPath="@UI.Identification"/>
                                     </Record>
                                     <Record Type="UI.ReferenceFacet">
@@ -229,19 +229,19 @@
                                         <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Facturation"/>
                                     </Record>
                                     <Record Type="UI.ReferenceFacet">
-                                        <PropertyValue Property="Label" String="Client"/>
+                                        <PropertyValue Property="Label" String="Customer"/>
                                         <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Client"/>
                                     </Record>
                                     <Record Type="UI.ReferenceFacet">
-                                        <PropertyValue Property="Label" String="Garantie"/>
+                                        <PropertyValue Property="Label" String="Garanty"/>
                                         <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Garantie"/>
                                     </Record>
                                     <Record Type="UI.ReferenceFacet">
-                                        <PropertyValue Property="Label" String="Contrat"/>
+                                        <PropertyValue Property="Label" String="Contract"/>
                                         <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Contrat"/>
                                     </Record>
                                     <Record Type="UI.ReferenceFacet">
-                                        <PropertyValue Property="Label" String="Prix"/>
+                                        <PropertyValue Property="Label" String="Price"/>
                                         <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Prix"/>
                                     </Record>
                                     <Record Type="UI.ReferenceFacet">
@@ -253,16 +253,20 @@
                                         <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Info"/>
                                     </Record>
                                     <Record Type="UI.ReferenceFacet">
-                                        <PropertyValue Property="Label" String="Durée"/>
+                                        <PropertyValue Property="Label" String="Duration"/>
                                         <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Duree"/>
                                     </Record>
                                     <Record Type="UI.ReferenceFacet">
-                                        <PropertyValue Property="Label" String="Qualité"/>
+                                        <PropertyValue Property="Label" String="Quality"/>
                                         <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Qualite"/>
                                     </Record>
                                     <Record Type="UI.ReferenceFacet">
                                         <PropertyValue Property="Label" String="Budget sur Objectif"/>
                                         <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#BudgetObjectif"/>
+                                    </Record>
+                                    <Record Type="UI.ReferenceFacet">
+                                        <PropertyValue Property="Label" String="Affaire émise par"/>
+                                        <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#AffaireEmise"/>
                                     </Record>
                                 </Collection>
                             </PropertyValue>
@@ -291,6 +295,20 @@
                             </PropertyValue>
                         </Record>
                     </Collection>
+                </Annotation>
+                <Annotation Term="UI.FieldGroup" Qualifier="AffaireEmise">
+                    <Record>
+                        <PropertyValue Property="Data">
+                            <Collection>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="business_e_N1"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="business_cdp_N1"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
                 </Annotation>
                 <Annotation Term="UI.FieldGroup" Qualifier="BudgetObjectif">
                     <Record>
@@ -575,9 +593,6 @@
                         <Record Type="UI.DataField">
                             <PropertyValue Property="Value" Path="PROJM"/>
                         </Record>
-                        <Record Type="UI.DataField">
-                            <PropertyValue Property="Value" Path="STILinkedCount"/>
-                        </Record>
                     </Collection>
                 </Annotation>
                 <Annotation Term="UI.PresentationVariant">
@@ -599,7 +614,6 @@
                         <PropertyPath>UFOName</PropertyPath>
                         <PropertyPath>ProfitCenter</PropertyPath>
                         <PropertyPath>PROJM</PropertyPath>
-                        <PropertyPath>STILinkedCount</PropertyPath>
                         <PropertyPath>Type</PropertyPath>
                     </Collection>
                 </Annotation>
@@ -726,19 +740,19 @@
                 <Annotation Term="UI.LineItem">
                     <Collection>
                         <Record Type="UI.DataField">
-                            <PropertyValue Property="Label" String="Janvier N"/>
+                            <PropertyValue Property="Label" String=""/>
                             <PropertyValue Property="Value" Path="JanvN"/>
                         </Record>
                         <Record Type="UI.DataField">
-                            <PropertyValue Property="Label" String="Février N"/>
+                            <PropertyValue Property="Label" String=""/>
                             <PropertyValue Property="Value" Path="FevrN"/>
                         </Record>
                         <Record Type="UI.DataField">
-                            <PropertyValue Property="Label" String="Mars N"/>
+                            <PropertyValue Property="Label" String=""/>
                             <PropertyValue Property="Value" Path="MarsN"/>
                         </Record>
                         <Record Type="UI.DataField">
-                            <PropertyValue Property="Label" String="Avril N"/>
+                            <PropertyValue Property="Label" String=""/>
                             <PropertyValue Property="Value" Path="AvrN"/>
                         </Record>
                         <Record Type="UI.DataField">
@@ -748,38 +762,38 @@
                             <PropertyValue Property="Value" Path="MissionId"/>
                         </Record>
                         <Record Type="UI.DataField">
-                            <PropertyValue Property="Label" String="Mai N"/>
+                            <PropertyValue Property="Label" String=""/>
                             <PropertyValue Property="Value" Path="MaiN"/>
                         </Record>
                         <Record Type="UI.DataField">
-                            <PropertyValue Property="Label" String="Juin N"/>
+                            <PropertyValue Property="Label" String=""/>
                             <PropertyValue Property="Value" Path="JuinN"/>
                         </Record>
                         <Record Type="UI.DataField">
-                            <PropertyValue Property="Label" String="Juillet N"/>
+                            <PropertyValue Property="Label" String=""/>
                             <PropertyValue Property="Value" Path="JuilN"/>
                         </Record>
                         <Record Type="UI.DataField">
-                            <PropertyValue Property="Label" String="Août N"/>
+                            <PropertyValue Property="Label" String=""/>
                             <PropertyValue Property="Value" Path="AoutN"/>
                         </Record>
                         <Record Type="UI.DataField">
-                            <PropertyValue Property="Label" String="Septembre N"/>
+                            <PropertyValue Property="Label" String=""/>
                             <PropertyValue Property="Value" Path="SeptN"/>
                         </Record>
                         <Record Type="UI.DataField">
-                            <PropertyValue Property="Label" String="Octobre N"/>
+                            <PropertyValue Property="Label" String=""/>
                             <PropertyValue Property="Value" Path="OctN"/>
                         </Record>
                         <Record Type="UI.DataField">
-                            <PropertyValue Property="Label" String="Novembre N"/>
+                            <PropertyValue Property="Label" String=""/>
                             <PropertyValue Property="Value" Path="NovN"/>
                         </Record>
                         <Record Type="UI.DataField">
                             <PropertyValue Property="Value" Path="business_no_p_t"/>
                         </Record>
                         <Record Type="UI.DataField">
-                            <PropertyValue Property="Label" String="Décembre N"/>
+                            <PropertyValue Property="Label" String=""/>
                             <PropertyValue Property="Value" Path="DecN"/>
                         </Record>
                         <Record Type="UI.DataField">
@@ -792,57 +806,57 @@
                             <PropertyValue Property="Value" Path="Regroupement"/>
                         </Record>
                         <Record Type="UI.DataField">
-                            <PropertyValue Property="Label" String="Janvier N+1"/>
+                            <PropertyValue Property="Label" String=""/>
                             <PropertyValue Property="Value" Path="JanvN1"/>
                         </Record>
                         <Record Type="UI.DataField">
                             <PropertyValue Property="Value" Path="business_p_cmp"/>
                         </Record>
                         <Record Type="UI.DataField">
-                            <PropertyValue Property="Label" String="Février N+1"/>
+                            <PropertyValue Property="Label" String=""/>
                             <PropertyValue Property="Value" Path="FevrN1"/>
                         </Record>
                         <Record Type="UI.DataField">
                             <PropertyValue Property="Value" Path="business_p_cdp"/>
                         </Record>
                         <Record Type="UI.DataField">
-                            <PropertyValue Property="Label" String="Mars N+1"/>
+                            <PropertyValue Property="Label" String=""/>
                             <PropertyValue Property="Value" Path="MarsN1"/>
                         </Record>
                         <Record Type="UI.DataField">
-                            <PropertyValue Property="Label" String="Avril N+1"/>
+                            <PropertyValue Property="Label" String=""/>
                             <PropertyValue Property="Value" Path="AvrN1"/>
                         </Record>
                         <Record Type="UI.DataField">
-                            <PropertyValue Property="Label" String="Mai N+1"/>
+                            <PropertyValue Property="Label" String=""/>
                             <PropertyValue Property="Value" Path="MaiN1"/>
                         </Record>
                         <Record Type="UI.DataField">
-                            <PropertyValue Property="Label" String="Juin N+1"/>
+                            <PropertyValue Property="Label" String=""/>
                             <PropertyValue Property="Value" Path="JuinN1"/>
                         </Record>
                         <Record Type="UI.DataField">
-                            <PropertyValue Property="Label" String="Juillet N+1"/>
+                            <PropertyValue Property="Label" String=""/>
                             <PropertyValue Property="Value" Path="JuilN1"/>
                         </Record>
                         <Record Type="UI.DataField">
-                            <PropertyValue Property="Label" String="Août N+1"/>
+                            <PropertyValue Property="Label" String=""/>
                             <PropertyValue Property="Value" Path="AoutN1"/>
                         </Record>
                         <Record Type="UI.DataField">
-                            <PropertyValue Property="Label" String="Septembre N+1"/>
+                            <PropertyValue Property="Label" String=""/>
                             <PropertyValue Property="Value" Path="SeptN1"/>
                         </Record>
                         <Record Type="UI.DataField">
-                            <PropertyValue Property="Label" String="Octobre N+1"/>
+                            <PropertyValue Property="Label" String=""/>
                             <PropertyValue Property="Value" Path="OctN1"/>
                         </Record>
                         <Record Type="UI.DataField">
-                            <PropertyValue Property="Label" String="Novembre N+1"/>
+                            <PropertyValue Property="Label" String=""/>
                             <PropertyValue Property="Value" Path="NovN1"/>
                         </Record>
                         <Record Type="UI.DataField">
-                            <PropertyValue Property="Label" String="Décembre N+1"/>
+                            <PropertyValue Property="Label" String=""/>
                             <PropertyValue Property="Value" Path="DecN1"/>
                         </Record>
                     </Collection>
@@ -1050,22 +1064,22 @@
                 <Annotation Term="UI.Facets">
                     <Collection>
                         <Record Type="UI.ReferenceFacet">
-                            <PropertyValue Property="Label" String="Formulaire de sous-traitance"/>
+                            <PropertyValue Property="Label" String=""/>
                             <PropertyValue Property="ID" String="FormulaireFacet"/>
                             <PropertyValue Property="Target" AnnotationPath="@UI.Identification#FormulaireFacetFields"/>
                         </Record>
                         <Record Type="UI.CollectionFacet">
-                            <PropertyValue Property="Label" String="Informations de sous-traitance"/>
+                            <PropertyValue Property="Label" String=""/>
                             <PropertyValue Property="ID" String="GeneralInfo"/>
                             <PropertyValue Property="Facets">
                                 <Collection>
                                     <Record Type="UI.ReferenceFacet">
-                                        <PropertyValue Property="Label" String="Titulaire (affaire émettrice)"/>
+                                        <PropertyValue Property="Label" String=""/>
                                         <PropertyValue Property="ID" String="TitulaireFields"/>
                                         <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#TitulaireFields"/>
                                     </Record>
                                     <Record Type="UI.ReferenceFacet">
-                                        <PropertyValue Property="Label" String="Partenaire (affaire partenaire)"/>
+                                        <PropertyValue Property="Label" String=""/>
                                         <PropertyValue Property="ID" String="PartenaireFields"/>
                                         <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#PartenaireFields"/>
                                     </Record>
@@ -1073,35 +1087,35 @@
                             </PropertyValue>
                         </Record>
                         <Record Type="UI.CollectionFacet">
-                            <PropertyValue Property="Label" String="Etat de sous-traitance"/>
+                            <PropertyValue Property="Label" String=""/>
                             <PropertyValue Property="ID" String="EtatFacet"/>
                             <PropertyValue Property="Facets">
                                 <Collection/>
                             </PropertyValue>
                         </Record>
                         <Record Type="UI.CollectionFacet">
-                            <PropertyValue Property="Label" String="Mission sous-traité"/>
+                            <PropertyValue Property="Label" String=""/>
                             <PropertyValue Property="ID" String="MissionFacet"/>
                             <PropertyValue Property="Facets">
                                 <Collection/>
                             </PropertyValue>
                         </Record>
                         <Record Type="UI.CollectionFacet">
-                            <PropertyValue Property="Label" String="Description"/>
+                            <PropertyValue Property="Label" String=""/>
                             <PropertyValue Property="ID" String="DescriptionFacet"/>
                             <PropertyValue Property="Facets">
                                 <Collection/>
                             </PropertyValue>
                         </Record>
                         <Record Type="UI.CollectionFacet">
-                            <PropertyValue Property="Label" String="Workflow - détail d approbation"/>
+                            <PropertyValue Property="Label" String=""/>
                             <PropertyValue Property="ID" String="WorkflowFacet"/>
                             <PropertyValue Property="Facets">
                                 <Collection/>
                             </PropertyValue>
                         </Record>
                         <Record Type="UI.CollectionFacet">
-                            <PropertyValue Property="Label" String="Lien joint"/>
+                            <PropertyValue Property="Label" String=""/>
                             <PropertyValue Property="ID" String="LienFacet"/>
                             <PropertyValue Property="Facets">
                                 <Collection/>
@@ -1373,6 +1387,62 @@
                     </Collection>
                 </Annotation>
             </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_External_Supplier_VHType/AuthorizationGroup">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_External_Supplier_VHType/SupplierAccountGroup">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_External_Supplier_VHType/IsBusinessPurposeCompleted">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_External_Supplier_VHType/DataControllerSet">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_External_Supplier_VHType/DataController1">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_External_Supplier_VHType/DataController2">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_External_Supplier_VHType/DataController3">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_External_Supplier_VHType/DataController4">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_External_Supplier_VHType/DataController5">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_External_Supplier_VHType/DataController6">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_External_Supplier_VHType/DataController7">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_External_Supplier_VHType/DataController8">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_External_Supplier_VHType/DataController9">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_External_Supplier_VHType/DataController10">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
             <Annotations Target="ZFGA_SRV.ZI_FGA_ACTIVITY_VHType/Spras">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
@@ -1455,6 +1525,62 @@
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
             <Annotations Target="ZFGA_SRV.ZI_FGA_TYPE_VHType/spras">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_Filiale_Supplier_VHType/AuthorizationGroup">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_Filiale_Supplier_VHType/SupplierAccountGroup">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_Filiale_Supplier_VHType/IsBusinessPurposeCompleted">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_Filiale_Supplier_VHType/DataControllerSet">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_Filiale_Supplier_VHType/DataController1">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_Filiale_Supplier_VHType/DataController2">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_Filiale_Supplier_VHType/DataController3">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_Filiale_Supplier_VHType/DataController4">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_Filiale_Supplier_VHType/DataController5">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_Filiale_Supplier_VHType/DataController6">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_Filiale_Supplier_VHType/DataController7">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_Filiale_Supplier_VHType/DataController8">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_Filiale_Supplier_VHType/DataController9">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="ZFGA_SRV.ZI_Filiale_Supplier_VHType/DataController10">
+                <Annotation Term="UI.HiddenFilter"/>
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
             <Annotations Target="ZFGA_SRV.ZI_STI_STATUS_VHType/language">
