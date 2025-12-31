@@ -22,6 +22,16 @@ sap.ui.define([
       profil: "ProfilNo",
       profilDescription: "Description",
       tjm: "Tjm",
+
+    }),
+
+    formatProfils: Helper.buildObjectKeysMapper({
+      profil: "ProfilNo",
+      profilDescription: "Description",
+      tjm: "Tjm",
+      visible: "Visible",
+      descending: "Descending",
+      sorted: "Sorted"
     }),
 
     formatBudgetSubContracting: Helper.buildObjectKeysMapper({

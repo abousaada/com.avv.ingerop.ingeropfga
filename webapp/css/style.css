@@ -293,3 +293,16 @@
   line-height: 1.8rem;
   color: #fff !important;
 }
+
+
+td:has(.restHeader) {
+  background-color: yellow;
+}
+
+td:has(.consoHeader) {
+  background-color: orange;
+}
+
+td:has(.budgetHeader) {
+  background-color: gainsboro;
+}

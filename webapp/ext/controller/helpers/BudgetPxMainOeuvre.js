@@ -47,7 +47,7 @@ sap.ui.define([
 
         addDynamicColumns() {
             const mainOeuvreTree = this.oView.byId(this._CONSTANT_MAIN_OEUVRE_TABLE_ID);
-            const aDynamicColumns = this.getUtilitiesModel().getPxMainOeuvreHeader();
+            const aDynamicColumns = this.getUtilitiesModel().getPxMainOeuvreHeader().filter(col => col.visible);
             let index = 8;
 
             //Jours consommés
@@ -98,7 +98,7 @@ sap.ui.define([
                 headerSpan: length + ",1,1",
                 hAlign: "Center",
                 multiLabels: [
-                    new sap.m.Label({ text: "{i18n>budget.main.oeuvre.jours.conso}" }),
+                    new sap.m.Label({ text: "{i18n>budget.main.oeuvre.jours.conso}" }).addStyleClass("consoHeader"),
                     new sap.m.Label({ text: profilDescription }),
                     new sap.m.Label(),
                     new sap.m.Label(),
@@ -118,7 +118,8 @@ sap.ui.define([
                         })
                     ]
                 }),
-                width: "8rem"
+                width: "8rem",
+                autoResizable:true
             }).data(this._CONSTANT_COLUMN_ID, sColumnId);
         },
 
@@ -128,7 +129,7 @@ sap.ui.define([
                 headerSpan: length + ",1,1",
                 hAlign: "Center",
                 multiLabels: [
-                    new sap.m.Label({ text: "{i18n>budget.main.oeuvre.jours.rest}" }),
+                    new sap.m.Label({ text: "{i18n>budget.main.oeuvre.jours.rest}" }).addStyleClass("restHeader"),
                     new sap.m.Label({ text: profilDescription }),
                     new sap.m.Label({ text: tjm }),
                     new sap.m.Label(),
@@ -160,7 +161,8 @@ sap.ui.define([
                         }).data(this._CONSTANT_COLUMN_ID, sColumnId)
                     ]
                 }),
-                width: "8rem"
+                width: "8rem",
+                autoResizable:true
             }).data(this._CONSTANT_COLUMN_ID, sColumnId);
         },
 
@@ -191,7 +193,8 @@ sap.ui.define([
                         })
                     ]
                 }),
-                width: "8rem"
+                width: "8rem",
+                autoResizable:true
             }).data(this._CONSTANT_COLUMN_ID, columnId);
         },
 
@@ -201,7 +204,7 @@ sap.ui.define([
                 headerSpan: length + ",1,1",
                 hAlign: "Center",
                 multiLabels: [
-                    new sap.m.Label({ text: "{i18n>budget.main.oeuvre.budget}" }),
+                    new sap.m.Label({ text: "{i18n>budget.main.oeuvre.budget}" }).addStyleClass("budgetHeader"),
                     new sap.m.Label({ text: profilDescription }),
                     new sap.m.Label(),
                     new sap.m.Label(),
@@ -228,7 +231,8 @@ sap.ui.define([
                         })
                     ]
                 }),
-                width: "8rem"
+                width: "8rem",
+                autoResizable:true
             }).data(this._CONSTANT_COLUMN_ID, sColumnId);
         },
 
@@ -258,7 +262,8 @@ sap.ui.define([
                         })
                     ]
                 }),
-                width: "8rem"
+                width: "8rem",
+                autoResizable:true
             }).data(this._CONSTANT_COLUMN_ID, columnId);
         },
 
@@ -291,7 +296,8 @@ sap.ui.define([
                         })
                     ]
                 }),
-                width: "8rem"
+                width: "8rem",
+                autoResizable:true
             }).data(this._CONSTANT_COLUMN_ID, columnId);
         },
 
@@ -334,7 +340,8 @@ sap.ui.define([
                         }).data(this._CONSTANT_COLUMN_ID, columnId)
                     ]
                 }),
-                width: "8rem"
+                width: "8rem",
+                autoResizable:true
             }).data(this._CONSTANT_COLUMN_ID, columnId);
         },
 
@@ -368,7 +375,8 @@ sap.ui.define([
                         })
                     ]
                 }),
-                width: "8rem"
+                width: "8rem",
+                autoResizable:true
             }).data(this._CONSTANT_COLUMN_ID, columnId);
         },
 
@@ -471,15 +479,41 @@ sap.ui.define([
             }).format(value);
         },
 
-        async addNewMOProfil(oEvent){
+        async manageNewMOProfil(oEvent){
             try {
-                const newProfil     = await this.getNewProfilId();
-                const newProfilData = await this.getUtilitiesModel().getBEProfilById(newProfil);
-                this.addNewProfilById(newProfilData);
-                return;
+                if(!this._MOProfilDialog){
+                    const profils = this.getUtilitiesModel().getPxMainOeuvreHeader();
+                    const columns = profils.map((p) => ({"name": p.profil, "label": p.profilDescription, ...p }));
+                
+                    this._MOProfilDialogSelectionPanel = new sap.m.p13n.SelectionPanel();
+
+                    this._MOProfilDialogSelectionPanel.setP13nData(columns);
+
+                    this._MOProfilDialog = new sap.m.p13n.Popup({
+                        id : 'MOProfilPopOverId',
+                        panels: [ this._MOProfilDialogSelectionPanel ],
+                        close: this.onClose.bind(this)
+                    });
+                }
+                    
+                this._MOProfilDialog.open(oEvent.getSource());
             } catch (error) {
                 console.log(error);
             }
+        },
+
+        onClose(oEvent){
+            const sReason = oEvent.getParameter("reason");
+            switch (sReason) {
+                case "Ok":
+                    const header = this._MOProfilDialogSelectionPanel.getP13nData();
+                    this.getUtilitiesModel().setPxMainOeuvreHeader(header);
+                    this.refreshTableColumns();
+                    break;
+                default:
+                    break;
+            }
+			// MessageToast.show("Dialog close reason: " + sReason);
         },
 
         async getNewProfilId(){

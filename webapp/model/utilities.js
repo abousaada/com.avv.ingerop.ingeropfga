@@ -49,7 +49,7 @@ sap.ui.define([
             buildPxMainOeuvreTreeData() {
                 const { treeData, treeHeader } = this.oMainOeuvre.buildTreeData();
                 this.setPxMainOeuvreHierarchy(treeData);
-                this.setPxMainOeuvreHeader(treeHeader);
+                // this.setPxMainOeuvreHeader(treeHeader);
             },
 
             reCalcRecetteTable() {
@@ -70,7 +70,7 @@ sap.ui.define([
                     }
                     const [missions, previsions, recaps, opport, risque, charts,
                         chartsadddata, pxRecettes, pxAutres, pxSubContracting,
-                        pxMainOeuvre, pxSTI, pSTI, notes, sfgp]
+                        pxMainOeuvre, profils, pxSTI, pSTI, notes, sfgp]
                         = await Promise.all([
 
                             this.getBEMissions(),
@@ -86,6 +86,7 @@ sap.ui.define([
                             this.getBEPxAutres(),
                             this.getBEPxExtSubContracting(),
                             this.getBEPxMainOeuvre(),
+                            this.getBEProfils(),
                             this.getBEPxSTI(),
                             this.getBEPSTI(),
 
@@ -111,6 +112,7 @@ sap.ui.define([
 
                     this.setPxSousTraitance(pxSubContracting || []);
                     this.setPxMainOeuvre(pxMainOeuvre || []);
+                    this.setPxMainOeuvreProfilHeader(profils);
                     this.setPxSTI(pxSTI || []);
                     this.setPSTI(pSTI || []);
 
@@ -763,6 +765,23 @@ sap.ui.define([
                 }
             },
 
+            async getBEProfils(){
+                try {
+                    const BusinessNo = this.getBusinessNo();
+                    const Period = this.getPeriod();
+                    const options = { urlParameters: { BusinessNo, Period } };
+                    const profils = await this.callFunction("/GetProfil", options);
+                    return profils?.results?.map(profil => Formatter.formatProfils(profil));
+                } catch (error) {
+                    console.log(error);
+                }
+            },
+
+            setPxMainOeuvreProfilHeader(profils = []){
+                profils = profils.map(p => ({"columnId" : "MO_" + p.profil, ...p}));
+                this.setPxMainOeuvreHeader(profils);
+            },
+
             async getBESfgp() {
                 try {
                     this.setChartBusy(true);
@@ -972,9 +991,9 @@ sap.ui.define([
                 }
             },
 
-            async getBESupplierById(SupplierNo) {
+            async getBESupplierById(parameters) {
                 try {
-                    const options = { urlParameters: { SupplierNo } };
+                    const options = { urlParameters: parameters };
                     const supplier = await this.callFunction("/GetSupplier", options);
                     return Formatter.formatSupplier(supplier);
                 } catch (error) {

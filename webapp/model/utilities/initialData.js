@@ -11,11 +11,17 @@ sap.ui.define([], function () {
     "risque": [],
     "charts": [],
     "chartsAdditionalData": [],
+
     "pxAutres": [],
-    "pxSousTraitance": [],
-    "pxRecetteExt": [],
     "PxAutreHierarchyWithTotals": [],
+
+    "pxRecetteExt": [],
     "pxRecetteExtHierarchy": [],
+
+    "pxSousTraitance": [],
+    "pxSTFHierarchy": [],
+    "pxSTFHeader": [],
+    
     "pxSubContractingHierarchy": [],
     "pxSubContractingHeader": [
       /*{
@@ -24,15 +30,11 @@ sap.ui.define([], function () {
         subContractorPartner  : "SubContractorPartner",
       }*/
     ],
+    
     "pxMainOeuvre": [],
     "pxMainOeuvreHierarchy": [],
-    "pxMainOeuvreHeader": [
-      /*{
-        subContractorId       : "SubContractor",
-        subContractorName     : "SubContractorName",
-        subContractorPartner  : "SubContractorPartner",
-      }*/
-    ],
+    "pxMainOeuvreHeader": [],
+
     "pxSTI": [],
     "pSTI": [],
     "Notes": '',
