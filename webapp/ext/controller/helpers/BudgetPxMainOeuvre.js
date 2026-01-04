@@ -47,7 +47,9 @@ sap.ui.define([
 
         addDynamicColumns() {
             const mainOeuvreTree = this.oView.byId(this._CONSTANT_MAIN_OEUVRE_TABLE_ID);
-            const aDynamicColumns = this.getUtilitiesModel().getPxMainOeuvreHeader().filter(col => col.visible);
+            const aDynamicColumns = this.getUtilitiesModel().getPxMainOeuvreHeader()
+                                        .filter(col => col.visible);
+                                        // .sort((c1,c2) => c1.idx - c2.idx);
             let index = 8;
 
             //Jours consommés
@@ -506,7 +508,8 @@ sap.ui.define([
             const sReason = oEvent.getParameter("reason");
             switch (sReason) {
                 case "Ok":
-                    const header = this._MOProfilDialogSelectionPanel.getP13nData();
+                    let header = this._MOProfilDialogSelectionPanel.getP13nData();
+                    header = header.map((h,i) => { h.idx = i; return h; });
                     this.getUtilitiesModel().setPxMainOeuvreHeader(header);
                     this.refreshTableColumns();
                     break;

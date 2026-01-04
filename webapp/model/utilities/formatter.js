@@ -31,7 +31,8 @@ sap.ui.define([
       tjm: "Tjm",
       visible: "Visible",
       descending: "Descending",
-      sorted: "Sorted"
+      sorted: "Sorted",
+      idx: "Idx"
     }),
 
     formatBudgetSubContracting: Helper.buildObjectKeysMapper({
@@ -126,13 +127,27 @@ sap.ui.define([
       Regroupement: "regroupement",
       StartDate: "startDate",
       Statut: "status",
-      NbJoursConso  :  ({ nbJoursConso })   => parseFloat(nbJoursConso || 0).toString(),
-      NbJoursRest   :  ({ nbJoursRest })    => parseFloat(nbJoursRest || 0).toString(),
+      NbJoursConso  :  ({ nbJoursConso })   => parseFloat(nbJoursConso  || 0).toString(),
+      NbJoursRest   :  ({ nbJoursRest })    => parseFloat(nbJoursRest   || 0).toString(),
+      NbJoursBudget :  ({ nbJoursBudget })  => parseFloat(nbJoursBudget || 0).toString(),
+
       Physique      :  ({ physique })       => parseFloat(physique || 0).toString(),
       Tjm           :  ({ tjm })            => parseFloat(tjm || 0).toString(),
       Profil: "profil",
       ProfilDescription: "profilDescription",
       Cumul : ({ cumul })       => parseFloat(cumul || 0).toString(),
     }),
+
+
+    reverseFormatBudgetMOProfil: Helper.buildObjectKeysMapper({
+      businessNo        : "businessNo",
+      tjm               : ({ tjm }) => parseFloat(tjm || 0).toString(),
+      profil            : "profil",
+      description       : "profilDescription",
+      visible           : "visible",
+      descending        : "descending",
+      sorted            : "sorted",
+      idx               : "idx"
+    })
   };
 });

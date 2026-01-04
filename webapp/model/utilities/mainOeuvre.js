@@ -243,12 +243,19 @@ sap.ui.define([], function () {
               if(leaf[columnId + this._CONSTANT_COLUMN_REST]){
                 rest.nbJoursRest = (leaf[columnId + this._CONSTANT_COLUMN_REST] || 0);
               }
+
+              rest.nbJoursBudget = (rest.nbJoursRest || 0) - (rest.nbJoursConso || 0);
+
               flatData.push({ ...rest });
             }
         }
       }
 
       return flatData;
+    }
+
+    formattedPxMOProfil(){
+      return this.oModel.getPxMainOeuvreHeader();
     }
 
   };

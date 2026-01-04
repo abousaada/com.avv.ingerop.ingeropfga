@@ -786,6 +786,7 @@ sap.ui.define([
 
             setPxMainOeuvreProfilHeader(profils = []){
                 profils = profils.map(p => ({"columnId" : "MO_" + p.profil, ...p}));
+                profils.sort((c1,c2) => c1.idx - c2.idx)
                 this.setPxMainOeuvreHeader(profils);
             },
 
@@ -1095,6 +1096,12 @@ sap.ui.define([
                 return this.oMainOeuvre
                     .formattedPxMainOeuvre()
                     .map(Formatter.reverseFormatBudgetMainOeuvre);
+            },
+
+            formattedPxMOProfil() {
+                return this.oMainOeuvre
+                    .formattedPxMOProfil()
+                    .map(Formatter.reverseFormatBudgetMOProfil);
             }
         });
 
