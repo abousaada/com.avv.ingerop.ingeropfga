@@ -294,6 +294,30 @@
   color: #fff !important;
 }
 
+/* Period group spacing */
+.fgaPeriodGroupStart {
+    margin-left: 0.75rem;
+}
+
+.fgaPeriodLabel {
+    font-weight: 600;
+    cursor: default !important;
+    pointer-events: none;
+    margin: 0 0.25rem;
+}
+
+.fgaPeriodGroupEnd {
+    margin-right: 1.25rem;
+}
+
+/* FGA button separated visually */
+.fgaFgaAction {
+    margin-left: 1.5rem;
+    border-left: 1px solid var(--sapContent_ForegroundBorderColor);
+    padding-left: 1rem;
+}
+
+
 
 td:has(.restHeader) {
   background-color: yellow;

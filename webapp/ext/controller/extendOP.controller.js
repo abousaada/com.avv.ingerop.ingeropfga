@@ -13,7 +13,7 @@ sap.ui.define(
         "./helpers/BudgetPxMainOeuvre",
         "./helpers/BudgetPxSTI",
         "./helpers/BudgetPrevisionel",
-        "./helpers/Synthese",
+        "./helpers/Synthese"
     ],
     function (
         ControllerExtension,
@@ -35,11 +35,10 @@ sap.ui.define(
         var PROJET_TYPE = null;
         return ControllerExtension.extend("com.avv.ingerop.ingeropfga.ext.controller.extendOP", {
             Formatter: Formatter,
-            // Override or add custom methods here
 
+            // Override or add custom methods here
             // this section allows to extend lifecycle hooks or hooks provided by Fiori elements
             override: {
-
                 onAfterRendering: function () {
                     const oTreeTable = this.getView().byId("PrevisionnelTreeTable");
                     if (oTreeTable) {
@@ -305,83 +304,6 @@ sap.ui.define(
                         return Promise.reject(error);
                     }
                 },
-
-
-                /*beforeSaveExtension1() {
-                    try {
-                        const utilitiesModel = this.getModel("utilities");
-
-                        // Accès au contexte via la vue
-                        const oView = this.base.getView();
-                        const oContext = oView.getBindingContext();
-
-                        if (!oContext) {
-                            sap.m.MessageBox.error("Aucun contexte lié à la vue !");
-                            throw new Error("Impossible d'accéder au contexte.");
-                        }
-
-                        if (!this.getModel("utilities").validDataBeforeSave(oView)) {
-                            sap.m.MessageBox.error("Veuillez Vérifier tous les champs");
-                            return new Promise((resolve, reject) => {
-                                reject();
-                            });
-                        }
-
-                        if (!this.getModel("utilities").validRecetteExtBeforeSave(oView)) {
-                            sap.m.MessageBox.error("Veuillez Répartir correctement les budgets");
-                            return new Promise((resolve, reject) => {
-                                reject();
-                            });
-                        }
-
-                        this._setBusy(true);
-                        return new Promise(async (resolve, reject) => {
-                            const formattedMissions = utilitiesModel.getFormattedMissions();
-                            const formattedPxAutre = utilitiesModel.getFormattedPxAutre();
-                            const formattedPxSubContractingExt = utilitiesModel.formattedPxSubContractingExt();
-                            const formattedPxRecetteExt = utilitiesModel.formattedPxRecetteExt();
-                            const formattedMainOeuvre = utilitiesModel.formattedPxMainOeuvre();
-                            const oPayload = Helper.extractPlainData({
-                                ...oContext.getObject(),
-                                "to_Missions": formattedMissions,
-                                "to_BudgetPxAutre": formattedPxAutre,
-                                "to_BudgetPxSubContracting": formattedPxSubContractingExt,
-                                "to_BudgetPxRecetteExt": formattedPxRecetteExt,
-                                "to_BudgetPxSTI": [],
-                                "to_Previsionel": [],
-                                "to_BudgetPxMainOeuvre": formattedMainOeuvre
-                            });
-
-                            delete oPayload.to_BudgetPxSTI;
-                            delete oPayload.to_Previsionel;
-
-
-                            try {
-                                oPayload.VAT = oPayload.VAT ? oPayload.VAT.toString() : oPayload.VAT;
-                                const updatedFGA = await utilitiesModel.deepUpsertFGA(oPayload);
-                                this._setBusy(false);
-                                if (updatedFGA) {
-                                    Helper.validMessage("FGA updated: " + updatedFGA.BusinessNo, this.getView(), this.onAfterSaveAction.bind(this));
-                                }
-
-                            } catch (error) {
-                                this._setBusy(false);
-                                Helper.errorMessage("FGA updated fail");
-                                console.log(error);
-                                //reject();
-                                return Promise.reject("No data returned");
-                            }
-
-                            //reject();
-                            return Promise.reject();
-                        });
-                    } catch (error) {
-                        this._setBusy(false);
-                        Helper.errorMessage("FGA updated fail");
-                        console.log(error);
-                        return Promise.reject(error);
-                    }
-                },*/
 
             },
 
@@ -665,6 +587,8 @@ sap.ui.define(
                 //this._setBusy(true);
 
                 try {
+
+                    this._styleHeaderButtons();
 
                     const oUtilitiesModel = this.getInterface().getModel("utilities");
                     const oContext = e.context;
@@ -1968,7 +1892,8 @@ sap.ui.define(
                         }
                     });
                 });
-            }
+            },
+
 
         });
 
