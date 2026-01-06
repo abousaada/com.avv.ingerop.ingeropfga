@@ -41,30 +41,41 @@ sap.ui.define(
         return ControllerExtension.extend("com.avv.ingerop.ingeropfga.ext.controller.extendOP", {
             Formatter: Formatter,
 
-            _wireFioriElementsButtons: function () {
+            _wireCustomButtons: function () {
                 const oView = this.getView();
 
-                // Get buttons from the header toolbar
-                const oHeader = oView.byId("header::ZC_FGASet::ObjectPageHeader");
-                if (oHeader) {
-                    const oToolbar = oHeader.getToolbar();
-                    if (oToolbar) {
-                        const aContent = oToolbar.getContent();
-                        aContent.forEach(oControl => {
-                            if (oControl.isA("sap.m.Button")) {
-                                const sId = oControl.getId();
-                                if (sId.includes("selectFGABtn")) {
-                                    oControl.attachPress(this.onSelectFGAPress.bind(this));
-                                } else if (sId.includes("prevPeriodBtn")) {
-                                    oControl.attachPress(this.onPrevPeriod.bind(this));
-                                } else if (sId.includes("nextPeriodBtn")) {
-                                    oControl.attachPress(this.onNextPeriod.bind(this));
-                                }
-                            }
-                        });
-                    }
+                // Method 1: Using the full ID you provided
+                const oSelectFGAButton = oView.byId("com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--action::selectFGABtn");
+
+                if (oSelectFGAButton) {
+                    console.log("Found Select FGA button:", oSelectFGAButton);
+                    oSelectFGAButton.attachPress(this.onSelectFGAPress.bind(this));
+                } else {
+                    console.log("Select FGA button not found with full ID");
                 }
-            }, _wireCustomButtons: function () {
+
+                // Find other buttons using similar pattern
+                const aButtons = oView.findAggregatedObjects(true, function (oControl) {
+                    return oControl.isA("sap.m.Button") &&
+                        oControl.getId().includes("--action::");
+                });
+
+                console.log("All action buttons:", aButtons);
+
+                aButtons.forEach(oButton => {
+                    const sId = oButton.getId();
+
+                    if (sId.includes("prevPeriodBtn")) {
+                        oButton.attachPress(this.onPrevPeriod.bind(this));
+                    } else if (sId.includes("nextPeriodBtn")) {
+                        oButton.attachPress(this.onNextPeriod.bind(this));
+                    } else if (sId.includes("periodBtn")) {
+                        // This is your label button - make it non-clickable
+                        oButton.setEnabled(false);
+                    }
+                });
+            },
+            _wireCustomButtons1: function () {
                 const oView = this.getView();
 
                 // Method 1: Using the full ID you provided
@@ -786,7 +797,7 @@ sap.ui.define(
                         this.preparePxRecetteExtTreeData();
                         this.preparePxMainOeuvreTreeData();
                         this.preparePxSTITreeData();
-                        this.preparePrevisionelTreeData();
+                        //this.preparePrevisionelTreeData();
                     }
 
                     if (isForecastMode) {
@@ -1962,7 +1973,7 @@ sap.ui.define(
                 });
             },
 
-            _styleHeaderButtons: function () {
+            _styleHeaderButtons1: function () {
                 try {
                     const oView = this.getView();
 
@@ -2014,46 +2025,974 @@ sap.ui.define(
                 }
             },
 
-            onPrevPeriod: function (oEvent) {
-            MessageToast.show("Previous period");
-        },
 
-        onNextPeriod: function (oEvent) {
-            MessageToast.show("Next period");
-        },
 
-        onSelectFGAPress: function (oEvent) {
-            const oView = this.getView();
 
-            if (!this._oFGAVH) {
-                this._oFGAVH = new ValueHelpDialog({
-                    title: "Select FGA",
-                    supportMultiselect: false,
-                    key: "FGA",
-                    descriptionKey: "Description",
-                    ok: (oEvent) => {
-                        const aTokens = oEvent.getParameter("tokens");
-                        if (aTokens.length) {
-                            const sFGA = aTokens[0].getKey();
 
-                            // store selected FGA
-                            this.getOwnerComponent()
-                                .getModel("settings")
-                                .setProperty("/selectedFGA", sFGA);
+            onNextPeriod: async function (oEvent) {
+                try {
+                    const oView = this.getView();
+                    const oUtilitiesModel = this.getInterface().getModel("utilities");
+                    const oModel = this._getOwnerComponent().getModel();
+                    const oNavController = this._getExtensionAPI().getNavigationController();
+
+                    // Get current period and FGA from context
+                    const oContext = oView.getBindingContext();
+                    if (!oContext) {
+                        sap.m.MessageBox.error("Aucun FGA sélectionné");
+                        return;
+                    }
+
+                    const sCurrentFGA = oContext.getProperty("BusinessNo");
+                    let sCurrentPeriod = oContext.getProperty("p_period");
+
+                    // Validate period
+                    if (!sCurrentPeriod) {
+                        sap.m.MessageBox.error("Période actuelle non définie");
+                        return;
+                    }
+
+                    // Calculate next period
+                    const sNextPeriod = this._getNextPeriod(sCurrentPeriod);
+
+                    // Set busy indicator
+                    this._setBusy(true);
+
+                    // Check for unsaved changes
+                    const oUIModel = this.base.templateBaseExtension.getView().getModel("ui");
+                    const bEditable = oUIModel ? oUIModel.getProperty("/editable") : false;
+
+                    if (bEditable) {
+                        const bSaveConfirmed = await new Promise((resolve) => {
+                            sap.m.MessageBox.confirm(
+                                "Vous avez des modifications non sauvegardées. Voulez-vous les sauvegarder avant de changer de période?",
+                                {
+                                    title: "Modifications non sauvegardées",
+                                    actions: [
+                                        sap.m.MessageBox.Action.YES,
+                                        sap.m.MessageBox.Action.NO,
+                                        sap.m.MessageBox.Action.CANCEL
+                                    ],
+                                    onClose: (sAction) => {
+                                        if (sAction === sap.m.MessageBox.Action.YES) {
+                                            resolve(true);
+                                        } else if (sAction === sap.m.MessageBox.Action.NO) {
+                                            resolve(false);
+                                        } else {
+                                            resolve(null);
+                                        }
+                                    }
+                                }
+                            );
+                        });
+
+                        if (bSaveConfirmed === null) {
+                            this._setBusy(false);
+                            return;
                         }
-                        this._oFGAVH.close();
-                    },
-                    cancel: () => this._oFGAVH.close()
+
+                        if (bSaveConfirmed) {
+                            try {
+                                const result = await this._executeSaveForNavigation();
+                                if (!result) {
+                                    this._setBusy(false);
+                                    return;
+                                }
+                            } catch (error) {
+                                console.error("Error saving before navigation:", error);
+                                sap.m.MessageBox.error("Erreur lors de la sauvegarde");
+                                this._setBusy(false);
+                                return;
+                            }
+                        } else {
+                            this._cleanModification();
+                        }
+                    }
+
+
+                    // Create OData path for next period
+                    const sKey = `BusinessNo='${sCurrentFGA}',p_period='${sNextPeriod}'`;
+                    const sPath = `/ZC_FGASet(${sKey})`;
+
+                    // Try to read the entity to create a proper context
+                    let oBindingContext;
+                    try {
+                        const oResult = await new Promise((resolve, reject) => {
+                            oModel.read(sPath, {
+                                success: (oData) => {
+                                    // Create a binding context from the read data
+                                    const oBindingContext = new sap.ui.model.Context(oModel, sPath);
+                                    resolve(oBindingContext);
+                                },
+                                error: (oError) => reject(oError)
+                            });
+                        });
+                        oBindingContext = oResult;
+                    } catch (error) {
+                        console.error("Error reading FGA for next period:", error);
+                        // If read fails, create a dummy context like in your List Report
+                        const oNavigationContext = oModel.createEntry("/ZC_FGASet", {
+                            properties: {
+                                BusinessNo: sCurrentFGA,
+                                p_period: sNextPeriod
+                            }
+                        });
+                        oBindingContext = oNavigationContext;
+                    }
+
+                    // Update utilities model with new period
+                    oUtilitiesModel.setProperty("/period", sNextPeriod);
+                    oUtilitiesModel.setBusinessNo(sCurrentFGA);
+
+                    // Navigate to next period
+                    await oNavController.navigateInternal(oBindingContext, {
+                        navigationMode: "inplace"
+                    });
+
+                    // Refresh page with next period data
+                    await this._refreshNormalModeData(sNextPeriod, sCurrentFGA);
+
+                    // Update button texts
+                    this._styleHeaderButtons();
+
+                    MessageToast.show(`Navigation vers la période: ${this._formatPeriodForDisplay(sNextPeriod)}`);
+
+                } catch (error) {
+                    console.error("Error navigating to next period:", error);
+                    sap.m.MessageBox.error(`Erreur: ${error.message || "Impossible de naviguer vers la période suivante"}`);
+                } finally {
+                    this._setBusy(false);
+                }
+            },
+            _getNextPeriod: function (sCurrentPeriod) {
+                if (!sCurrentPeriod || sCurrentPeriod.length !== 6) {
+                    // Default to current month/year if invalid
+                    const now = new Date();
+                    const month = String(now.getMonth() + 1).padStart(2, "0");
+                    const year = String(now.getFullYear());
+                    return `${month}${year}`;
+                }
+
+                // Parse current period (MMYYYY format)
+                const month = parseInt(sCurrentPeriod.substring(0, 2), 10);
+                const year = parseInt(sCurrentPeriod.substring(2, 6), 10);
+
+                let nextMonth, nextYear;
+
+                if (month === 12) {
+                    nextMonth = 1;
+                    nextYear = year + 1;
+                } else {
+                    nextMonth = month + 1;
+                    nextYear = year;
+                }
+
+                // Format back to MMYYYY
+                return `${String(nextMonth).padStart(2, "0")}${nextYear}`;
+            },
+
+            // Add this method to format period for display (MM/YYYY)
+            _formatPeriodForDisplay: function (sPeriod) {
+                if (!sPeriod || sPeriod.length !== 6) return sPeriod;
+
+                const month = sPeriod.substring(0, 2);
+                const year = sPeriod.substring(2, 6);
+                return `${month}/${year}`;
+            },
+
+            _styleHeaderButtons: function () {
+                try {
+                    const oView = this.getView();
+                    const oUtilitiesModel = this.getInterface().getModel("utilities");
+
+                    // Get current period from model or context
+                    let sCurrentPeriod = oUtilitiesModel.getProperty("/period");
+                    let sCurrentFGA = "";
+
+                    // Try to get current FGA from context
+                    const oContext = this.base.getView().getBindingContext();
+                    if (oContext) {
+                        sCurrentFGA = oContext.getProperty("BusinessNo");
+                        // If period is not in utilities model, try from context
+                        if (!sCurrentPeriod) {
+                            sCurrentPeriod = oContext.getProperty("p_period");
+                            if (sCurrentPeriod) {
+                                oUtilitiesModel.setProperty("/period", sCurrentPeriod);
+                            }
+                        }
+                    }
+
+                    // If still no period, use default
+                    if (!sCurrentPeriod) {
+                        const now = new Date();
+                        const month = String(now.getMonth() + 1).padStart(2, "0");
+                        const year = String(now.getFullYear());
+                        sCurrentPeriod = `${month}${year}`;
+                        oUtilitiesModel.setProperty("/period", sCurrentPeriod);
+                    }
+
+                    // Calculate next period
+                    const sNextPeriod = this._getNextPeriod(sCurrentPeriod);
+
+                    // Find all header buttons
+                    const aButtons = oView.findAggregatedObjects(true, oCtrl =>
+                        oCtrl.isA("sap.m.Button") &&
+                        (
+                            oCtrl.getId().includes("prevPeriodBtn") ||
+                            oCtrl.getId().includes("periodBtn") ||
+                            oCtrl.getId().includes("nextPeriodBtn") ||
+                            oCtrl.getId().includes("selectFGABtn")
+                        )
+                    );
+
+                    aButtons.forEach(oButton => {
+                        const sId = oButton.getId();
+
+                        // Common style for all period-related buttons
+                        oButton.setType("Transparent");
+
+                        if (sId.includes("prevPeriodBtn")) {
+                            // Previous period arrow 
+                            oButton.addStyleClass("fgaPeriodGroupStart");
+                            oButton.setIcon("sap-icon://navigation-left-arrow");
+                            oButton.setText("");
+                            oButton.data("period", sCurrentPeriod);
+                            oButton.data("fga", sCurrentFGA);
+
+                        } else if (sId.includes("periodBtn")) {
+                            // Period label button - middle button
+                            oButton.addStyleClass("fgaPeriodLabel");
+                            // Display current period in MM/YYYY format
+                            oButton.setText(this._formatPeriodForDisplay(sCurrentPeriod));
+                            oButton.data("period", sCurrentPeriod);
+                            oButton.data("fga", sCurrentFGA);
+
+                        } else if (sId.includes("nextPeriodBtn")) {
+                            // Next period arrow 
+                            oButton.addStyleClass("fgaPeriodGroupEnd");
+                            oButton.setIcon("sap-icon://navigation-right-arrow");
+                            // Display FGA with next period if available
+                            let sButtonText = "";
+                            oButton.setText(sButtonText);
+                            // Store next period info
+                            oButton.data("period", sNextPeriod);
+                            oButton.data("fga", sCurrentFGA);
+
+                        } else if (sId.includes("selectFGABtn")) {
+                            // SELECT FGA button - make it emphasized
+                            oButton.setType("Default");
+                            oButton.setIcon("sap-icon://value-help");
+                            oButton.addStyleClass("fgaFgaAction");
+                            oButton.setText("Sélection FGA");
+                        }
+                    });
+
+                } catch (e) {
+                    console.error("Header button styling failed", e);
+                }
+            },
+
+
+
+            // Optional: Add a method to navigate to specific period
+            _navigateToPeriod: function (sPeriod, sFGA) {
+                const oUtilitiesModel = this.getInterface().getModel("utilities");
+                const oView = this.getView();
+                const oModel = this._getOwnerComponent().getModel();
+                const oNavController = this._getExtensionAPI().getNavigationController();
+
+                // Update utilities model
+                oUtilitiesModel.setProperty("/period", sPeriod);
+
+                // Create navigation context
+                const oContext = oModel.createEntry("/ZC_FGASet", {
+                    properties: {
+                        BusinessNo: sFGA || "DUMMY",
+                        p_period: sPeriod
+                    }
                 });
 
-                this._oFGAVH.setModel(this.getOwnerComponent().getModel());
-                //this._oFGAVH.setEntitySet("ZC_FGASet");
+                // Navigate
+                oNavController.navigateInternal(oContext, {
+                    navigationMode: "inplace"
+                }).catch(error => {
+                    console.error("Error navigating to period:", error);
+                });
+            },
 
-                oView.addDependent(this._oFGAVH);
-            }
 
-            this._oFGAVH.open();
-        },
+
+            /*onNextPeriod: async function (oEvent) {
+                try {
+                    const oView = this.getView();
+                    const oUtilitiesModel = this.getInterface().getModel("utilities");
+                    const oModel = this._getOwnerComponent().getModel();
+                    const oNavController = this._getExtensionAPI().getNavigationController();
+
+                    // Get current period and FGA from context
+                    const oContext = oView.getBindingContext();
+                    if (!oContext) {
+                        sap.m.MessageBox.error("Aucun FGA sélectionné");
+                        return;
+                    }
+
+                    const sCurrentFGA = oContext.getProperty("BusinessNo");
+                    let sCurrentPeriod = oContext.getProperty("p_period");
+
+                    // Validate period
+                    if (!sCurrentPeriod) {
+                        sap.m.MessageBox.error("Période actuelle non définie");
+                        return;
+                    }
+
+                    // Calculate next period
+                    const sNextPeriod = this._getNextPeriod(sCurrentPeriod);
+
+                    // Set busy indicator
+                    this._setBusy(true);
+
+                    // Check for unsaved changes in normal mode
+                    const oUIModel = this.base.templateBaseExtension.getView().getModel("ui");
+                    const bEditable = oUIModel ? oUIModel.getProperty("/editable") : false;
+
+                    if (bEditable) {
+                        // There are unsaved changes - ask user
+                        const bSaveConfirmed = await new Promise((resolve) => {
+                            sap.m.MessageBox.confirm(
+                                "Vous avez des modifications non sauvegardées. Voulez-vous les sauvegarder avant de changer de période?",
+                                {
+                                    title: "Modifications non sauvegardées",
+                                    actions: [
+                                        sap.m.MessageBox.Action.YES,
+                                        sap.m.MessageBox.Action.NO,
+                                        sap.m.MessageBox.Action.CANCEL
+                                    ],
+                                    onClose: (sAction) => {
+                                        if (sAction === sap.m.MessageBox.Action.YES) {
+                                            resolve(true);
+                                        } else if (sAction === sap.m.MessageBox.Action.NO) {
+                                            resolve(false);
+                                        } else {
+                                            resolve(null); // Cancelled
+                                        }
+                                    }
+                                }
+                            );
+                        });
+
+                        if (bSaveConfirmed === null) {
+                            this._setBusy(false);
+                            return; // User cancelled
+                        }
+
+                        if (bSaveConfirmed) {
+                            // Save current changes before navigating
+                            try {
+                                // Trigger save operation
+                                const result = await this._executeSaveForNavigation();
+                                if (!result) {
+                                    this._setBusy(false);
+                                    return;
+                                }
+                            } catch (error) {
+                                console.error("Error saving before navigation:", error);
+                                sap.m.MessageBox.error("Erreur lors de la sauvegarde");
+                                this._setBusy(false);
+                                return;
+                            }
+                        } else {
+                            // User chose not to save - reset changes
+                            this._cleanModification();
+                        }
+                    }
+
+                    // Create navigation context for next period
+                    const oNavigationContext = oModel.createEntry("/ZC_FGASet", {
+                        properties: {
+                            BusinessNo: sCurrentFGA,
+                            p_period: sNextPeriod
+                        }
+                    });
+
+                    // Update utilities model with new period
+                    oUtilitiesModel.setProperty("/period", sNextPeriod);
+                    oUtilitiesModel.setBusinessNo(sCurrentFGA);
+
+                    // Navigate to next period
+                    await oNavController.navigateInternal(oNavigationContext, {
+                        navigationMode: "inplace"
+                    });
+
+                    // Refresh page with new period data
+                    await this._refreshNormalModeData(sNextPeriod, sCurrentFGA);
+
+                    // Update button texts
+                    this._styleHeaderButtons();
+
+                    MessageToast.show(`Navigation vers la période: ${this._formatPeriodForDisplay(sNextPeriod)}`);
+
+                } catch (error) {
+                    console.error("Error navigating to next period:", error);
+                    sap.m.MessageBox.error(`Erreur: ${error.message || "Impossible de naviguer vers la période suivante"}`);
+                } finally {
+                    this._setBusy(false);
+                }
+            },*/
+
+
+
+            // Add simplified refresh method for normal mode
+            _refreshNormalModeData: async function (sPeriod, sBusinessNo) {
+                const oUtilitiesModel = this.getInterface().getModel("utilities");
+
+                // Update utilities model
+                oUtilitiesModel.setProperty("/period", sPeriod);
+                oUtilitiesModel.setBusinessNo(sBusinessNo);
+
+                try {
+                    // Clear existing data
+                    oUtilitiesModel.reInit();
+
+                    // Load Missions fragment
+                    await this._loadFragment("Missions");
+
+                    // Get tab data for new period
+                    const tabData = await this._getTabsData(null);
+
+                    // Prepare all tree data
+                    this.prepareMissionsTreeData();
+                    this.preparePxAutreTreeData();
+                    this.preparePxSubContractingTreeData();
+                    this.preparePxRecetteExtTreeData();
+                    this.preparePxMainOeuvreTreeData();
+                    this.preparePxSTITreeData();
+                    this.preparePrevisionelTreeData();
+
+                    // Force refresh of Object Page
+                    this._getExtensionAPI().refresh();
+
+                    // Trigger any necessary UI updates
+                    this._extendOPUiManage._setOPView(this.base.getView().getBindingContext());
+
+                } catch (error) {
+                    console.error("Error refreshing normal mode data:", error);
+                    throw error;
+                }
+            },
+
+            // Add method to handle save for navigation
+            _executeSaveForNavigation: async function () {
+                try {
+                    const oView = this.base.getView();
+                    const oContext = oView.getBindingContext();
+                    const oUtilitiesModel = this.getModel("utilities");
+
+                    if (!oContext) {
+                        throw new Error("Aucun contexte disponible");
+                    }
+
+                    // Validate data before save
+                    if (!oUtilitiesModel.validDataBeforeSave(oView)) {
+                        sap.m.MessageBox.error("Veuillez vérifier tous les champs avant de sauvegarder");
+                        return false;
+                    }
+
+                    if (!oUtilitiesModel.validRecetteExtBeforeSave(oView)) {
+                        sap.m.MessageBox.error("Veuillez répartir correctement les budgets");
+                        return false;
+                    }
+
+                    this._setBusy(true);
+
+                    // Prepare payload for save
+                    const formattedMissions = oUtilitiesModel.getFormattedMissions();
+                    const formattedPxAutre = oUtilitiesModel.getFormattedPxAutre();
+                    const formattedPxSubContractingExt = oUtilitiesModel.formattedPxSubContractingExt();
+                    const formattedPxRecetteExt = oUtilitiesModel.formattedPxRecetteExt();
+                    const formattedMainOeuvre = oUtilitiesModel.formattedPxMainOeuvre();
+                    const formattedMOProfil = oUtilitiesModel.formattedPxMOProfil();
+
+                    const oPayload = Helper.extractPlainData({
+                        ...oContext.getObject(),
+                        "to_Missions": formattedMissions,
+                        "to_BudgetPxAutre": formattedPxAutre,
+                        "to_BudgetPxSubContracting": formattedPxSubContractingExt,
+                        "to_BudgetPxRecetteExt": formattedPxRecetteExt,
+                        "to_BudgetPxSTI": [],
+                        "to_Previsionel": [],
+                        "to_BudgetPxMOProfil": formattedMOProfil,
+                        "to_BudgetPxMainOeuvre": formattedMainOeuvre
+                    });
+
+                    delete oPayload.to_BudgetPxSTI;
+                    delete oPayload.to_Previsionel;
+                    oPayload.VAT = oPayload.VAT ? oPayload.VAT.toString() : oPayload.VAT;
+
+                    // Execute save
+                    const updatedFGA = await oUtilitiesModel.deepUpsertFGA(oPayload);
+
+                    if (updatedFGA) {
+                        this._resetNewMissionFlags(oUtilitiesModel);
+                        MessageToast.show("Modifications sauvegardées avec succès");
+                        return true;
+                    } else {
+                        throw new Error("Échec de la sauvegarde");
+                    }
+
+                } catch (error) {
+                    console.error("Error in executeSaveForNavigation:", error);
+                    sap.m.MessageBox.error("Erreur lors de la sauvegarde: " + (error.message || "Erreur inconnue"));
+                    return false;
+                } finally {
+                    this._setBusy(false);
+                }
+            },
+
+            onPrevPeriod: async function (oEvent) {
+                try {
+                    const oView = this.getView();
+                    const oUtilitiesModel = this.getInterface().getModel("utilities");
+                    const oModel = this._getOwnerComponent().getModel();
+                    const oNavController = this._getExtensionAPI().getNavigationController();
+
+                    // Get current period and FGA from context
+                    const oContext = oView.getBindingContext();
+                    if (!oContext) {
+                        sap.m.MessageBox.error("Aucun FGA sélectionné");
+                        return;
+                    }
+
+                    const sCurrentFGA = oContext.getProperty("BusinessNo");
+                    let sCurrentPeriod = oContext.getProperty("p_period");
+
+                    // Validate period
+                    if (!sCurrentPeriod) {
+                        sap.m.MessageBox.error("Période actuelle non définie");
+                        return;
+                    }
+
+                    // Calculate previous period
+                    const sPrevPeriod = this._getPrevPeriod(sCurrentPeriod);
+
+                    // Set busy indicator
+                    this._setBusy(true);
+
+                    // Check for unsaved changes
+                    const oUIModel = this.base.templateBaseExtension.getView().getModel("ui");
+                    const bEditable = oUIModel ? oUIModel.getProperty("/editable") : false;
+
+                    if (bEditable) {
+                        const bSaveConfirmed = await new Promise((resolve) => {
+                            sap.m.MessageBox.confirm(
+                                "Vous avez des modifications non sauvegardées. Voulez-vous les sauvegarder avant de changer de période?",
+                                {
+                                    title: "Modifications non sauvegardées",
+                                    actions: [
+                                        sap.m.MessageBox.Action.YES,
+                                        sap.m.MessageBox.Action.NO,
+                                        sap.m.MessageBox.Action.CANCEL
+                                    ],
+                                    onClose: (sAction) => {
+                                        if (sAction === sap.m.MessageBox.Action.YES) {
+                                            resolve(true);
+                                        } else if (sAction === sap.m.MessageBox.Action.NO) {
+                                            resolve(false);
+                                        } else {
+                                            resolve(null);
+                                        }
+                                    }
+                                }
+                            );
+                        });
+
+                        if (bSaveConfirmed === null) {
+                            this._setBusy(false);
+                            return;
+                        }
+
+                        if (bSaveConfirmed) {
+                            try {
+                                const result = await this._executeSaveForNavigation();
+                                if (!result) {
+                                    this._setBusy(false);
+                                    return;
+                                }
+                            } catch (error) {
+                                console.error("Error saving before navigation:", error);
+                                sap.m.MessageBox.error("Erreur lors de la sauvegarde");
+                                this._setBusy(false);
+                                return;
+                            }
+                        } else {
+                            this._cleanModification();
+                        }
+                    }
+
+
+                    // Create navigation context for previous period
+                    const oNavigationContext = oModel.createEntry("/ZC_FGASet", {
+                        properties: {
+                            BusinessNo: sCurrentFGA,
+                            p_period: sPrevPeriod
+                        }
+                    });
+
+                    // Update utilities model
+                    oUtilitiesModel.setProperty("/period", sPrevPeriod);
+                    oUtilitiesModel.setBusinessNo(sCurrentFGA);
+
+                    // Navigate to previous period
+                    const sKey = `BusinessNo='${sCurrentFGA}',p_period='${sPrevPeriod}'`;
+                    const sPath = `/ZC_FGASet(${sKey})`;
+                    const oResult = await new Promise((resolve, reject) => {
+                        oModel.read(sPath, {
+                            success: (oData) => {
+                                // Create a binding context from the read data
+                                const oBindingContext = new sap.ui.model.Context(oModel, sPath);
+                                resolve(oBindingContext);
+                            },
+                            error: (oError) => reject(oError)
+                        });
+                    });
+
+                    // Update utilities model with new period
+                    oUtilitiesModel.setProperty("/period", sPrevPeriod);
+                    oUtilitiesModel.setBusinessNo(sCurrentFGA);
+
+                    await oNavController.navigateInternal(oResult, {
+                        navigationMode: "inplace"
+                    });
+
+                    // Refresh page with previous period data
+                    await this._refreshNormalModeData(sPrevPeriod, sCurrentFGA);
+
+                    // Update button texts
+                    this._styleHeaderButtons();
+
+                    MessageToast.show(`Navigation vers la période: ${this._formatPeriodForDisplay(sPrevPeriod)}`);
+
+                } catch (error) {
+                    console.error("Error navigating to previous period:", error);
+                    sap.m.MessageBox.error(`Erreur: ${error.message || "Impossible de naviguer vers la période précédente"}`);
+                } finally {
+                    this._setBusy(false);
+                }
+            },
+
+
+            _getPrevPeriod: function (sCurrentPeriod) {
+                if (!sCurrentPeriod || sCurrentPeriod.length !== 6) {
+                    const now = new Date();
+                    const month = String(now.getMonth() + 1).padStart(2, "0");
+                    const year = String(now.getFullYear());
+                    return `${month}${year}`;
+                }
+
+                const month = parseInt(sCurrentPeriod.substring(0, 2), 10);
+                const year = parseInt(sCurrentPeriod.substring(2, 6), 10);
+
+                let prevMonth, prevYear;
+
+                if (month === 1) {
+                    prevMonth = 12;
+                    prevYear = year - 1;
+                } else {
+                    prevMonth = month - 1;
+                    prevYear = year;
+                }
+
+                return `${String(prevMonth).padStart(2, "0")}${String(prevYear)}`;
+            },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            onSelectFGAPress: function (oEvent) {
+                var oView = this.getView();
+                var self = this; // Store reference to controller
+
+                // First, ensure data is loaded
+                var oModel = this.getView().getModel();
+
+                // Check if data is already loaded
+                var aData = oModel.getProperty("/ZC_FGA_VH");
+                if (!aData || aData.length === 0) {
+                    console.log("Loading BusinessNo data...");
+
+                    // Show busy indicator
+                    var oBusyDialog = new sap.m.BusyDialog({
+                        text: "Chargement des données...",
+                        title: "Veuillez patienter"
+                    });
+                    oBusyDialog.open();
+
+                    // Load data first
+                    oModel.read("/ZC_FGA_VH", {
+                        success: function (oData) {
+                            console.log("Data loaded successfully:", oData.results.length, "items");
+                            oBusyDialog.close();
+                            self._openBusinessNoDialog(oView, oData.results, self);
+                        },
+                        error: function (oError) {
+                            console.error("Error loading data:", oError);
+                            oBusyDialog.close();
+                            sap.m.MessageBox.error("Erreur lors du chargement des données");
+                        }
+                    });
+                } else {
+                    console.log("Data already loaded:", aData.length, "items");
+                    this._openBusinessNoDialog(oView, aData, this);
+                }
+            },
+
+            _openBusinessNoDialog: function (oView, aData, oController) {
+                // Create a new dialog each time to avoid binding issues
+                if (this._oBusinessNoDialog) {
+                    this._oBusinessNoDialog.destroy();
+                }
+
+                this._oBusinessNoDialog = new sap.m.TableSelectDialog({
+                    title: "Sélectionner N°Affaire",
+                    noDataText: "Aucune affaire trouvée",
+                    rememberSelections: false,
+                    multiSelect: false, // Single selection only
+                    contentWidth: "60%",
+
+                    search: function (oEvent) {
+                        var sValue = oEvent.getParameter("value").toLowerCase();
+                        var oTable = oEvent.getSource();
+                        var aAllItems = oTable.getModel().getProperty("/allItems");
+
+                        if (sValue) {
+                            var aFilteredItems = aAllItems.filter(function (oItem) {
+                                return oItem.BusinessNo && oItem.BusinessNo.toLowerCase().includes(sValue) ||
+                                    oItem.BusinessName && oItem.BusinessName.toLowerCase().includes(sValue);
+                            });
+                            oTable.getModel().setProperty("/items", aFilteredItems);
+                        } else {
+                            oTable.getModel().setProperty("/items", aAllItems);
+                        }
+                    },
+
+                    confirm: function (oEvent) {
+                        var aSelectedItems = oEvent.getParameter("selectedItems");
+                        console.log("Selected items:", aSelectedItems);
+
+                        if (aSelectedItems && aSelectedItems.length > 0) {
+                            var oSelectedItem = aSelectedItems[0]; // Only one item since multiSelect is false
+                            var oCtx = oSelectedItem.getBindingContext();
+
+                            if (oCtx) {
+                                var sSelectedBusinessNo = oCtx.getProperty("BusinessNo");
+                                var sSelectedBusinessName = oCtx.getProperty("BusinessName");
+
+                                console.log("BusinessNo selected:", sSelectedBusinessNo);
+
+                                // Store in sessionStorage if needed
+                                try {
+                                    sessionStorage.setItem("selectedBusinessNo", sSelectedBusinessNo);
+                                } catch (error) {
+                                    console.error("Error saving to sessionStorage:", error);
+                                }
+
+                                // Close the dialog by calling close() on the TableSelectDialog instance
+                                // The dialog will close automatically after confirm, but we need to get a reference to it
+                                var oDialog = oEvent.getSource();
+
+                                // Navigate using the controller reference
+                                oController._navigateToSelectedFGA(sSelectedBusinessNo, sSelectedBusinessName)
+                                    .catch(function (error) {
+                                        console.error("Error navigating to FGA:", error);
+                                        sap.m.MessageBox.error("Erreur lors de la navigation vers le FGA sélectionné");
+                                    })
+                                    .finally(function () {
+                                        // Ensure dialog is closed even if navigation fails
+                                        if (oDialog && oDialog.close) {
+                                            oDialog.close();
+                                        }
+                                    });
+                            }
+                        }
+                    },
+
+                    columns: [
+                        new sap.m.Column({
+                            header: new sap.m.Text({ text: "N°Affaire" })
+                        }),
+                        new sap.m.Column({
+                            header: new sap.m.Text({ text: "Description" })
+                        })
+                    ]
+                });
+
+                // Create and set the model
+                var oModel = new sap.ui.model.json.JSONModel({
+                    allItems: aData,
+                    items: aData
+                });
+                this._oBusinessNoDialog.setModel(oModel);
+
+                this._oBusinessNoDialog.bindAggregation("items", {
+                    path: "/items",
+                    template: new sap.m.ColumnListItem({
+                        type: "Active",
+                        cells: [
+                            new sap.m.Text({ text: "{BusinessNo}" }),
+                            new sap.m.Text({ text: "{BusinessName}" })
+                        ]
+                    })
+                });
+
+                oView.addDependent(this._oBusinessNoDialog);
+                this._oBusinessNoDialog.open();
+            },
+
+            // Navigation method using the EXACT same pattern as onPrevPeriod
+            _navigateToSelectedFGA: async function (sBusinessNo, sBusinessName) {
+                try {
+                    const oView = this.getView();
+                    const oUtilitiesModel = this.getInterface().getModel("utilities");
+                    const oModel = this._getOwnerComponent().getModel();
+                    const oNavController = this._getExtensionAPI().getNavigationController();
+
+                    // Get current period from utilities model or context
+                    let sCurrentPeriod = oUtilitiesModel.getProperty("/period");
+
+                    // If no period in utilities, get from current context
+                    if (!sCurrentPeriod) {
+                        const oContext = oView.getBindingContext();
+                        if (oContext) {
+                            sCurrentPeriod = oContext.getProperty("p_period");
+                        }
+                    }
+
+                    // If still no period, use default (current month)
+                    if (!sCurrentPeriod) {
+                        const now = new Date();
+                        const month = String(now.getMonth() + 1).padStart(2, "0");
+                        const year = String(now.getFullYear());
+                        sCurrentPeriod = `${month}${year}`;
+                    }
+
+                    console.log("Navigating to FGA:", sBusinessNo, "with period:", sCurrentPeriod);
+
+                    // Set busy indicator
+                    this._setBusy(true);
+
+                    // Check for unsaved changes before navigating (EXACT same as onPrevPeriod)
+                    const oUIModel = this.base.templateBaseExtension.getView().getModel("ui");
+                    const bEditable = oUIModel ? oUIModel.getProperty("/editable") : false;
+
+                    if (bEditable) {
+                        const bSaveConfirmed = await new Promise((resolve) => {
+                            sap.m.MessageBox.confirm(
+                                "Vous avez des modifications non sauvegardées. Voulez-vous les sauvegarder avant de naviguer vers un autre FGA?",
+                                {
+                                    title: "Modifications non sauvegardées",
+                                    actions: [
+                                        sap.m.MessageBox.Action.YES,
+                                        sap.m.MessageBox.Action.NO,
+                                        sap.m.MessageBox.Action.CANCEL
+                                    ],
+                                    onClose: (sAction) => {
+                                        if (sAction === sap.m.MessageBox.Action.YES) {
+                                            resolve(true);
+                                        } else if (sAction === sap.m.MessageBox.Action.NO) {
+                                            resolve(false);
+                                        } else {
+                                            resolve(null);
+                                        }
+                                    }
+                                }
+                            );
+                        });
+
+                        if (bSaveConfirmed === null) {
+                            this._setBusy(false);
+                            return;
+                        }
+
+                        if (bSaveConfirmed) {
+                            try {
+                                const result = await this._executeSaveForNavigation();
+                                if (!result) {
+                                    this._setBusy(false);
+                                    return;
+                                }
+                            } catch (error) {
+                                console.error("Error saving before navigation:", error);
+                                sap.m.MessageBox.error("Erreur lors de la sauvegarde");
+                                this._setBusy(false);
+                                return;
+                            }
+                        } else {
+                            this._cleanModification();
+                        }
+                    }
+
+                    // Create navigation context - EXACT same pattern as onPrevPeriod
+                    const oNavigationContext = oModel.createEntry("/ZC_FGASet", {
+                        properties: {
+                            BusinessNo: sBusinessNo,
+                            p_period: sCurrentPeriod
+                        }
+                    });
+
+                    // Update utilities model
+                    oUtilitiesModel.setProperty("/period", sCurrentPeriod);
+                    oUtilitiesModel.setBusinessNo(sBusinessNo);
+
+                    // Navigate to selected FGA - EXACT same pattern as onPrevPeriod
+                    const sKey = `BusinessNo='${sBusinessNo}',p_period='${sCurrentPeriod}'`;
+                    const sPath = `/ZC_FGASet(${sKey})`;
+                    const oResult = await new Promise((resolve, reject) => {
+                        oModel.read(sPath, {
+                            success: (oData) => {
+                                // Create a binding context from the read data
+                                const oBindingContext = new sap.ui.model.Context(oModel, sPath);
+                                resolve(oBindingContext);
+                            },
+                            error: (oError) => reject(oError)
+                        });
+                    });
+
+                    // Update utilities model with new period
+                    oUtilitiesModel.setProperty("/period", sCurrentPeriod);
+                    oUtilitiesModel.setBusinessNo(sBusinessNo);
+
+                    await oNavController.navigateInternal(oResult, {
+                        navigationMode: "inplace"
+                    });
+
+                    // Refresh page with selected FGA data - EXACT same pattern as onPrevPeriod
+                    await this._refreshNormalModeData(sCurrentPeriod, sBusinessNo);
+
+                    // Update button texts
+                    this._styleHeaderButtons();
+
+                    MessageToast.show(`Navigation vers: ${sBusinessNo} - ${this._formatPeriodForDisplay(sCurrentPeriod)}`);
+
+                } catch (error) {
+                    console.error("Error navigating to selected FGA:", error);
+                    sap.m.MessageBox.error(`Erreur: ${error.message || "Impossible de naviguer vers le FGA sélectionné"}`);
+                    throw error;
+                } finally {
+                    this._setBusy(false);
+                }
+            },
 
         });
 
