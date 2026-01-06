@@ -1973,9 +1973,59 @@ sap.ui.define(
                 });
             },
 
-            _styleHeaderButtons1: function () {
+
+
+            /**
+              * REQUIREMENT IMPLEMENTATION:
+              * 
+              * 1. PERIOD NAVIGATION:
+              *    - Previous/Next buttons to change period
+              *    - Current period display (MM/YYYY)
+              *    - Direct period input capability
+              * 
+              * 2. FGA SELECTION WITHOUT PERIOD CHANGE:
+              *    - FGA selection button with value help (match code)
+              *    - Change FGA without modifying the period
+              *    - No need to return to FGA Manager
+              */
+
+            _styleHeaderButtons: function () {
                 try {
                     const oView = this.getView();
+                    const oUtilitiesModel = this.getInterface().getModel("utilities");
+
+                    // Check if we're in create mode
+                    const oUIModel = this.base.getView().getModel("ui");
+                    const bCreateMode = oUIModel ? oUIModel.getProperty("/createMode") : false;
+
+                    // Get current period from model or context
+                    let sCurrentPeriod = oUtilitiesModel.getProperty("/period");
+                    let sCurrentFGA = "";
+
+                    // Try to get current FGA from context
+                    const oContext = this.base.getView().getBindingContext();
+                    if (oContext) {
+                        sCurrentFGA = oContext.getProperty("BusinessNo");
+                        // If period is not in utilities model, try from context
+                        if (!sCurrentPeriod) {
+                            sCurrentPeriod = oContext.getProperty("p_period");
+                            if (sCurrentPeriod) {
+                                oUtilitiesModel.setProperty("/period", sCurrentPeriod);
+                            }
+                        }
+                    }
+
+                    // If still no period, use default
+                    if (!sCurrentPeriod) {
+                        const now = new Date();
+                        const month = String(now.getMonth() + 1).padStart(2, "0");
+                        const year = String(now.getFullYear());
+                        sCurrentPeriod = `${month}${year}`;
+                        oUtilitiesModel.setProperty("/period", sCurrentPeriod);
+                    }
+
+                    // Calculate next period
+                    const sNextPeriod = this._getNextPeriod(sCurrentPeriod);
 
                     // Find all header buttons
                     const aButtons = oView.findAggregatedObjects(true, oCtrl =>
@@ -1991,25 +2041,44 @@ sap.ui.define(
                     aButtons.forEach(oButton => {
                         const sId = oButton.getId();
 
+                        // Hide buttons in create mode
+                        if (bCreateMode) {
+                            oButton.setVisible(false);
+                            return; // Skip further styling for create mode
+                        }
+
+                        // Show buttons in non-create mode
+                        oButton.setVisible(true);
+
                         // Common style for all period-related buttons
                         oButton.setType("Transparent");
 
                         if (sId.includes("prevPeriodBtn")) {
-                            // Previous period arrow - place it right before the period label
+                            // Previous period arrow 
                             oButton.addStyleClass("fgaPeriodGroupStart");
                             oButton.setIcon("sap-icon://navigation-left-arrow");
-                            oButton.setText(""); // Clear any text, use only icon
+                            oButton.setText("");
+                            oButton.data("period", sCurrentPeriod);
+                            oButton.data("fga", sCurrentFGA);
 
                         } else if (sId.includes("periodBtn")) {
                             // Period label button - middle button
-                            //oButton.setEnabled(false); // Make it non-clickable
                             oButton.addStyleClass("fgaPeriodLabel");
+                            // Display current period in MM/YYYY format
+                            oButton.setText(this._formatPeriodForDisplay(sCurrentPeriod));
+                            oButton.data("period", sCurrentPeriod);
+                            oButton.data("fga", sCurrentFGA);
 
                         } else if (sId.includes("nextPeriodBtn")) {
-                            // Next period arrow - place it right after the period label
+                            // Next period arrow 
                             oButton.addStyleClass("fgaPeriodGroupEnd");
                             oButton.setIcon("sap-icon://navigation-right-arrow");
-                            oButton.setText(""); // Clear any text, use only icon
+                            // Display FGA with next period if available
+                            let sButtonText = "";
+                            oButton.setText(sButtonText);
+                            // Store next period info
+                            oButton.data("period", sNextPeriod);
+                            oButton.data("fga", sCurrentFGA);
 
                         } else if (sId.includes("selectFGABtn")) {
                             // SELECT FGA button - make it emphasized
@@ -2024,10 +2093,6 @@ sap.ui.define(
                     console.error("Header button styling failed", e);
                 }
             },
-
-
-
-
 
             onNextPeriod: async function (oEvent) {
                 try {
@@ -2200,101 +2265,6 @@ sap.ui.define(
                 return `${month}/${year}`;
             },
 
-            _styleHeaderButtons: function () {
-                try {
-                    const oView = this.getView();
-                    const oUtilitiesModel = this.getInterface().getModel("utilities");
-
-                    // Get current period from model or context
-                    let sCurrentPeriod = oUtilitiesModel.getProperty("/period");
-                    let sCurrentFGA = "";
-
-                    // Try to get current FGA from context
-                    const oContext = this.base.getView().getBindingContext();
-                    if (oContext) {
-                        sCurrentFGA = oContext.getProperty("BusinessNo");
-                        // If period is not in utilities model, try from context
-                        if (!sCurrentPeriod) {
-                            sCurrentPeriod = oContext.getProperty("p_period");
-                            if (sCurrentPeriod) {
-                                oUtilitiesModel.setProperty("/period", sCurrentPeriod);
-                            }
-                        }
-                    }
-
-                    // If still no period, use default
-                    if (!sCurrentPeriod) {
-                        const now = new Date();
-                        const month = String(now.getMonth() + 1).padStart(2, "0");
-                        const year = String(now.getFullYear());
-                        sCurrentPeriod = `${month}${year}`;
-                        oUtilitiesModel.setProperty("/period", sCurrentPeriod);
-                    }
-
-                    // Calculate next period
-                    const sNextPeriod = this._getNextPeriod(sCurrentPeriod);
-
-                    // Find all header buttons
-                    const aButtons = oView.findAggregatedObjects(true, oCtrl =>
-                        oCtrl.isA("sap.m.Button") &&
-                        (
-                            oCtrl.getId().includes("prevPeriodBtn") ||
-                            oCtrl.getId().includes("periodBtn") ||
-                            oCtrl.getId().includes("nextPeriodBtn") ||
-                            oCtrl.getId().includes("selectFGABtn")
-                        )
-                    );
-
-                    aButtons.forEach(oButton => {
-                        const sId = oButton.getId();
-
-                        // Common style for all period-related buttons
-                        oButton.setType("Transparent");
-
-                        if (sId.includes("prevPeriodBtn")) {
-                            // Previous period arrow 
-                            oButton.addStyleClass("fgaPeriodGroupStart");
-                            oButton.setIcon("sap-icon://navigation-left-arrow");
-                            oButton.setText("");
-                            oButton.data("period", sCurrentPeriod);
-                            oButton.data("fga", sCurrentFGA);
-
-                        } else if (sId.includes("periodBtn")) {
-                            // Period label button - middle button
-                            oButton.addStyleClass("fgaPeriodLabel");
-                            // Display current period in MM/YYYY format
-                            oButton.setText(this._formatPeriodForDisplay(sCurrentPeriod));
-                            oButton.data("period", sCurrentPeriod);
-                            oButton.data("fga", sCurrentFGA);
-
-                        } else if (sId.includes("nextPeriodBtn")) {
-                            // Next period arrow 
-                            oButton.addStyleClass("fgaPeriodGroupEnd");
-                            oButton.setIcon("sap-icon://navigation-right-arrow");
-                            // Display FGA with next period if available
-                            let sButtonText = "";
-                            oButton.setText(sButtonText);
-                            // Store next period info
-                            oButton.data("period", sNextPeriod);
-                            oButton.data("fga", sCurrentFGA);
-
-                        } else if (sId.includes("selectFGABtn")) {
-                            // SELECT FGA button - make it emphasized
-                            oButton.setType("Default");
-                            oButton.setIcon("sap-icon://value-help");
-                            oButton.addStyleClass("fgaFgaAction");
-                            oButton.setText("Sélection FGA");
-                        }
-                    });
-
-                } catch (e) {
-                    console.error("Header button styling failed", e);
-                }
-            },
-
-
-
-            // Optional: Add a method to navigate to specific period
             _navigateToPeriod: function (sPeriod, sFGA) {
                 const oUtilitiesModel = this.getInterface().getModel("utilities");
                 const oView = this.getView();
@@ -2320,128 +2290,6 @@ sap.ui.define(
                 });
             },
 
-
-
-            /*onNextPeriod: async function (oEvent) {
-                try {
-                    const oView = this.getView();
-                    const oUtilitiesModel = this.getInterface().getModel("utilities");
-                    const oModel = this._getOwnerComponent().getModel();
-                    const oNavController = this._getExtensionAPI().getNavigationController();
-
-                    // Get current period and FGA from context
-                    const oContext = oView.getBindingContext();
-                    if (!oContext) {
-                        sap.m.MessageBox.error("Aucun FGA sélectionné");
-                        return;
-                    }
-
-                    const sCurrentFGA = oContext.getProperty("BusinessNo");
-                    let sCurrentPeriod = oContext.getProperty("p_period");
-
-                    // Validate period
-                    if (!sCurrentPeriod) {
-                        sap.m.MessageBox.error("Période actuelle non définie");
-                        return;
-                    }
-
-                    // Calculate next period
-                    const sNextPeriod = this._getNextPeriod(sCurrentPeriod);
-
-                    // Set busy indicator
-                    this._setBusy(true);
-
-                    // Check for unsaved changes in normal mode
-                    const oUIModel = this.base.templateBaseExtension.getView().getModel("ui");
-                    const bEditable = oUIModel ? oUIModel.getProperty("/editable") : false;
-
-                    if (bEditable) {
-                        // There are unsaved changes - ask user
-                        const bSaveConfirmed = await new Promise((resolve) => {
-                            sap.m.MessageBox.confirm(
-                                "Vous avez des modifications non sauvegardées. Voulez-vous les sauvegarder avant de changer de période?",
-                                {
-                                    title: "Modifications non sauvegardées",
-                                    actions: [
-                                        sap.m.MessageBox.Action.YES,
-                                        sap.m.MessageBox.Action.NO,
-                                        sap.m.MessageBox.Action.CANCEL
-                                    ],
-                                    onClose: (sAction) => {
-                                        if (sAction === sap.m.MessageBox.Action.YES) {
-                                            resolve(true);
-                                        } else if (sAction === sap.m.MessageBox.Action.NO) {
-                                            resolve(false);
-                                        } else {
-                                            resolve(null); // Cancelled
-                                        }
-                                    }
-                                }
-                            );
-                        });
-
-                        if (bSaveConfirmed === null) {
-                            this._setBusy(false);
-                            return; // User cancelled
-                        }
-
-                        if (bSaveConfirmed) {
-                            // Save current changes before navigating
-                            try {
-                                // Trigger save operation
-                                const result = await this._executeSaveForNavigation();
-                                if (!result) {
-                                    this._setBusy(false);
-                                    return;
-                                }
-                            } catch (error) {
-                                console.error("Error saving before navigation:", error);
-                                sap.m.MessageBox.error("Erreur lors de la sauvegarde");
-                                this._setBusy(false);
-                                return;
-                            }
-                        } else {
-                            // User chose not to save - reset changes
-                            this._cleanModification();
-                        }
-                    }
-
-                    // Create navigation context for next period
-                    const oNavigationContext = oModel.createEntry("/ZC_FGASet", {
-                        properties: {
-                            BusinessNo: sCurrentFGA,
-                            p_period: sNextPeriod
-                        }
-                    });
-
-                    // Update utilities model with new period
-                    oUtilitiesModel.setProperty("/period", sNextPeriod);
-                    oUtilitiesModel.setBusinessNo(sCurrentFGA);
-
-                    // Navigate to next period
-                    await oNavController.navigateInternal(oNavigationContext, {
-                        navigationMode: "inplace"
-                    });
-
-                    // Refresh page with new period data
-                    await this._refreshNormalModeData(sNextPeriod, sCurrentFGA);
-
-                    // Update button texts
-                    this._styleHeaderButtons();
-
-                    MessageToast.show(`Navigation vers la période: ${this._formatPeriodForDisplay(sNextPeriod)}`);
-
-                } catch (error) {
-                    console.error("Error navigating to next period:", error);
-                    sap.m.MessageBox.error(`Erreur: ${error.message || "Impossible de naviguer vers la période suivante"}`);
-                } finally {
-                    this._setBusy(false);
-                }
-            },*/
-
-
-
-            // Add simplified refresh method for normal mode
             _refreshNormalModeData: async function (sPeriod, sBusinessNo) {
                 const oUtilitiesModel = this.getInterface().getModel("utilities");
 
@@ -2480,7 +2328,7 @@ sap.ui.define(
                 }
             },
 
-            // Add method to handle save for navigation
+
             _executeSaveForNavigation: async function () {
                 try {
                     const oView = this.base.getView();
@@ -2705,21 +2553,6 @@ sap.ui.define(
             },
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             onSelectFGAPress: function (oEvent) {
                 var oView = this.getView();
                 var self = this; // Store reference to controller
@@ -2860,7 +2693,6 @@ sap.ui.define(
                 this._oBusinessNoDialog.open();
             },
 
-            // Navigation method using the EXACT same pattern as onPrevPeriod
             _navigateToSelectedFGA: async function (sBusinessNo, sBusinessName) {
                 try {
                     const oView = this.getView();
@@ -2879,7 +2711,6 @@ sap.ui.define(
                         }
                     }
 
-                    // If still no period, use default (current month)
                     if (!sCurrentPeriod) {
                         const now = new Date();
                         const month = String(now.getMonth() + 1).padStart(2, "0");
@@ -2892,7 +2723,6 @@ sap.ui.define(
                     // Set busy indicator
                     this._setBusy(true);
 
-                    // Check for unsaved changes before navigating (EXACT same as onPrevPeriod)
                     const oUIModel = this.base.templateBaseExtension.getView().getModel("ui");
                     const bEditable = oUIModel ? oUIModel.getProperty("/editable") : false;
 
@@ -2943,7 +2773,6 @@ sap.ui.define(
                         }
                     }
 
-                    // Create navigation context - EXACT same pattern as onPrevPeriod
                     const oNavigationContext = oModel.createEntry("/ZC_FGASet", {
                         properties: {
                             BusinessNo: sBusinessNo,
@@ -2977,7 +2806,6 @@ sap.ui.define(
                         navigationMode: "inplace"
                     });
 
-                    // Refresh page with selected FGA data - EXACT same pattern as onPrevPeriod
                     await this._refreshNormalModeData(sCurrentPeriod, sBusinessNo);
 
                     // Update button texts
