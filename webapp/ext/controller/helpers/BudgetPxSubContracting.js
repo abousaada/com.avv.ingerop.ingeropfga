@@ -6,12 +6,12 @@ sap.ui.define([
 
     return Controller.extend("com.avv.ingerop.ingeropfga.ext.controller.helpers.BudgetPxSubContracting", {
 
-        _CONSTANT_DYNAMIC_PREFIX: "SC_",
-        _CONSTANT_COLUMN_ID: "columnId",
-        _CONSTANT_EXT_CONTRACTOR_TABLE_ID: "com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--budgets--BudgetPxSubContractingTreeTableId",
-        _CONSTANT_STF_TABLE_ID           : "com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--budgets--BudgetPxSTFilialeGroupeTableId",
-        _CONSTANT_SUBCONTRACTOR_ID: "subContractorId",
-        _CONSTANT_SUBCONTRACTOR_PARTNER: "subContractorPartner",
+        _CONSTANT_DYNAMIC_PREFIX            : "SC_",
+        _CONSTANT_COLUMN_ID                 : "columnId",
+        _CONSTANT_EXT_CONTRACTOR_TABLE_ID   : "com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--budgets--BudgetPxSubContractingTreeTableId",
+        _CONSTANT_STF_TABLE_ID              : "com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--budgets--BudgetPxSTFilialeGroupeTableId",
+        _CONSTANT_SUBCONTRACTOR_ID          : "subContractorId",
+        _CONSTANT_SUBCONTRACTOR_PARTNER     : "subContractorPartner",
 
         getUtilitiesModel() {
             return this.oView.getModel("utilities");
@@ -22,8 +22,18 @@ sap.ui.define([
             this.buildPxSTExtTree();
         },
 
+        preparePxSTGTreeData(){
+            this.getUtilitiesModel().buildPxSubContractingTreeData();
+            this.buildPxSTGTree();
+        },
+
         buildPxSTExtTree() {
             this.refreshExternalTableColumns();
+        },
+
+        buildPxSTGTree(){
+            this.removeFilialeDynamicColumns();
+            this.addFilialeDynamicColumns();
         },
 
         refreshExternalTableColumns() {
@@ -327,7 +337,6 @@ sap.ui.define([
             }
         },
 
-
         onExternalCoefChange(oEvent) {
             const newValue = oEvent.getParameter("newValue");
             if (this.isFloat(newValue)) {
@@ -424,7 +433,8 @@ sap.ui.define([
                             })
                         ]
                     }),
-                    new sap.m.Label({ text: "{i18n>budget.ext.external}" }),
+                    // new sap.m.Label({ text: "{i18n>budget.ext.external}" }),
+                    // new sap.m.Label({ text: "" }),
                     new sap.m.HBox({
                         items: [
                             new sap.m.Text({

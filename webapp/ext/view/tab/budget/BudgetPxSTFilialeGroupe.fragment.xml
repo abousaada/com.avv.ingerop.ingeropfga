@@ -7,10 +7,10 @@
     xmlns:rm="sap.ui.table.rowmodes"
 >
     <table:TreeTable
-        class="budgetSCExtTab"
+        class="budgetSTGTab"
         id="BudgetPxSTFilialeGroupeTableId"
         rows="{
-            path: 'utilities>/pxSubContractingHierarchy',
+            path: 'utilities>/pxSTFHierarchy',
             parameters: {
                 arrayNames: ['children'],
                 numberOfExpandedLevels: 3
@@ -20,7 +20,7 @@
         ariaLabelledBy="title"
         enableColumnReordering="false"
         fixedColumnCount="1"
-        rowsUpdated="onRowsUpdatedBudgetPXSubCTab"
+        rowsUpdated="onRowsUpdatedBudgetPXSTGTab"
     >
         <!--<table:rowMode>
             <rm:Auto minRowCount= "{localModel>/tableSettings/minRowCount}" />
@@ -101,22 +101,10 @@
                 hAlign="End"
             >
                 <table:multiLabels>
-                    <Label
-                        text="{i18n>budget.ext.supplierName}"
-                        class="STheaderLabel"
-                    />
-                    <Label
-                        text="{i18n>budget.ext.supplierCode}"
-                        class="STheaderLabel"
-                    />
-                    <Label
-                        text="{i18n>budget.ext.supplierType}"
-                        class="STheaderLabel"
-                    />
-                    <Label
-                        text="{i18n>budget.ext.supplierCoef}"
-                        class="STheaderLabel"
-                    />
+                    <Label text="{i18n>budget.ext.stgName}" class="STheaderLabel" />
+                    <Label text="{i18n>budget.ext.stgCode}" class="STheaderLabel" />
+                    <Label text="{i18n>budget.ext.stgProfitCenter}" class="STheaderLabel" />
+                    <Label text="{i18n>budget.ext.stgCoef}" class="STheaderLabel" />
                     <Label text="{i18n>budget.ext.startDate}" />
                 </table:multiLabels>
                 <table:template>
@@ -140,10 +128,10 @@
                 headerSpan="2,2,2,2,1"
             >
                 <table:multiLabels>
-                    <Label text="{i18n>budget.ext.supplierName}" />
-                    <Label text="{i18n>budget.ext.supplierCode}" />
-                    <Label text="{i18n>budget.ext.supplierType}" />
-                    <Label text="{i18n>budget.ext.supplierCoef}" />
+                    <Label text="{i18n>budget.ext.stgName}" />
+                    <Label text="{i18n>budget.ext.stgCode}" />
+                    <Label text="{i18n>budget.ext.stgProfitCenter}" />
+                    <Label text="{i18n>budget.ext.stgCoef}" />
                     <Label text="{i18n>budget.ext.endDate}" />
                 </table:multiLabels>
                 <table:template>

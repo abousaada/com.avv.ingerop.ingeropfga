@@ -12,6 +12,7 @@ sap.ui.define(
         "./helpers/BudgetPxRecetteExt",
         "./helpers/BudgetPxMainOeuvre",
         "./helpers/BudgetPxSTI",
+        "./helpers/BudgetPxSTG",
         "./helpers/BudgetPrevisionel",
         "./helpers/Synthese",
     ],
@@ -28,6 +29,7 @@ sap.ui.define(
         BudgetPxRecetteExt,
         BudgetPxMainOeuvre,
         BudgetPxSTI,
+        BudgetPxSTG,
         BudgetPrevisionel,
         Synthese
     ) {
@@ -36,6 +38,13 @@ sap.ui.define(
         return ControllerExtension.extend("com.avv.ingerop.ingeropfga.ext.controller.extendOP", {
             Formatter: Formatter,
             // Override or add custom methods here
+
+            
+            actions: {
+                onSelectFGAPress(){
+                    console.log("onSelectFGAPress");
+                },
+            },
 
             // this section allows to extend lifecycle hooks or hooks provided by Fiori elements
             override: {
@@ -55,6 +64,11 @@ sap.ui.define(
                 */
 
                 onInit: async function () {
+
+                    this.base.getView().getController().onSelectFGAPress = function(){
+                        console.log("onSelectFGAPress");
+                    }
+
 
                     this._getOwnerComponent().getModel("utilities").setView(this.getView());
 
@@ -174,6 +188,9 @@ sap.ui.define(
 
                     this._budgetPxSubContracting = new BudgetPxSubContracting();
                     this._budgetPxSubContracting.oView = this.getView();
+
+                    this._budgetPxSTG = new BudgetPxSTG();
+                    this._budgetPxSTG.oView = this.getView();
 
                     this._budgetPxRecetteExt = new BudgetPxRecetteExt();
                     this._budgetPxRecetteExt.oView = this.getView();
@@ -791,6 +808,7 @@ sap.ui.define(
                         this.prepareMissionsTreeData();
                         this.preparePxAutreTreeData();
                         this.preparePxSubContractingTreeData();
+                        this.preparePxSTGTreeData();
                         this.preparePxRecetteExtTreeData();
                         this.preparePxMainOeuvreTreeData();
                         this.preparePxSTITreeData();
@@ -934,6 +952,10 @@ sap.ui.define(
                 this._budgetPxSubContracting.preparePxSubContractingTreeData();
             },
 
+            preparePxSTGTreeData: function () {
+                this._budgetPxSTG.preparePxSTGTreeData();
+            },
+            
             // onBtnAddSubContractorPress: function (oEvent) {
             //     if (!this._budgetPxSubContracting) {
             //         this._budgetPxSubContracting = new BudgetPxSubContracting();
@@ -1832,6 +1854,11 @@ sap.ui.define(
 
             onRowsUpdatedBudgetPXMainOeuvreTab() {
                 var stableName = "BudgetPxMainOeuvreTreeTableId";
+                this.onBudgetPXSubCUpdated(stableName);
+            },
+
+            onRowsUpdatedBudgetPXSTGTab() {
+                var stableName = "BudgetPxSTFilialeGroupeTableId";
                 this.onBudgetPXSubCUpdated(stableName);
             },
 

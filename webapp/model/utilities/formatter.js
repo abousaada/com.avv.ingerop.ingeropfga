@@ -38,7 +38,8 @@ sap.ui.define([
     formatBudgetSubContracting: Helper.buildObjectKeysMapper({
       businessNo: "BusinessNo",
       endDate: "EndDate",
-      libelle: (({ MissionCode, Statut }) => { return `${MissionCode} ${Statut}` }),
+      // libelle: (({ MissionCode, Statut }) => { return `${MissionCode} ${Statut}` }),
+      libelle: "Libelle",
       code: "MissionCode",
       name: "MissionId",
       regroupement: "Regroupement",
@@ -50,6 +51,17 @@ sap.ui.define([
       subContractorCoef : ({ SubContractorCoef }) => Number.parseFloat(SubContractorCoef) ? SubContractorCoef : 1,
       subContractorPartner: "SubContractorPartner",
       subContractorCumul: ({ Cumul }) => Number.parseFloat(Cumul),
+    }),
+
+    formatBudgetSTG: Helper.buildObjectKeysMapper({
+      businessNo: "BusinessNo",
+      name: "MissionId",
+      profitCenter: "ProfitCenter",
+      status: "Statut",
+      subContractorBudget: ({ Budget }) => Budget ? parseFloat(Budget) : Budget,
+      subContractorId: "SubContractor",
+      subContractorName: "SubContractorName",
+      subContractorCoef : ({ SubContractorCoef }) => Number.parseFloat(SubContractorCoef) ? SubContractorCoef : 1
     }),
 
     formatBudgetRecetteExt: Helper.buildObjectKeysMapper({

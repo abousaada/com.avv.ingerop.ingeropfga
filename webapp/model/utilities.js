@@ -6,11 +6,12 @@ sap.ui.define([
     "./utilities/subContracting",
     "./utilities/recetteExt",
     "./utilities/mainOeuvre",
+    "./utilities/STG",
     "../util/constant",
     "../util/helper",
     "../ext/controller/helpers/Missions",
 ],
-    function (BaseModel, InitialData, Formatter, Filter, SubContracting, RecetteExt, MainOeuvre, Constant, Helper, Missions) {
+    function (BaseModel, InitialData, Formatter, Filter, SubContracting, RecetteExt, MainOeuvre, STG, Constant, Helper, Missions) {
         "use strict";
 
         return BaseModel.extend("com.avv.ingerop.ingeropfga.model.utilities", {
@@ -18,9 +19,10 @@ sap.ui.define([
             init: function (oModel) {
                 this.setData({ ...InitialData });
                 this.initModel(oModel);
-                this.oSubContracting = new SubContracting(this);
-                this.oRecetteExt = new RecetteExt(this);
-                this.oMainOeuvre = new MainOeuvre(this);
+                this.oSubContracting    = new SubContracting(this);
+                this.oSTG               = new STG(this);
+                this.oRecetteExt        = new RecetteExt(this);
+                this.oMainOeuvre        = new MainOeuvre(this);
             },
 
             setView(oView) {
@@ -39,6 +41,13 @@ sap.ui.define([
                 const { treeData, treeHeader } = this.oSubContracting.buildTreeData();
                 this.setPxSubContractingHierarchy(treeData);
                 this.setPxSubContractingHeader(treeHeader);
+            },
+
+            buildPxSTGTreeData(){
+                const { treeData, stfTreeHeader, stgTreeHeader } = this.oSTG.buildTreeData();
+                this.setPxSTGHeader(stgTreeHeader);
+                this.setPxSTFHeader(stfTreeHeader);
+                this.setPxSTFHierarchy(treeData);
             },
 
             buildPxRecetteExtTreeData() {
@@ -69,7 +78,7 @@ sap.ui.define([
                         return;
                     }
                     const [missions, previsions, recaps, opport, risque, charts,
-                        chartsadddata, pxRecettes, pxAutres, pxSubContracting,
+                        chartsadddata, pxRecettes, pxAutres, pxSubContracting, pxSTG,
                         pxMainOeuvre, profils, pxSTI, pSTI, notes, sfgp]
                         = await Promise.all([
 
@@ -85,6 +94,7 @@ sap.ui.define([
                             this.getBEPxRecettes(),
                             this.getBEPxAutres(),
                             this.getBEPxExtSubContracting(),
+                            this.getBESTG(),
                             this.getBEPxMainOeuvre(),
                             this.getBEProfils(),
                             this.getBEPxSTI(),
@@ -111,6 +121,7 @@ sap.ui.define([
                     this.setPxRecetteExt(pxRecettes || []);
 
                     this.setPxSousTraitance(pxSubContracting || []);
+                    this.setPxSTG(pxSTG);
                     this.setPxMainOeuvre(pxMainOeuvre || []);
                     this.setPxMainOeuvreProfilHeader(profils);
                     this.setPxSTI(pxSTI || []);
@@ -552,6 +563,20 @@ sap.ui.define([
                     this.setTabBusy(false);
                     console.log(error);
                 }
+            },
+            async getBESTG(){
+                try {
+                    const businessNo = this.getBusinessNo();
+                    const period = this.getPeriod();
+                    const urlBusinessNo = encodeURIComponent(businessNo);
+                    const urlPeriod = encodeURIComponent(period);
+                    const sPath = `/ZC_FGASet(BusinessNo='${urlBusinessNo}',p_period='${urlPeriod}')/to_BudgetPxSTG`;
+                    const pxSTG = await this.read(sPath);
+                    return (pxSTG?.results || []).map(Formatter.formatBudgetSTG);
+                } catch (error) {
+                    console.log(error);
+                }
+                
             },
 
             async getBEPxSTI() {

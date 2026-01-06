@@ -21,6 +21,9 @@ sap.ui.define([], function () {
     "pxSousTraitance": [],
     "pxSTFHierarchy": [],
     "pxSTFHeader": [],
+
+    "pxSTG": [],
+    "pxSTGHeader": [],
     
     "pxSubContractingHierarchy": [],
     "pxSubContractingHeader": [

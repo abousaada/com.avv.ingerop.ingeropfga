@@ -47,7 +47,7 @@
                 <table:multiLabels>
                     <Label text="" />
                     <Label text="" />
-                    <Label text="" />
+                    <!-- <Label text="" /> -->
                     <Label text="" />
                     <Label text="{i18n>budget.ext.missionHiearchie}" />
                 </table:multiLabels>
@@ -62,7 +62,7 @@
                 <table:multiLabels>
                     <Label text="" />
                     <Label text="" />
-                    <Label text="" />
+                    <!-- <Label text="" /> -->
                     <Label text="" />
                     <Label text="{i18n>budget.ext.missionCode}" />
                 </table:multiLabels>
@@ -75,7 +75,7 @@
                 <table:multiLabels>
                     <Label text="" />
                     <Label text="" />
-                    <Label text="" />
+                    <!-- <Label text="" /> -->
                     <Label text="" />
                     <Label text="{i18n>budget.ext.missionLibelle}" />
                 </table:multiLabels>
@@ -87,7 +87,7 @@
                 <table:multiLabels>
                     <Label text="" />
                     <Label text="" />
-                    <Label text="" />
+                    <!-- <Label text="" /> -->
                     <Label text="" />
                     <Label text="{i18n>budget.ext.missionStatus}" />
                 </table:multiLabels>
@@ -109,10 +109,10 @@
                         text="{i18n>budget.ext.supplierCode}"
                         class="STheaderLabel"
                     />
-                    <Label
+                    <!-- <Label
                         text="{i18n>budget.ext.supplierType}"
                         class="STheaderLabel"
-                    />
+                    /> -->
                     <Label
                         text="{i18n>budget.ext.supplierCoef}"
                         class="STheaderLabel"
@@ -142,7 +142,7 @@
                 <table:multiLabels>
                     <Label text="{i18n>budget.ext.supplierName}" />
                     <Label text="{i18n>budget.ext.supplierCode}" />
-                    <Label text="{i18n>budget.ext.supplierType}" />
+                    <!-- <Label text="{i18n>budget.ext.supplierType}" /> -->
                     <Label text="{i18n>budget.ext.supplierCoef}" />
                     <Label text="{i18n>budget.ext.endDate}" />
                 </table:multiLabels>
@@ -167,7 +167,7 @@
                 <table:multiLabels>
                     <Label text="" />
                     <Label text="" />
-                    <Label text="" />
+                    <!-- <Label text="" /> -->
                     <Label text="" />
                     <Label text="{i18n>budget.ext.affaireHorsFrais}" />
                 </table:multiLabels>
@@ -187,7 +187,7 @@
                 <table:multiLabels>
                     <Label text="" />
                     <Label text="" />
-                    <Label text="" />
+                    <!-- <Label text="" /> -->
                     <Label text="" />
                     <Label text="{i18n>budget.ext.affaireYCFrais}" />
                 </table:multiLabels>
