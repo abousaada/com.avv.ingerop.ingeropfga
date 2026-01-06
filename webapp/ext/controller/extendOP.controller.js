@@ -15,6 +15,8 @@ sap.ui.define(
         "./helpers/BudgetPxSTG",
         "./helpers/BudgetPrevisionel",
         "./helpers/Synthese",
+        "sap/m/MessageToast",
+        "sap/ui/comp/valuehelpdialog/ValueHelpDialog"
     ],
     function (
         ControllerExtension,
@@ -31,25 +33,85 @@ sap.ui.define(
         BudgetPxSTI,
         BudgetPxSTG,
         BudgetPrevisionel,
-        Synthese
+        Synthese,
+        MessageToast,
+        ValueHelpDialog
     ) {
         "use strict";
         var PROJET_TYPE = null;
+
         return ControllerExtension.extend("com.avv.ingerop.ingeropfga.ext.controller.extendOP", {
             Formatter: Formatter,
-            // Override or add custom methods here
-
             
-            actions: {
-                onSelectFGAPress(){
-                    console.log("onSelectFGAPress");
-                },
+            _wireFioriElementsButtons: function () {
+                const oView = this.getView();
+
+                // Get buttons from the header toolbar
+                const oHeader = oView.byId("header::ZC_FGASet::ObjectPageHeader");
+                if (oHeader) {
+                    const oToolbar = oHeader.getToolbar();
+                    if (oToolbar) {
+                        const aContent = oToolbar.getContent();
+                        aContent.forEach(oControl => {
+                            if (oControl.isA("sap.m.Button")) {
+                                const sId = oControl.getId();
+                                if (sId.includes("selectFGABtn")) {
+                                    oControl.attachPress(this.onSelectFGAPress.bind(this));
+                                } else if (sId.includes("prevPeriodBtn")) {
+                                    oControl.attachPress(this.onPrevPeriod.bind(this));
+                                } else if (sId.includes("nextPeriodBtn")) {
+                                    oControl.attachPress(this.onNextPeriod.bind(this));
+                                }
+                            }
+                        });
+                    }
+                }
+            }, _wireCustomButtons: function () {
+                const oView = this.getView();
+
+                // Method 1: Using the full ID you provided
+                const oSelectFGAButton = oView.byId("com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--action::selectFGABtn");
+
+                if (oSelectFGAButton) {
+                    console.log("Found Select FGA button:", oSelectFGAButton);
+                    // Remove any existing press handler and attach yours
+                    oSelectFGAButton.detachPress();
+                    oSelectFGAButton.attachPress(this.onSelectFGAPress.bind(this));
+                } else {
+                    console.log("Select FGA button not found with full ID");
+                }
+
+                // Find other buttons using similar pattern
+                const aButtons = oView.findAggregatedObjects(true, function (oControl) {
+                    return oControl.isA("sap.m.Button") &&
+                        oControl.getId().includes("--action::");
+                });
+
+                console.log("All action buttons:", aButtons);
+
+                aButtons.forEach(oButton => {
+                    const sId = oButton.getId();
+                    if (sId.includes("prevPeriodBtn")) {
+                        oButton.detachPress();
+                        oButton.attachPress(this.onPrevPeriod.bind(this));
+                    } else if (sId.includes("nextPeriodBtn")) {
+                        oButton.detachPress();
+                        oButton.attachPress(this.onNextPeriod.bind(this));
+                    } else if (sId.includes("periodBtn")) {
+                        // This is your label button - make it non-clickable
+                        oButton.setEnabled(false);
+                    }
+                });
             },
 
+            // Override or add custom methods here
+>>>>>>> e330b5b82401b671fca2980648e85c3970c86468
             // this section allows to extend lifecycle hooks or hooks provided by Fiori elements
             override: {
-
                 onAfterRendering: function () {
+
+                    this._wireCustomButtons();
+
                     const oTreeTable = this.getView().byId("PrevisionnelTreeTable");
                     if (oTreeTable) {
                         oTreeTable.setFixedColumnCount(99);
@@ -78,7 +140,6 @@ sap.ui.define(
 
                     const oRouter = this._getOwnerComponent().getRouter();
                     oRouter.attachRoutePatternMatched(this._onRoutePatternMatched.bind(this));
-
 
                     // ABO to rework
                     const isForecastMode = sessionStorage.getItem("isForecastMode") === "true";
@@ -322,83 +383,6 @@ sap.ui.define(
                         return Promise.reject(error);
                     }
                 },
-
-
-                /*beforeSaveExtension1() {
-                    try {
-                        const utilitiesModel = this.getModel("utilities");
-
-                        // Accès au contexte via la vue
-                        const oView = this.base.getView();
-                        const oContext = oView.getBindingContext();
-
-                        if (!oContext) {
-                            sap.m.MessageBox.error("Aucun contexte lié à la vue !");
-                            throw new Error("Impossible d'accéder au contexte.");
-                        }
-
-                        if (!this.getModel("utilities").validDataBeforeSave(oView)) {
-                            sap.m.MessageBox.error("Veuillez Vérifier tous les champs");
-                            return new Promise((resolve, reject) => {
-                                reject();
-                            });
-                        }
-
-                        if (!this.getModel("utilities").validRecetteExtBeforeSave(oView)) {
-                            sap.m.MessageBox.error("Veuillez Répartir correctement les budgets");
-                            return new Promise((resolve, reject) => {
-                                reject();
-                            });
-                        }
-
-                        this._setBusy(true);
-                        return new Promise(async (resolve, reject) => {
-                            const formattedMissions = utilitiesModel.getFormattedMissions();
-                            const formattedPxAutre = utilitiesModel.getFormattedPxAutre();
-                            const formattedPxSubContractingExt = utilitiesModel.formattedPxSubContractingExt();
-                            const formattedPxRecetteExt = utilitiesModel.formattedPxRecetteExt();
-                            const formattedMainOeuvre = utilitiesModel.formattedPxMainOeuvre();
-                            const oPayload = Helper.extractPlainData({
-                                ...oContext.getObject(),
-                                "to_Missions": formattedMissions,
-                                "to_BudgetPxAutre": formattedPxAutre,
-                                "to_BudgetPxSubContracting": formattedPxSubContractingExt,
-                                "to_BudgetPxRecetteExt": formattedPxRecetteExt,
-                                "to_BudgetPxSTI": [],
-                                "to_Previsionel": [],
-                                "to_BudgetPxMainOeuvre": formattedMainOeuvre
-                            });
-
-                            delete oPayload.to_BudgetPxSTI;
-                            delete oPayload.to_Previsionel;
-
-
-                            try {
-                                oPayload.VAT = oPayload.VAT ? oPayload.VAT.toString() : oPayload.VAT;
-                                const updatedFGA = await utilitiesModel.deepUpsertFGA(oPayload);
-                                this._setBusy(false);
-                                if (updatedFGA) {
-                                    Helper.validMessage("FGA updated: " + updatedFGA.BusinessNo, this.getView(), this.onAfterSaveAction.bind(this));
-                                }
-
-                            } catch (error) {
-                                this._setBusy(false);
-                                Helper.errorMessage("FGA updated fail");
-                                console.log(error);
-                                //reject();
-                                return Promise.reject("No data returned");
-                            }
-
-                            //reject();
-                            return Promise.reject();
-                        });
-                    } catch (error) {
-                        this._setBusy(false);
-                        Helper.errorMessage("FGA updated fail");
-                        console.log(error);
-                        return Promise.reject(error);
-                    }
-                },*/
 
             },
 
@@ -682,6 +666,8 @@ sap.ui.define(
                 //this._setBusy(true);
 
                 try {
+
+                    this._styleHeaderButtons();
 
                     const oUtilitiesModel = this.getInterface().getModel("utilities");
                     const oContext = e.context;
@@ -1995,7 +1981,100 @@ sap.ui.define(
                         }
                     });
                 });
+            },
+
+            _styleHeaderButtons: function () {
+                try {
+                    const oView = this.getView();
+
+                    // Find all header buttons
+                    const aButtons = oView.findAggregatedObjects(true, oCtrl =>
+                        oCtrl.isA("sap.m.Button") &&
+                        (
+                            oCtrl.getId().includes("prevPeriodBtn") ||
+                            oCtrl.getId().includes("periodBtn") ||
+                            oCtrl.getId().includes("nextPeriodBtn") ||
+                            oCtrl.getId().includes("selectFGABtn")
+                        )
+                    );
+
+                    aButtons.forEach(oButton => {
+                        const sId = oButton.getId();
+
+                        // Common style for all period-related buttons
+                        oButton.setType("Transparent");
+
+                        if (sId.includes("prevPeriodBtn")) {
+                            // Previous period arrow - place it right before the period label
+                            oButton.addStyleClass("fgaPeriodGroupStart");
+                            oButton.setIcon("sap-icon://navigation-left-arrow");
+                            oButton.setText(""); // Clear any text, use only icon
+
+                        } else if (sId.includes("periodBtn")) {
+                            // Period label button - middle button
+                            //oButton.setEnabled(false); // Make it non-clickable
+                            oButton.addStyleClass("fgaPeriodLabel");
+
+                        } else if (sId.includes("nextPeriodBtn")) {
+                            // Next period arrow - place it right after the period label
+                            oButton.addStyleClass("fgaPeriodGroupEnd");
+                            oButton.setIcon("sap-icon://navigation-right-arrow");
+                            oButton.setText(""); // Clear any text, use only icon
+
+                        } else if (sId.includes("selectFGABtn")) {
+                            // SELECT FGA button - make it emphasized
+                            oButton.setType("Default");
+                            oButton.setIcon("sap-icon://value-help");
+                            oButton.addStyleClass("fgaFgaAction");
+                            oButton.setText("Sélection FGA");
+                        }
+                    });
+
+                } catch (e) {
+                    console.error("Header button styling failed", e);
+                }
+            },
+
+            onPrevPeriod: function (oEvent) {
+            MessageToast.show("Previous period");
+        },
+
+        onNextPeriod: function (oEvent) {
+            MessageToast.show("Next period");
+        },
+
+        onSelectFGAPress: function (oEvent) {
+            const oView = this.getView();
+
+            if (!this._oFGAVH) {
+                this._oFGAVH = new ValueHelpDialog({
+                    title: "Select FGA",
+                    supportMultiselect: false,
+                    key: "FGA",
+                    descriptionKey: "Description",
+                    ok: (oEvent) => {
+                        const aTokens = oEvent.getParameter("tokens");
+                        if (aTokens.length) {
+                            const sFGA = aTokens[0].getKey();
+
+                            // store selected FGA
+                            this.getOwnerComponent()
+                                .getModel("settings")
+                                .setProperty("/selectedFGA", sFGA);
+                        }
+                        this._oFGAVH.close();
+                    },
+                    cancel: () => this._oFGAVH.close()
+                });
+
+                this._oFGAVH.setModel(this.getOwnerComponent().getModel());
+                //this._oFGAVH.setEntitySet("ZC_FGASet");
+
+                oView.addDependent(this._oFGAVH);
             }
+
+            this._oFGAVH.open();
+        },
 
         });
 

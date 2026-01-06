@@ -349,6 +349,44 @@
           },
           "sap.suite.ui.generic.template.ObjectPage.view.Details": {
             "controllerName": "com.avv.ingerop.ingeropfga.ext.controller.extendOP",
+            "sap.ui.generic.app": {
+              "ZC_FGASet": {
+                "EntitySet": "ZC_FGASet",
+                "Header": {
+                  "Actions": {
+                    "SelectFGA": {
+                      "id": "selectFGABtn",
+                      "text": "Select FGA",
+                      "icon": "sap-icon://value-help",
+                      "tooltip": "Select FGA",
+                      "press": "onSelectFGAPress",
+                      "requiresSelection": false
+                    },
+                    "PrevPeriod": {
+                      "id": "prevPeriodBtn",
+                      "text": "<",
+                      "tooltip": "Previous Period",
+                      "press": "onPrevPeriod",
+                      "requiresSelection": false
+                    },
+                    "Period": {
+                      "id": "periodBtn",
+                      "text": "Période",
+                      "tooltip": "Previous Period",
+                      "requiresSelection": false
+                    },
+                    "NextPeriod": {
+                      "id": "nextPeriodBtn",
+                      "text": ">",
+                      "tooltip": "Next Period",
+                      "press": "onNextPeriod",
+                      "requiresSelection": false
+                      
+                    }
+                  }
+                }
+              }
+            },
             "methods": {
               "onBeforeCreateExtension": {
                 "name": "onBeforeCreateExtension"
