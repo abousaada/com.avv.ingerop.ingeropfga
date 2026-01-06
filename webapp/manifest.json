@@ -348,7 +348,7 @@
             }
           },
           "sap.suite.ui.generic.template.ObjectPage.view.Details": {
-            "controllerName": "com.avv.ingerop.ingeropfga.ext.controller.CustomActions",
+            "controllerName": "com.avv.ingerop.ingeropfga.ext.controller.extendOP",
             "sap.ui.generic.app": {
               "ZC_FGASet": {
                 "EntitySet": "ZC_FGASet",
@@ -444,16 +444,6 @@
             "AfterFacet|ZC_FGASet|Prevision": {
               "className": "sap.ui.core.mvc.View",
               "viewName": "com.avv.ingerop.ingeropfga.ext.view.Previsionel",
-              "type": "XML"
-            },
-            "HeaderContent|ZC_FGASet": {
-              "className": "sap.ui.core.mvc.Fragment",
-              "fragmentName": "com.avv.ingerop.ingeropfga.ext.fragments.PeriodNavigation",
-              "type": "XML"
-            },
-            "HeaderActions|ZC_FGASet": {
-              "className": "sap.ui.core.mvc.Fragment",
-              "fragmentName": "com.avv.ingerop.ingeropfga.ext.fragments.FGAHelp",
               "type": "XML"
             }
           }
