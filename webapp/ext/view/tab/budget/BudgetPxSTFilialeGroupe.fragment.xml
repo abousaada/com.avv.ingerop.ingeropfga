@@ -29,7 +29,7 @@
             <Toolbar class="sapMTBHeader-CTX">
                 <ToolbarSpacer />
                 <Button
-                    text="{i18n>btn.addSubContractor}"
+                    text="{i18n>btn.addFiliale}"
                     icon="sap-icon://add"
                     press="onBtnAddFilialePress"
                     type="Emphasized"

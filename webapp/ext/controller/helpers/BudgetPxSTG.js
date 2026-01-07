@@ -45,6 +45,77 @@ sap.ui.define([
             }
         },
 
+        calcNewFilialeTotalFinAffaire(rowData) {
+            const columnHeaders = this.getUtilitiesModel().getPxSTFHeader();
+
+            const coefByColumnId = columnHeaders.reduce((map, header) => {
+                map[header.columnId] = header.subContractorCoef;
+                return map;
+            }, {});
+
+            const { budgetYCFrais, budgetHorsFrais } = Object.entries(rowData).reduce(
+                (som, [key, value]) => {
+                    if (!key.startsWith(this._CONSTANT_DYNAMIC_PREFIX)) { return som; }
+                    const coef = coefByColumnId[key] ?? 1;
+
+                    return {
+                        budgetHorsFrais : som.budgetHorsFrais + value,
+                        budgetYCFrais   : som.budgetYCFrais + value * coef
+                    };
+                },
+                { budgetHorsFrais: 0, budgetYCFrais: 0 }
+            );
+
+            return { ...rowData, budgetHorsFrais, budgetYCFrais }
+        },
+
+        reCalcFilialeColumnTotalById(columnId){
+            const [root]        = this.getUtilitiesModel().getPxSTFHierarchy();
+            const groupement    = root.children.slice(0, -4);
+            const globalTotal   = root.children.at(-4);
+            let cumulTotal      = root.children.at(-3);
+            const percentTotal  = root.children.at(-2);
+            const radTotal      = root.children.at(-1);
+
+            const props = [columnId, "budgetHorsFrais", "budgetYCFrais"];
+
+            props.forEach(prop => { globalTotal[prop] = 0 });
+
+            // 1. Recalculer chaque total de groupement
+            for (const group of groupement) {
+                if (!group.isGroupe || !Array.isArray(group.children)) continue;
+
+                const oldBudgets    = group.children.slice(0, -1);
+                const newBudgets    = oldBudgets.map(budget => this.calcNewFilialeTotalFinAffaire(budget));
+                const totalLine     = group.children.at(-1);
+                if (!totalLine) continue;
+
+                // Réinitialisation ciblée
+                props.forEach(prop => { totalLine[prop] = 0 });
+
+                for (const child of newBudgets) {
+
+                    props.forEach(prop => { 
+                        totalLine[prop]     += child[prop] || 0;
+                        globalTotal[prop]   += child[prop] || 0;
+                    });
+
+                }
+                group.children = [...newBudgets, totalLine];
+            }
+
+            cumulTotal = this.calcNewFilialeTotalFinAffaire(cumulTotal);
+
+            props.forEach(prop => { 
+                percentTotal[prop]  = (globalTotal[prop]??0) > 0 ? ((cumulTotal[prop]??0) / globalTotal[prop]) : 0;
+                radTotal[prop]      = (globalTotal[prop]??0) - (cumulTotal[prop]??0);
+            });
+
+            root.children = [...groupement, globalTotal, cumulTotal, percentTotal, radTotal];
+
+            this.getUtilitiesModel().setPxSTFHierarchy([root]);
+        },
+
         isFiliale(subContractorPartner) {
             return subContractorPartner ? "Filiale" : "Externe";
         },
@@ -183,7 +254,7 @@ sap.ui.define([
                 const newContractor = await this.getFilialeId();
                 const newSupplierData = await this.getUtilitiesModel()
                                                   .getBESupplierById({ SupplierNo : newContractor, isFiliale: true }); 
-                this.addNewFilialeById(newSupplierData);
+                this.addNewFilialeById({...newSupplierData, isFiliale: true});
                 return;
             } catch (error) {
                 console.log(error);
@@ -403,7 +474,7 @@ sap.ui.define([
                                     return percent ? formattedTotal + "%" : formattedTotal;
                                 }
                             },
-                            // visible: "{= !!${utilities>isTotal} && !${utilities>isCumul} }"
+                            visible: "{= !!${utilities>isTotal} || !!${utilities>isBudget} }"
                         }),
                         // new sap.m.Input({
                         //     value: {

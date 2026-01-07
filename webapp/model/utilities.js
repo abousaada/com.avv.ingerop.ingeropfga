@@ -1106,9 +1106,14 @@ sap.ui.define([
             },
 
             formattedPxSubContractingExt() {
-                return this.oSubContracting
-                    .formattedPxSubContractingExt()
-                    .map(Formatter.reverseFormatBudgetSubContracting);
+                return [
+                    ...this.oSubContracting
+                           .formattedPxSubContractingExt()
+                           .map(Formatter.reverseFormatBudgetSubContracting),
+                    ...this.oSTG    
+                           .formattedPxFiliale()
+                           .map(Formatter.reverseFormatBudgetSubContracting)
+                ];
             },
 
             formattedPxRecetteExt() {

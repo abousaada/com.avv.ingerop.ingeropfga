@@ -974,12 +974,12 @@ sap.ui.define(
             },
 
             onBtnAddFilialePress: function (oEvent) {
-                if (!this._budgetPxSubContracting) {
-                    this._budgetPxSubContracting = new BudgetPxSubContracting();
-                    this._budgetPxSubContracting.oView = this.oView;
+                if (!this._budgetPxSTG) {
+                    this._budgetPxSTG = new BudgetPxSTG();
+                    this._budgetPxSTG.oView = this.oView;
                 }
 
-                this._budgetPxSubContracting.addNewFiliale();
+                this._budgetPxSTG.addNewFiliale();
             },
 
 
@@ -2352,7 +2352,7 @@ sap.ui.define(
             },
 
 
-            _executeSaveForNavigation: async function () {
+            _exSaveecuteForNavigation: async function () {
                 try {
                     const oView = this.base.getView();
                     const oContext = oView.getBindingContext();
