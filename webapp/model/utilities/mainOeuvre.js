@@ -18,7 +18,8 @@ sap.ui.define([], function () {
 
     buildTreeData() {
       const pxMainOeuvre = this.oModel.getPxMainOeuvre();
-      const treeData = [], treeHeader = {};
+      const pxMainOeuvreHeader = this.oModel.getPxMainOeuvreHeader();
+      const treeData = []; //, treeHeader = {};
       const root = {
         name: this.oModel.getBusinessNo(),
         isBudget: false,
@@ -49,7 +50,8 @@ sap.ui.define([], function () {
         const {
           // champs récupérés
           regroupement, name,
-          tjm, profilDescription, profil,
+          // tjm, 
+          profilDescription, profil,
           nbJoursConso, nbJoursRest,
           // businessNo,  
           // code, libelle, status, montant, startDate, endDate,
@@ -67,6 +69,9 @@ sap.ui.define([], function () {
           // aVenir = ( externe + groupe ) - cumuleEur = montant - cumuleEur, ??
           ...reste
         } = mainOeuvre;
+
+        // const tjm = pxMainOeuvreHeader[profil];
+        // let tjm = pxMainOeuvreHeader.find(mo => mo.profil = profil)?.tjm || 0;
 
         const groupId = "GR" + (regroupement ?? "NO_GRP");
 
@@ -100,10 +105,10 @@ sap.ui.define([], function () {
 
         if (profil) {
           const columnId = this._CONSTANT_COLUMN_PREFIXE + profil;
-          const profilHeader = { tjm, profilDescription, profil, columnId };
-          if (!treeHeader[columnId] || parseFloat(tjm)) {
-            treeHeader[columnId] = { ...profilHeader };
-          }
+          // const profilHeader = { tjm, profilDescription, profil, columnId };
+          // if (!treeHeader[columnId] || parseFloat(tjm)) {
+          //   treeHeader[columnId] = { ...profilHeader };
+          // }
 
           leaf[columnId + this._CONSTANT_COLUMN_CONSO ] = nbJoursConso;
           leaf[columnId + this._CONSTANT_COLUMN_REST  ] = nbJoursRest;
@@ -115,7 +120,8 @@ sap.ui.define([], function () {
         globalTotal[prop] =  0;
       });
 
-      Object.keys(treeHeader).forEach(columnId => { 
+      // Object.keys(pxMainOeuvreHeader)
+      pxMainOeuvreHeader.filter(mo => mo.visible).forEach(({columnId}) => { 
         globalTotal[columnId + this._CONSTANT_COLUMN_CONSO] =  0; 
         globalTotal[columnId + this._CONSTANT_COLUMN_REST]  =  0;
       });
@@ -134,7 +140,8 @@ sap.ui.define([], function () {
         this._totalProps.forEach(prop => { 
           totalLine[prop] =  0;
         });
-        Object.keys(treeHeader).forEach(columnId => { 
+        // Object.keys(pxMainOeuvreHeader)
+        pxMainOeuvreHeader.filter(mo => mo.visible).forEach(({columnId}) => { 
           totalLine[columnId + this._CONSTANT_COLUMN_CONSO] =  0; 
           totalLine[columnId + this._CONSTANT_COLUMN_REST]  =  0;
         });
@@ -143,18 +150,20 @@ sap.ui.define([], function () {
         for (const child of group.children) {
           if (child.isBudget) {
             this._totalProps.forEach(prop => {
-              globalTotal[prop] += (parseFloat(child[prop]|| 0) );
+              if(child.status === "A"){ globalTotal[prop] += (parseFloat(child[prop]|| 0) ); }
+              
               totalLine[prop]   += (parseFloat(child[prop]|| 0) );
             });
-            Object.values(treeHeader).forEach(({ columnId, tjm }) => { 
+            // Object.values(pxMainOeuvreHeader)
+            pxMainOeuvreHeader.filter(mo => mo.visible).forEach(({ columnId, tjm }) => { 
               const restColumnId  = columnId + this._CONSTANT_COLUMN_REST;
               const consoColumnId = columnId + this._CONSTANT_COLUMN_CONSO;
 
-              globalTotal[restColumnId] += (parseFloat(child[restColumnId]|| 0) * ( tjm || 0 ) );
-              totalLine[restColumnId]   += (parseFloat(child[restColumnId]|| 0) * ( tjm || 0 ) );
+              if(child.status === "A"){globalTotal[restColumnId] += (parseFloat(child[restColumnId]|| 0) * ( parseFloat(tjm || 0 ) ) );}
+              totalLine[restColumnId]   += (parseFloat(child[restColumnId]|| 0) * ( parseFloat(tjm || 0 ) ) );
 
-              globalTotal[consoColumnId] += (parseFloat(child[consoColumnId]|| 0) * ( tjm || 0 ) );
-              totalLine[consoColumnId]   += (parseFloat(child[consoColumnId]|| 0) * ( tjm || 0 ) );
+              if(child.status === "A"){globalTotal[consoColumnId] += (parseFloat(child[consoColumnId]|| 0) * ( parseFloat(tjm || 0 ) ) );}
+              totalLine[consoColumnId]   += (parseFloat(child[consoColumnId]|| 0) * ( parseFloat(tjm || 0 ) ) );
             });
           }
         }
@@ -167,7 +176,7 @@ sap.ui.define([], function () {
       // Ajouter le total global
       root.children.push(globalTotal);
       
-      return { treeData: [root], treeHeader: Object.values(treeHeader)};
+      return { treeData: [root], treeHeader: pxMainOeuvreHeader};
     }
 
     calcNewBudget(budget){

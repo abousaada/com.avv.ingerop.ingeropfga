@@ -11,7 +11,8 @@ sap.ui.define([], function () {
     }
 
     buildFilialeTreeData() {
-      const pxSousTraitance = this.oModel.getPxSousTraitance();
+      let pxSousTraitance = this.oModel.getPxSousTraitance();
+      // .filter(st => st.isFiliale);
       const stfTreeHeader = {};
       const treeData = [];
       const root = {
@@ -53,7 +54,7 @@ sap.ui.define([], function () {
         const {
           businessNo, endDate, libelle, code, name, startDate, status,
           regroupement,
-          subContractorId, subContractorBudget, subContractorCoef, subContractorName, subContractorCumul
+          subContractorId, subContractorBudget, subContractorCoef, subContractorName, subContractorCumul, isFiliale
         } = subContract;
 
         const groupId = "GR" + (regroupement ?? "NO_GRP");
@@ -87,7 +88,7 @@ sap.ui.define([], function () {
           group.children.push(leaf);
         }
 
-        if (subContractorId) {
+        if (subContractorId && isFiliale) {
           const columnId = this._CONSTANT_STF_COLUMN_PREFIXE + subContractorId;
           const subContractor = { subContractorCumul, subContractorName, subContractorId, subContractorBudget, subContractorCoef, columnId };
           if (!stfTreeHeader[columnId]) {
@@ -268,11 +269,10 @@ sap.ui.define([], function () {
       return { "treeData": treeData2, stfTreeHeader, stgTreeHeader };
     }
 
-
-    formattedPxSubContractingExt() {
-      const [root] = this.oModel.getPxSubContractingHierarchy(); // = [root]
-      const treeHeader = this.oModel.getPxSubContractingHeader();
-      const constantPrefix = this._CONSTANT_COLUMN_PREFIXE;
+    formattedPxFiliale() {
+      const [root] = this.oModel.getPxSTFHierarchy(); // = [root]
+      const treeHeader = this.oModel.getPxSTFHeader();
+      const constantPrefix = this._CONSTANT_STF_COLUMN_PREFIXE;
       const flatData = [];
 
       if (!root || !root.children) return [];
@@ -302,7 +302,7 @@ sap.ui.define([], function () {
               endDate: leaf.endDate,
               status: leaf.status,
               businessNo: leaf.businessNo,
-
+              isFiliale: true,
               subContractorId: header.subContractorId,
               subContractorBudget: leaf[columnId],
               subContractorPartner: header.subContractorPartner,

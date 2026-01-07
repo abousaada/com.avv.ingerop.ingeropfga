@@ -299,8 +299,9 @@ sap.ui.define([
         async onChangeSubContractor(oEvent) {
             try {
                 const { columnId } = oEvent.getSource().data()
-                const newContractor = await this.getNewContractorId();
-                const newSupplierData = await this.getUtilitiesModel().getBESupplierById(newContractor);
+                const newContractor = await this.getExternalId();
+                const newSupplierData = await this.getUtilitiesModel()
+                                                  .getBESupplierById({ SupplierNo : newContractor, isFiliale: false });
                 this.changeColumnContractorBydId(newSupplierData, columnId);
                 // this.addNewContractorById(newSupplierData);
                 return;
@@ -319,7 +320,7 @@ sap.ui.define([
             if (selectedColumn) {
                 selectedColumn.data("columnId", supplierData.columnId);
             }
-            this.reCalcColumnTotalById(columnId);
+            this.reCalcExternalColumnTotalById(columnId);
         },
 
         //External Supplier

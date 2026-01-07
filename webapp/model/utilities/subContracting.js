@@ -10,7 +10,7 @@ sap.ui.define([], function () {
     }
 
     buildTreeData() {
-      const pxSousTraitance = this.oModel.getPxSousTraitance();
+      const pxSousTraitance = this.oModel.getPxSousTraitance().filter(st => !st.isFiliale);
       const treeHeader = {};
       const treeData = [];
       const root = {

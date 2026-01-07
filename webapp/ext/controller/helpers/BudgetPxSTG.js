@@ -6,22 +6,23 @@ sap.ui.define([
 
     return Controller.extend("com.avv.ingerop.ingeropfga.ext.controller.helpers.BudgetPxSTG", {
 
-        _CONSTANT_DYNAMIC_PREFIX            : "STG_",
-        _CONSTANT_COLUMN_ID                 : "columnId",
-        _CONSTANT_STF_TABLE_ID              : "com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--budgets--BudgetPxSTFilialeGroupeTableId",
-        _CONSTANT_SUBCONTRACTOR_ID          : "subContractorId",
-        _CONSTANT_SUBCONTRACTOR_PARTNER     : "subContractorPartner",
+        _CONSTANT_DYNAMIC_PREFIX: "STG_",
+        _CONSTANT_STF_DYNAMIC_PREFIX: "STF_",
+        _CONSTANT_COLUMN_ID: "columnId",
+        _CONSTANT_STF_TABLE_ID: "com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--budgets--BudgetPxSTFilialeGroupeTableId",
+        _CONSTANT_SUBCONTRACTOR_ID: "subContractorId",
+        _CONSTANT_SUBCONTRACTOR_PARTNER: "subContractorPartner",
 
         getUtilitiesModel() {
             return this.oView.getModel("utilities");
         },
 
-        preparePxSTGTreeData(){
+        preparePxSTGTreeData() {
             this.getUtilitiesModel().buildPxSTGTreeData();
             this.buildPxSTGTree();
         },
 
-        buildPxSTGTree(){
+        buildPxSTGTree() {
             this.removeFilialeDynamicColumns();
             this.addFilialeDynamicColumns();
         },
@@ -29,8 +30,10 @@ sap.ui.define([
         removeFilialeDynamicColumns() {
             const STGTree = this.oView.byId(this._CONSTANT_STF_TABLE_ID);
             var aColumns = STGTree.getColumns();
+
             for (var i = aColumns.length - 1; i >= 0; i--) {
-                if (aColumns[i].data(this._CONSTANT_COLUMN_ID)?.includes(this._CONSTANT_DYNAMIC_PREFIX)) {
+                if (aColumns[i].data(this._CONSTANT_COLUMN_ID)?.includes(this._CONSTANT_DYNAMIC_PREFIX)
+                    || aColumns[i].data(this._CONSTANT_COLUMN_ID)?.includes(this._CONSTANT_STF_DYNAMIC_PREFIX)) {
                     STGTree.removeColumn(aColumns[i]);
                 }
             }
@@ -46,21 +49,25 @@ sap.ui.define([
         },
 
         calcNewFilialeTotalFinAffaire(rowData) {
-            const columnHeaders = this.getUtilitiesModel().getPxSTFHeader();
+            const columnHeaders = [
+                ...this.getUtilitiesModel().getPxSTFHeader(), 
+                ...this.getUtilitiesModel().getPxSTGHeader(),
+            ];
 
             const coefByColumnId = columnHeaders.reduce((map, header) => {
-                map[header.columnId] = header.subContractorCoef;
+                map[header.columnId] = parseFloat(header.subContractorCoef || 1);
                 return map;
             }, {});
 
             const { budgetYCFrais, budgetHorsFrais } = Object.entries(rowData).reduce(
                 (som, [key, value]) => {
-                    if (!key.startsWith(this._CONSTANT_DYNAMIC_PREFIX)) { return som; }
+                    if (!key.startsWith(this._CONSTANT_DYNAMIC_PREFIX)
+                        && !key.startsWith(this._CONSTANT_STF_DYNAMIC_PREFIX)) { return som; }
                     const coef = coefByColumnId[key] ?? 1;
 
                     return {
-                        budgetHorsFrais : som.budgetHorsFrais + value,
-                        budgetYCFrais   : som.budgetYCFrais + value * coef
+                        budgetHorsFrais: som.budgetHorsFrais + value,
+                        budgetYCFrais: som.budgetYCFrais + value * coef
                     };
                 },
                 { budgetHorsFrais: 0, budgetYCFrais: 0 }
@@ -69,13 +76,13 @@ sap.ui.define([
             return { ...rowData, budgetHorsFrais, budgetYCFrais }
         },
 
-        reCalcFilialeColumnTotalById(columnId){
-            const [root]        = this.getUtilitiesModel().getPxSTFHierarchy();
-            const groupement    = root.children.slice(0, -4);
-            const globalTotal   = root.children.at(-4);
-            let cumulTotal      = root.children.at(-3);
-            const percentTotal  = root.children.at(-2);
-            const radTotal      = root.children.at(-1);
+        reCalcFilialeColumnTotalById(columnId) {
+            const [root] = this.getUtilitiesModel().getPxSTFHierarchy();
+            const groupement = root.children.slice(0, -4);
+            const globalTotal = root.children.at(-4);
+            let cumulTotal = root.children.at(-3);
+            const percentTotal = root.children.at(-2);
+            const radTotal = root.children.at(-1);
 
             const props = [columnId, "budgetHorsFrais", "budgetYCFrais"];
 
@@ -85,9 +92,9 @@ sap.ui.define([
             for (const group of groupement) {
                 if (!group.isGroupe || !Array.isArray(group.children)) continue;
 
-                const oldBudgets    = group.children.slice(0, -1);
-                const newBudgets    = oldBudgets.map(budget => this.calcNewFilialeTotalFinAffaire(budget));
-                const totalLine     = group.children.at(-1);
+                const oldBudgets = group.children.slice(0, -1);
+                const newBudgets = oldBudgets.map(budget => this.calcNewFilialeTotalFinAffaire(budget));
+                const totalLine = group.children.at(-1);
                 if (!totalLine) continue;
 
                 // Réinitialisation ciblée
@@ -95,9 +102,9 @@ sap.ui.define([
 
                 for (const child of newBudgets) {
 
-                    props.forEach(prop => { 
-                        totalLine[prop]     += child[prop] || 0;
-                        globalTotal[prop]   += child[prop] || 0;
+                    props.forEach(prop => {
+                        totalLine[prop] += child[prop] || 0;
+                        globalTotal[prop] += child[prop] || 0;
                     });
 
                 }
@@ -106,9 +113,9 @@ sap.ui.define([
 
             cumulTotal = this.calcNewFilialeTotalFinAffaire(cumulTotal);
 
-            props.forEach(prop => { 
-                percentTotal[prop]  = (globalTotal[prop]??0) > 0 ? ((cumulTotal[prop]??0) / globalTotal[prop]) : 0;
-                radTotal[prop]      = (globalTotal[prop]??0) - (cumulTotal[prop]??0);
+            props.forEach(prop => {
+                percentTotal[prop] = (globalTotal[prop] ?? 0) > 0 ? ((cumulTotal[prop] ?? 0) / globalTotal[prop]) : 0;
+                radTotal[prop] = (globalTotal[prop] ?? 0) - (cumulTotal[prop] ?? 0);
             });
 
             root.children = [...groupement, globalTotal, cumulTotal, percentTotal, radTotal];
@@ -220,12 +227,13 @@ sap.ui.define([
             return regex.test(normalized);
         },
 
-        async onChangeSubContractor(oEvent) {
+        async onChangeFiliale(oEvent) {
             try {
                 const { columnId } = oEvent.getSource().data()
-                const newContractor = await this.getNewContractorId();
-                const newSupplierData = await this.getUtilitiesModel().getBESupplierById(newContractor);
-                this.changeColumnContractorBydId(newSupplierData, columnId);
+                const newContractor = await this.getFilialeId();
+                const newSupplierData = await this.getUtilitiesModel()
+                    .getBESupplierById({ SupplierNo: newContractor, isFiliale: true });
+                this.changeColumnFilialeBydId(newSupplierData, columnId);
                 // this.addNewContractorById(newSupplierData);
                 return;
             } catch (error) {
@@ -233,17 +241,17 @@ sap.ui.define([
             }
         },
 
-        changeColumnContractorBydId(supplierData, columnId) {
-            const oldPxSubContractingHeader = this.getUtilitiesModel().getPxSubContractingHeader();
+        changeColumnFilialeBydId(supplierData, columnId) {
+            const oldPxSubContractingHeader = this.getUtilitiesModel().getPxSTFHeader();
             const filterSubContractingHeader = oldPxSubContractingHeader.filter(contractor => contractor.columnId != columnId);
-            this.getUtilitiesModel().setPxSubContractingHeader([...filterSubContractingHeader, supplierData]);
+            this.getUtilitiesModel().setPxSTFHeader([...filterSubContractingHeader, supplierData]);
 
-            const SubContractingTree = this.oView.byId(this._CONSTANT_EXT_CONTRACTOR_TABLE_ID);
+            const SubContractingTree = this.oView.byId(this._CONSTANT_STF_TABLE_ID);
             const [selectedColumn] = SubContractingTree.getColumns().filter(column => column.data.columnId === columnId);
             if (selectedColumn) {
                 selectedColumn.data("columnId", supplierData.columnId);
             }
-            this.reCalcColumnTotalById(columnId);
+            this.reCalcFilialeColumnTotalById(columnId);
         },
 
         //Filiale Functions
@@ -253,8 +261,8 @@ sap.ui.define([
             try {
                 const newContractor = await this.getFilialeId();
                 const newSupplierData = await this.getUtilitiesModel()
-                                                  .getBESupplierById({ SupplierNo : newContractor, isFiliale: true }); 
-                this.addNewFilialeById({...newSupplierData, isFiliale: true});
+                    .getBESupplierById({ SupplierNo: newContractor, isFiliale: true });
+                this.addNewFilialeById({ ...newSupplierData, isFiliale: true });
                 return;
             } catch (error) {
                 console.log(error);
@@ -307,7 +315,7 @@ sap.ui.define([
             const SubContractingTree = this.oView.byId(this._CONSTANT_STF_TABLE_ID);
             const aColumns = SubContractingTree.getColumns();
 
-            const columnId = `${this._CONSTANT_DYNAMIC_PREFIX}${subContractorId}`;
+            const columnId = `${this._CONSTANT_STF_DYNAMIC_PREFIX}${subContractorId}`;
             const newSupplierData = { ...supplierData, columnId };
 
             this._addNewFilialeToHeader(newSupplierData);
@@ -334,7 +342,22 @@ sap.ui.define([
                     return h;
                 });
                 this.getUtilitiesModel().setPxSTFHeader(newHeader);
-                this.reCalcColumnTotalById(columnId);
+                this.reCalcFilialeColumnTotalById(columnId);
+            }
+        },
+
+        onGroupeCoefChange(oEvent) {
+            const newValue = oEvent.getParameter("newValue");
+            if (this.isFloat(newValue)) {
+                const subContractorCoef = Number.parseFloat(newValue);
+                const columnHeader = this.getUtilitiesModel().getPxSTGHeader();
+                const { columnId } = oEvent.getSource().data();
+                const newHeader = columnHeader.map(h => {
+                    if (h.columnId === columnId) { return { ...h, subContractorCoef }; }
+                    return h;
+                });
+                this.getUtilitiesModel().setPxSTGHeader(newHeader);
+                this.reCalcFilialeColumnTotalById(columnId);
             }
         },
 
@@ -353,7 +376,7 @@ sap.ui.define([
                                 showValueHelp: true,
                                 valueHelpOnly: true,
                                 visible: "{ui>/editable}",
-                                valueHelpRequest: this.onChangeSubContractor.bind(this)
+                                valueHelpRequest: this.onChangeFiliale.bind(this)
                             })
                         ]
                     }),
@@ -382,7 +405,7 @@ sap.ui.define([
                                     { path: "utilities>" + columnId },
                                     { path: "utilities>isPercent" }
                                 ],
-                                formatter: function (total=0, percent) {
+                                formatter: function (total = 0, percent) {
                                     const formatInstance = sap.ui.core.format.NumberFormat.getFloatInstance({
                                         groupingEnabled: true,
                                         minFractionDigits: 2,
@@ -449,7 +472,7 @@ sap.ui.define([
                             new sap.m.Input({
                                 value: subContractorCoef,
                                 visible: "{ui>/editable}",
-                                change: this.onFilialeCoefChange.bind(this)
+                                change: this.onGroupeCoefChange.bind(this)
                             }).data(this._CONSTANT_COLUMN_ID, sColumnId)
                         ]
                     }),
@@ -463,7 +486,7 @@ sap.ui.define([
                                     { path: "utilities>" + columnId },
                                     { path: "utilities>isPercent" }
                                 ],
-                                formatter: function (total=0, percent) {
+                                formatter: function (total = 0, percent) {
                                     const formatInstance = sap.ui.core.format.NumberFormat.getFloatInstance({
                                         groupingEnabled: true,
                                         minFractionDigits: 2,
@@ -504,18 +527,23 @@ sap.ui.define([
 
             let index = 5;
             const aDynamicSTIColumns = this.getUtilitiesModel().getPxSTGHeader();
-            aDynamicSTIColumns.forEach((oColData) => {
-                index++;
-                var oColumn = this._createGroupeColumn(oColData.columnId, oColData);
-                STF.insertColumn(oColumn, index);
-            });
+            if (aDynamicSTIColumns) {
+                aDynamicSTIColumns.forEach((oColData) => {
+                    index++;
+                    var oColumn = this._createGroupeColumn(oColData.columnId, oColData);
+                    STF.insertColumn(oColumn, index);
+                });
+            }
 
             const aDynamicFilialeColumns = this.getUtilitiesModel().getPxSTFHeader();
-            aDynamicFilialeColumns.forEach((oColData) => {
-                index++;
-                var oColumn = this._createFilialeColumn(oColData.columnId, oColData);
-                STF.insertColumn(oColumn, index);
-            });
+            if (aDynamicFilialeColumns) {
+                aDynamicFilialeColumns.forEach((oColData) => {
+                    index++;
+                    var oColumn = this._createFilialeColumn(oColData.columnId, oColData);
+                    STF.insertColumn(oColumn, index);
+                });
+            }
+
         },
     });
 });
