@@ -42,7 +42,7 @@ sap.ui.define(
 
         return ControllerExtension.extend("com.avv.ingerop.ingeropfga.ext.controller.extendOP", {
             Formatter: Formatter,
-            
+
             _wireFioriElementsButtons: function () {
                 const oView = this.getView();
 
@@ -104,8 +104,6 @@ sap.ui.define(
                 });
             },
 
-            // Override or add custom methods here
->>>>>>> e330b5b82401b671fca2980648e85c3970c86468
             // this section allows to extend lifecycle hooks or hooks provided by Fiori elements
             override: {
                 onAfterRendering: function () {
@@ -413,6 +411,7 @@ sap.ui.define(
                                 "to_BudgetPxSubContracting": formattedPxSubContractingExt,
                                 "to_BudgetPxRecetteExt": formattedPxRecetteExt,
                                 "to_BudgetPxSTI": [],
+                                "to_BudgetPxSTG": [],
                                 "to_Previsionel": [],
                                 "to_BudgetPxMOProfil": formattedMOProfil,
                                 "to_BudgetPxMainOeuvre": formattedMainOeuvre
@@ -439,6 +438,9 @@ sap.ui.define(
                                     results: []
                                 },
                                 "to_BudgetPxSTI": {
+                                    results: []
+                                },
+                                "to_BudgetPxSTG": {
                                     results: []
                                 },
                                 "to_Previsionel": {
