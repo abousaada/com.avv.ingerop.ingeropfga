@@ -136,7 +136,7 @@ sap.ui.define(
 
                 onInit: async function () {
 
-                    this.base.getView().getController().onSelectFGAPress = function(){
+                    this.base.getView().getController().onSelectFGAPress = function () {
                         console.log("onSelectFGAPress");
                     }
 
@@ -954,7 +954,7 @@ sap.ui.define(
             preparePxSTGTreeData: function () {
                 this._budgetPxSTG.preparePxSTGTreeData();
             },
-            
+
             // onBtnAddSubContractorPress: function (oEvent) {
             //     if (!this._budgetPxSubContracting) {
             //         this._budgetPxSubContracting = new BudgetPxSubContracting();
@@ -2628,17 +2628,49 @@ sap.ui.define(
                     contentWidth: "60%",
 
                     search: function (oEvent) {
-                        var sValue = oEvent.getParameter("value").toLowerCase();
+                        var sValue = oEvent.getParameter("value");
                         var oTable = oEvent.getSource();
                         var aAllItems = oTable.getModel().getProperty("/allItems");
 
                         if (sValue) {
+                            // Convert search value to lowercase for case-insensitive search
+                            var sSearchValue = sValue.toLowerCase();
+
+                            // Check if the search contains wildcard patterns
+                            var hasWildcards = sSearchValue.includes('*') || sSearchValue.includes('?');
+
                             var aFilteredItems = aAllItems.filter(function (oItem) {
-                                return oItem.BusinessNo && oItem.BusinessNo.toLowerCase().includes(sValue) ||
-                                    oItem.BusinessName && oItem.BusinessName.toLowerCase().includes(sValue);
+                                var bMatch = false;
+
+                                // Get item values (convert to lowercase for case-insensitive comparison)
+                                var sBusinessNo = oItem.BusinessNo ? oItem.BusinessNo.toLowerCase() : '';
+                                var sBusinessName = oItem.BusinessName ? oItem.BusinessName.toLowerCase() : '';
+
+                                if (hasWildcards) {
+                                    // Convert wildcard pattern to regex
+                                    // Escape regex special characters except * and ?
+                                    var pattern = sSearchValue
+                                        .replace(/[.+^${}()|[\]\\]/g, '\\$&') // Escape regex special chars
+                                        .replace(/\*/g, '.*') // Convert * to .*
+                                        .replace(/\?/g, '.'); // Convert ? to .
+
+                                    var regex = new RegExp('^' + pattern + '$', 'i'); // 'i' flag for case-insensitive
+
+                                    // Check if BusinessNo OR BusinessName matches the pattern
+                                    bMatch = regex.test(sBusinessNo) || regex.test(sBusinessName);
+                                } else {
+                                    // Simple substring search (without wildcards)
+                                    // This allows partial matching like "100" for "AAA1000111"
+                                    bMatch = sBusinessNo.includes(sSearchValue) ||
+                                        sBusinessName.includes(sSearchValue);
+                                }
+
+                                return bMatch;
                             });
+
                             oTable.getModel().setProperty("/items", aFilteredItems);
                         } else {
+                            // If search is empty, show all items
                             oTable.getModel().setProperty("/items", aAllItems);
                         }
                     },
@@ -2665,7 +2697,6 @@ sap.ui.define(
                                 }
 
                                 // Close the dialog by calling close() on the TableSelectDialog instance
-                                // The dialog will close automatically after confirm, but we need to get a reference to it
                                 var oDialog = oEvent.getSource();
 
                                 // Navigate using the controller reference
@@ -2715,7 +2746,6 @@ sap.ui.define(
                 oView.addDependent(this._oBusinessNoDialog);
                 this._oBusinessNoDialog.open();
             },
-
             _navigateToSelectedFGA: async function (sBusinessNo, sBusinessName) {
                 try {
                     const oView = this.getView();
