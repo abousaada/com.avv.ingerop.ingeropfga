@@ -1639,7 +1639,8 @@ sap.ui.define(
                                 const sName = String(oContext.getProperty("name") || "").trim().toLowerCase();
                                 const $row = oRow.$();
                                 // Enlever les anciens styles
-                                $row.removeClass("pxTotalRow pxSubTotalRow");
+                                // $row.removeClass("pxTotalRow pxSubTotalRow");
+                                oRow.removeStyleClass("pxTotalRow pxSubTotalRow");
                                 if (aExclure.has(sName)) {
                                     return;
                                 }
@@ -1701,7 +1702,8 @@ sap.ui.define(
                                 const sName = String(oContext.getProperty("name") || "").trim().toLowerCase();
                                 const $row = oRow.$();
                                 // Enlever les anciens styles
-                                $row.removeClass("pxTotalRow pxSubTotalRow");
+                                // $row.removeClass("pxTotalRow pxSubTotalRow");
+                                oRow.removeStyleClass("pxTotalRow pxSubTotalRow");
                                 // main total (dark blue + white text)
                                 if (sName === "total global") {
                                     oRow.addStyleClass("pxTotalRow");
