@@ -120,7 +120,7 @@ sap.ui.define([
                         })
                     ]
                 }),
-                width: "8rem",
+                width: "10rem",
                 autoResizable:true
             }).data(this._CONSTANT_COLUMN_ID, sColumnId);
         },
@@ -163,7 +163,7 @@ sap.ui.define([
                         }).data(this._CONSTANT_COLUMN_ID, sColumnId)
                     ]
                 }),
-                width: "8rem",
+                width: "10rem",
                 autoResizable:true
             }).data(this._CONSTANT_COLUMN_ID, sColumnId);
         },
@@ -233,7 +233,7 @@ sap.ui.define([
                         })
                     ]
                 }),
-                width: "8rem",
+                width: "10rem",
                 autoResizable:true
             }).data(this._CONSTANT_COLUMN_ID, sColumnId);
         },

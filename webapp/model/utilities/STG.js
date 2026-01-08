@@ -269,6 +269,52 @@ sap.ui.define([], function () {
       return { "treeData": treeData2, stfTreeHeader, stgTreeHeader };
     }
 
+    formattedPxGroupe() {
+      const [root] = this.oModel.getPxSTFHierarchy(); // = [root]
+      const treeHeader = this.oModel.getPxSTGHeader();
+      const constantPrefix = this._CONSTANT_STG_COLUMN_PREFIXE;
+      const flatData = [];
+
+      if (!root || !root.children) return [];
+
+      for (const group of root.children) {
+        // Ignorer le total global
+        if (group.isTotal) continue;
+
+        const regroupement = group.name;
+
+        for (const leaf of group.children) {
+          if (!leaf.isBudget) continue; // ignorer totaux intermédiaires
+
+          // Pour chaque colonne dynamique (un sous-traitant = une colonne)
+          for (const columnId of Object.keys(leaf)) {
+            if (!columnId.startsWith(constantPrefix)) continue;
+
+            const header = treeHeader.find(h => h.columnId === columnId);
+            if (!header) continue;
+
+            flatData.push({
+              regroupement,
+              name: leaf.name,
+              code: leaf.code,
+              libelle: leaf.libelle,
+              startDate: leaf.startDate,
+              endDate: leaf.endDate,
+              status: leaf.status,
+              businessNo: leaf.businessNo,
+              isFiliale: true,
+              subContractorId: header.subContractorId,
+              subContractorBudget: leaf[columnId],
+              subContractorPartner: header.subContractorPartner,
+              subContractorCoef: header.subContractorCoef,
+            });
+          }
+        }
+      }
+
+      return flatData;
+    }
+
     formattedPxFiliale() {
       const [root] = this.oModel.getPxSTFHierarchy(); // = [root]
       const treeHeader = this.oModel.getPxSTFHeader();

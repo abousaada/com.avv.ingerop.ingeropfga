@@ -59,6 +59,7 @@ sap.ui.define([
       name: "MissionId",
       profitCenter: "ProfitCenter",
       status: "Statut",
+      cumul: "Cumul",
       subContractorBudget: ({ Budget }) => Budget ? parseFloat(Budget) : Budget,
       subContractorId: "SubContractor",
       subContractorName: "SubContractorName",
@@ -100,6 +101,20 @@ sap.ui.define([
     }),
     
     //Formatter Out
+
+    reverseFormatBudgetSTG: Helper.buildObjectKeysMapper({
+      BusinessNo : "businessNo",
+      MissionId : "name",
+      ProfitCenter : "profitCenter",
+      status : "status",
+      Cumul : "cumul",
+      Budget : ({subContractorBudget}) => subContractorBudget?.toString(),
+      SubContractor: "subContractorId",
+      SubContractorName : "subContractorName",
+      SubContractorCoef : "subContractorCoef"
+    }),
+
+
 
     reverseFormatBudgetSubContracting: Helper.buildObjectKeysMapper({
       BusinessNo: "businessNo",

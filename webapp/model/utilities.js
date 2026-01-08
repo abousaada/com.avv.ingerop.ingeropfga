@@ -1116,6 +1116,12 @@ sap.ui.define([
                 ];
             },
 
+            formattedPxSTG(){
+                return this.oSTG    
+                           .formattedPxGroupe()
+                           .map(Formatter.reverseFormatBudgetSTG)
+            },
+
             formattedPxRecetteExt() {
                 return this.oRecetteExt
                     .formattedPxRecetteExt()

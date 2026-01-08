@@ -412,6 +412,8 @@ sap.ui.define(
                             const formattedMissions = utilitiesModel.getFormattedMissions();
                             const formattedPxAutre = utilitiesModel.getFormattedPxAutre();
                             const formattedPxSubContractingExt = utilitiesModel.formattedPxSubContractingExt();
+                            const formattedPxSTG = utilitiesModel.formattedPxSTG();
+                            
                             const formattedPxRecetteExt = utilitiesModel.formattedPxRecetteExt();
                             const formattedMainOeuvre = utilitiesModel.formattedPxMainOeuvre();
                             const formattedMOProfil = utilitiesModel.formattedPxMOProfil();
@@ -422,7 +424,7 @@ sap.ui.define(
                                 "to_BudgetPxSubContracting": formattedPxSubContractingExt,
                                 "to_BudgetPxRecetteExt": formattedPxRecetteExt,
                                 "to_BudgetPxSTI": [],
-                                "to_BudgetPxSTG": [],
+                                "to_BudgetPxSTG": formattedPxSTG,
                                 "to_Previsionel": [],
                                 "to_BudgetPxMOProfil": formattedMOProfil,
                                 "to_BudgetPxMainOeuvre": formattedMainOeuvre

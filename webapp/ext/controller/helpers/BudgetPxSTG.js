@@ -446,22 +446,6 @@ sap.ui.define([
                 multiLabels: [
                     new sap.m.Label({ text: subContractorName }),
                     new sap.m.Label({ text: subContractorId }),
-                    // new sap.m.HBox({
-                    //     items: [
-                    //         new sap.m.Text({
-                    //             text: subContractorId,
-                    //             visible: "{= !${ui>/editable} }",
-                    //         }),
-                    //         new sap.m.Input({
-                    //             value: subContractorId,
-                    //             showValueHelp: true,
-                    //             valueHelpOnly: true,
-                    //             visible: "{ui>/editable}",
-                    //             valueHelpRequest: this.onChangeSubContractor.bind(this)
-                    //         })
-                    //     ]
-                    // }),
-                    // new sap.m.Label({ text: this.isFiliale(subContractorPartner) }),
                     new sap.m.Label({ text: profitCenter }),
                     new sap.m.HBox({
                         items: [
@@ -499,26 +483,9 @@ sap.ui.define([
                             },
                             visible: "{= !!${utilities>isTotal} || !!${utilities>isBudget} }"
                         }),
-                        // new sap.m.Input({
-                        //     value: {
-                        //         path: "utilities>" + columnId,
-                        //         type: new sap.ui.model.type.Float({ minFractionDigits: 2 })
-                        //     },
-                        //     editable: "{= ${ui>/editable} && ${utilities>isBudget} }",
-                        //     visible: "{= !!${utilities>isBudget} }",
-                        //     change: this.onFilialeBudgetChange.bind(this)
-                        // }).data(this._CONSTANT_COLUMN_ID, sColumnId),
-                        // new sap.m.Link({
-                        //     visible: "{= !!${utilities>isTotal} && !!${utilities>isCumul} }",
-                        //     press: this.navToGLAccount.bind(this),
-                        //     text: {
-                        //         path: "utilities>" + columnId,
-                        //         type: new sap.ui.model.type.Float({ minFractionDigits: 2 })
-                        //     }
-                        // }).data(this._CONSTANT_COLUMN_ID, subContractorId)
                     ]
                 }),
-                width: "8rem"
+                width: "13rem"
             }).data(this._CONSTANT_COLUMN_ID, sColumnId);
         },
 
