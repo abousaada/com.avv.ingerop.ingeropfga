@@ -111,7 +111,7 @@ sap.ui.define([
       Budget : ({subContractorBudget}) => subContractorBudget?.toString(),
       SubContractor: "subContractorId",
       SubContractorName : "subContractorName",
-      SubContractorCoef : "subContractorCoef"
+      SubContractorCoef : ({subContractorCoef}) => subContractorCoef?.toString(),
     }),
 
 

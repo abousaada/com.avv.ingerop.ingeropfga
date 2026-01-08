@@ -10,7 +10,8 @@ sap.ui.define([], function () {
     }
 
     buildTreeData() {
-      const pxSousTraitance = this.oModel.getPxSousTraitance().filter(st => !st.isFiliale);
+      const pxSousTraitance = this.oModel.getPxSousTraitance();
+      // .filter(st => !st.isFiliale);
       const treeHeader = {};
       const treeData = [];
       const root = {
@@ -50,7 +51,7 @@ sap.ui.define([], function () {
       for (const subContract of pxSousTraitance) {
 
         const {
-          businessNo, endDate, libelle, code, name, startDate, status,
+          businessNo, endDate, libelle, code, name, startDate, status, isFiliale,
           regroupement,
           subContractorId, subContractorBudget, subContractorCoef, subContractorName, subContractorCumul
         } = subContract;
@@ -86,7 +87,7 @@ sap.ui.define([], function () {
           group.children.push(leaf);
         }
 
-        if (subContractorId) {
+        if (subContractorId && !isFiliale ) {
           const columnId = this._CONSTANT_COLUMN_PREFIXE + subContractorId;
           const subContractor = { subContractorCumul, subContractorName, subContractorId, subContractorBudget, subContractorCoef, columnId };
           if (!treeHeader[columnId]) {
