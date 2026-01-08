@@ -166,13 +166,13 @@ sap.ui.define([], function () {
           cumulTotal.budgetHorsFrais += cumulTotal[key];
           cumulTotal.budgetYCFrais += cumulTotal[key] * (stfTreeHeader[key]?.subContractorCoef || 1);
 
-          value > 0 ? (percentTotal[key] = cumulTotal[key] / value) : percentTotal[key] = 0;
+          value > 0 ? (percentTotal[key] = cumulTotal[key] / value * 100) : percentTotal[key] = 0;
           RADTotal[key] = value - cumulTotal[key];
         }
       });
 
-      percentTotal.budgetHorsFrais  = globalTotal.budgetHorsFrais > 0 ? (cumulTotal.budgetHorsFrais / globalTotal.budgetHorsFrais) : 0,
-      percentTotal.budgetYCFrais    = globalTotal.budgetYCFrais > 0 ? (cumulTotal.budgetYCFrais / globalTotal.budgetYCFrais) : 0
+      percentTotal.budgetHorsFrais  = globalTotal.budgetHorsFrais > 0 ? (cumulTotal.budgetHorsFrais / globalTotal.budgetHorsFrais * 100) : 0,
+      percentTotal.budgetYCFrais    = globalTotal.budgetYCFrais > 0 ? (cumulTotal.budgetYCFrais / globalTotal.budgetYCFrais * 100) : 0
 
       RADTotal.budgetHorsFrais  = globalTotal.budgetHorsFrais - cumulTotal.budgetHorsFrais,
       RADTotal.budgetYCFrais    = globalTotal.budgetYCFrais - cumulTotal.budgetYCFrais
