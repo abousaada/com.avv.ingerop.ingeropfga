@@ -225,14 +225,14 @@ sap.ui.define([], function () {
 
                       totalLine[columnId]   = (totalLine[columnId] || 0)   + (subContractorBudget || 0);
                       globalTotal[columnId] = (globalTotal[columnId] || 0) + (subContractorBudget || 0);
+
+                      totalLine.budgetHorsFrais += (subContractorBudget || 0);
+                      totalLine.budgetYCFrais   += ((subContractorBudget || 0) * (subContractorCoef || 0) || 0);
+
+                      globalTotal.budgetHorsFrais += (subContractorBudget || 0);
+                      globalTotal.budgetYCFrais   += ((subContractorBudget || 0) * (subContractorCoef || 0) || 0);
                     }
                   });
-
-                  totalLine.budgetHorsFrais += leaf.budgetHorsFrais || 0;
-                  totalLine.budgetYCFrais   += leaf.budgetYCFrais   || 0;
-
-                  globalTotal.budgetHorsFrais += leaf.budgetHorsFrais || 0;
-                  globalTotal.budgetYCFrais   += leaf.budgetYCFrais   || 0;
                   
                 }
               }
@@ -260,6 +260,15 @@ sap.ui.define([], function () {
       RADTotal.budgetYCFrais    = globalTotal.budgetYCFrais - cumulTotal.budgetYCFrais
 
       return { "treeData2": treeData, stgTreeHeader: Object.values(stgTreeHeader) };
+    }
+
+
+    removeStfColumnById(columnId){
+      // const tree = this.oModel.getPxSTFHierarchy();
+      // const header = this.oModel.getPxSTGHeader();
+
+      // this.oModel.getPxSTFHierarchy();
+      // this.oModel.getPxSTGHeader();
     }
 
 
