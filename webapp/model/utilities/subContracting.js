@@ -53,7 +53,8 @@ sap.ui.define([], function () {
         const {
           businessNo, endDate, libelle, code, name, startDate, status, isFiliale,
           regroupement,
-          subContractorId, subContractorBudget, subContractorCoef, subContractorName, subContractorCumul
+          subContractorId, subContractorBudget, subContractorCoef, subContractorName, subContractorCumul,
+          hasBudget
         } = subContract;
 
         const groupId = "GR" + (regroupement ?? "NO_GRP");

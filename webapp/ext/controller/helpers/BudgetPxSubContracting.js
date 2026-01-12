@@ -415,7 +415,7 @@ sap.ui.define([
             SubContractingTree.insertColumn(oColumn, aColumns.length - 2);
         },
 
-        _createExternalColumn: function (sColumnId, { subContractorName, subContractorId, subContractorCoef, subContractorPartner, columnId }) {
+        _createExternalColumn: function (sColumnId, { subContractorName, subContractorId, subContractorCoef, hasBudget, columnId }) {
             return new sap.ui.table.Column({
                 multiLabels: [
                     new sap.m.Label({ text: subContractorName }),
@@ -423,13 +423,14 @@ sap.ui.define([
                         items: [
                             new sap.m.Text({
                                 text: subContractorId,
-                                visible: "{= !${ui>/editable} }",
+                                visible: hasBudget ? hasBudget : "{= !${ui>/editable} }",
                             }),
                             new sap.m.Input({
                                 value: subContractorId,
                                 showValueHelp: true,
                                 valueHelpOnly: true,
-                                visible: "{ui>/editable}",
+                                visible: hasBudget ? !hasBudget : "{ui>/editable}",
+
                                 valueHelpRequest: this.onChangeSubContractor.bind(this)
                             })
                         ]

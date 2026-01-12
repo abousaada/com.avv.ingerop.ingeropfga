@@ -46,6 +46,7 @@ sap.ui.define([
       startDate: "StartDate",
       status: "Statut",
       isFiliale: "IsFiliale",
+      hasBudget: "hasBudget",
       subContractorBudget: ({ Budget }) => Budget ? parseFloat(Budget) : Budget,
       subContractorId: "SubContractor",
       subContractorName: "SubContractorName",

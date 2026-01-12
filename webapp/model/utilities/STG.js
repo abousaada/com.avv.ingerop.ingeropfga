@@ -54,7 +54,8 @@ sap.ui.define([], function () {
         const {
           businessNo, endDate, libelle, code, name, startDate, status,
           regroupement,
-          subContractorId, subContractorBudget, subContractorCoef, subContractorName, subContractorCumul, isFiliale
+          subContractorId, subContractorBudget, subContractorCoef, subContractorName, subContractorCumul, isFiliale,
+          hasBudget
         } = subContract;
 
         const groupId = "GR" + (regroupement ?? "NO_GRP");
@@ -90,7 +91,7 @@ sap.ui.define([], function () {
 
         if (subContractorId && isFiliale) {
           const columnId = this._CONSTANT_STF_COLUMN_PREFIXE + subContractorId;
-          const subContractor = { subContractorCumul, subContractorName, subContractorId, subContractorBudget, subContractorCoef, columnId };
+          const subContractor = { subContractorCumul, subContractorName, subContractorId, subContractorBudget, subContractorCoef, hasBudget, columnId };
           if (!stfTreeHeader[columnId]) {
             stfTreeHeader[columnId] = { ...subContractor };
           }
