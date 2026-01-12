@@ -90,7 +90,7 @@ sap.ui.define([], function () {
 
         if (subContractorId && !isFiliale ) {
           const columnId = this._CONSTANT_COLUMN_PREFIXE + subContractorId;
-          const subContractor = { subContractorCumul, subContractorName, subContractorId, subContractorBudget, subContractorCoef, columnId };
+          const subContractor = { subContractorCumul, subContractorName, subContractorId, subContractorBudget, subContractorCoef, hasBudget, columnId };
           if (!treeHeader[columnId]) {
             treeHeader[columnId] = { ...subContractor };
           }
