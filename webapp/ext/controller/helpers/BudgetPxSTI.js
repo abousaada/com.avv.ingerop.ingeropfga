@@ -135,7 +135,7 @@ sap.ui.define([
                                 /*formatter: function (value) {
                                     return value || "0.00";
                                 }*/
-                               formatter: function (value) {
+                                formatter: function (value) {
                                     if (!value) return "0";
 
                                     // If the value is a string with %, return as is
@@ -152,7 +152,7 @@ sap.ui.define([
                                         useGrouping: true
                                     }).format(number);
                                 }
-                               
+
                             },
                             //visible: "{= !${isNode}}"
                             //visible: "{= !${utilities>isNode} && !${utilities>isRegroupementTotal}}"
@@ -301,7 +301,8 @@ sap.ui.define([
                             // Show text for non-cumulative rows
                             //visible: "{= ${utilities>isCumulativeRow} !== true}"
                             //visible: "{= ${utilities>isCumulativeRow} !== true && !${utilities>isNode} && !${utilities>isRegroupementTotal}}"
-                        visible: "{= ${utilities>isCumulativeRow} !== true && (!${utilities>isNode} || ${utilities>isRegroupementTotal})}"})
+                            visible: "{= ${utilities>isCumulativeRow} !== true && (!${utilities>isNode} || ${utilities>isRegroupementTotal})}"
+                        })
 
                     ]
                 }),
@@ -350,7 +351,7 @@ sap.ui.define([
                             },
                             //visible: "{= !${isNode}}"
                             //visible: "{= !${utilities>isNode} && !${utilities>isRegroupementTotal}}"
-visible: "{= ${utilities>isCumulativeRow} !== true && (!${utilities>isNode} || ${utilities>isRegroupementTotal})}"
+                            visible: "{= ${utilities>isCumulativeRow} !== true && (!${utilities>isNode} || ${utilities>isRegroupementTotal})}"
                         })
                     ]
                 }),
@@ -780,13 +781,29 @@ visible: "{= ${utilities>isCumulativeRow} !== true && (!${utilities>isNode} || $
                                 totalsForRow.dynamicColumns[businessNo] = regroupement.totals.dynamicColumns[businessNo].toString();
                             });
 
+                            regroupement.children.sort(function (a, b) {
+                                var nameA = (a.name || a.MissionId || "").toUpperCase();
+                                var nameB = (b.name || b.MissionId || "").toUpperCase();
+                                return nameA.localeCompare(nameB, "fr", {
+                                    sensitivity: "base",
+                                    numeric: true  
+                                });
+                            });
+
                             // Add total row with the regroupement's name
                             regroupement.children.push(
                                 self.createRegroupementTotalRow(totalsForRow, regroupement.name)
                             );
+
                             regroupementArray.push(regroupement);
                         }
                     }
+
+                    regroupementArray.sort(function (a, b) {
+                        var nameA = (a.name || "").toUpperCase();
+                        var nameB = (b.name || "").toUpperCase();
+                        return nameA.localeCompare(nameB, "fr", { sensitivity: "base" });
+                    });
 
                     fgaGroup.children = regroupementArray;
                     treeData.push(fgaGroup);
