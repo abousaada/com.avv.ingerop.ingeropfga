@@ -60,6 +60,9 @@ sap.ui.define([
             // Build trees 
             var missionsTreeData = buildTree(missions);
 
+            // SORT EVERYTHING
+            this._sortTreeRecursively(missionsTreeData);
+
             // Set tree
             this.getView().getModel("utilities").setProperty("/missionsHierarchy", missionsTreeData);
 
@@ -340,7 +343,7 @@ sap.ui.define([
             }
 
             // Sort the hierarchy
-            treeData.sort(function (a, b) {
+            /*treeData.sort(function (a, b) {
                 return (a.name || "").localeCompare(b.name || "");
             });
 
@@ -348,7 +351,10 @@ sap.ui.define([
                 fgaGroup.children.sort(function (a, b) {
                     return (a.name || "").localeCompare(b.name || "");
                 });
-            });
+            });*/
+
+            // SORT FULL TREE
+            this._sortTreeRecursively(treeData);
 
             return treeData;
         },
@@ -553,6 +559,26 @@ sap.ui.define([
             }
         },
 
+
+        _sortTreeRecursively: function (aNodes) {
+            if (!Array.isArray(aNodes)) {
+                return;
+            }
+
+            // Sort current level
+            aNodes.sort(function (a, b) {
+                const aKey = a.name || a.MissionId || "";
+                const bKey = b.name || b.MissionId || "";
+                return aKey.localeCompare(bKey, undefined, { sensitivity: "base" });
+            });
+
+            // Sort children
+            aNodes.forEach(function (oNode) {
+                if (oNode.children && oNode.children.length > 0) {
+                    this._sortTreeRecursively(oNode.children);
+                }
+            }.bind(this));
+        }
 
 
     });
