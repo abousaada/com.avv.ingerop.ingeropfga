@@ -47,6 +47,7 @@ sap.ui.define([
             for (var i = aColumns.length - 1; i >= 0; i--) {
                 if (aColumns[i].data(this._CONSTANT_COLUMN_ID)?.includes(this._CONSTANT_DYNAMIC_PREFIX)) {
                     SubContractingTree.removeColumn(aColumns[i]);
+                    aColumns[i].destroy();
                 }
             }
         },

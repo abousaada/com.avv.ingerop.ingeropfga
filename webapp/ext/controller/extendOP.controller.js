@@ -493,6 +493,9 @@ sap.ui.define(
 
                         const updatedFGA = await utilitiesModel.deepUpsertFGA(oPayload);
 
+                        if(updatedFGA){
+                            const hasRefresh = await this._refreshBudgetPxTab();
+                        }
                         if (!isForecastMode && updatedFGA) {
                             this._resetNewMissionFlags(utilitiesModel);
                         }
@@ -2355,6 +2358,33 @@ sap.ui.define(
                 }
             },
 
+            async _refreshBudgetPxTab(){
+                const oUtilitiesModel = this.getInterface().getModel("utilities");
+
+                try {
+                    // Clear existing data
+                    oUtilitiesModel.resetBudgetData();
+
+                    // Load Missions fragment
+                    await this._loadFragment("Missions");
+
+                    // Get tab data for new period
+                    const tabData = await oUtilitiesModel.getBudgetPxTabData();
+
+                    // Prepare all tree data
+                    this.prepareMissionsTreeData();
+                    this.preparePxAutreTreeData();
+                    this.preparePxSubContractingTreeData();
+                    this.preparePxRecetteExtTreeData();
+                    this.preparePxMainOeuvreTreeData();
+                    this.preparePxSTGTreeData();
+                    this.preparePxSTITreeData();
+
+                } catch (error) {
+                    console.error("Error refreshing budget px data:", error);
+                    throw error;
+                }
+            },
 
             _exSaveecuteForNavigation: async function () {
                 try {
@@ -2407,6 +2437,7 @@ sap.ui.define(
                     const updatedFGA = await oUtilitiesModel.deepUpsertFGA(oPayload);
 
                     if (updatedFGA) {
+                        await this._refreshBudgetPxTab();
                         this._resetNewMissionFlags(oUtilitiesModel);
                         MessageToast.show("Modifications sauvegardées avec succès");
                         return true;

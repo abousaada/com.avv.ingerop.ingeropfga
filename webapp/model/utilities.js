@@ -37,6 +37,31 @@ sap.ui.define([
                 this.setData({ ...InitialData });
             },
 
+            resetBudgetData() {
+                this.setPxAutres([]);
+                this.setPxAutreHierarchyWithTotals([]);
+                this.setPxRecetteExt([]);
+
+                this.setPxRecetteExtHierarchy([]);
+
+                this.setPxSousTraitance([]);
+                this.setPxSTFHierarchy([]);
+                this.setPxSTFHeader([]);
+
+                this.setPxSTG([]);
+                this.setPxSTGHeader([]);
+
+                this.setPxSubContractingHierarchy([]);
+                this.setPxSubContractingHeader([]);
+
+                this.setPxMainOeuvre([]);
+                this.setPxMainOeuvreHierarchy([]);
+                this.setPxMainOeuvreHeader([]);
+
+                this.setPxSTI([]);
+                this.setPSTI([]);
+            },
+
             buildPxSubContractingTreeData() {
                 const { treeData, treeHeader } = this.oSubContracting.buildTreeData();
                 this.setPxSubContractingHierarchy(treeData);
@@ -136,6 +161,162 @@ sap.ui.define([
 
                     //this.setPrevisionel(previsionel || []);
 
+
+                } catch (error) {
+                    console.log(error);
+                }
+            },
+
+            async getBudgetPxTabData() {
+                try {
+                    const [
+                        missions,
+                        pxRecettes,
+                        pxAutres,
+                        pxSubContracting,
+                        pxSTG,
+                        pxMainOeuvre,
+                        profils,
+                        pxSTI,
+                        pSTI
+                    ] = await Promise.all([
+                        this.getBEMissions(),
+                        this.getBEPxRecettes(),
+                        this.getBEPxAutres(),
+                        this.getBEPxExtSubContracting(),
+                        this.getBESTG(),
+                        this.getBEPxMainOeuvre(),
+                        this.getBEProfils(),
+                        this.getBEPxSTI(),
+                        this.getBEPSTI(),
+                    ]);
+
+                    this.setMissions(missions || []);
+                    this.setPxRecetteExt(pxRecettes || []);
+                    this.setPxAutres(pxAutres || []);
+                    this.setPxSousTraitance(pxSubContracting || []);
+                    this.setPxSTG(pxSTG);
+                    this.setPxMainOeuvre(pxMainOeuvre || []);
+                    this.setPxMainOeuvreProfilHeader(profils);
+                    this.setPxSTI(pxSTI || []);
+                    this.setPSTI(pSTI || []);
+
+                } catch (error) {
+                    console.log(error);
+                }
+            },
+
+            async getBudgetPxTabData() {
+                try {
+                    const [
+                        missions,
+                        pxRecettes,
+                        pxAutres,
+                        pxSubContracting,
+                        pxSTG,
+                        pxMainOeuvre,
+                        profils,
+                        pxSTI,
+                        pSTI
+                    ] = await Promise.all([
+                        this.getBEMissions(),
+                        this.getBEPxRecettes(),
+                        this.getBEPxAutres(),
+                        this.getBEPxExtSubContracting(),
+                        this.getBESTG(),
+                        this.getBEPxMainOeuvre(),
+                        this.getBEProfils(),
+                        this.getBEPxSTI(),
+                        this.getBEPSTI(),
+                    ]);
+
+                    this.setMissions(missions || []);
+                    this.setPxRecetteExt(pxRecettes || []);
+                    this.setPxAutres(pxAutres || []);
+                    this.setPxSousTraitance(pxSubContracting || []);
+                    this.setPxSTG(pxSTG);
+                    this.setPxMainOeuvre(pxMainOeuvre || []);
+                    this.setPxMainOeuvreProfilHeader(profils);
+                    this.setPxSTI(pxSTI || []);
+                    this.setPSTI(pSTI || []);
+
+                } catch (error) {
+                    console.log(error);
+                }
+            },
+
+            async getBudgetPxTabData() {
+                try {
+                    const [
+                        missions,
+                        pxRecettes,
+                        pxAutres,
+                        pxSubContracting,
+                        pxSTG,
+                        pxMainOeuvre,
+                        profils,
+                        pxSTI,
+                        pSTI
+                    ] = await Promise.all([
+                        this.getBEMissions(),
+                        this.getBEPxRecettes(),
+                        this.getBEPxAutres(),
+                        this.getBEPxExtSubContracting(),
+                        this.getBESTG(),
+                        this.getBEPxMainOeuvre(),
+                        this.getBEProfils(),
+                        this.getBEPxSTI(),
+                        this.getBEPSTI(),
+                    ]);
+
+                    this.setMissions(missions || []);
+                    this.setPxRecetteExt(pxRecettes || []);
+                    this.setPxAutres(pxAutres || []);
+                    this.setPxSousTraitance(pxSubContracting || []);
+                    this.setPxSTG(pxSTG);
+                    this.setPxMainOeuvre(pxMainOeuvre || []);
+                    this.setPxMainOeuvreProfilHeader(profils);
+                    this.setPxSTI(pxSTI || []);
+                    this.setPSTI(pSTI || []);
+
+                } catch (error) {
+                    console.log(error);
+                }
+            },
+
+            async getBudgetPxTabData() {
+                try {
+                    const [
+                        missions,
+                        pxRecettes,
+                        pxAutres,
+                        pxSubContracting,
+                        pxSTG,
+                        pxMainOeuvre,
+                        profils,
+                        pxSTI,
+                        pSTI
+                    ] = await Promise.all([
+                        this.getBEMissions(),
+                        this.getBEPxRecettes(),
+                        this.getBEPxAutres(),
+                        this.getBEPxExtSubContracting(),
+                        this.getBESTG(),
+                        this.getBEPxMainOeuvre(),
+                        this.getBEProfils(),
+                        this.getBEPxSTI(),
+                        this.getBEPSTI(),
+                    ]);
+
+                    this.setMissions(missions || []);
+                    this.setPxRecetteExt(pxRecettes || []);
+                    this.setPxAutres(pxAutres || []);
+                    this.setPxSousTraitance(pxSubContracting || []);
+                    this.setPxSTG(pxSTG);
+                    this.setPxMainOeuvre(pxMainOeuvre || []);
+                    this.setPxMainOeuvreProfilHeader(profils);
+                    this.setPxSTI(pxSTI || []);
+                    this.setPSTI(pSTI || []);
 
                 } catch (error) {
                     console.log(error);
