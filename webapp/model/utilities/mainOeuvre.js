@@ -246,10 +246,10 @@ sap.ui.define([], function () {
               rest.profil             = profil;
               rest.tjm                = tjm;
               
-              if(leaf[columnId + this._CONSTANT_COLUMN_CONSO]){
+              if(leaf[columnId + this._CONSTANT_COLUMN_CONSO] !== undefined){
                 rest.nbJoursConso = (leaf[columnId + this._CONSTANT_COLUMN_CONSO] || 0);
               }
-              if(leaf[columnId + this._CONSTANT_COLUMN_REST]){
+              if(leaf[columnId + this._CONSTANT_COLUMN_REST] !== undefined){
                 rest.nbJoursRest = (leaf[columnId + this._CONSTANT_COLUMN_REST] || 0);
               }
 
