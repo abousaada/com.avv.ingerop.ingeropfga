@@ -153,7 +153,7 @@ sap.ui.define([
                     this.setPSTI(pSTI || []);
 
                     // A REMETTRE PROPRE
-                    this.onCalculChartsData(previsions, recaps, charts, chartsadddata);
+                    this.onCalculChartsData(previsions, recaps, charts, chartsadddata, pxMainOeuvre, profils);
                     //Notes
                     this.setNotes(notes);
 
@@ -206,125 +206,8 @@ sap.ui.define([
                 }
             },
 
-            async getBudgetPxTabData() {
-                try {
-                    const [
-                        missions,
-                        pxRecettes,
-                        pxAutres,
-                        pxSubContracting,
-                        pxSTG,
-                        pxMainOeuvre,
-                        profils,
-                        pxSTI,
-                        pSTI
-                    ] = await Promise.all([
-                        this.getBEMissions(),
-                        this.getBEPxRecettes(),
-                        this.getBEPxAutres(),
-                        this.getBEPxExtSubContracting(),
-                        this.getBESTG(),
-                        this.getBEPxMainOeuvre(),
-                        this.getBEProfils(),
-                        this.getBEPxSTI(),
-                        this.getBEPSTI(),
-                    ]);
-
-                    this.setMissions(missions || []);
-                    this.setPxRecetteExt(pxRecettes || []);
-                    this.setPxAutres(pxAutres || []);
-                    this.setPxSousTraitance(pxSubContracting || []);
-                    this.setPxSTG(pxSTG);
-                    this.setPxMainOeuvre(pxMainOeuvre || []);
-                    this.setPxMainOeuvreProfilHeader(profils);
-                    this.setPxSTI(pxSTI || []);
-                    this.setPSTI(pSTI || []);
-
-                } catch (error) {
-                    console.log(error);
-                }
-            },
-
-            async getBudgetPxTabData() {
-                try {
-                    const [
-                        missions,
-                        pxRecettes,
-                        pxAutres,
-                        pxSubContracting,
-                        pxSTG,
-                        pxMainOeuvre,
-                        profils,
-                        pxSTI,
-                        pSTI
-                    ] = await Promise.all([
-                        this.getBEMissions(),
-                        this.getBEPxRecettes(),
-                        this.getBEPxAutres(),
-                        this.getBEPxExtSubContracting(),
-                        this.getBESTG(),
-                        this.getBEPxMainOeuvre(),
-                        this.getBEProfils(),
-                        this.getBEPxSTI(),
-                        this.getBEPSTI(),
-                    ]);
-
-                    this.setMissions(missions || []);
-                    this.setPxRecetteExt(pxRecettes || []);
-                    this.setPxAutres(pxAutres || []);
-                    this.setPxSousTraitance(pxSubContracting || []);
-                    this.setPxSTG(pxSTG);
-                    this.setPxMainOeuvre(pxMainOeuvre || []);
-                    this.setPxMainOeuvreProfilHeader(profils);
-                    this.setPxSTI(pxSTI || []);
-                    this.setPSTI(pSTI || []);
-
-                } catch (error) {
-                    console.log(error);
-                }
-            },
-
-            async getBudgetPxTabData() {
-                try {
-                    const [
-                        missions,
-                        pxRecettes,
-                        pxAutres,
-                        pxSubContracting,
-                        pxSTG,
-                        pxMainOeuvre,
-                        profils,
-                        pxSTI,
-                        pSTI
-                    ] = await Promise.all([
-                        this.getBEMissions(),
-                        this.getBEPxRecettes(),
-                        this.getBEPxAutres(),
-                        this.getBEPxExtSubContracting(),
-                        this.getBESTG(),
-                        this.getBEPxMainOeuvre(),
-                        this.getBEProfils(),
-                        this.getBEPxSTI(),
-                        this.getBEPSTI(),
-                    ]);
-
-                    this.setMissions(missions || []);
-                    this.setPxRecetteExt(pxRecettes || []);
-                    this.setPxAutres(pxAutres || []);
-                    this.setPxSousTraitance(pxSubContracting || []);
-                    this.setPxSTG(pxSTG);
-                    this.setPxMainOeuvre(pxMainOeuvre || []);
-                    this.setPxMainOeuvreProfilHeader(profils);
-                    this.setPxSTI(pxSTI || []);
-                    this.setPSTI(pSTI || []);
-
-                } catch (error) {
-                    console.log(error);
-                }
-            },
-
             //fonction qui construit le model pour chart
-            onCalculChartsData: function (oModelSynthesis, oModelRecap, oModelChart, oModelAdditionnalChart) {
+            onCalculChartsData: function (oModelSynthesis, oModelRecap, oModelChart, oModelAdditionnalChart, pxMainOeuvre, profils) {
                 var aData = [];
                 var aDataChart = [];
 
@@ -419,14 +302,24 @@ sap.ui.define([
                         var oItem = {
                             Categorie: oModelSynthesis[j].description,
                             Type: "Réalisé",
-                            Valeur: oModelSynthesis[j].CumulN
+                            // Valeur: oModelSynthesis[j].CumulN
+                            Valeur: pxMainOeuvre.reduce(
+                                (acc, cur) => {
+                                    const profil = profils.find(p => p.profil === cur.profil);
+                                    return acc + parseFloat(cur.nbJoursConso || 0) * parseFloat(profil?.tjm || 0);
+                                }, 0)
                         };
                         aData.push(oItem);
 
                         oItem = {
                             Categorie: oModelSynthesis[j].description,
                             Type: "A venir",
-                            Valeur: oModelSynthesis[j].AVenir
+                            // Valeur: oModelSynthesis[j].AVenir
+                            Valeur: pxMainOeuvre.reduce(
+                                (acc, cur) => {
+                                    const profil = profils.find(p => p.profil === cur.profil);
+                                    return acc + parseFloat(cur.nbJoursRest || 0) * parseFloat(profil?.tjm || 0);
+                                }, 0)
                         };
                         aData.push(oItem);
                     }
@@ -456,7 +349,8 @@ sap.ui.define([
                             var oItem = {
                                 Categorie: oModelAdditionnalChart[g].description,
                                 Type: "Réalisé",
-                                Valeur: oModelAdditionnalChart[g].Value
+                                // Valeur: oModelAdditionnalChart[g].Value
+                                Valeur: pxMainOeuvre.reduce((acc, cur) => acc + parseFloat(cur.nbJoursConso || 0), 0)
                             };
                             aData.push(oItem);
                         }
@@ -464,7 +358,8 @@ sap.ui.define([
                             var oItem = {
                                 Categorie: oModelAdditionnalChart[g].description,
                                 Type: "A venir",
-                                Valeur: oModelAdditionnalChart[g].Value
+                                // Valeur: oModelAdditionnalChart[g].Value
+                                Valeur: pxMainOeuvre.reduce((acc, cur) => acc + parseFloat(cur.nbJoursRest || 0), 0)
                             };
                             aData.push(oItem);
                         }

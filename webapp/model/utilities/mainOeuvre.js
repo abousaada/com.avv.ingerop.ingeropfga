@@ -246,12 +246,15 @@ sap.ui.define([], function () {
               rest.profil             = profil;
               rest.tjm                = tjm;
               
-              if(leaf[columnId + this._CONSTANT_COLUMN_CONSO] !== undefined){
+              // if(leaf[columnId + this._CONSTANT_COLUMN_CONSO] !== undefined
+              //   || leaf[columnId + this._CONSTANT_COLUMN_CONSO] !== null
+              // ){
                 rest.nbJoursConso = (leaf[columnId + this._CONSTANT_COLUMN_CONSO] || 0);
-              }
-              if(leaf[columnId + this._CONSTANT_COLUMN_REST] !== undefined){
+              // }
+              // if(leaf[columnId + this._CONSTANT_COLUMN_REST] !== undefined 
+                // || leaf[columnId + this._CONSTANT_COLUMN_REST] !== null){
                 rest.nbJoursRest = (leaf[columnId + this._CONSTANT_COLUMN_REST] || 0);
-              }
+              // }
 
               rest.nbJoursBudget = (rest.nbJoursRest || 0) - (rest.nbJoursConso || 0);
 
