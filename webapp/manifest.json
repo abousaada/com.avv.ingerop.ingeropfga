@@ -381,7 +381,6 @@
                       "tooltip": "Next Period",
                       "press": "onNextPeriod",
                       "requiresSelection": false
-                      
                     }
                   }
                 }

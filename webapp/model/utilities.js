@@ -19,10 +19,10 @@ sap.ui.define([
             init: function (oModel) {
                 this.setData({ ...InitialData });
                 this.initModel(oModel);
-                this.oSubContracting    = new SubContracting(this);
-                this.oSTG               = new STG(this);
-                this.oRecetteExt        = new RecetteExt(this);
-                this.oMainOeuvre        = new MainOeuvre(this);
+                this.oSubContracting = new SubContracting(this);
+                this.oSTG = new STG(this);
+                this.oRecetteExt = new RecetteExt(this);
+                this.oMainOeuvre = new MainOeuvre(this);
             },
 
             setView(oView) {
@@ -68,7 +68,7 @@ sap.ui.define([
                 this.setPxSubContractingHeader(treeHeader);
             },
 
-            buildPxSTGTreeData(){
+            buildPxSTGTreeData() {
                 const { treeData, stfTreeHeader, stgTreeHeader } = this.oSTG.buildTreeData();
                 this.setPxSTGHeader(stgTreeHeader);
                 this.setPxSTFHeader(stfTreeHeader);
@@ -745,7 +745,7 @@ sap.ui.define([
                     console.log(error);
                 }
             },
-            async getBESTG(){
+            async getBESTG() {
                 try {
                     const businessNo = this.getBusinessNo();
                     const period = this.getPeriod();
@@ -757,7 +757,7 @@ sap.ui.define([
                 } catch (error) {
                     console.log(error);
                 }
-                
+
             },
 
             async getBEPxSTI() {
@@ -813,7 +813,12 @@ sap.ui.define([
                                 const budgetPath = `/ZC_STI(id_formulaire='${encodedId}',business_no_e='${encodedBusinessNo}')/to_BUDG`;
                                 console.log(`Loading budget for ID: ${sti.id_formulaire}, BusinessNo: ${sti.business_no_e}, Path: ${budgetPath}`);
 
-                                const budgetResponse = await this.read(budgetPath);
+                                const budgetResponse = await this.read(budgetPath, {
+                                    urlParameters: {
+                                        "$filter": `p_period eq '${period}'`
+                                    }
+                                });
+
                                 return {
                                     ...sti,
                                     to_budg: budgetResponse?.results || []
@@ -978,7 +983,7 @@ sap.ui.define([
                 }
             },
 
-            async getBEProfils(){
+            async getBEProfils() {
                 try {
                     const BusinessNo = this.getBusinessNo();
                     const Period = this.getPeriod();
@@ -990,9 +995,9 @@ sap.ui.define([
                 }
             },
 
-            setPxMainOeuvreProfilHeader(profils = []){
-                profils = profils.map(p => ({"columnId" : "MO_" + p.profil, ...p}));
-                profils.sort((c1,c2) => c1.idx - c2.idx)
+            setPxMainOeuvreProfilHeader(profils = []) {
+                profils = profils.map(p => ({ "columnId": "MO_" + p.profil, ...p }));
+                profils.sort((c1, c2) => c1.idx - c2.idx)
                 this.setPxMainOeuvreHeader(profils);
             },
 
@@ -1289,18 +1294,18 @@ sap.ui.define([
             formattedPxSubContractingExt() {
                 return [
                     ...this.oSubContracting
-                           .formattedPxSubContractingExt()
-                           .map(Formatter.reverseFormatBudgetSubContracting),
-                    ...this.oSTG    
-                           .formattedPxFiliale()
-                           .map(Formatter.reverseFormatBudgetSubContracting)
+                        .formattedPxSubContractingExt()
+                        .map(Formatter.reverseFormatBudgetSubContracting),
+                    ...this.oSTG
+                        .formattedPxFiliale()
+                        .map(Formatter.reverseFormatBudgetSubContracting)
                 ];
             },
 
-            formattedPxSTG(){
-                return this.oSTG    
-                           .formattedPxGroupe()
-                           .map(Formatter.reverseFormatBudgetSTG)
+            formattedPxSTG() {
+                return this.oSTG
+                    .formattedPxGroupe()
+                    .map(Formatter.reverseFormatBudgetSTG)
             },
 
             formattedPxRecetteExt() {
