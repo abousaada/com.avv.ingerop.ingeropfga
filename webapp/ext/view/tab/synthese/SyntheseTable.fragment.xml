@@ -519,6 +519,120 @@
                     />
                 </table:customData>
             </table:Column>
+              <table:Column>
+                <Label text="{i18n>synt.AVenir}" />
+                <table:template>
+                    <Link
+                        text="{path: 'utilities>AVenir', formatter: '.formatNumbToNoDecimal'}"
+                        press=".onPressMonthLink"
+                    >
+                        <customData>
+                            <core:CustomData
+                                key="monthField"
+                                value="N0"
+                            />
+                        </customData>
+                        <customData>
+                            <core:CustomData
+                                key="yearField"
+                                value="{utilities>/year}"
+                            />
+                        </customData>
+                    </Link>
+                </table:template>
+                <table:customData>
+                    <core:CustomData
+                        key="Period"
+                        value="{syntPeriod>/AVenir}"
+                    />
+                </table:customData>
+            </table:Column>
+                <table:Column>
+                <Label text="{i18n>synt.FinAffaire}" />
+                <table:template>
+                    <Link
+                        text="{path: 'utilities>FinAffaire', formatter: '.formatNumbToNoDecimal'}"
+                        press=".onPressMonthLink"
+                    >
+                        <customData>
+                            <core:CustomData
+                                key="monthField"
+                                value="N0"
+                            />
+                        </customData>
+                        <customData>
+                            <core:CustomData
+                                key="yearField"
+                                value="{utilities>/year}"
+                            />
+                        </customData>
+                    </Link>
+                </table:template>
+                <table:customData>
+                    <core:CustomData
+                        key="Period"
+                        value="{syntPeriod>/FinAffaire}"
+                    />
+                </table:customData>
+            </table:Column>
+                  <table:Column>
+                <Label text="{i18n>synt.budgetM1}" />
+                <table:template>
+                    <Link
+                        text="{path: 'utilities>budgetM1', formatter: '.formatNumbToNoDecimal'}"
+                        press=".onPressMonthLink"
+                    >
+                        <customData>
+                            <core:CustomData
+                                key="monthField"
+                                value="N0"
+                            />
+                        </customData>
+                        <customData>
+                            <core:CustomData
+                                key="yearField"
+                                value="{utilities>/year}"
+                            />
+                        </customData>
+                    </Link>
+                </table:template>
+                <table:customData>
+                    <core:CustomData
+                        key="Period"
+                        value="{syntPeriod>/budgetM1}"
+                    />
+                </table:customData>
+            </table:Column>
+            <table:Column>
+                <Label text="{i18n>synt.budgetN1}" />
+                <table:template>
+                    <Link
+                        text="{path: 'utilities>budgetN1', formatter: '.formatNumbToNoDecimal'}"
+                        press=".onPressMonthLink"
+                    >
+                        <customData>
+                            <core:CustomData
+                                key="monthField"
+                                value="N0"
+                            />
+                        </customData>
+                        <customData>
+                            <core:CustomData
+                                key="yearField"
+                                value="{utilities>/year}"
+                            />
+                        </customData>
+                    </Link>
+                </table:template>
+                <table:customData>
+                    <core:CustomData
+                        key="Period"
+                        value="{syntPeriod>/budgetN1}"
+                    />
+                </table:customData>
+            </table:Column>
+      
+        
             <!--table:Column>
                 <Label text="{i18n>synt.AVenir}" />
                 <table:template>
