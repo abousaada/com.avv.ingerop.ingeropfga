@@ -815,7 +815,8 @@ sap.ui.define([
 
                                 const budgetResponse = await this.read(budgetPath, {
                                     urlParameters: {
-                                        "$filter": `p_period eq '${period}'`
+                                        //"$filter": `p_period eq '${period}'`
+                                        "$filter": `p_period eq '${period}' and business_no_p eq '${sti.business_no_p}'`
                                     }
                                 });
 
