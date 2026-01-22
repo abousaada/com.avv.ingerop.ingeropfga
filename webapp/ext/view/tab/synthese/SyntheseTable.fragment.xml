@@ -579,7 +579,7 @@
                 <Label text="{i18n>synt.budgetM1}" />
                 <table:template>
                     <Link
-                        text="{path: 'utilities>budgetM1', formatter: '.formatNumbToNoDecimal'}"
+                        text="{path: 'utilities>BudgetM1', formatter: '.formatNumbToNoDecimal'}"
                         press=".onPressMonthLink"
                     >
                         <customData>
@@ -599,7 +599,7 @@
                 <table:customData>
                     <core:CustomData
                         key="Period"
-                        value="{syntPeriod>/budgetM1}"
+                        value="{syntPeriod>/BudgetM1}"
                     />
                 </table:customData>
             </table:Column>
@@ -607,7 +607,7 @@
                 <Label text="{i18n>synt.budgetN1}" />
                 <table:template>
                     <Link
-                        text="{path: 'utilities>budgetN1', formatter: '.formatNumbToNoDecimal'}"
+                        text="{path: 'utilities>BudgetN1', formatter: '.formatNumbToNoDecimal'}"
                         press=".onPressMonthLink"
                     >
                         <customData>
@@ -627,7 +627,7 @@
                 <table:customData>
                     <core:CustomData
                         key="Period"
-                        value="{syntPeriod>/budgetN1}"
+                        value="{syntPeriod>/BudgetN1}"
                     />
                 </table:customData>
             </table:Column>
