@@ -524,7 +524,7 @@
                 <table:template>
                     <Link
                         text="{path: 'utilities>AVenir', formatter: '.formatNumbToNoDecimal'}"
-                        press=".onPressMonthLink"
+                        
                     >
                         <customData>
                             <core:CustomData
@@ -552,7 +552,7 @@
                 <table:template>
                     <Link
                         text="{path: 'utilities>FinAffaire', formatter: '.formatNumbToNoDecimal'}"
-                        press=".onPressMonthLink"
+                   
                     >
                         <customData>
                             <core:CustomData
@@ -580,7 +580,7 @@
                 <table:template>
                     <Link
                         text="{path: 'utilities>BudgetM1', formatter: '.formatNumbToNoDecimal'}"
-                        press=".onPressMonthLink"
+                      
                     >
                         <customData>
                             <core:CustomData
@@ -608,7 +608,7 @@
                 <table:template>
                     <Link
                         text="{path: 'utilities>BudgetN1', formatter: '.formatNumbToNoDecimal'}"
-                        press=".onPressMonthLink"
+                   
                     >
                         <customData>
                             <core:CustomData
