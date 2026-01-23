@@ -522,10 +522,7 @@
               <table:Column>
                 <Label text="{i18n>synt.AVenir}" />
                 <table:template>
-                    <Link
-                        text="{path: 'utilities>AVenir', formatter: '.formatNumbToNoDecimal'}"
-                        
-                    >
+                     <Text  text="{path: 'utilities>AVenir', formatter: '.formatNumbToNoDecimal'}" >
                         <customData>
                             <core:CustomData
                                 key="monthField"
@@ -538,7 +535,7 @@
                                 value="{utilities>/year}"
                             />
                         </customData>
-                    </Link>
+                    </Text>
                 </table:template>
                 <table:customData>
                     <core:CustomData
@@ -550,10 +547,7 @@
                 <table:Column>
                 <Label text="{i18n>synt.FinAffaire}" />
                 <table:template>
-                    <Link
-                        text="{path: 'utilities>FinAffaire', formatter: '.formatNumbToNoDecimal'}"
-                   
-                    >
+                       <Text  text="{path: 'utilities>FinAffaire', formatter: '.formatNumbToNoDecimal'}" >
                         <customData>
                             <core:CustomData
                                 key="monthField"
@@ -566,7 +560,7 @@
                                 value="{utilities>/year}"
                             />
                         </customData>
-                    </Link>
+                    </Text >
                 </table:template>
                 <table:customData>
                     <core:CustomData
@@ -578,10 +572,8 @@
                   <table:Column>
                 <Label text="{i18n>synt.budgetM1}" />
                 <table:template>
-                    <Link
-                        text="{path: 'utilities>BudgetM1', formatter: '.formatNumbToNoDecimal'}"
-                      
-                    >
+  
+                       <Text   text="{path: 'utilities>BudgetM1', formatter: '.formatNumbToNoDecimal'}" >
                         <customData>
                             <core:CustomData
                                 key="monthField"
@@ -594,7 +586,7 @@
                                 value="{utilities>/year}"
                             />
                         </customData>
-                    </Link>
+                    </Text>
                 </table:template>
                 <table:customData>
                     <core:CustomData
@@ -606,7 +598,7 @@
             <table:Column>
                 <Label text="{i18n>synt.budgetN1}" />
                 <table:template>
-                    <Link
+                    <Text
                         text="{path: 'utilities>BudgetN1', formatter: '.formatNumbToNoDecimal'}"
                    
                     >
@@ -622,7 +614,7 @@
                                 value="{utilities>/year}"
                             />
                         </customData>
-                    </Link>
+                    </Text>
                 </table:template>
                 <table:customData>
                     <core:CustomData
