@@ -910,6 +910,9 @@
             <Annotations Target="ZFGA_SRV.zc_fga_opportType/p_period">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
+            <Annotations Target="ZFGA_SRV.ZC_FGA_PREVISIONSType/sort_order">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
             <Annotations Target="ZFGA_SRV.ZC_FGA_PREVISIONSType/p_businessno">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>

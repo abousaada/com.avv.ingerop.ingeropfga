@@ -9,7 +9,14 @@
         id="synthesisTab"
         visibleRowCount="22"
         rowsUpdated="onRowsUpdatedSyntTab"
-        rows="{path:'utilities>/previsions', templateShareable: false}"
+        rows="{
+        path: 'utilities>/previsions',
+            sorter: [{
+                path: 'sort_order',  
+                descending: false
+        }],
+        templateShareable: false
+    }"
         class="syntheseTab sapUiSmallMargin"
         selectionMode="None"
     >

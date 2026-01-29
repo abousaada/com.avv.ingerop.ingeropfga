@@ -43,8 +43,8 @@
                 <Key>
                     <PropertyRef Name="ClientNo"/>
                 </Key>
-                <Property Name="Secteur" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Branche" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="ClientNo" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Client" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Secteur" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Branche" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Country" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Clé de pays/région" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Name1" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="Nom" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Name2" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="Nom 2" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
@@ -54,8 +54,8 @@
                 <Key>
                     <PropertyRef Name="SupplierNo"/>
                 </Key>
-                <Property Name="Cumul" Type="Edm.Decimal" Nullable="false" Precision="24" Scale="3" sap:unicode="false" sap:label="Mtt dev. transaction" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="SupplierNo" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Fournisseur" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Cumul" Type="Edm.Decimal" Nullable="false" Precision="24" Scale="3" sap:unicode="false" sap:label="Mtt dev. transaction" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="SupplierCoef" Type="Edm.Decimal" Nullable="false" Precision="4" Scale="2" sap:unicode="false" sap:label="Coef fournisseur" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Country" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Clé de pays/région" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="Nom" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
@@ -65,9 +65,9 @@
                 <Key>
                     <PropertyRef Name="ProfilNo"/>
                 </Key>
-                <Property Name="Idx" Type="Edm.Byte" Nullable="false" sap:unicode="false" sap:label="Index" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Tjm" Type="Edm.Decimal" Nullable="false" Precision="15" Scale="2" sap:unicode="false" sap:label="Taux journalier" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="ProfilNo" Type="Edm.String" Nullable="false" MaxLength="6" sap:unicode="false" sap:label="Type d'activité" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Tjm" Type="Edm.Decimal" Nullable="false" Precision="15" Scale="2" sap:unicode="false" sap:label="Taux journalier" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Idx" Type="Edm.Byte" Nullable="false" sap:unicode="false" sap:label="Index" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Description" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Libelle" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Visible" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Visible" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Sorted" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Sorted" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
@@ -629,10 +629,12 @@
                     <PropertyRef Name="p_businessno"/>
                     <PropertyRef Name="p_period"/>
                     <PropertyRef Name="line_item"/>
+                    <PropertyRef Name="sort_order"/>
                 </Key>
                 <Property Name="p_businessno" Type="Edm.String" Nullable="false" MaxLength="24" sap:display-format="UpperCase" sap:label="Business Number"/>
                 <Property Name="p_period" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase" sap:label="Period"/>
                 <Property Name="line_item" Type="Edm.String" Nullable="false" MaxLength="40" sap:display-format="UpperCase" sap:label="Car." sap:quickinfo="Zone de 40 caractères"/>
+                <Property Name="sort_order" Type="Edm.Int16" Nullable="false" sap:creatable="false" sap:updatable="false"/>
                 <Property Name="business_no" Type="Edm.String" MaxLength="24"/>
                 <Property Name="description" Type="Edm.String" MaxLength="38"/>
                 <Property Name="cumul_n1" Type="Edm.Decimal" Precision="24" Scale="3" sap:label="Montant" sap:quickinfo="Montant en devise de la pièce"/>
@@ -1783,15 +1785,15 @@
                     <Parameter Name="ProfitCenterCode" Type="Edm.String" Mode="In" MaxLength="10" sap:label="Profit Center"/>
                 </FunctionImport>
                 <FunctionImport Name="GetSupplier" ReturnType="ZFGA_SRV.Supplier" EntitySet="SupplierCollection" m:HttpMethod="GET" sap:label="GetSupplier" sap:action-for="ZFGA_SRV.Supplier">
-                    <Parameter Name="isFiliale" Type="Edm.Boolean" Mode="In" sap:label="IsFiliale"/>
                     <Parameter Name="SupplierNo" Type="Edm.String" Mode="In" MaxLength="10" sap:label="SupplierNo"/>
+                    <Parameter Name="isFiliale" Type="Edm.Boolean" Mode="In" sap:label="IsFiliale"/>
                 </FunctionImport>
                 <FunctionImport Name="GetClient" ReturnType="ZFGA_SRV.Client" EntitySet="ClientCollection" m:HttpMethod="GET" sap:label="GetClient" sap:action-for="ZFGA_SRV.Client">
                     <Parameter Name="ClientNo" Type="Edm.String" Mode="In" MaxLength="10" sap:label="ClientNo"/>
                 </FunctionImport>
                 <FunctionImport Name="GetProfil" ReturnType="Collection(ZFGA_SRV.Profil)" EntitySet="Profils" m:HttpMethod="GET" sap:label="GetProfil" sap:action-for="ZFGA_SRV.Profil">
-                    <Parameter Name="Period" Type="Edm.String" Mode="In" MaxLength="6" sap:label="Period"/>
                     <Parameter Name="BusinessNo" Type="Edm.String" Mode="In" MaxLength="24" sap:label="Business No"/>
+                    <Parameter Name="Period" Type="Edm.String" Mode="In" MaxLength="6" sap:label="Period"/>
                 </FunctionImport>
             </EntityContainer>
             <Annotation Term="Core.SchemaVersion" String="1.0.0" xmlns="http://docs.oasis-open.org/odata/ns/edm"/>
