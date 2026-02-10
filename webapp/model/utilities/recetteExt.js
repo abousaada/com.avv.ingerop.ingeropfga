@@ -32,7 +32,7 @@ sap.ui.define([], function () {
       const groupementMap = {};
 
       const globalTotal = {
-        name: "Total global",
+        name: "Total acquis",
         isGroupe: false,
         isBudget: false,
         isTotal: true,
@@ -91,7 +91,7 @@ sap.ui.define([], function () {
       for (const group of Object.values(groupementMap)) {
 
         const totalLine = {
-          name: "Total",
+          name: "Total " + group.name + " acquis",
           isBudget: false,
           isGroupe: false,
           isTotal: true,
@@ -102,7 +102,7 @@ sap.ui.define([], function () {
 
         // Accumuler dans le total global
         for (const child of group.children) {
-          if (child.isBudget) {
+          if (child.isBudget && child.status == "A") {
             this._totalProps.forEach(prop => {
               globalTotal[prop] += (parseFloat(child[prop]|| 0) );
               totalLine[prop]   += (parseFloat(child[prop]|| 0) );

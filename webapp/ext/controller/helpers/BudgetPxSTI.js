@@ -464,7 +464,7 @@ sap.ui.define([
 
         createRegroupementTotalRow: function (totals, regroupementName) {
             var row = {
-                name: "Total " + regroupementName,
+                name: "Total " + regroupementName + " acquis",
                 isTotalRow: true,
                 isNode: false,
                 isRegroupementTotal: true,

@@ -413,7 +413,7 @@ sap.ui.define(
                             const formattedPxAutre = utilitiesModel.getFormattedPxAutre();
                             const formattedPxSubContractingExt = utilitiesModel.formattedPxSubContractingExt();
                             const formattedPxSTG = utilitiesModel.formattedPxSTG();
-                            
+
                             const formattedPxRecetteExt = utilitiesModel.formattedPxRecetteExt();
                             const formattedMainOeuvre = utilitiesModel.formattedPxMainOeuvre();
                             const formattedMOProfil = utilitiesModel.formattedPxMOProfil();
@@ -493,7 +493,7 @@ sap.ui.define(
 
                         const updatedFGA = await utilitiesModel.deepUpsertFGA(oPayload);
 
-                        if(updatedFGA){
+                        if (updatedFGA) {
                             const hasRefresh = await this._refreshBudgetPxTab();
                         }
                         if (!isForecastMode && updatedFGA) {
@@ -994,6 +994,13 @@ sap.ui.define(
             // in the mission  process
             // ===========================================================
             onChangeRecetteExtMontant(oEvent) {
+                const oInput = oEvent.getSource();
+                let v = oInput.getValue();
+
+                // Si vide → 0
+                if (v === "" || v === null) {
+                    oInput.setValue("0");
+                }
                 if (!this._budgetPxRecetteExt) {
                     this._budgetPxRecetteExt = new BudgetPxRecetteExt();
                     this._budgetPxRecetteExt.oView = this.oView;
@@ -1011,6 +1018,18 @@ sap.ui.define(
             // Handles preparation and submition budget items 
             // in the mission  process
             // ===========================================================
+            onAmountChange: function (oEvent) {
+                const oInput = oEvent.getSource();
+                let v = oInput.getValue();
+
+                // Si vide → 0
+                if (v === "" || v === null) {
+                    oInput.setValue("0");
+                }
+            },
+
+
+
             onChangeMainOeuvreMontant(oEvent) {
                 if (!this._budgetMainOeuvre) {
                     this._budgetMainOeuvre = new BudgetPxMainOeuvre();
@@ -1623,6 +1642,8 @@ sap.ui.define(
                         const aExclure = new Set(["cumule", "cumulé", "pourcentage", "rad"]);
 
                         aRows.forEach(oRow => {
+                            // reset styles à chaque rowsUpdated
+                            oRow.removeStyleClass("pxNotAcquisRow pxTotalRow pxSubTotalRow");
 
                             // Header cell (color whole header cell, not just the label)
                             oDomRef.querySelectorAll(".sapUiTableColHdrTr.pxHeader")
@@ -1641,6 +1662,24 @@ sap.ui.define(
                                 const bIsNode = !!oContext.getProperty("isNode");
                                 const sName = String(oContext.getProperty("name") || "").trim().toLowerCase();
                                 const $row = oRow.$();
+                                const aMissions = oContext.oModel.oData.missions;
+                                const sName2 = oRow.mAggregations.cells[0].getProperty("text");
+
+                                let sStatus = "";
+
+                                for (const mission of aMissions) {
+                                    if (mission.MissionId === sName2) {
+                                        sStatus = mission.statutmission;
+                                        break;
+                                    }
+                                }
+                                if (sStatus !== "A" && sStatus !== "") {
+                                    // Ligne grisée
+                                    oRow.addStyleClass("pxNotAcquisRow");
+                                }
+
+
+
                                 // Enlever les anciens styles
                                 // $row.removeClass("pxTotalRow pxSubTotalRow");
                                 oRow.removeStyleClass("pxTotalRow pxSubTotalRow");
@@ -1653,7 +1692,7 @@ sap.ui.define(
                                     if (sName === "total acquis") {
                                         oRow.addStyleClass("pxTotalRow");
                                     } else {
-                                        if (sName.startsWith("total")) {
+                                        if (sName.startsWith("sous-total acquis") || sName.startsWith("total tranche")) {
                                             // Sous-total (violet clair + texte noir)
                                             oRow.addStyleClass("pxSubTotalRow");
                                         }
@@ -1700,21 +1739,30 @@ sap.ui.define(
                         // if (oHeaderRow && oHeaderRow.textContent !== '') oHeaderRow.classList.add("pxHeader");
                         const aRows = oTable.getRows();
                         aRows.forEach(oRow => {
+                            // reset styles à chaque rowsUpdated
+                            oRow.removeStyleClass("pxNotAcquisRow pxTotalRow pxSubTotalRow");
+
                             const oContext = oRow.getBindingContext("utilities");
                             if (oContext) {
                                 const sName = String(oContext.getProperty("name") || "").trim().toLowerCase();
+                                const sStatus = String(oContext.getProperty("status") || "").trim().toLowerCase();
                                 const $row = oRow.$();
                                 // Enlever les anciens styles
                                 // $row.removeClass("pxTotalRow pxSubTotalRow");
                                 oRow.removeStyleClass("pxTotalRow pxSubTotalRow");
                                 // main total (dark blue + white text)
-                                if (sName === "total global") {
+                                if (sName === "total acquis") {
                                     oRow.addStyleClass("pxTotalRow");
                                 } else {
-                                    if (sName.startsWith("total")) {
+                                    if (sName.startsWith("sous-total acquis") || sName.startsWith("total tranche")) {
                                         // Sous-total (violet clair + texte noir)
                                         oRow.addStyleClass("pxSubTotalRow");
                                     }
+
+                                }
+                                if (sStatus !== "a" && sStatus !== "") {
+                                    // Ligne grisée
+                                    oRow.addStyleClass("pxNotAcquisRow");
                                 }
 
                             }
@@ -1763,12 +1811,30 @@ sap.ui.define(
                         }
 
                         aRows.forEach(oRow => {
+                            // reset styles à chaque rowsUpdated
+                            oRow.removeStyleClass("pxNotAcquisRow pxTotalRow pxSubTotalRow");
+
                             const oContext = oRow.getBindingContext("utilities");
                             if (oContext) {
                                 const bIsTotal = !!oContext.getProperty("isTotalRow");
                                 const bIsNode = !!oContext.getProperty("isNode");
                                 const sName = String(oContext.getProperty("name") || "").trim().toLowerCase();
                                 const $row = oRow.$();
+                                const aMissions = oContext.oModel.oData.missions;
+                                const sName2 = oRow.mAggregations.cells[0].getProperty("text");
+
+                                let sStatus = "";
+
+                                for (const mission of aMissions) {
+                                    if (mission.MissionId === sName2) {
+                                        sStatus = mission.statutmission;
+                                        break;
+                                    }
+                                }
+                                if (sStatus !== "A" && sStatus !== "") {
+                                    // Ligne grisée
+                                    oRow.addStyleClass("pxNotAcquisRow");
+                                }
 
                                 // FIX 3: Remove all classes (including pxNodeRow)
                                 $row.removeClass("pxTotalRow pxSubTotalRow pxNodeRow");
@@ -1787,7 +1853,7 @@ sap.ui.define(
                                 if (bIsTotal) {
                                     if (sName === "budget sti") {
                                         oRow.addStyleClass("pxTotalRow");
-                                    } else if (sName.startsWith("total")) {
+                                    } else if (sName.startsWith("sous-total acquis") || sName.startsWith("total tranche")) {
                                         oRow.addStyleClass("pxSubTotalRow");
                                     }
                                 }
@@ -1813,6 +1879,8 @@ sap.ui.define(
                         const aExclure = new Set(["cumule", "cumulé", "pourcentage", "rad"]);
 
                         aRows.forEach(oRow => {
+                            // reset styles à chaque rowsUpdated
+                            oRow.removeStyleClass("pxNotAcquisRow pxTotalRow pxSubTotalRow");
 
                             // Header cell (color whole header cell, not just the label)
                             oDomRef.querySelectorAll(".sapUiTableColHdrTr.pxHeader")
@@ -1842,7 +1910,7 @@ sap.ui.define(
                                     if (sName === "Budget STI") {
                                         oRow.addStyleClass("pxTotalRow");
                                     } else {
-                                        if (sName.startsWith("total")) {
+                                        if (sName.startsWith("sous-total acquis") || sName.startsWith("total tranche")) {
                                             // Sous-total (violet clair + texte noir)
                                             oRow.addStyleClass("pxSubTotalRow");
                                         }
@@ -1858,7 +1926,38 @@ sap.ui.define(
 
             },
 
-            onRowsUpdatedBudgetPXMainOeuvreTab() {
+            onRowsUpdatedBudgetPXMainOeuvreTab(oEvent) {
+                //Mise à 0 si vide 
+                const oTable = oEvent.getSource();
+                const aRows = oTable.getRows();
+
+                aRows.forEach((oRow) => {
+                    const aCells = oRow.getCells();
+
+                    aCells.forEach((oCell) => {
+                        // Récupérer tous les Input descendants (dans VBox/HBox/etc.)
+                        const aInputs = oCell.findAggregatedObjects(true, function (oCtrl) {
+                            return oCtrl.isA && oCtrl.isA("sap.m.Input");
+                        });
+
+                        aInputs.forEach((oInput) => {
+                            const s = (oInput.getValue() || "").trim();
+                            if (s === "") {
+                                oInput.setValue("0");
+
+                                // pousser 0 dans le modèle
+                                const oCtx = oInput.getBindingContext("utilities");
+                                const oBind = oInput.getBinding("value");
+
+                                if (oCtx && oBind) {
+                                    const sPath = oBind.getPath(); // ex: "montant" ou "tranche1"
+                                    oCtx.getModel().setProperty(oCtx.getPath() + "/" + sPath, 0);
+                                }
+                            }
+                        });
+                    });
+                });
+
                 var stableName = "BudgetPxMainOeuvreTreeTableId";
                 this.onBudgetPXSubCUpdated(stableName);
             },
@@ -2358,7 +2457,7 @@ sap.ui.define(
                 }
             },
 
-            async _refreshBudgetPxTab(){
+            async _refreshBudgetPxTab() {
                 const oUtilitiesModel = this.getInterface().getModel("utilities");
 
                 try {

@@ -45,11 +45,13 @@ sap.ui.define([
             }
         },
 
+
+
         addDynamicColumns() {
             const mainOeuvreTree = this.oView.byId(this._CONSTANT_MAIN_OEUVRE_TABLE_ID);
             const aDynamicColumns = this.getUtilitiesModel().getPxMainOeuvreHeader()
-                                        .filter(col => col.visible);
-                                        // .sort((c1,c2) => c1.idx - c2.idx);
+                .filter(col => col.visible);
+            // .sort((c1,c2) => c1.idx - c2.idx);
             let index = 8;
 
             //Jours consommés
@@ -110,7 +112,7 @@ sap.ui.define([
                         new sap.m.Text({
                             text: {
                                 path: "utilities>" + sColumnId,
-                                type: new sap.ui.model.type.Float({ 
+                                type: new sap.ui.model.type.Float({
                                     minFractionDigits: 0,
                                     maxFractionDigits: 0,
                                     groupingEnabled: true,
@@ -121,7 +123,7 @@ sap.ui.define([
                     ]
                 }),
                 width: "10rem",
-                autoResizable:true
+                autoResizable: true
             }).data(this._CONSTANT_COLUMN_ID, sColumnId);
         },
 
@@ -141,7 +143,7 @@ sap.ui.define([
                         new sap.m.Text({
                             text: {
                                 path: "utilities>" + sColumnId,
-                                type: new sap.ui.model.type.Float({ 
+                                type: new sap.ui.model.type.Float({
                                     minFractionDigits: 0,
                                     maxFractionDigits: 0,
                                     groupingEnabled: true,
@@ -152,7 +154,7 @@ sap.ui.define([
                         new sap.m.Input({
                             value: {
                                 path: "utilities>" + sColumnId,
-                                type: new sap.ui.model.type.Float({ 
+                                type: new sap.ui.model.type.Float({
                                     minFractionDigits: 0,
                                     maxFractionDigits: 0,
                                     groupingEnabled: true,
@@ -164,16 +166,16 @@ sap.ui.define([
                     ]
                 }),
                 width: "10rem",
-                autoResizable:true
+                autoResizable: true
             }).data(this._CONSTANT_COLUMN_ID, sColumnId);
         },
 
         _createAvenirColumn(columnId) {
             const header = this.getUtilitiesModel().getPxMainOeuvreHeader();
-            const parts =  [
-                {path: "utilities>"},
-                ...header.map(({columnId}) => {
-                    return {path: "utilities>" + columnId + this._CONSTANT_COLUMN_REST};
+            const parts = [
+                { path: "utilities>" },
+                ...header.map(({ columnId }) => {
+                    return { path: "utilities>" + columnId + this._CONSTANT_COLUMN_REST };
                 })
             ];
 
@@ -196,7 +198,7 @@ sap.ui.define([
                     ]
                 }),
                 width: "8rem",
-                autoResizable:true
+                autoResizable: true
             }).data(this._CONSTANT_COLUMN_ID, columnId);
         },
 
@@ -234,16 +236,16 @@ sap.ui.define([
                     ]
                 }),
                 width: "10rem",
-                autoResizable:true
+                autoResizable: true
             }).data(this._CONSTANT_COLUMN_ID, sColumnId);
         },
 
         _createFinAffaireColumn(columnId) {
             const header = this.getUtilitiesModel().getPxMainOeuvreHeader();
-            const parts =  [
-                {path: "utilities>"},
-                ...header.map(({columnId}) => {
-                    return {path: "utilities>" + columnId + this._CONSTANT_COLUMN_REST};
+            const parts = [
+                { path: "utilities>" },
+                ...header.map(({ columnId }) => {
+                    return { path: "utilities>" + columnId + this._CONSTANT_COLUMN_REST };
                 })
             ];
             return new sap.ui.table.Column({
@@ -265,16 +267,16 @@ sap.ui.define([
                     ]
                 }),
                 width: "8rem",
-                autoResizable:true
+                autoResizable: true
             }).data(this._CONSTANT_COLUMN_ID, columnId);
         },
 
         _createReelColumn(columnId) {
             const header = this.getUtilitiesModel().getPxMainOeuvreHeader();
-            const parts =  [
-                {path: "utilities>"},
-                ...header.map(({columnId}) => {
-                    return {path: "utilities>" + columnId + this._CONSTANT_COLUMN_REST};
+            const parts = [
+                { path: "utilities>" },
+                ...header.map(({ columnId }) => {
+                    return { path: "utilities>" + columnId + this._CONSTANT_COLUMN_REST };
                 })
             ];
             return new sap.ui.table.Column({
@@ -299,7 +301,7 @@ sap.ui.define([
                     ]
                 }),
                 width: "8rem",
-                autoResizable:true
+                autoResizable: true
             }).data(this._CONSTANT_COLUMN_ID, columnId);
         },
 
@@ -318,7 +320,7 @@ sap.ui.define([
                         new sap.m.Text({
                             text: {
                                 path: "utilities>physique",
-                                type: new sap.ui.model.type.Float({ 
+                                type: new sap.ui.model.type.Float({
                                     minFractionDigits: 2,
                                     maxFractionDigits: 2,
                                     groupingEnabled: true,
@@ -331,7 +333,7 @@ sap.ui.define([
                         new sap.m.Input({
                             value: {
                                 path: "utilities>physique",
-                                type: new sap.ui.model.type.Float({ 
+                                type: new sap.ui.model.type.Float({
                                     minFractionDigits: 2,
                                     maxFractionDigits: 2,
                                     groupingEnabled: true,
@@ -343,17 +345,17 @@ sap.ui.define([
                     ]
                 }),
                 width: "8rem",
-                autoResizable:true
+                autoResizable: true
             }).data(this._CONSTANT_COLUMN_ID, columnId);
         },
 
         _createEcartColumn(columnId) {
             const header = this.getUtilitiesModel().getPxMainOeuvreHeader();
-            const parts =  [
-                {path: "utilities>"},
-                {path: "utilities>physique"},
-                ...header.map(({columnId}) => {
-                    return {path: "utilities>" + columnId + this._CONSTANT_COLUMN_REST};
+            const parts = [
+                { path: "utilities>" },
+                { path: "utilities>physique" },
+                ...header.map(({ columnId }) => {
+                    return { path: "utilities>" + columnId + this._CONSTANT_COLUMN_REST };
                 })
             ];
             return new sap.ui.table.Column({
@@ -378,7 +380,7 @@ sap.ui.define([
                     ]
                 }),
                 width: "8rem",
-                autoResizable:true
+                autoResizable: true
             }).data(this._CONSTANT_COLUMN_ID, columnId);
         },
 
@@ -392,7 +394,7 @@ sap.ui.define([
             this.getUtilitiesModel().reCalcMainOeuvreTable();
         },
 
-        _refreshRow(oEvent){
+        _refreshRow(oEvent) {
             const binding = oEvent.getSource().getBindingContext("utilities");
             const row = binding.getObject();
             const path = binding.getPath();
@@ -404,14 +406,14 @@ sap.ui.define([
             if (!rowData.isBudget && !rowData.isTotal) { return; }
             const header = this.getUtilitiesModel().getPxMainOeuvreHeader();
 
-            if(rowData.isBudget){
+            if (rowData.isBudget) {
                 return header.reduce((acc, cur) => {
                     const prop = cur.columnId + this._CONSTANT_COLUMN_REST;
                     return acc + parseFloat(rowData[prop] || 0) * parseFloat(cur.tjm || 0);
                 }, 0);
             }
 
-            if(rowData.isTotal){
+            if (rowData.isTotal) {
                 return header.reduce((acc, cur) => {
                     const prop = cur.columnId + this._CONSTANT_COLUMN_REST;
                     return acc + parseFloat(rowData[prop] || 0);
@@ -419,7 +421,7 @@ sap.ui.define([
             }
         },
 
-        formatAvenirDisplay(rowData){
+        formatAvenirDisplay(rowData) {
             if (!rowData) { return; }
             if (!rowData.isBudget && !rowData.isTotal) { return; }
             const avenir = this.formatAvenir(rowData);
@@ -432,7 +434,7 @@ sap.ui.define([
             return parseFloat(this.formatAvenir(rowData)) + parseFloat(rowData.cumul || 0);
         },
 
-        formatFinAffaireDisplay(rowData){
+        formatFinAffaireDisplay(rowData) {
             if (!rowData) { return; }
             if (!rowData.isBudget && !rowData.isTotal) { return; }
             const finAffaire = this.formatFinAffaire(rowData);
@@ -444,20 +446,20 @@ sap.ui.define([
             if (!rowData.isBudget && !rowData.isTotal) { return; }
             const avenir = parseFloat(this.formatAvenir(rowData));
             const cumul = parseFloat(rowData.cumul || 0);
-            if(!cumul) { return  0;}
-            if(!avenir && !cumul){  return  0;}
-           return parseFloat(cumul / (avenir + cumul)) ;
+            if (!cumul) { return 0; }
+            if (!avenir && !cumul) { return 0; }
+            return parseFloat(cumul / (avenir + cumul));
         },
 
-        formatReelDisplay(rowData){
+        formatReelDisplay(rowData) {
             let reel = this.formatReel(rowData);
             if (!reel) { return; }
             reel = parseFloat(reel);
-            return this.formatExt( reel * 100 ) + "%"; 
+            return this.formatExt(reel * 100) + "%";
         },
 
-        formatPhysique(physique){
-            if(!physique){ return }
+        formatPhysique(physique) {
+            if (!physique) { return }
             return this.formatExt(parseFloat(physique)) + "%";
         },
 
@@ -469,11 +471,11 @@ sap.ui.define([
             const physique = parseFloat(rowData.physique || 0) / 100;
 
             const ecart = Math.abs((reel - physique) * finAffaire);
-            
+
             return this.formatExt(ecart);
         },
 
-        formatExt(value){
+        formatExt(value) {
             return sap.ui.core.format.NumberFormat.getFloatInstance({
                 groupingEnabled: true,
                 minFractionDigits: 2,
@@ -481,45 +483,45 @@ sap.ui.define([
             }).format(value);
         },
 
-        async manageNewMOProfil(oEvent){
+        async manageNewMOProfil(oEvent) {
             try {
-                if(!this._MOProfilDialog){
+                if (!this._MOProfilDialog) {
                     const profils = this.getUtilitiesModel().getPxMainOeuvreHeader();
-                    const columns = profils.map((p) => ({"name": p.profil, "label": p.profilDescription, ...p }));
-                
+                    const columns = profils.map((p) => ({ "name": p.profil, "label": p.profilDescription, ...p }));
+
                     this._MOProfilDialogSelectionPanel = new sap.m.p13n.SelectionPanel();
 
                     this._MOProfilDialogSelectionPanel.setP13nData(columns);
 
                     this._MOProfilDialog = new sap.m.p13n.Popup({
-                        id : 'MOProfilPopOverId',
-                        panels: [ this._MOProfilDialogSelectionPanel ],
+                        id: 'MOProfilPopOverId',
+                        panels: [this._MOProfilDialogSelectionPanel],
                         close: this.onClose.bind(this)
                     });
                 }
-                    
+
                 this._MOProfilDialog.open(oEvent.getSource());
             } catch (error) {
                 console.log(error);
             }
         },
 
-        onClose(oEvent){
+        onClose(oEvent) {
             const sReason = oEvent.getParameter("reason");
             switch (sReason) {
                 case "Ok":
                     let header = this._MOProfilDialogSelectionPanel.getP13nData();
-                    header = header.map((h,i) => { h.idx = i; return h; });
+                    header = header.map((h, i) => { h.idx = i; return h; });
                     this.getUtilitiesModel().setPxMainOeuvreHeader(header);
                     this.refreshTableColumns();
                     break;
                 default:
                     break;
             }
-			// MessageToast.show("Dialog close reason: " + sReason);
+            // MessageToast.show("Dialog close reason: " + sReason);
         },
 
-        async getNewProfilId(){
+        async getNewProfilId() {
             return new Promise((resolve, reject) => {
                 // ValueHelpDialog
                 var oVHD = new sap.ui.comp.valuehelpdialog.ValueHelpDialog({
@@ -557,11 +559,11 @@ sap.ui.define([
             });
         },
 
-        addNewProfilById({ tjm, profilDescription, profil }){
+        addNewProfilById({ tjm, profilDescription, profil }) {
             const columnId = this._CONSTANT_DYNAMIC_PREFIX + profil;
             const profilHeader = { tjm, profilDescription, profil, columnId };
             const header = this.getUtilitiesModel().getPxMainOeuvreHeader();
-            if(!header.some(h => h.profil === profil)){
+            if (!header.some(h => h.profil === profil)) {
                 const newHeader = [...header, profilHeader];
                 this.getUtilitiesModel().setPxMainOeuvreHeader(newHeader);
                 this.refreshTableColumns();

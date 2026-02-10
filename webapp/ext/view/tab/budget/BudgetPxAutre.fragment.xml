@@ -131,6 +131,7 @@
                             visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
                             liveChange=".onLiveChange"
                             submit=".onPxAutreSubmit"
+                            change="onAmountChange"
                         />
                         <Text
                             text="{utilities>VoyageDeplacement}"
@@ -163,6 +164,7 @@
                             visible="{= !${utilities>isNode} &amp;&amp; !${utilities>isTotalRow}}"
                             liveChange=".onLiveChange"
                             submit=".onPxAutreSubmit"
+                            change="onAmountChange"
                         />
                         <Text
                             text="{utilities>AutresFrais}"
