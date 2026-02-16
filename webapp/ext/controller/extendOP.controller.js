@@ -115,16 +115,83 @@ sap.ui.define(
                 });
             },
 
+            _attachEditPress: function () {
+                if (this.__editPressAttached) return;
+
+                const oView = this.getView();
+
+                // FE "Edit" button id finit presque toujours par "--edit"
+                const aCandidates = oView.findAggregatedObjects(true, (oCtrl) =>
+                    oCtrl.isA("sap.m.Button") &&
+                    (oCtrl.getId().endsWith("--edit") || oCtrl.getId().includes("--edit"))
+                );
+
+                const oEditBtn = aCandidates && aCandidates[0];
+                if (!oEditBtn) return; // pas encore instancié (lazy) -> sera retenté au prochain afterRendering
+
+                this.__editPressAttached = true;
+
+                oEditBtn.attachPress(() => {
+                    console.log("[FE] Edit pressed");
+                    // ici ton action
+                    this._onEditPressed();
+                });
+            },
+
+            _onEditPressed: function () {
+                // FE bascule en edit un poil après le press
+                setTimeout(() => {
+
+                    const oUtil = this.getInterface().getModel("utilities");
+                    if (!oUtil) return;
+
+                    // flag pour recetteExt.js (si tu l’utilises)
+                    oUtil.setProperty("/Editable", true);
+
+                    // Rebuild -> doit rappeler buildTreeData()
+                    if (this._budgetPxRecetteExt && this._budgetPxRecetteExt.preparePxRecetteExtTreeData) {
+                        this._budgetPxRecetteExt.preparePxRecetteExtTreeData();
+                    }
+
+                    // force refresh bindings
+                    oUtil.refresh(true);
+
+                }, 0);
+            },
+
+            _hideRecetteExtBottomLines: function () {
+                const oUtil = this.getInterface().getModel("utilities");
+                if (!oUtil) return;
+
+                // on sort du mode edit
+                oUtil.setProperty("/Editable", false);
+
+                // rebuild = supprime les lignes (puisqu’elles ne sont ajoutées que si Editable=true)
+                if (this._budgetPxRecetteExt && this._budgetPxRecetteExt.preparePxRecetteExtTreeData) {
+                    this._budgetPxRecetteExt.preparePxRecetteExtTreeData();
+                }
+
+                oUtil.refresh(true);
+            },
+
+
+
+
+
+
             // this section allows to extend lifecycle hooks or hooks provided by Fiori elements
             override: {
                 onAfterRendering: function () {
 
                     this._wireCustomButtons();
+                    this._attachEditPress();
 
                     const oTreeTable = this.getView().byId("PrevisionnelTreeTable");
                     if (oTreeTable) {
                         oTreeTable.setFixedColumnCount(99);
                     }
+
+
 
                 },
 
@@ -135,6 +202,7 @@ sap.ui.define(
                 */
 
                 onInit: async function () {
+
 
                     this.base.getView().getController().onSelectFGAPress = function () {
                         console.log("onSelectFGAPress");
@@ -623,6 +691,8 @@ sap.ui.define(
                     const oModel = this.base.getView().getModel();
                     oModel.setProperty(context.getPath() + "/Percent", "%");
                 }
+                this._hideRecetteExtBottomLines();
+
             },
 
             routing: {
@@ -664,6 +734,9 @@ sap.ui.define(
                     this.base.templateBaseExtension.getExtensionAPI().refresh();
                 }.bind(this), 100); //
                 // this.base.templateBaseExtension.getExtensionAPI().refresh();
+
+                this._hideRecetteExtBottomLines();
+
             },
 
             async _getTabsData(type, aSelectedBusinessNos = []) {
@@ -1967,9 +2040,10 @@ sap.ui.define(
                 this.onBudgetPXSubCUpdated(stableName);
             },
 
-            onRowsUpdatedBudgetPXRecetteTab() {
+            onRowsUpdatedBudgetPXRecetteTab(oEvent) {
                 var stableName = "BudgetPxRecettesTreeTableId";
                 this.onBudgetPXSubCUpdated(stableName);
+
             },
 
             formatSTIEditable: function (bEditable, sIsSTI) {
@@ -2079,6 +2153,7 @@ sap.ui.define(
                 const oUtilitiesModel = this.getInterface().getModel("utilities");
                 const affaireType = oContext.getProperty("AffaireType");
                 //const bVisible = (affaireType === "F" || affaireType === "P");
+                oUtilitiesModel.setProperty("/AffaireType", affaireType);
 
                 const bVisible = affaireType
                     ? (affaireType === "F" || affaireType === "P")
@@ -2100,6 +2175,9 @@ sap.ui.define(
                         }
                     });
                 });
+
+
+
             },
 
 

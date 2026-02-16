@@ -21,7 +21,7 @@ sap.ui.define([
                 this.initModel(oModel);
                 this.oSubContracting = new SubContracting(this);
                 this.oSTG = new STG(this);
-                this.oRecetteExt = new RecetteExt(this);
+                this.oRecetteExt = new RecetteExt(this, oModel);
                 this.oMainOeuvre = new MainOeuvre(this);
             },
 
