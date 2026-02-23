@@ -191,6 +191,8 @@ sap.ui.define(
                         oTreeTable.setFixedColumnCount(99);
                     }
 
+                    this._attachRecapHooks();
+
 
 
                 },
@@ -369,6 +371,24 @@ sap.ui.define(
                         }, this);
 
                     }
+
+                    const oRecapTable = this.getView().byId("idRecapTable");
+                    console.log("[recap] table found?", !!oRecapTable, oRecapTable && oRecapTable.getId());
+
+                    if (oRecapTable && !this.__recapRowsUpdatedAttached) {
+                        this.__recapRowsUpdatedAttached = true;
+
+                        oRecapTable.attachRowsUpdated(() => {
+                            // 1) trier UNE SEULE FOIS (sans refresh)
+                            this._reorderRecapsForDisplay();
+
+                            // 2) appliquer styles (DOM prêt car rowsUpdated)
+                            this.onRecapUpdated("idRecapTable");
+                            this._resetRecapMerge();
+                            this._styleMergedRecapRow();
+                        });
+                    }
+
                 },
 
                 // onCancel:function(oEvent){
@@ -932,6 +952,13 @@ sap.ui.define(
 
             onPressMonthLink: function (oEvent) {
 
+                const oContext = oEvent.getSource().getBindingContext("utilities");
+                const sline_item = oContext.getProperty("line_item");
+
+                if (sline_item === "RBA_PAT") {
+                    return; // Bloque l'action
+                }
+
                 if (!this._SyntheseTab) {
                     this._SyntheseTab = new Synthese();
 
@@ -1414,10 +1441,138 @@ sap.ui.define(
                 //         oTbl.setBusy(false); // toujours relâcher, même en cas d’erreur
                 //     }
                 // });
+
+
+
+
                 this.onRecapUpdated(stableName);
                 this._resetRecapMerge();
                 this._styleMergedRecapRow();
+
             },
+
+            _findRecapTable: function () {
+                const oView = this.getView();
+
+                // 1) si l'ID local marche
+                let oT = oView.byId("idRecapTable");
+                if (oT) return oT;
+
+                // 2) sinon, cherche dans tous les contrôles de la vue un sap.ui.table.Table
+                // qui a un ID contenant "idRecapTable"
+                const a = oView.findAggregatedObjects(true, (oCtrl) => {
+                    return oCtrl
+                        && oCtrl.isA
+                        && oCtrl.isA("sap.ui.table.Table")
+                        && oCtrl.getId
+                        && oCtrl.getId().includes("idRecapTable");
+                });
+
+                if (a && a.length) return a[0];
+
+                // 3) fallback: chercher toute sap.ui.table.Table (si tu n'en as qu'une sur l'écran)
+                const b = oView.findAggregatedObjects(true, (oCtrl) => {
+                    return oCtrl && oCtrl.isA && oCtrl.isA("sap.ui.table.Table");
+                });
+
+                return (b && b.length) ? b[0] : null;
+            },
+
+
+            _attachRecapHooks: function () {
+                if (this.__recapHooksAttached) return;
+
+                const tryAttach = () => {
+                    const oRecapTable = this._findRecapTable();
+                    console.log("[recap] tryAttach table:", !!oRecapTable, oRecapTable && oRecapTable.getId());
+
+                    if (!oRecapTable) {
+                        // retente un peu plus tard
+                        this.__recapAttachTimer = setTimeout(tryAttach, 200);
+                        return;
+                    }
+
+                    this.__recapHooksAttached = true;
+                    if (this.__recapAttachTimer) {
+                        clearTimeout(this.__recapAttachTimer);
+                        this.__recapAttachTimer = null;
+                    }
+
+                    oRecapTable.attachRowsUpdated(() => {
+                        console.log("[recap] rowsUpdated fired");
+
+                        this._reorderRecapsForDisplay();   // tri (sans refresh)
+                        this.onRecapUpdated("idRecapTable");
+                        this._resetRecapMerge();
+                        this._styleMergedRecapRow();
+                    });
+                };
+
+                tryAttach();
+            },
+
+
+
+            _reorderRecapsForDisplay: function () {
+                const oUtil = this.getInterface().getModel("utilities");
+                if (!oUtil) return;
+
+                // IMPORTANT : on autorise à retrier si la donnée a changé
+                const a = oUtil.getProperty("/recaps");
+                if (!Array.isArray(a) || a.length === 0) return;
+
+                // si déjà trié pour cette version de data, skip
+                const key = a.map(r => r.row_type).join("|");
+                if (oUtil.getProperty("/__recapsOrderKey") === key) return;
+
+                console.log("[recap] row_types:", a.map(r => (r && r.row_type)));
+                const mOrder = {
+                    "CA": 10,
+                    "FACT": 20,
+                    "AJUST": 30,
+                    "CHARGE": 40,
+                    "PAT": 50,
+                    "RBA": 60,
+                    "RBAPCT": 70,
+                    "AVANCE": 80,
+                    "FGPAJU": 1000,
+                    "SFGPAJ": 1001,
+                    "FGPPAT": 1010,
+                    "SFGPPA": 1011
+                };
+                const normType = (t) => String(t || "").trim().toUpperCase();
+
+                const getLabel = (o) => String(o?.description || o?.name || o?.label || "").trim().toLowerCase();
+
+                const rank = (row) => {
+                    const t = normType(row && row.row_type);
+
+                    // si on a le row_type attendu
+                    if (t && (t in mOrder)) return mOrder[t];
+
+                    // fallback label : si le type est vide / inattendu
+                    const lbl = getLabel(row);
+                    if (lbl === "charges" || lbl.includes("charges")) return mOrder["CHARG"];
+
+                    // inconnu => fin
+                    return 9000;
+                };
+
+                a.sort((x, y) => {
+                    const rx = rank(x);
+                    const ry = rank(y);
+                    if (rx !== ry) return rx - ry;
+
+                    // tie-breaker stable
+                    return normType(x?.row_type).localeCompare(normType(y?.row_type));
+                });
+
+                console.log("[recap] row_types2:", a.map(r => (r && r.row_type)));
+                oUtil.setProperty("/recaps", a);
+                oUtil.setProperty("/__recapsOrderKey", key);
+            },
+
+
 
             onRecapUpdated: function (stableName) {
                 const oTable = this.oView.byId(stableName);
@@ -1569,6 +1724,8 @@ sap.ui.define(
                 jQuery(dom).find('.sfgpOverlay, .sfgpOverlayRight').remove();
             },
 
+
+
             _styleMergedRecapRow: function () {
                 if (PROJET_TYPE === "Z0" || PROJET_TYPE === "Z1") {
 
@@ -1612,8 +1769,12 @@ sap.ui.define(
                         : (PROJET_TYPE === "Z1") ? "Impact projet PAT"
                             : "Impact projet PAT";
 
+
+
                     // Helper générique
+
                     const paintBlock = (oRow, fromIdx, toIdx, opts) => {
+                        console.log("paintBlock executed", opts.className, oRow.getId?.());
                         if (toIdx < fromIdx) return; // rien à peindre
                         const $row = oRow.$();
                         if (!$row.length) return;
@@ -1657,18 +1818,41 @@ sap.ui.define(
                             pointerEvents: "none",
                             zIndex: 2
                         });
-
                         tdStart.appendChild(overlay);
                     };
 
-                    const rBefore = aRowsWithCtx[aRowsWithCtx.length - 2];
-                    const rLast = aRowsWithCtx[aRowsWithCtx.length - 1];
+                    //const rBefore = aRowsWithCtx[aRowsWithCtx.length - 2];
+                    //const rLast = aRowsWithCtx[aRowsWithCtx.length - 1];
+
+
+                    const findRowByType = (sType) => aRowsWithCtx.find(r => {
+                        const c = r.getBindingContext("utilities");
+                        return c && c.getProperty("row_type") === sType;
+                    });
+
+                    if (PROJET_TYPE === "Z1") {
+                        var rBefore = findRowByType("FGPAJU"); // Impact projet ajustement
+                        var rLast = findRowByType("FGPPAT"); // Impact projet PAT
+                    }
+                    if (PROJET_TYPE === "Z0") {
+                        rBefore = findRowByType("SFGPAJ"); // Impact super projet 
+                        rLast = findRowByType("SFGPPA");
+                    }
+
+
+                    if (!rBefore || !rLast) return;
+
+
 
                     // === FUSION GAUCHE BLEU ===
                     // Désormais on s'arrête AVANT "Cumul N-1" → 3 premières colonnes (Desc + 2 budgets)
+
                     const leftEnd = Math.max(0, idxCumulN1 - 1);
                     paintBlock(rBefore, 0, leftEnd, { bg: "#333399", className: "sfgpOverlay", text: txtBefore, showFirst: true });
                     paintBlock(rLast, 0, leftEnd, { bg: "#333399", className: "sfgpOverlay", text: txtLast, showFirst: true });
+
+
+
 
                     // === COLONNES VISIBLES AU CENTRE ===
                     // On laisse visibles : "Cumul N-1" (idxCumulN1), "Cumul à ce jour" (idxCumulJour), "Année en cours" (idxAnnee)
