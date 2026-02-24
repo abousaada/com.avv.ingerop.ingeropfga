@@ -9,23 +9,28 @@
                 <core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.budget.BudgetPxRecettes" type="XML" />
             </IconTabFilter>
 
-            <IconTabFilter key="STITab" text="{i18n>synt.tab.budget.sti}">
+            <IconTabFilter key="STITab" text="{i18n>synt.tab.budget.sti}" visible="{= ${Type} !== 'Z1' &amp;&amp; ${Type} !== 'Z0' }"
+>
                 <core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.budget.BudgetPxSTI" type="XML" />
             </IconTabFilter>
 
-            <IconTabFilter key="STFGTab" text="{i18n>synt.tab.budget.stf}" >
+            <IconTabFilter key="STFGTab" text="{i18n>synt.tab.budget.stf}" visible="{= ${Type} !== 'Z1' &amp;&amp; ${Type} !== 'Z0' }"
+>
                 <core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.budget.BudgetPxSTFilialeGroupe" type="XML" />
             </IconTabFilter>
 
-            <IconTabFilter key="STIncomeTab" text="{i18n>synt.tab.budget.subcontract}" >
+            <IconTabFilter key="STIncomeTab" text="{i18n>synt.tab.budget.subcontract}" visible="{= ${Type} !== 'Z1' &amp;&amp; ${Type} !== 'Z0' }"
+>
                 <core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.budget.BudgetPxSubContracting" type="XML" />
             </IconTabFilter>
 
-            <IconTabFilter key="MainOeuvreTab" text="{i18n>synt.tab.budget.mainOeuvre}">
+            <IconTabFilter key="MainOeuvreTab" text="{i18n>synt.tab.budget.mainOeuvre}" visible="{= ${Type} !== 'Z1' &amp;&amp; ${Type} !== 'Z0' }"
+>
                 <core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.budget.BudgetPxMainOeuvre" type="XML" />
             </IconTabFilter>
             
-            <IconTabFilter key="OtherIncomeTab" text="{i18n>synt.tab.budget.other}">
+            <IconTabFilter key="OtherIncomeTab" text="{i18n>synt.tab.budget.other}" visible="{= ${Type} !== 'Z1' &amp;&amp; ${Type} !== 'Z0' }"
+>
                 <core:Fragment fragmentName="com.avv.ingerop.ingeropfga.ext.view.tab.budget.BudgetPxAutre" type="XML" />
             </IconTabFilter>
         </items>
