@@ -403,12 +403,12 @@ sap.ui.define([
                         };
                         aData.push(oItem);
 
-                        oItem = {
-                            Categorie: oModelRecap[i].row_description,
-                            Type: "A venir",
-                            Valeur: oModelRecap[i].budget_initial
-                        };
-                        aData.push(oItem);
+                        /*  oItem = {
+                              Categorie: oModelRecap[i].row_description,
+                              Type: "A venir",
+                              Valeur: oModelRecap[i].budget_initial
+                          };
+                          aData.push(oItem);*/
                     }
                 }
 
@@ -429,6 +429,15 @@ sap.ui.define([
                             Valeur: oModelSynthesis[j].AVenir
                         };
                         aData.push(oItem);
+                    }
+                    if (oModelSynthesis[j].line_item === "CHARGE") {
+                        oItem = {
+                            Categorie: oModelSynthesis[j].description,
+                            Type: "A venir",
+                            Valeur: oModelSynthesis[j].AVenir
+                        };
+                        aData.push(oItem);
+
                     }
                 }
 
@@ -479,7 +488,6 @@ sap.ui.define([
                 // 2ème graphique - Facturation et dépenses 12 derniers mois
                 var oRecettes = oModelChart.find(obj => obj.line_item === "RECETTES");
                 var oCharges = oModelChart.find(obj => obj.line_item === "CHARGES");
-
                 if (oRecettes && oCharges) {
                     const totalMonths = 12;
 
@@ -502,7 +510,6 @@ sap.ui.define([
                         const label = String(realMonth).padStart(2, "0") + "/" + realYear;
 
                         const monthIndex = "Month" + String(i + 1).padStart(2, "0");
-
                         if (oRecettes[monthIndex] !== undefined && oCharges[monthIndex] !== undefined) {
                             aDataChart.push({
                                 Periode: label,
