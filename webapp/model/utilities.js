@@ -402,13 +402,13 @@ sap.ui.define([
                             Valeur: oModelRecap[i].cumul_ce_jour
                         };
                         aData.push(oItem);
-
-                        /*  oItem = {
+//++ NBH
+                          oItem = {
                               Categorie: oModelRecap[i].row_description,
                               Type: "A venir",
                               Valeur: oModelRecap[i].budget_initial
                           };
-                          aData.push(oItem);*/
+                          aData.push(oItem);
                     }
                 }
 
@@ -430,15 +430,16 @@ sap.ui.define([
                         };
                         aData.push(oItem);
                     }
-                    if (oModelSynthesis[j].line_item === "CHARGE") {
+                    //++ NBH
+                   /*    if (oModelSynthesis[j].line_item === "CHARGE") {
                         oItem = {
                             Categorie: oModelSynthesis[j].description,
                             Type: "A venir",
                             Valeur: oModelSynthesis[j].AVenir
                         };
                         aData.push(oItem);
+                    }*/
 
-                    }
                 }
 
                 for (var g = 0; g < oModelAdditionnalChart.length; g++) {
