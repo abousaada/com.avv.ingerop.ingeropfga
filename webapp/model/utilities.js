@@ -379,7 +379,7 @@ sap.ui.define([
                         aData.push(oItem);
                     }
 
-                    if (oModelRecap[i].row_type === "CHARGE") {
+                 /*   if (oModelRecap[i].row_type === "CHARGE") {
                         var oItem = {
                             Categorie: oModelRecap[i].row_description,
                             Type: "Réalisé",
@@ -402,14 +402,14 @@ sap.ui.define([
                             Valeur: oModelRecap[i].cumul_ce_jour
                         };
                         aData.push(oItem);
-//++ NBH
-                          oItem = {
-                              Categorie: oModelRecap[i].row_description,
-                              Type: "A venir",
-                              Valeur: oModelRecap[i].budget_initial
-                          };
-                          aData.push(oItem);
-                    }
+                        //++ NBH
+                           oItem = {
+                               Categorie: oModelRecap[i].row_description,
+                               Type: "A venir",
+                               Valeur: oModelRecap[i].budget_initial
+                           };
+                           aData.push(oItem);
+                    }*/
                 }
 
                 //boucle sur model synthesis
@@ -431,14 +431,20 @@ sap.ui.define([
                         aData.push(oItem);
                     }
                     //++ NBH
-                   /*    if (oModelSynthesis[j].line_item === "CHARGE") {
+                    if (oModelSynthesis[j].line_item === "CHARGES") {
+                        var oItem = {
+                            Categorie: oModelSynthesis[j].description,
+                            Type: "Réalisé",
+                            Valeur: oModelSynthesis[j].CumulN
+                        };
+                        aData.push(oItem);
                         oItem = {
                             Categorie: oModelSynthesis[j].description,
                             Type: "A venir",
                             Valeur: oModelSynthesis[j].AVenir
                         };
                         aData.push(oItem);
-                    }*/
+                    }
 
                 }
 

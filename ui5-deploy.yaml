@@ -20,6 +20,6 @@ builder:
           name: ZFGA
           description: ZFGA
           package: ZFGA
-          transport: DS4K901199
+          transport: DS4K901229
         exclude:
           - /test/
