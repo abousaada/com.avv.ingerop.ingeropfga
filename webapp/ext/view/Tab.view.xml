@@ -23,6 +23,7 @@
             <IconTabFilter
                 id="detailsTabFilter"
                 text="{i18n>synt.tab.details}"
+                visible="{= ${Type} !== 'Z1' &amp;&amp; ${Type} !== 'Z0' }"
             >
                 <!--core:Fragment
                     id="detailsTab"

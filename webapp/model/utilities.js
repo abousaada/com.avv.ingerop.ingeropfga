@@ -19,10 +19,10 @@ sap.ui.define([
             init: function (oModel) {
                 this.setData({ ...InitialData });
                 this.initModel(oModel);
-                this.oSubContracting    = new SubContracting(this);
-                this.oSTG               = new STG(this);
-                this.oRecetteExt        = new RecetteExt(this);
-                this.oMainOeuvre        = new MainOeuvre(this);
+                this.oSubContracting = new SubContracting(this);
+                this.oSTG = new STG(this);
+                this.oRecetteExt = new RecetteExt(this, oModel);
+                this.oMainOeuvre = new MainOeuvre(this);
             },
 
             setView(oView) {
@@ -68,7 +68,7 @@ sap.ui.define([
                 this.setPxSubContractingHeader(treeHeader);
             },
 
-            buildPxSTGTreeData(){
+            buildPxSTGTreeData() {
                 const { treeData, stfTreeHeader, stgTreeHeader } = this.oSTG.buildTreeData();
                 this.setPxSTGHeader(stgTreeHeader);
                 this.setPxSTFHeader(stfTreeHeader);
@@ -262,7 +262,7 @@ sap.ui.define([
                         aData.push(oItem);
                     }
 
-                    if (oModelRecap[i].row_type === "CHARGE") {
+                 /*   if (oModelRecap[i].row_type === "CHARGE") {
                         var oItem = {
                             Categorie: oModelRecap[i].row_description,
                             Type: "Réalisé",
@@ -285,14 +285,14 @@ sap.ui.define([
                             Valeur: oModelRecap[i].cumul_ce_jour
                         };
                         aData.push(oItem);
-
-                        oItem = {
-                            Categorie: oModelRecap[i].row_description,
-                            Type: "A venir",
-                            Valeur: oModelRecap[i].budget_initial
-                        };
-                        aData.push(oItem);
-                    }
+                        //++ NBH
+                           oItem = {
+                               Categorie: oModelRecap[i].row_description,
+                               Type: "A venir",
+                               Valeur: oModelRecap[i].budget_initial
+                           };
+                           aData.push(oItem);
+                    }*/
                 }
 
                 //boucle sur model synthesis
@@ -323,6 +323,22 @@ sap.ui.define([
                         };
                         aData.push(oItem);
                     }
+                    //++ NBH
+                    if (oModelSynthesis[j].line_item === "CHARGES") {
+                        var oItem = {
+                            Categorie: oModelSynthesis[j].description,
+                            Type: "Réalisé",
+                            Valeur: oModelSynthesis[j].CumulN
+                        };
+                        aData.push(oItem);
+                        oItem = {
+                            Categorie: oModelSynthesis[j].description,
+                            Type: "A venir",
+                            Valeur: oModelSynthesis[j].AVenir
+                        };
+                        aData.push(oItem);
+                    }
+
                 }
 
                 for (var g = 0; g < oModelAdditionnalChart.length; g++) {
@@ -374,7 +390,6 @@ sap.ui.define([
                 // 2ème graphique - Facturation et dépenses 12 derniers mois
                 var oRecettes = oModelChart.find(obj => obj.line_item === "RECETTES");
                 var oCharges = oModelChart.find(obj => obj.line_item === "CHARGES");
-
                 if (oRecettes && oCharges) {
                     const totalMonths = 12;
 
@@ -397,7 +412,6 @@ sap.ui.define([
                         const label = String(realMonth).padStart(2, "0") + "/" + realYear;
 
                         const monthIndex = "Month" + String(i + 1).padStart(2, "0");
-
                         if (oRecettes[monthIndex] !== undefined && oCharges[monthIndex] !== undefined) {
                             aDataChart.push({
                                 Periode: label,
@@ -640,7 +654,7 @@ sap.ui.define([
                     console.log(error);
                 }
             },
-            async getBESTG(){
+            async getBESTG() {
                 try {
                     const businessNo = this.getBusinessNo();
                     const period = this.getPeriod();
@@ -652,7 +666,7 @@ sap.ui.define([
                 } catch (error) {
                     console.log(error);
                 }
-                
+
             },
 
             async getBEPxSTI() {
@@ -708,7 +722,13 @@ sap.ui.define([
                                 const budgetPath = `/ZC_STI(id_formulaire='${encodedId}',business_no_e='${encodedBusinessNo}')/to_BUDG`;
                                 console.log(`Loading budget for ID: ${sti.id_formulaire}, BusinessNo: ${sti.business_no_e}, Path: ${budgetPath}`);
 
-                                const budgetResponse = await this.read(budgetPath);
+                                const budgetResponse = await this.read(budgetPath, {
+                                    urlParameters: {
+                                        //"$filter": `p_period eq '${period}'`
+                                        "$filter": `p_period eq '${period}' and business_no_p eq '${sti.business_no_p}'`
+                                    }
+                                });
+
                                 return {
                                     ...sti,
                                     to_budg: budgetResponse?.results || []
@@ -873,7 +893,7 @@ sap.ui.define([
                 }
             },
 
-            async getBEProfils(){
+            async getBEProfils() {
                 try {
                     const BusinessNo = this.getBusinessNo();
                     const Period = this.getPeriod();
@@ -885,9 +905,9 @@ sap.ui.define([
                 }
             },
 
-            setPxMainOeuvreProfilHeader(profils = []){
-                profils = profils.map(p => ({"columnId" : "MO_" + p.profil, ...p}));
-                profils.sort((c1,c2) => c1.idx - c2.idx)
+            setPxMainOeuvreProfilHeader(profils = []) {
+                profils = profils.map(p => ({ "columnId": "MO_" + p.profil, ...p }));
+                profils.sort((c1, c2) => c1.idx - c2.idx)
                 this.setPxMainOeuvreHeader(profils);
             },
 
@@ -1184,18 +1204,18 @@ sap.ui.define([
             formattedPxSubContractingExt() {
                 return [
                     ...this.oSubContracting
-                           .formattedPxSubContractingExt()
-                           .map(Formatter.reverseFormatBudgetSubContracting),
-                    ...this.oSTG    
-                           .formattedPxFiliale()
-                           .map(Formatter.reverseFormatBudgetSubContracting)
+                        .formattedPxSubContractingExt()
+                        .map(Formatter.reverseFormatBudgetSubContracting),
+                    ...this.oSTG
+                        .formattedPxFiliale()
+                        .map(Formatter.reverseFormatBudgetSubContracting)
                 ];
             },
 
-            formattedPxSTG(){
-                return this.oSTG    
-                           .formattedPxGroupe()
-                           .map(Formatter.reverseFormatBudgetSTG)
+            formattedPxSTG() {
+                return this.oSTG
+                    .formattedPxGroupe()
+                    .map(Formatter.reverseFormatBudgetSTG)
             },
 
             formattedPxRecetteExt() {

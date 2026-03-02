@@ -381,7 +381,6 @@
                       "tooltip": "Next Period",
                       "press": "onNextPeriod",
                       "requiresSelection": false
-                      
                     }
                   }
                 }
@@ -414,7 +413,7 @@
               "viewName": "com.avv.ingerop.ingeropfga.ext.view.Sfgp",
               "type": "XML",
               "sap.ui.generic.app": {
-                "title": "Sfgp"
+                "title": "Récap des affaires"
               }
             },
             "AfterFacet|ZC_FGASet|GeneralInfo": {

@@ -115,16 +115,85 @@ sap.ui.define(
                 });
             },
 
+            _attachEditPress: function () {
+                if (this.__editPressAttached) return;
+
+                const oView = this.getView();
+
+                // FE "Edit" button id finit presque toujours par "--edit"
+                const aCandidates = oView.findAggregatedObjects(true, (oCtrl) =>
+                    oCtrl.isA("sap.m.Button") &&
+                    (oCtrl.getId().endsWith("--edit") || oCtrl.getId().includes("--edit"))
+                );
+
+                const oEditBtn = aCandidates && aCandidates[0];
+                if (!oEditBtn) return; // pas encore instancié (lazy) -> sera retenté au prochain afterRendering
+
+                this.__editPressAttached = true;
+
+                oEditBtn.attachPress(() => {
+                    console.log("[FE] Edit pressed");
+                    // ici ton action
+                    this._onEditPressed();
+                });
+            },
+
+            _onEditPressed: function () {
+                // FE bascule en edit un poil après le press
+                setTimeout(() => {
+
+                    const oUtil = this.getInterface().getModel("utilities");
+                    if (!oUtil) return;
+
+                    // flag pour recetteExt.js (si tu l’utilises)
+                    oUtil.setProperty("/Editable", true);
+
+                    // Rebuild -> doit rappeler buildTreeData()
+                    if (this._budgetPxRecetteExt && this._budgetPxRecetteExt.preparePxRecetteExtTreeData) {
+                        this._budgetPxRecetteExt.preparePxRecetteExtTreeData();
+                    }
+
+                    // force refresh bindings
+                    oUtil.refresh(true);
+
+                }, 0);
+            },
+
+            _hideRecetteExtBottomLines: function () {
+                const oUtil = this.getInterface().getModel("utilities");
+                if (!oUtil) return;
+
+                // on sort du mode edit
+                oUtil.setProperty("/Editable", false);
+
+                // rebuild = supprime les lignes (puisqu’elles ne sont ajoutées que si Editable=true)
+                if (this._budgetPxRecetteExt && this._budgetPxRecetteExt.preparePxRecetteExtTreeData) {
+                    this._budgetPxRecetteExt.preparePxRecetteExtTreeData();
+                }
+
+                oUtil.refresh(true);
+            },
+
+
+
+
+
+
             // this section allows to extend lifecycle hooks or hooks provided by Fiori elements
             override: {
                 onAfterRendering: function () {
 
                     this._wireCustomButtons();
+                    this._attachEditPress();
 
                     const oTreeTable = this.getView().byId("PrevisionnelTreeTable");
                     if (oTreeTable) {
                         oTreeTable.setFixedColumnCount(99);
                     }
+
+                    this._attachRecapHooks();
+
+
 
                 },
 
@@ -135,6 +204,7 @@ sap.ui.define(
                 */
 
                 onInit: async function () {
+
 
                     this.base.getView().getController().onSelectFGAPress = function () {
                         console.log("onSelectFGAPress");
@@ -301,6 +371,24 @@ sap.ui.define(
                         }, this);
 
                     }
+
+                    const oRecapTable = this.getView().byId("idRecapTable");
+                    console.log("[recap] table found?", !!oRecapTable, oRecapTable && oRecapTable.getId());
+
+                    if (oRecapTable && !this.__recapRowsUpdatedAttached) {
+                        this.__recapRowsUpdatedAttached = true;
+
+                        oRecapTable.attachRowsUpdated(() => {
+                            // 1) trier UNE SEULE FOIS (sans refresh)
+                            this._reorderRecapsForDisplay();
+
+                            // 2) appliquer styles (DOM prêt car rowsUpdated)
+                            this.onRecapUpdated("idRecapTable");
+                            this._resetRecapMerge();
+                            this._styleMergedRecapRow();
+                        });
+                    }
+
                 },
 
                 // onCancel:function(oEvent){
@@ -413,7 +501,7 @@ sap.ui.define(
                             const formattedPxAutre = utilitiesModel.getFormattedPxAutre();
                             const formattedPxSubContractingExt = utilitiesModel.formattedPxSubContractingExt();
                             const formattedPxSTG = utilitiesModel.formattedPxSTG();
-                            
+
                             const formattedPxRecetteExt = utilitiesModel.formattedPxRecetteExt();
                             const formattedMainOeuvre = utilitiesModel.formattedPxMainOeuvre();
                             const formattedMOProfil = utilitiesModel.formattedPxMOProfil();
@@ -493,7 +581,7 @@ sap.ui.define(
 
                         const updatedFGA = await utilitiesModel.deepUpsertFGA(oPayload);
 
-                        if(updatedFGA){
+                        if (updatedFGA) {
                             const hasRefresh = await this._refreshBudgetPxTab();
                         }
                         if (!isForecastMode && updatedFGA) {
@@ -623,6 +711,8 @@ sap.ui.define(
                     const oModel = this.base.getView().getModel();
                     oModel.setProperty(context.getPath() + "/Percent", "%");
                 }
+                this._hideRecetteExtBottomLines();
+
             },
 
             routing: {
@@ -664,6 +754,9 @@ sap.ui.define(
                     this.base.templateBaseExtension.getExtensionAPI().refresh();
                 }.bind(this), 100); //
                 // this.base.templateBaseExtension.getExtensionAPI().refresh();
+
+                this._hideRecetteExtBottomLines();
+
             },
 
             async _getTabsData(type, aSelectedBusinessNos = []) {
@@ -859,6 +952,13 @@ sap.ui.define(
 
             onPressMonthLink: function (oEvent) {
 
+                const oContext = oEvent.getSource().getBindingContext("utilities");
+                const sline_item = oContext.getProperty("line_item");
+
+                if (sline_item === "RBA_PAT") {
+                    return; // Bloque l'action
+                }
+
                 if (!this._SyntheseTab) {
                     this._SyntheseTab = new Synthese();
 
@@ -994,6 +1094,13 @@ sap.ui.define(
             // in the mission  process
             // ===========================================================
             onChangeRecetteExtMontant(oEvent) {
+                const oInput = oEvent.getSource();
+                let v = oInput.getValue();
+
+                // Si vide → 0
+                if (v === "" || v === null) {
+                    oInput.setValue("0");
+                }
                 if (!this._budgetPxRecetteExt) {
                     this._budgetPxRecetteExt = new BudgetPxRecetteExt();
                     this._budgetPxRecetteExt.oView = this.oView;
@@ -1011,6 +1118,18 @@ sap.ui.define(
             // Handles preparation and submition budget items 
             // in the mission  process
             // ===========================================================
+            onAmountChange: function (oEvent) {
+                const oInput = oEvent.getSource();
+                let v = oInput.getValue();
+
+                // Si vide → 0
+                if (v === "" || v === null) {
+                    oInput.setValue("0");
+                }
+            },
+
+
+
             onChangeMainOeuvreMontant(oEvent) {
                 if (!this._budgetMainOeuvre) {
                     this._budgetMainOeuvre = new BudgetPxMainOeuvre();
@@ -1322,10 +1441,138 @@ sap.ui.define(
                 //         oTbl.setBusy(false); // toujours relâcher, même en cas d’erreur
                 //     }
                 // });
+
+
+
+
                 this.onRecapUpdated(stableName);
                 this._resetRecapMerge();
                 this._styleMergedRecapRow();
+
             },
+
+            _findRecapTable: function () {
+                const oView = this.getView();
+
+                // 1) si l'ID local marche
+                let oT = oView.byId("idRecapTable");
+                if (oT) return oT;
+
+                // 2) sinon, cherche dans tous les contrôles de la vue un sap.ui.table.Table
+                // qui a un ID contenant "idRecapTable"
+                const a = oView.findAggregatedObjects(true, (oCtrl) => {
+                    return oCtrl
+                        && oCtrl.isA
+                        && oCtrl.isA("sap.ui.table.Table")
+                        && oCtrl.getId
+                        && oCtrl.getId().includes("idRecapTable");
+                });
+
+                if (a && a.length) return a[0];
+
+                // 3) fallback: chercher toute sap.ui.table.Table (si tu n'en as qu'une sur l'écran)
+                const b = oView.findAggregatedObjects(true, (oCtrl) => {
+                    return oCtrl && oCtrl.isA && oCtrl.isA("sap.ui.table.Table");
+                });
+
+                return (b && b.length) ? b[0] : null;
+            },
+
+
+            _attachRecapHooks: function () {
+                if (this.__recapHooksAttached) return;
+
+                const tryAttach = () => {
+                    const oRecapTable = this._findRecapTable();
+                    console.log("[recap] tryAttach table:", !!oRecapTable, oRecapTable && oRecapTable.getId());
+
+                    if (!oRecapTable) {
+                        // retente un peu plus tard
+                        this.__recapAttachTimer = setTimeout(tryAttach, 200);
+                        return;
+                    }
+
+                    this.__recapHooksAttached = true;
+                    if (this.__recapAttachTimer) {
+                        clearTimeout(this.__recapAttachTimer);
+                        this.__recapAttachTimer = null;
+                    }
+
+                    oRecapTable.attachRowsUpdated(() => {
+                        console.log("[recap] rowsUpdated fired");
+
+                        this._reorderRecapsForDisplay();   // tri (sans refresh)
+                        this.onRecapUpdated("idRecapTable");
+                        this._resetRecapMerge();
+                        this._styleMergedRecapRow();
+                    });
+                };
+
+                tryAttach();
+            },
+
+
+
+            _reorderRecapsForDisplay: function () {
+                const oUtil = this.getInterface().getModel("utilities");
+                if (!oUtil) return;
+
+                // IMPORTANT : on autorise à retrier si la donnée a changé
+                const a = oUtil.getProperty("/recaps");
+                if (!Array.isArray(a) || a.length === 0) return;
+
+                // si déjà trié pour cette version de data, skip
+                const key = a.map(r => r.row_type).join("|");
+                if (oUtil.getProperty("/__recapsOrderKey") === key) return;
+
+                console.log("[recap] row_types:", a.map(r => (r && r.row_type)));
+                const mOrder = {
+                    "CA": 10,
+                    "FACT": 20,
+                    "AJUST": 30,
+                    "CHARGE": 40,
+                    "PAT": 50,
+                    "RBA": 60,
+                    "RBAPCT": 70,
+                    "AVANCE": 80,
+                    "FGPAJU": 1000,
+                    "SFGPAJ": 1001,
+                    "FGPPAT": 1010,
+                    "SFGPPA": 1011
+                };
+                const normType = (t) => String(t || "").trim().toUpperCase();
+
+                const getLabel = (o) => String(o?.description || o?.name || o?.label || "").trim().toLowerCase();
+
+                const rank = (row) => {
+                    const t = normType(row && row.row_type);
+
+                    // si on a le row_type attendu
+                    if (t && (t in mOrder)) return mOrder[t];
+
+                    // fallback label : si le type est vide / inattendu
+                    const lbl = getLabel(row);
+                    if (lbl === "charges" || lbl.includes("charges")) return mOrder["CHARG"];
+
+                    // inconnu => fin
+                    return 9000;
+                };
+
+                a.sort((x, y) => {
+                    const rx = rank(x);
+                    const ry = rank(y);
+                    if (rx !== ry) return rx - ry;
+
+                    // tie-breaker stable
+                    return normType(x?.row_type).localeCompare(normType(y?.row_type));
+                });
+
+                console.log("[recap] row_types2:", a.map(r => (r && r.row_type)));
+                oUtil.setProperty("/recaps", a);
+                oUtil.setProperty("/__recapsOrderKey", key);
+            },
+
+
 
             onRecapUpdated: function (stableName) {
                 const oTable = this.oView.byId(stableName);
@@ -1477,6 +1724,8 @@ sap.ui.define(
                 jQuery(dom).find('.sfgpOverlay, .sfgpOverlayRight').remove();
             },
 
+
+
             _styleMergedRecapRow: function () {
                 if (PROJET_TYPE === "Z0" || PROJET_TYPE === "Z1") {
 
@@ -1520,8 +1769,12 @@ sap.ui.define(
                         : (PROJET_TYPE === "Z1") ? "Impact projet PAT"
                             : "Impact projet PAT";
 
+
+
                     // Helper générique
+
                     const paintBlock = (oRow, fromIdx, toIdx, opts) => {
+                        console.log("paintBlock executed", opts.className, oRow.getId?.());
                         if (toIdx < fromIdx) return; // rien à peindre
                         const $row = oRow.$();
                         if (!$row.length) return;
@@ -1565,18 +1818,41 @@ sap.ui.define(
                             pointerEvents: "none",
                             zIndex: 2
                         });
-
                         tdStart.appendChild(overlay);
                     };
 
-                    const rBefore = aRowsWithCtx[aRowsWithCtx.length - 2];
-                    const rLast = aRowsWithCtx[aRowsWithCtx.length - 1];
+                    //const rBefore = aRowsWithCtx[aRowsWithCtx.length - 2];
+                    //const rLast = aRowsWithCtx[aRowsWithCtx.length - 1];
+
+
+                    const findRowByType = (sType) => aRowsWithCtx.find(r => {
+                        const c = r.getBindingContext("utilities");
+                        return c && c.getProperty("row_type") === sType;
+                    });
+
+                    if (PROJET_TYPE === "Z1") {
+                        var rBefore = findRowByType("FGPAJU"); // Impact projet ajustement
+                        var rLast = findRowByType("FGPPAT"); // Impact projet PAT
+                    }
+                    if (PROJET_TYPE === "Z0") {
+                        rBefore = findRowByType("SFGPAJ"); // Impact super projet 
+                        rLast = findRowByType("SFGPPA");
+                    }
+
+
+                    if (!rBefore || !rLast) return;
+
+
 
                     // === FUSION GAUCHE BLEU ===
                     // Désormais on s'arrête AVANT "Cumul N-1" → 3 premières colonnes (Desc + 2 budgets)
+
                     const leftEnd = Math.max(0, idxCumulN1 - 1);
                     paintBlock(rBefore, 0, leftEnd, { bg: "#333399", className: "sfgpOverlay", text: txtBefore, showFirst: true });
                     paintBlock(rLast, 0, leftEnd, { bg: "#333399", className: "sfgpOverlay", text: txtLast, showFirst: true });
+
+
+
 
                     // === COLONNES VISIBLES AU CENTRE ===
                     // On laisse visibles : "Cumul N-1" (idxCumulN1), "Cumul à ce jour" (idxCumulJour), "Année en cours" (idxAnnee)
@@ -1623,6 +1899,8 @@ sap.ui.define(
                         const aExclure = new Set(["cumule", "cumulé", "pourcentage", "rad"]);
 
                         aRows.forEach(oRow => {
+                            // reset styles à chaque rowsUpdated
+                            oRow.removeStyleClass("pxNotAcquisRow pxTotalRow pxSubTotalRow");
 
                             // Header cell (color whole header cell, not just the label)
                             oDomRef.querySelectorAll(".sapUiTableColHdrTr.pxHeader")
@@ -1641,6 +1919,24 @@ sap.ui.define(
                                 const bIsNode = !!oContext.getProperty("isNode");
                                 const sName = String(oContext.getProperty("name") || "").trim().toLowerCase();
                                 const $row = oRow.$();
+                                const aMissions = oContext.oModel.oData.missions;
+                                const sName2 = oRow.mAggregations.cells[0].getProperty("text");
+
+                                let sStatus = "";
+
+                                for (const mission of aMissions) {
+                                    if (mission.MissionId === sName2) {
+                                        sStatus = mission.statutmission;
+                                        break;
+                                    }
+                                }
+                                if (sStatus !== "A" && sStatus !== "") {
+                                    // Ligne grisée
+                                    oRow.addStyleClass("pxNotAcquisRow");
+                                }
+
+
+
                                 // Enlever les anciens styles
                                 // $row.removeClass("pxTotalRow pxSubTotalRow");
                                 oRow.removeStyleClass("pxTotalRow pxSubTotalRow");
@@ -1653,7 +1949,7 @@ sap.ui.define(
                                     if (sName === "total acquis") {
                                         oRow.addStyleClass("pxTotalRow");
                                     } else {
-                                        if (sName.startsWith("total")) {
+                                        if (sName.startsWith("sous-total acquis") || sName.startsWith("total tranche")) {
                                             // Sous-total (violet clair + texte noir)
                                             oRow.addStyleClass("pxSubTotalRow");
                                         }
@@ -1700,21 +1996,30 @@ sap.ui.define(
                         // if (oHeaderRow && oHeaderRow.textContent !== '') oHeaderRow.classList.add("pxHeader");
                         const aRows = oTable.getRows();
                         aRows.forEach(oRow => {
+                            // reset styles à chaque rowsUpdated
+                            oRow.removeStyleClass("pxNotAcquisRow pxTotalRow pxSubTotalRow");
+
                             const oContext = oRow.getBindingContext("utilities");
                             if (oContext) {
                                 const sName = String(oContext.getProperty("name") || "").trim().toLowerCase();
+                                const sStatus = String(oContext.getProperty("status") || "").trim().toLowerCase();
                                 const $row = oRow.$();
                                 // Enlever les anciens styles
                                 // $row.removeClass("pxTotalRow pxSubTotalRow");
                                 oRow.removeStyleClass("pxTotalRow pxSubTotalRow");
                                 // main total (dark blue + white text)
-                                if (sName === "total global") {
+                                if (sName === "total acquis") {
                                     oRow.addStyleClass("pxTotalRow");
                                 } else {
-                                    if (sName.startsWith("total")) {
+                                    if (sName.startsWith("sous-total acquis") || sName.startsWith("total tranche")) {
                                         // Sous-total (violet clair + texte noir)
                                         oRow.addStyleClass("pxSubTotalRow");
                                     }
+
+                                }
+                                if (sStatus !== "a" && sStatus !== "") {
+                                    // Ligne grisée
+                                    oRow.addStyleClass("pxNotAcquisRow");
                                 }
 
                             }
@@ -1763,12 +2068,30 @@ sap.ui.define(
                         }
 
                         aRows.forEach(oRow => {
+                            // reset styles à chaque rowsUpdated
+                            oRow.removeStyleClass("pxNotAcquisRow pxTotalRow pxSubTotalRow");
+
                             const oContext = oRow.getBindingContext("utilities");
                             if (oContext) {
                                 const bIsTotal = !!oContext.getProperty("isTotalRow");
                                 const bIsNode = !!oContext.getProperty("isNode");
                                 const sName = String(oContext.getProperty("name") || "").trim().toLowerCase();
                                 const $row = oRow.$();
+                                const aMissions = oContext.oModel.oData.missions;
+                                const sName2 = oRow.mAggregations.cells[0].getProperty("text");
+
+                                let sStatus = "";
+
+                                for (const mission of aMissions) {
+                                    if (mission.MissionId === sName2) {
+                                        sStatus = mission.statutmission;
+                                        break;
+                                    }
+                                }
+                                if (sStatus !== "A" && sStatus !== "") {
+                                    // Ligne grisée
+                                    oRow.addStyleClass("pxNotAcquisRow");
+                                }
 
                                 // FIX 3: Remove all classes (including pxNodeRow)
                                 $row.removeClass("pxTotalRow pxSubTotalRow pxNodeRow");
@@ -1787,7 +2110,7 @@ sap.ui.define(
                                 if (bIsTotal) {
                                     if (sName === "budget sti") {
                                         oRow.addStyleClass("pxTotalRow");
-                                    } else if (sName.startsWith("total")) {
+                                    } else if (sName.startsWith("sous-total acquis") || sName.startsWith("total tranche")) {
                                         oRow.addStyleClass("pxSubTotalRow");
                                     }
                                 }
@@ -1813,6 +2136,8 @@ sap.ui.define(
                         const aExclure = new Set(["cumule", "cumulé", "pourcentage", "rad"]);
 
                         aRows.forEach(oRow => {
+                            // reset styles à chaque rowsUpdated
+                            oRow.removeStyleClass("pxNotAcquisRow pxTotalRow pxSubTotalRow");
 
                             // Header cell (color whole header cell, not just the label)
                             oDomRef.querySelectorAll(".sapUiTableColHdrTr.pxHeader")
@@ -1842,7 +2167,7 @@ sap.ui.define(
                                     if (sName === "Budget STI") {
                                         oRow.addStyleClass("pxTotalRow");
                                     } else {
-                                        if (sName.startsWith("total")) {
+                                        if (sName.startsWith("sous-total acquis") || sName.startsWith("total tranche")) {
                                             // Sous-total (violet clair + texte noir)
                                             oRow.addStyleClass("pxSubTotalRow");
                                         }
@@ -1858,7 +2183,38 @@ sap.ui.define(
 
             },
 
-            onRowsUpdatedBudgetPXMainOeuvreTab() {
+            onRowsUpdatedBudgetPXMainOeuvreTab(oEvent) {
+                //Mise à 0 si vide 
+                const oTable = oEvent.getSource();
+                const aRows = oTable.getRows();
+
+                aRows.forEach((oRow) => {
+                    const aCells = oRow.getCells();
+
+                    aCells.forEach((oCell) => {
+                        // Récupérer tous les Input descendants (dans VBox/HBox/etc.)
+                        const aInputs = oCell.findAggregatedObjects(true, function (oCtrl) {
+                            return oCtrl.isA && oCtrl.isA("sap.m.Input");
+                        });
+
+                        aInputs.forEach((oInput) => {
+                            const s = (oInput.getValue() || "").trim();
+                            if (s === "") {
+                                oInput.setValue("0");
+
+                                // pousser 0 dans le modèle
+                                const oCtx = oInput.getBindingContext("utilities");
+                                const oBind = oInput.getBinding("value");
+
+                                if (oCtx && oBind) {
+                                    const sPath = oBind.getPath(); // ex: "montant" ou "tranche1"
+                                    oCtx.getModel().setProperty(oCtx.getPath() + "/" + sPath, 0);
+                                }
+                            }
+                        });
+                    });
+                });
+
                 var stableName = "BudgetPxMainOeuvreTreeTableId";
                 this.onBudgetPXSubCUpdated(stableName);
             },
@@ -1868,9 +2224,10 @@ sap.ui.define(
                 this.onBudgetPXSubCUpdated(stableName);
             },
 
-            onRowsUpdatedBudgetPXRecetteTab() {
+            onRowsUpdatedBudgetPXRecetteTab(oEvent) {
                 var stableName = "BudgetPxRecettesTreeTableId";
                 this.onBudgetPXSubCUpdated(stableName);
+
             },
 
             formatSTIEditable: function (bEditable, sIsSTI) {
@@ -1980,6 +2337,7 @@ sap.ui.define(
                 const oUtilitiesModel = this.getInterface().getModel("utilities");
                 const affaireType = oContext.getProperty("AffaireType");
                 //const bVisible = (affaireType === "F" || affaireType === "P");
+                oUtilitiesModel.setProperty("/AffaireType", affaireType);
 
                 const bVisible = affaireType
                     ? (affaireType === "F" || affaireType === "P")
@@ -2001,6 +2359,9 @@ sap.ui.define(
                         }
                     });
                 });
+
+
+
             },
 
 
@@ -2358,7 +2719,7 @@ sap.ui.define(
                 }
             },
 
-            async _refreshBudgetPxTab(){
+            async _refreshBudgetPxTab() {
                 const oUtilitiesModel = this.getInterface().getModel("utilities");
 
                 try {

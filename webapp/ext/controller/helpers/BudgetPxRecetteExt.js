@@ -21,7 +21,7 @@ sap.ui.define([
             // this.buildRecetteExtTree();
         },
 
-        reCalcRecetteTable(){
+        reCalcRecetteTable() {
             this.getUtilitiesModel().reCalcRecetteTable();
         }
 

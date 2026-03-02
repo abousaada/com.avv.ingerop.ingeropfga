@@ -6,12 +6,12 @@ sap.ui.define([
 
     return Controller.extend("com.avv.ingerop.ingeropfga.ext.controller.helpers.BudgetPxSubContracting", {
 
-        _CONSTANT_DYNAMIC_PREFIX            : "SC_",
-        _CONSTANT_COLUMN_ID                 : "columnId",
-        _CONSTANT_EXT_CONTRACTOR_TABLE_ID   : "com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--budgets--BudgetPxSubContractingTreeTableId",
-        _CONSTANT_STF_TABLE_ID              : "com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--budgets--BudgetPxSTFilialeGroupeTableId",
-        _CONSTANT_SUBCONTRACTOR_ID          : "subContractorId",
-        _CONSTANT_SUBCONTRACTOR_PARTNER     : "subContractorPartner",
+        _CONSTANT_DYNAMIC_PREFIX: "SC_",
+        _CONSTANT_COLUMN_ID: "columnId",
+        _CONSTANT_EXT_CONTRACTOR_TABLE_ID: "com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--budgets--BudgetPxSubContractingTreeTableId",
+        _CONSTANT_STF_TABLE_ID: "com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--budgets--BudgetPxSTFilialeGroupeTableId",
+        _CONSTANT_SUBCONTRACTOR_ID: "subContractorId",
+        _CONSTANT_SUBCONTRACTOR_PARTNER: "subContractorPartner",
 
         getUtilitiesModel() {
             return this.oView.getModel("utilities");
@@ -81,12 +81,12 @@ sap.ui.define([
 
         reCalcExternalColumnTotalById(columnId) {
 
-            const [root]        = this.getUtilitiesModel().getPxSubContractingHierarchy();
-            const groupement    = root.children.slice(0, -4);
-            const globalTotal   = root.children.at(-4);
-            let cumulTotal      = root.children.at(-3);
-            const percentTotal  = root.children.at(-2);
-            const radTotal      = root.children.at(-1);
+            const [root] = this.getUtilitiesModel().getPxSubContractingHierarchy();
+            const groupement = root.children.slice(0, -4);
+            const globalTotal = root.children.at(-4);
+            let cumulTotal = root.children.at(-3);
+            const percentTotal = root.children.at(-2);
+            const radTotal = root.children.at(-1);
 
             const props = [columnId, "budgetHorsFrais", "budgetYCFrais"];
 
@@ -96,9 +96,9 @@ sap.ui.define([
             for (const group of groupement) {
                 if (!group.isGroupe || !Array.isArray(group.children)) continue;
 
-                const oldBudgets    = group.children.slice(0, -1);
-                const newBudgets    = oldBudgets.map(budget => this.calcNewExternalTotalFinAffaire(budget));
-                const totalLine     = group.children.at(-1);
+                const oldBudgets = group.children.slice(0, -1);
+                const newBudgets = oldBudgets.map(budget => this.calcNewExternalTotalFinAffaire(budget));
+                const totalLine = group.children.at(-1);
                 if (!totalLine) continue;
 
                 // Réinitialisation ciblée
@@ -106,9 +106,9 @@ sap.ui.define([
 
                 for (const child of newBudgets) {
 
-                    props.forEach(prop => { 
-                        totalLine[prop]     += child[prop] || 0;
-                        globalTotal[prop]   += child[prop] || 0;
+                    props.forEach(prop => {
+                        totalLine[prop] += child[prop] || 0;
+                        globalTotal[prop] += child[prop] || 0;
                     });
 
                 }
@@ -117,9 +117,9 @@ sap.ui.define([
 
             cumulTotal = this.calcNewExternalTotalFinAffaire(cumulTotal);
 
-            props.forEach(prop => { 
-                percentTotal[prop]  = (globalTotal[prop]??0) > 0 ? ((cumulTotal[prop]??0) / globalTotal[prop]) : 0;
-                radTotal[prop]      = (globalTotal[prop]??0) - (cumulTotal[prop]??0);
+            props.forEach(prop => {
+                percentTotal[prop] = (globalTotal[prop] ?? 0) > 0 ? ((cumulTotal[prop] ?? 0) / globalTotal[prop]) : 0;
+                radTotal[prop] = (globalTotal[prop] ?? 0) - (cumulTotal[prop] ?? 0);
             });
 
             root.children = [...groupement, globalTotal, cumulTotal, percentTotal, radTotal];
@@ -141,8 +141,8 @@ sap.ui.define([
                     const coef = coefByColumnId[key] ?? 1;
 
                     return {
-                        budgetHorsFrais : som.budgetHorsFrais + value,
-                        budgetYCFrais   : som.budgetYCFrais + value * coef
+                        budgetHorsFrais: som.budgetHorsFrais + value,
+                        budgetYCFrais: som.budgetYCFrais + value * coef
                     };
                 },
                 { budgetHorsFrais: 0, budgetYCFrais: 0 }
@@ -302,7 +302,7 @@ sap.ui.define([
                 const { columnId } = oEvent.getSource().data()
                 const newContractor = await this.getExternalId();
                 const newSupplierData = await this.getUtilitiesModel()
-                                                  .getBESupplierById({ SupplierNo : newContractor, isFiliale: false });
+                    .getBESupplierById({ SupplierNo: newContractor, isFiliale: false });
                 this.changeColumnContractorBydId(newSupplierData, columnId);
                 // this.addNewContractorById(newSupplierData);
                 return;
@@ -331,7 +331,7 @@ sap.ui.define([
             try {
                 const newContractor = await this.getExternalId();
                 const newSupplierData = await this.getUtilitiesModel()
-                                                  .getBESupplierById({ SupplierNo : newContractor, isFiliale: false });
+                    .getBESupplierById({ SupplierNo: newContractor, isFiliale: false });
                 this.addNewExternalById(newSupplierData);
                 return;
             } catch (error) {
@@ -341,8 +341,18 @@ sap.ui.define([
 
         onExternalCoefChange(oEvent) {
             const newValue = oEvent.getParameter("newValue");
+            const oSource = oEvent.getSource();
             if (this.isFloat(newValue)) {
                 const subContractorCoef = Number.parseFloat(newValue);
+
+                // interdit inférieure à 1
+                if (subContractorCoef < 1) {
+                    oSource.setValueState("Error");
+                    oSource.setValueStateText("Valeur inférieure à 1 interdite");
+                    oSource.setValue("1");
+                    return;
+                }
+
                 const columnHeader = this.getUtilitiesModel().getPxSubContractingHeader();
                 const { columnId } = oEvent.getSource().data();
                 const newHeader = columnHeader.map(h => {
@@ -461,7 +471,7 @@ sap.ui.define([
                                     { path: "utilities>" + columnId },
                                     { path: "utilities>isPercent" }
                                 ],
-                                formatter: function (total=0, percent) {
+                                formatter: function (total = 0, percent) {
 
                                     const formatInstance = sap.ui.core.format.NumberFormat.getFloatInstance({
                                         groupingEnabled: true,

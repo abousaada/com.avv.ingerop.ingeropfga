@@ -1,23 +1,33 @@
-<core:FragmentDefinition xmlns="sap.m"
-                        xmlns:core="sap.ui.core"
-                        xmlns:layout="sap.ui.layout"
-                        xmlns:semantic="sap.f.semantic">
-
-    <Table id="risqueTable" inset="false" items="{utilities>/risque}">
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns:semantic="sap.f.semantic"
+>
+    <Table
+        id="risqueTable"
+        inset="false"
+        items="{
+               path: 'utilities>/risque',
+               sorter: {
+                   path: 'sort_order',
+                   descending: false
+               }
+           }"
+    >
         <columns>
             <Column>
-                <Text text="Description"/>
+                <Text text="Description" />
             </Column>
             <Column>
-                <Text text="Valeur"/>
+                <Text text="Valeur" />
             </Column>
         </columns>
         <items>
             <ColumnListItem>
                 <cells>
-                    <Text text="{utilities>description}" 
-                          />
-                    <Text text="{utilities>valueRisque}"/>
+                    <Text text="{utilities>description}" />
+                    <Text text="{utilities>valueRisque}" />
                 </cells>
             </ColumnListItem>
         </items>

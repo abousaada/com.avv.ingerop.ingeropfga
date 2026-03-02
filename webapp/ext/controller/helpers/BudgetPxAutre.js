@@ -20,7 +20,8 @@ sap.ui.define([
 
                 items.forEach(function (item) {
                     item.isTotalRow = false;
-
+                    
+                    
                     // Calculate FinAffaire as sum of other columns for each line
                     item.FinAffaire = (Number(item.VoyageDeplacement) || 0) +
                         (Number(item.AutresFrais) || 0) +
@@ -28,6 +29,7 @@ sap.ui.define([
                         (Number(item.EtudesTravaux) || 0) +
                         (Number(item.SinistreContentieux) || 0) +
                         (Number(item.AleasDivers) || 0);
+                    
 
                     if (!fgaGroups[item.BusinessNo]) {
                         fgaGroups[item.BusinessNo] = {
@@ -60,6 +62,7 @@ sap.ui.define([
                     regroupement.children.push(item);
 
                     // Accumulate totals for the Regroupement
+                    if(item.Statut === "Acquis"){
                     regroupement.totals.VoyageDeplacement += Number(item.VoyageDeplacement) || 0;
                     regroupement.totals.AutresFrais += Number(item.AutresFrais) || 0;
                     regroupement.totals.CreancesDouteuses += Number(item.CreancesDouteuses) || 0;
@@ -67,6 +70,7 @@ sap.ui.define([
                     regroupement.totals.SinistreContentieux += Number(item.SinistreContentieux) || 0;
                     regroupement.totals.AleasDivers += Number(item.AleasDivers) || 0;
                     regroupement.totals.FinAffaire += Number(item.FinAffaire) || 0;
+                    }
                 });
 
                 // Convert children objects to arrays while preserving names
@@ -185,7 +189,8 @@ sap.ui.define([
                                 (Number(item.EtudesTravaux) || 0) +
                                 (Number(item.SinistreContentieux) || 0) +
                                 (Number(item.AleasDivers) || 0);
-
+                            
+                            if(item.Statut === "Acquis"){
                             regroupement.totals.VoyageDeplacement += Number(item.VoyageDeplacement) || 0;
                             regroupement.totals.AutresFrais += Number(item.AutresFrais) || 0;
                             regroupement.totals.CreancesDouteuses += Number(item.CreancesDouteuses) || 0;
@@ -193,6 +198,7 @@ sap.ui.define([
                             regroupement.totals.SinistreContentieux += Number(item.SinistreContentieux) || 0;
                             regroupement.totals.AleasDivers += Number(item.AleasDivers) || 0;
                             regroupement.totals.FinAffaire += Number(item.FinAffaire) || 0;
+                            }
                         }
                     });
 
@@ -230,7 +236,7 @@ sap.ui.define([
 
         createRegroupementTotalRow: function (totals, regroupementName) {
             return {
-                name: "Total " + regroupementName,
+                name: "Total " + regroupementName + " acquis",
                 isTotalRow: true,
                 isNode: false,
                 isRegroupementTotal: true,
@@ -284,7 +290,7 @@ sap.ui.define([
                             }
                         });
                     }
-                } else if (!node.isNode) {
+                } else if (!node.isNode && node.Statut === "Acquis") {
                     totals.totalAcquis.VoyageDeplacement += Number(node.VoyageDeplacement) || 0;
                     totals.totalAcquis.AutresFrais += Number(node.AutresFrais) || 0;
                     totals.totalAcquis.CreancesDouteuses += Number(node.CreancesDouteuses) || 0;

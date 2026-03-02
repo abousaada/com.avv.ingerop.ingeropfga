@@ -37,7 +37,7 @@ sap.ui.define([], function () {
       const groupementMap = {};
 
       const globalTotal = {
-        name: "Total global",
+        name: "Total acquis",
         isGroupe: false,
         isBudget: false,
         isTotal: true,
@@ -130,7 +130,7 @@ sap.ui.define([], function () {
       for (const group of Object.values(groupementMap)) {
 
         const totalLine = {
-          name: "Total",
+          name: "Total " + group.name + " acquis",
           isBudget: false,
           isGroupe: false,
           isTotal: true,
@@ -150,27 +150,28 @@ sap.ui.define([], function () {
         for (const child of group.children) {
           if (child.isBudget) {
             this._totalProps.forEach(prop => {
-              if(child.status === "A"){ globalTotal[prop] += (parseFloat(child[prop]|| 0) ); }
+              if(child.status === "A"){ globalTotal[prop] += (parseFloat(child[prop]|| 0) ); 
               
               totalLine[prop]   += (parseFloat(child[prop]|| 0) );
+              }
             });
             // Object.values(pxMainOeuvreHeader)
             pxMainOeuvreHeader.filter(mo => mo.visible).forEach(({ columnId, tjm }) => { 
               const restColumnId  = columnId + this._CONSTANT_COLUMN_REST;
               const consoColumnId = columnId + this._CONSTANT_COLUMN_CONSO;
 
-              if(child.status === "A"){globalTotal[restColumnId] += (parseFloat(child[restColumnId]|| 0) * ( parseFloat(tjm || 0 ) ) );}
-              totalLine[restColumnId]   += (parseFloat(child[restColumnId]|| 0) * ( parseFloat(tjm || 0 ) ) );
+              if(child.status === "A"){globalTotal[restColumnId] += (parseFloat(child[restColumnId]|| 0) * ( parseFloat(tjm || 0 ) ) );
+              totalLine[restColumnId]   += (parseFloat(child[restColumnId]|| 0) * ( parseFloat(tjm || 0 ) ) );}
 
-              if(child.status === "A"){globalTotal[consoColumnId] += (parseFloat(child[consoColumnId]|| 0) * ( parseFloat(tjm || 0 ) ) );}
-              totalLine[consoColumnId]   += (parseFloat(child[consoColumnId]|| 0) * ( parseFloat(tjm || 0 ) ) );
+              if(child.status === "A"){globalTotal[consoColumnId] += (parseFloat(child[consoColumnId]|| 0) * ( parseFloat(tjm || 0 ) ) );
+              totalLine[consoColumnId]   += (parseFloat(child[consoColumnId]|| 0) * ( parseFloat(tjm || 0 ) ) );}
             });
           }
         }
-
         group.children.push(totalLine);
         delete group.leafMap;
         root.children.push(group);
+        
       }
 
       // Ajouter le total global

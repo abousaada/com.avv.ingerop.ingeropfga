@@ -62,6 +62,11 @@ sap.ui.define(
                                 text: "Manage EMP",
                                 icon: "sap-icon://pie-chart",
                                 press: this._onAction3.bind(this)
+                            }), 
+                            new MenuItem({
+                                text: "Manage EMSP",
+                                icon: "sap-icon://pie-chart",
+                                press: this._onAction4.bind(this)
                             }),
                             new MenuItem({
                                 text: "Export",
@@ -112,7 +117,7 @@ sap.ui.define(
             },
 
             _onAction2: function () {
-                 try {
+                try {
                     const oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
 
                     var aFAGs = this.getSelectedBusinessNumbers();
@@ -160,7 +165,27 @@ sap.ui.define(
                     console.error("Error during navigation:", err);
                 }
             },
+            _onAction4: function () {
+                try {
+                    const oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
 
+                    var aFAGs = this.getSelectedBusinessNumbers();
+
+                    const sHash = oCrossAppNavigator.hrefForExternal({
+                        target: {
+                            semanticObject: "ZEMSP",
+                            action: "display"
+                        }
+                    });
+
+                    window.open(sHash, "_blank", "noopener,noreferrer");
+
+                    // MessageToast.show("onEMXPress invoked.");
+
+                } catch (err) {
+                    console.error("Error during navigation:", err);
+                }
+            },
             _onExportExcel: function () {
                 var aSelected = this.extensionAPI.getSelectedContexts();
                 MessageToast.show(`Exporting ${aSelected.length} items to Excel`);

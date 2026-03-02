@@ -263,8 +263,13 @@
     color: #fff !important;                  /* white text/links/inputs */
     font-weight: 600;
   }
-  
-  /* ===== SUB-TOTAL row ===== */
+  /* ===== NOT Acquis row ===== */
+  .sapUiTableTr.pxNotAcquisRow .sapUiTableCell {
+    background-color: #d0cfd1 !important;   /* light grise */
+  }
+
+
+    /* ===== SUB-TOTAL row ===== */
   .sapUiTableTr.pxSubTotalRow .sapUiTableCell {
     background-color: #ccc0ff !important;   /* light violet */
   }
