@@ -10,7 +10,7 @@
         defaultSpan="L4 M4 S12"
         id="idGridCharts"
     >
-        <VBox class="sapUiSmallMargin">
+        <VBox class="sapUiSmallMargin" visible="{= ${Type} !== 'FG' &amp;&amp; ${Type} !== 'FS' &amp;&amp; ${Type} !== 'OF' &amp;&amp; ${Type} !== 'RF'}">
             <!-- First Table with Title -->
             <Title
                 text="Opportunités :"
