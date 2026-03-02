@@ -160,9 +160,25 @@ sap.ui.define([
                 // Construct the URL parameters
                 var params
 
-                if (sMonthValue === 'N1' || sMonthValue === '12') {
-                    const sEndDate = new Date(2024, 11, 31);
+                if (sMonthValue === 'N1') { //Cumul N-1
+                    const sMonthPeriod = sPeriod.substring(0, 2);
+                    const sYearPeriod = sPeriod.substring(2, 6);
+                    const sEndDate = new Date(parseInt(sYearPeriod - 1, 10), 11, 31);
                     const aFiscalPeriods = this.buildFiscalPeriods(sStartDate, sEndDate);
+                    params = {
+                        //FiscalYear: `${year}`,
+                        FiscalYearPeriod: aFiscalPeriods,
+                        //FiscalPeriod: `${sYearValue}0${month}`,                      
+                        GLAccount: glAccounts,
+                        WBSElementExternalID: wbsElements //[oData.business_no],
+                    };
+                }
+                else if (sMonthValue === '12') { //Année
+                    const sMonthPeriod = sPeriod.substring(0, 2);
+                    const sYearPeriod = sPeriod.substring(2, 6);
+                    const sEndDate = new Date(parseInt(sYearPeriod, 10), 11, 31);
+                    const sStartYearDate = new Date(parseInt(sYearPeriod, 10), 0, 1);
+                    const aFiscalPeriods = this.buildFiscalPeriods(sStartYearDate, sEndDate);
                     params = {
                         //FiscalYear: `${year}`,
                         FiscalYearPeriod: aFiscalPeriods,
@@ -173,8 +189,9 @@ sap.ui.define([
                 }
                 else if (sMonthValue === 'N0') { //Cumul
                     const sMonthPeriod = sPeriod.substring(0, 2);
+                    const sYearPeriod = sPeriod.substring(2, 6);
                     //const sToPeriod = `${year}0${sMonthPeriod}`;
-                    const sEndDate = new Date(parseInt(year, 10), parseInt(sMonthPeriod, 10) - 1, 1);
+                    const sEndDate = new Date(parseInt(sYearPeriod, 10), parseInt(sMonthPeriod, 10), 0);
                     const aFiscalPeriods = this.buildFiscalPeriods(sStartDate, sEndDate);
 
 

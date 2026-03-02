@@ -16,7 +16,7 @@ sap.ui.define(
 
         return {
 
-            onSTIPress: function (oEvent) {
+            onSTIPress: function (oEvent) {               
                 try {
                     var aFAGs = this.getSelectedBusinessNumbers();
 
@@ -94,7 +94,6 @@ sap.ui.define(
             _onAction1: function () {
                 try {
                     const oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
-
                     var aFAGs = this.getSelectedBusinessNumbers();
 
                     const sHash = oCrossAppNavigator.hrefForExternal({
