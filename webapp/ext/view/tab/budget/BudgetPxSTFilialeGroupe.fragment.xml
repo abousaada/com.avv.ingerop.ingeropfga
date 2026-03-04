@@ -58,7 +58,7 @@
                 </table:template>
             </table:Column>
 
-            <table:Column width="13rem">
+            <table:Column width="5rem">
                 <table:multiLabels>
                     <Label text="" />
                     <Label text="" />
@@ -71,7 +71,7 @@
                 </table:template>
             </table:Column>
 
-            <table:Column width="5rem">
+            <table:Column width="15rem">
                 <table:multiLabels>
                     <Label text="" />
                     <Label text="" />

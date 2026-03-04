@@ -57,7 +57,7 @@
                 </table:template>
             </table:Column>
 
-            <table:Column width="13rem" headerSpan="6,1" hAlign= "Center" autoResizable="true">
+            <table:Column width="5rem" headerSpan="6,1" hAlign= "Center" autoResizable="true">
                 <table:multiLabels>
                     <Label text="" />
                     <Label text="" />
@@ -69,7 +69,7 @@
                 </table:template>
             </table:Column>
 
-            <table:Column width="5rem" headerSpan="6,1" hAlign= "Center" autoResizable="true">
+            <table:Column width="15rem" headerSpan="6,1" hAlign= "Center" autoResizable="true">
                 <table:multiLabels>
                     <Label text="" />
                     <Label text="" />
