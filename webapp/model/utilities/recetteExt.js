@@ -182,9 +182,13 @@ sap.ui.define([
         };
         this._totalProps.forEach(prop => { bottomLine1[prop] = 0; });
 
-        bottomLine1.groupe = this.sumGroupe;
-        bottomLine1.interUfo = this.sumInter;
-        bottomLine1.intraUfo = this.sumIntra;
+        bottomLine1.groupe    = pxRecetteExt.reduce((c,p) => c += parseFloat(p.groupe) , 0);
+        bottomLine1.interUfo  = pxRecetteExt.reduce((c,p) => c += parseFloat(p.interUfo) , 0);
+        bottomLine1.intraUfo  = pxRecetteExt.reduce((c,p) => c += parseFloat(p.intraUfo) , 0);
+
+        // bottomLine1.groupe = this.sumGroupe;
+        // bottomLine1.interUfo = this.sumInter;
+        // bottomLine1.intraUfo = this.sumIntra;
 
         const bottomLine2 = {
           libelle: "Reste à répartir",
@@ -194,6 +198,7 @@ sap.ui.define([
           isCustomBottom: true,
         };
         this._totalProps.forEach(prop => { bottomLine2[prop] = 0; });
+
         bottomLine2.groupe = (parseFloat(bottomLine1.groupe || 0) - parseFloat(globalTotal.groupe || 0));
         bottomLine2.interUfo = (parseFloat(bottomLine1.interUfo || 0) - parseFloat(globalTotal.interUfo || 0));
         bottomLine2.intraUfo = (parseFloat(bottomLine1.intraUfo || 0) - parseFloat(globalTotal.intraUfo || 0));
@@ -215,14 +220,9 @@ sap.ui.define([
         });
       });
 
-
-
-
       return [root];
 
-
     }
-
 
     calcNewBudget(budget) {
       return budget;
