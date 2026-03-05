@@ -9,6 +9,7 @@ sap.ui.define([
         _CONSTANT_DYNAMIC_PREFIX: "MO_",
         _CONSTANT_COLUMN_CONSO: "_CONSO",
         _CONSTANT_COLUMN_REST: "_REST",
+        _CONSTANT_COLUMN_HEADER_FREE_NOTATION: "freeNotationMoe",
         _CONSTANT_COLUMN_BUDGET: "_BUDGET",
         _CONSTANT_COLUMN_ID: "columnId",
         _CONSTANT_MAIN_OEUVRE_TABLE_ID: "com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--budgets--BudgetPxMainOeuvreTreeTableId",
@@ -44,8 +45,6 @@ sap.ui.define([
                 }
             }
         },
-
-
 
         addDynamicColumns() {
             const mainOeuvreTree = this.oView.byId(this._CONSTANT_MAIN_OEUVRE_TABLE_ID);
@@ -98,6 +97,8 @@ sap.ui.define([
 
         _createConsoColumn(columnId, length, { profilDescription }) {
             const sColumnId = columnId + this._CONSTANT_COLUMN_CONSO;
+            const iIdx = this.getUtilitiesModel().getPxMainOeuvreHeader().findIndex(o => o.columnId === columnId);
+            const sColumnHeaderDescPath = "utilities>/pxMainOeuvreHeader/" + iIdx + "/" + this._CONSTANT_COLUMN_HEADER_FREE_NOTATION;
             return new sap.ui.table.Column({
                 headerSpan: length + ",1,1",
                 hAlign: "Center",
@@ -105,7 +106,7 @@ sap.ui.define([
                     new sap.m.Label({ text: "{i18n>budget.main.oeuvre.jours.conso}" }).addStyleClass("consoHeader"),
                     new sap.m.Label({ text: profilDescription }),
                     new sap.m.Label(),
-                    new sap.m.Label(),
+                    new sap.m.Label({ text: { path: sColumnHeaderDescPath } }),
                 ],
                 template: new sap.m.HBox({
                     items: [
@@ -129,6 +130,8 @@ sap.ui.define([
 
         _createRestColumn(columnId, length, { profilDescription, tjm }) {
             const sColumnId = columnId + this._CONSTANT_COLUMN_REST;
+            const iIdx = this.getUtilitiesModel().getPxMainOeuvreHeader().findIndex(o => o.columnId === columnId);
+            const sColumnHeaderDescPath = "utilities>/pxMainOeuvreHeader/" + iIdx + "/" + this._CONSTANT_COLUMN_HEADER_FREE_NOTATION;
             return new sap.ui.table.Column({
                 headerSpan: length + ",1,1",
                 hAlign: "Center",
@@ -136,7 +139,20 @@ sap.ui.define([
                     new sap.m.Label({ text: "{i18n>budget.main.oeuvre.jours.rest}" }).addStyleClass("restHeader"),
                     new sap.m.Label({ text: profilDescription }),
                     new sap.m.Label({ text: tjm }),
-                    new sap.m.Label(),
+                    new sap.m.HBox({
+                        items: [
+                            new sap.m.Label({ 
+                                text: { path: sColumnHeaderDescPath },
+                                visible: "{= !${ui>/editable} }"
+                            }),
+                            new sap.m.Input({
+                                value: { path: sColumnHeaderDescPath },
+                                visible: "{= !!${ui>/editable} }",
+                                change: this.onMainOeuvreJoursRestantHeaderChange.bind(this)
+                            })
+                        ]
+                    })
+                    // new sap.m.Label(),
                 ],
                 template: new sap.m.HBox({
                     items: [
@@ -204,6 +220,8 @@ sap.ui.define([
 
         _createBudgetColumn(columnId, length, { profilDescription }) {
             const sColumnId = columnId + this._CONSTANT_COLUMN_BUDGET;
+            const iIdx = this.getUtilitiesModel().getPxMainOeuvreHeader().findIndex(o => o.columnId === columnId);
+            const sColumnHeaderDescPath = "utilities>/pxMainOeuvreHeader/" + iIdx + "/" + this._CONSTANT_COLUMN_HEADER_FREE_NOTATION;
             return new sap.ui.table.Column({
                 headerSpan: length + ",1,1",
                 hAlign: "Center",
@@ -211,7 +229,7 @@ sap.ui.define([
                     new sap.m.Label({ text: "{i18n>budget.main.oeuvre.budget}" }).addStyleClass("budgetHeader"),
                     new sap.m.Label({ text: profilDescription }),
                     new sap.m.Label(),
-                    new sap.m.Label(),
+                    new sap.m.Label({ text: { path: sColumnHeaderDescPath } }),
                 ],
                 template: new sap.m.HBox({
                     items: [
@@ -387,6 +405,10 @@ sap.ui.define([
         onMainOeuvreJoursRestantChange(oEvent) {
             this._refreshRow(oEvent);
             this.getUtilitiesModel().reCalcMainOeuvreTable();
+        },
+
+        onMainOeuvreJoursRestantHeaderChange(oEvent){
+            // this.getUtilitiesModel();
         },
 
         onMainOeuvrePhysiqueChange(oEvent) {

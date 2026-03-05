@@ -32,6 +32,7 @@ sap.ui.define([
       visible: "Visible",
       descending: "Descending",
       sorted: "Sorted",
+      freeNotationMoe: "FreeNotationMoe",
       idx: "Idx"
     }),
 
@@ -174,6 +175,7 @@ sap.ui.define([
       tjm               : ({ tjm }) => parseFloat(tjm || 0).toString(),
       profil            : "profil",
       description       : "profilDescription",
+      freeNotationMoe   : "freeNotationMoe",
       visible           : "visible",
       descending        : "descending",
       sorted            : "sorted",
