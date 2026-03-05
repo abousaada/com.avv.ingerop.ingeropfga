@@ -1575,7 +1575,8 @@ sap.ui.define(
 
 
             onRecapUpdated: function (stableName) {
-                const oTable = this.oView?.byId(stableName);
+                if(!this.oView) { return };
+                const oTable = this.oView.byId(stableName);
                 if (!oTable) {
                     console.warn("Recap table not found:", stableName);
                     return;
@@ -1699,7 +1700,8 @@ sap.ui.define(
 
             // remet la ligne "propre" (annule toute fusion précédente)
             _resetRecapMerge: function () {
-                const oTable = this.oView?.byId("idRecapTable");
+                if(!this.oView) { return };
+                const oTable = this.oView.byId("idRecapTable");
                 const dom = oTable && oTable.getDomRef();
                 if (!dom) return;
 
@@ -1728,8 +1730,8 @@ sap.ui.define(
 
             _styleMergedRecapRow: function () {
                 if (PROJET_TYPE === "Z0" || PROJET_TYPE === "Z1") {
-
-                    const oTable = this.oView?.byId("idRecapTable");
+                    if(!this.oView) { return };
+                    const oTable = this.oView.byId("idRecapTable");
                     const oBinding = oTable && oTable.getBinding("rows");
                     if (!oBinding) return;
 
