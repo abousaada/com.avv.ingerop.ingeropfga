@@ -318,6 +318,26 @@
               "ZC_FGASet": {
                 "EntitySet": "ZC_FGASet",
                 "Actions": {
+                  "LockMass": {
+                    "id": "lockMassBtn",
+                    "text": "Verrouiller",
+                    "icon": "sap-icon://lock",
+                    "tooltip": "Verrouiller",
+                    "press": "onLockMassPress",
+                    "visible": true,
+                    "importance": "High",
+                    "requiresSelection": false
+                  },
+                  "UnLockMass": {
+                    "id": "unLockMassBtn",
+                    "text": "Déverrouiller",
+                    "icon": "sap-icon://unlock",
+                    "tooltip": "Déverrouiller",
+                    "press": "onUnLockMassPress",
+                    "visible": true,
+                    "importance": "High",
+                    "requiresSelection": false
+                  },
                   "onSTIPress": {
                     "id": "onSTIPressButton",
                     "text": "Manage STI",
@@ -354,6 +374,16 @@
                 "EntitySet": "ZC_FGASet",
                 "Header": {
                   "Actions": {
+                    "LockState": {
+                      "id": "lockStateBtn",
+                      "text": "Verrouiller",
+                      "icon": "sap-icon://lock",
+                      "tooltip": "Verrouillé",
+                      "press": "onLockStatePress",
+                      "visible": true,
+                      "importance": "High",
+                      "requiresSelection": false
+                    },
                     "SelectFGA": {
                       "id": "selectFGABtn",
                       "text": "Select FGA",
@@ -361,27 +391,27 @@
                       "tooltip": "Select FGA",
                       "press": "onSelectFGAPress",
                       "requiresSelection": false
-                    },
-                    "PrevPeriod": {
-                      "id": "prevPeriodBtn",
-                      "text": "<",
-                      "tooltip": "Previous Period",
-                      "press": "onPrevPeriod",
-                      "requiresSelection": false
-                    },
-                    "Period": {
-                      "id": "periodBtn",
-                      "text": "Période",
-                      "tooltip": "Previous Period",
-                      "requiresSelection": false
-                    },
-                    "NextPeriod": {
-                      "id": "nextPeriodBtn",
-                      "text": ">",
-                      "tooltip": "Next Period",
-                      "press": "onNextPeriod",
-                      "requiresSelection": false
                     }
+                  },
+                  "PrevPeriod": {
+                    "id": "prevPeriodBtn",
+                    "text": "<",
+                    "tooltip": "Previous Period",
+                    "press": "onPrevPeriod",
+                    "requiresSelection": false
+                  },
+                  "Period": {
+                    "id": "periodBtn",
+                    "text": "Période",
+                    "tooltip": "Previous Period",
+                    "requiresSelection": false
+                  },
+                  "NextPeriod": {
+                    "id": "nextPeriodBtn",
+                    "text": ">",
+                    "tooltip": "Next Period",
+                    "press": "onNextPeriod",
+                    "requiresSelection": false
                   }
                 }
               }

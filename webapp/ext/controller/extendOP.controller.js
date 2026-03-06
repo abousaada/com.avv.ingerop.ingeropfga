@@ -16,7 +16,8 @@ sap.ui.define(
         "./helpers/BudgetPrevisionel",
         "./helpers/Synthese",
         "sap/m/MessageToast",
-        "sap/ui/comp/valuehelpdialog/ValueHelpDialog"
+        "sap/ui/comp/valuehelpdialog/ValueHelpDialog",
+        "sap/m/MessageBox"
     ],
     function (
         ControllerExtension,
@@ -35,7 +36,8 @@ sap.ui.define(
         BudgetPrevisionel,
         Synthese,
         MessageToast,
-        ValueHelpDialog
+        ValueHelpDialog,
+        MessageBox
     ) {
         "use strict";
         var PROJET_TYPE = null;
@@ -48,6 +50,7 @@ sap.ui.define(
 
                 // Method 1: Using the full ID you provided
                 const oSelectFGAButton = oView.byId("com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--action::selectFGABtn");
+                const olockStateBtn = oView.byId("com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--action::lockStateBtn");
 
                 if (oSelectFGAButton) {
                     console.log("Found Select FGA button:", oSelectFGAButton);
@@ -55,6 +58,16 @@ sap.ui.define(
                 } else {
                     console.log("Select FGA button not found with full ID");
                 }
+
+                if (olockStateBtn) {
+                    olockStateBtn.detachPress();
+                    olockStateBtn.attachPress(this.onLockStatePress.bind(this));
+
+                } else {
+                    console.log("Lock button not found with full ID");
+                }
+
+
 
                 // Find other buttons using similar pattern
                 const aButtons = oView.findAggregatedObjects(true, function (oControl) {
@@ -91,7 +104,6 @@ sap.ui.define(
                 } else {
                     console.log("Select FGA button not found with full ID");
                 }
-
                 // Find other buttons using similar pattern
                 const aButtons = oView.findAggregatedObjects(true, function (oControl) {
                     return oControl.isA("sap.m.Button") &&
@@ -175,8 +187,69 @@ sap.ui.define(
             },
 
 
+            _attachObjectContextHooks: function () {
+                if (this.__ctxHooksAttached) return;
+
+                const tryAttach = () => {
+                    const oView = this.getView();
+                    const oCtx = oView.getBindingContext();
+
+                    if (!oCtx) {
+                        this.__ctxAttachTimer = setTimeout(tryAttach, 200);
+                        return;
+                    }
+
+                    this.__ctxHooksAttached = true;
+                    if (this.__ctxAttachTimer) {
+                        clearTimeout(this.__ctxAttachTimer);
+                        this.__ctxAttachTimer = null;
+                    }
+
+                    // écoute les changements de contexte (navigation, refresh)
+                    oView.attachModelContextChange(this._onModelContextChange, this);
+
+                    // exécute une première fois
+                    this._onModelContextChange();
+                };
+
+                tryAttach();
+            },
+
+            _onModelContextChange: function () {
+                const oView = this.getView();
+                const oCtx = oView.getBindingContext();
+                if (!oCtx) return;
+
+                const oModel = oCtx.getModel();
+                const sPath = oCtx.getPath();
+
+                const vIsLocked = oModel.getProperty(sPath + "/IsLocked");
+                if (vIsLocked === undefined) return; // pas encore reçu
+
+                const bLocked = (vIsLocked === true || vIsLocked === "X" || vIsLocked === "1");
+                this._applyLockStateToButtons(bLocked);
+            },
+
+            _applyLockStateToButtons: function (bLocked) {
+                const oView = this.getView();
+                const oLockBtn = oView.byId("com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--action::lockStateBtn");
+                const sEditId = "com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--edit";
+                const oEditBtn = sap.ui.getCore().byId(sEditId);
 
 
+                if (bLocked === true) {
+                    oLockBtn.setText("Déverrouiller");
+                    oLockBtn.setIcon("sap-icon://unlocked");
+                    oLockBtn.setTooltip("Déverrouiller");
+                    oEditBtn.setVisible(false);
+                } else {
+                    oLockBtn.setText("Verrouiller");
+                    oLockBtn.setIcon("sap-icon://locked");
+                    oLockBtn.setTooltip("Verrouiller");
+                    oEditBtn.setVisible(true);
+                }
+
+            },
 
 
             // this section allows to extend lifecycle hooks or hooks provided by Fiori elements
@@ -193,9 +266,15 @@ sap.ui.define(
 
                     this._attachRecapHooks();
 
-
+                    //Vérou
+                    this._attachObjectContextHooks();
 
                 },
+
+
+
+
+
 
                 /**
                 * Called when a controller is instantiated and its View controls (if available) are already created.
@@ -208,6 +287,9 @@ sap.ui.define(
 
                     this.base.getView().getController().onSelectFGAPress = function () {
                         console.log("onSelectFGAPress");
+                    }
+
+                    this.base.getView().getController().onLockStatePress = function () {
                     }
 
 
@@ -2971,6 +3053,75 @@ sap.ui.define(
                 }
 
                 return `${String(prevMonth).padStart(2, "0")}${String(prevYear)}`;
+            },
+
+            onLockStatePress: function (oEvent) {
+                const oButton = oEvent.getSource();
+                const sText = oButton.getText();
+                const sEditId =
+                    "com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--edit";
+                const oEditBtn = sap.ui.getCore().byId(sEditId);
+                const bIsLocking = sText === "Verrouiller";
+                const sQuestion = bIsLocking
+                    ? "Voulez-vous verrouiller la FGA ?"
+                    : "Voulez-vous déverrouiller la FGA ?";
+
+                MessageBox.confirm(sQuestion, {
+                    title: "Confirmation",
+                    actions: [MessageBox.Action.YES, MessageBox.Action.NO],
+                    emphasizedAction: MessageBox.Action.YES,
+                    onClose: function (sAction) {
+                        if (sAction !== MessageBox.Action.YES) {
+                            return;
+                        }
+
+                        const oContext = oButton.getBindingContext();
+                        const oModel = oContext.getModel();
+                        const oObject = oContext.getObject();
+                        const sBusinessNo = oObject.BusinessNo;
+
+                        oModel.callFunction("/LockFGA", {
+                            method: "POST",
+
+                            urlParameters: {
+                                BusinessNo: sBusinessNo,
+                                IsLocked: bIsLocking
+                            },
+                            success: function (oData) {
+                                const oResult = oData.LockFGA; // <-- résultat réel
+                                if (oResult && oResult.Success) {
+                                    if (bIsLocking) {
+                                        oButton.setText("Déverrouiller");
+                                        oButton.setIcon("sap-icon://unlocked");
+                                        oButton.setTooltip("Déverrouiller");
+                                        oEditBtn.setVisible(false);
+                                    } else {
+                                        oButton.setText("Verrouiller");
+                                        oButton.setIcon("sap-icon://locked");
+                                        oButton.setTooltip("Verrouiller");
+                                        oEditBtn.setVisible(true);
+                                    }
+
+                                    MessageToast.show(oResult.Message || "Statut mis à jour");
+
+                                    oModel.refresh(true);
+
+                                } else {
+
+                                    MessageBox.error(
+                                        oData && oData.Message
+                                            ? oData.Message
+                                            : "Erreur lors de la mise à jour du verrouillage"
+                                    );
+                                }
+                            },
+                            error: function (oError) {
+                                MessageBox.error("Erreur technique lors de l'appel LockFGA");
+                            }
+
+                        });
+                    }
+                });
             },
 
 
