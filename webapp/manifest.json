@@ -324,7 +324,7 @@
                     "icon": "sap-icon://lock",
                     "tooltip": "Verrouiller",
                     "press": "onLockMassPress",
-                    "visible": true,
+                    "visible": false,
                     "importance": "High",
                     "requiresSelection": false
                   },
@@ -334,7 +334,7 @@
                     "icon": "sap-icon://unlock",
                     "tooltip": "Déverrouiller",
                     "press": "onUnLockMassPress",
-                    "visible": true,
+                    "visible": false,
                     "importance": "High",
                     "requiresSelection": false
                   },
@@ -380,7 +380,7 @@
                       "icon": "sap-icon://lock",
                       "tooltip": "Verrouillé",
                       "press": "onLockStatePress",
-                      "visible": true,
+                      "visible": false,
                       "importance": "High",
                       "requiresSelection": false
                     },
