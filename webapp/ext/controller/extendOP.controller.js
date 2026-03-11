@@ -169,7 +169,9 @@ sap.ui.define(
                     method: "GET",
                     success: (oData) => {
                         const bIsAdmin = oData?.GetUserContext.IsAdmin === true;
+                        const sUserOn = oData.GetUserContext.UserName;
                         oLocal.setProperty("/isAdmin", bIsAdmin);
+                        oLocal.setProperty("/UserName", sUserOn);
                         this._applyAdminButtonsVisibility();
                     },
                     error: () => {
@@ -251,12 +253,12 @@ sap.ui.define(
 
             _onCancelPressed: function () {
                 this._onDonePressed();
+
             },
 
 
             _onEditPressed: function () {
                 const oView = this.getView();
-
                 const oContext = oView.getBindingContext();
 
                 if (!oContext) {
@@ -269,6 +271,14 @@ sap.ui.define(
                     sap.m.MessageBox.error("BusinessNo introuvable.");
                     return;
                 }
+
+                const oLockStateBtn = oView.byId(
+                    "com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--action::lockStateBtn"
+                );
+
+                oLockStateBtn.setVisible(false);
+
+
 
                 this._setFgaLock(
                     sBusinessNo,
@@ -296,8 +306,16 @@ sap.ui.define(
                     },
 
                     (sError) => {
-                        sap.m.MessageBox.error(sError || "Objet déjà verrouillé par un autre utilisateur.");
-                        this._restoreDisplayMode && this._restoreDisplayMode();
+                        sap.m.MessageBox.error(
+                            (oData && oData.Message) || oData.OnModifFGA.Message,
+                            {
+                                onClose: () => {
+                                    setTimeout(() => {
+                                        location.reload();
+                                    }, 0);
+                                }
+                            }
+                        );
                     }
                 );
 
@@ -332,16 +350,24 @@ sap.ui.define(
                         sap.m.MessageBox.error(sError || "Erreur lors du déverrouillage.");
                     }
                 );
+                const oLockStateBtn = oView.byId(
+                    "com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--action::lockStateBtn"
+                );
+                this._loadUserContext();
             },
 
             _setFgaLock: function (sBusinessNo, bLock) {
                 const oView = this.getView();
                 const oModel = oView.getModel();
+                const oLocal = this._getLocalModel();
+                const sUserOn = oLocal.getProperty("/UserName");
+
                 oModel.callFunction("/OnModifFGA", {
                     method: "POST",
                     urlParameters: {
                         BusinessNo: sBusinessNo,
-                        IsLocked: bLock
+                        IsLocked: bLock,
+                        UserOn: sUserOn 
                     },
                     success: (oData) => {
                         if (oData && oData.OnModifFGA.Success === true) {
@@ -364,10 +390,15 @@ sap.ui.define(
 
                         } else {
                             sap.m.MessageBox.error(
-                                (oData && oData.Message) || "Objet déjà verrouillé par un autre utilisateur."
+                                (oData && oData.Message) || oData.OnModifFGA.Message,
+                                {
+                                    onClose: () => {
+                                        setTimeout(() => {
+                                            location.reload();
+                                        }, 0);
+                                    }
+                                }
                             );
-
-                            this._restoreDisplayMode();
                         }
                     },
                     error: (oError) => {
@@ -3328,11 +3359,8 @@ sap.ui.define(
 
                                 } else {
 
-                                    MessageBox.error(
-                                        oData && oData.Message
-                                            ? oData.Message
-                                            : "Erreur lors de la mise à jour du verrouillage"
-                                    );
+                                    MessageBox.error((oData && oData.Message) || oData.LockFGA.Message);
+                                    location.reload();
                                 }
                             },
                             error: function (oError) {
