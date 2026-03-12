@@ -1168,6 +1168,30 @@ sap.ui.define([
                 }
             },
 
+            async onCloseFGA(){
+                try {
+                    const BusinessNo = this.getBusinessNo();
+                    // const Period = this.getPeriod();
+                    const options = { urlParameters: { BusinessNo } };
+                    const profil = await this.callFunction("/CloseFGA", options);
+                    return profil;
+                } catch (error) {
+                    console.log(error);
+                }
+            },
+
+            async onUncloseFGA(){
+                try {
+                    const BusinessNo = this.getBusinessNo();
+                    // const Period = this.getPeriod();
+                    const options = { urlParameters: { BusinessNo } };
+                    const profil = await this.callFunction("/UncloseFGA", options);
+                    return profil;
+                } catch (error) {
+                    console.log(error);
+                }
+            },
+
             setTabBusy(isBusy) {
                 const tabId = Helper.getTabId();
                 this.oView.byId(tabId).setBusy(isBusy);

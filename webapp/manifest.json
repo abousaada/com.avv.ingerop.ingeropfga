@@ -374,6 +374,26 @@
                 "EntitySet": "ZC_FGASet",
                 "Header": {
                   "Actions": {
+                    "closeProject": {
+                      "id": "closeProjectBtn",
+                      "text": "{i18n>CloseFGABtn}",
+                      "icon": "sap-icon://lock",
+                      "tooltip": "{i18n>CloseFGABtn}",
+                      "press": "onCloseProjectPress",
+                      "visible": true,
+                      "importance": "High",
+                      "requiresSelection": false
+                    },
+                    "uncloseProject": {
+                      "id": "uncloseProjectBtn",
+                      "text": "{i18n>uncloseFGABtn}",
+                      "icon": "sap-icon://unlock",
+                      "tooltip": "{i18n>uncloseFGABtn}",
+                      "press": "onUncloseProjectPress",
+                      "visible": true,
+                      "importance": "High",
+                      "requiresSelection": false
+                    },
                     "LockState": {
                       "id": "lockStateBtn",
                       "text": "Verrouiller",

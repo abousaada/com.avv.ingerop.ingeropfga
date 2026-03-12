@@ -51,6 +51,8 @@ sap.ui.define(
                 // Method 1: Using the full ID you provided
                 const oSelectFGAButton = oView.byId("com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--action::selectFGABtn");
                 const olockStateBtn = oView.byId("com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--action::lockStateBtn");
+                const oCloseProjectBtn = oView.byId("com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--action::closeProjectBtn");
+                const oUncloseProjectBtn = oView.byId("com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--action::uncloseProjectBtn");
 
                 if (oSelectFGAButton) {
                     console.log("Found Select FGA button:", oSelectFGAButton);
@@ -67,7 +69,15 @@ sap.ui.define(
                     console.log("Lock button not found with full ID");
                 }
 
+                if(oCloseProjectBtn){
+                    oCloseProjectBtn.detachPress();
+                    oCloseProjectBtn.attachPress(this.onCloseProjectPress.bind(this));
+                }
 
+                if(oUncloseProjectBtn){
+                    oUncloseProjectBtn.detachPress();
+                    oUncloseProjectBtn.attachPress(this.onUncloseProjectPress.bind(this));
+                }
 
                 // Find other buttons using similar pattern
                 const aButtons = oView.findAggregatedObjects(true, function (oControl) {
@@ -290,8 +300,16 @@ sap.ui.define(
                     }
 
                     this.base.getView().getController().onLockStatePress = function () {
+                        console.log("onLockStatePress");
                     }
 
+                    this.base.getView().getController().onCloseProjectPress = function () {
+                        console.log("onCloseProjectPress");
+                    }
+
+                    this.base.getView().getController().onUncloseProjectPress = function () {
+                        console.log("onUncloseProjectPress");
+                    }
 
                     this._getOwnerComponent().getModel("utilities").setView(this.getView());
 
@@ -3053,6 +3071,15 @@ sap.ui.define(
                 }
 
                 return `${String(prevMonth).padStart(2, "0")}${String(prevYear)}`;
+            },
+
+
+            onCloseProjectPress: function (oEvent) {
+                console.log("onCloseProjectPress");
+            },
+
+            onUncloseProjectPress: function (oEvent) {
+                console.log("onUncloseProjectPress");
             },
 
             onLockStatePress: function (oEvent) {
