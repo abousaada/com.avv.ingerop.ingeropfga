@@ -62,6 +62,7 @@ sap.ui.define(
                 }
 
                 if (olockStateBtn) {
+                    this._loadUserContext();
                     olockStateBtn.detachPress();
                     olockStateBtn.attachPress(this.onLockStatePress.bind(this));
 
@@ -137,6 +138,78 @@ sap.ui.define(
                 });
             },
 
+            _getODataModel: function () {
+                const oComponent =
+                    (this.base && this.base.getAppComponent && this.base.getAppComponent()) ||
+                    sap.ui.core.Component.getOwnerComponentFor(this.getView());
+
+                return oComponent ? oComponent.getModel() : null;
+            },
+
+            _getLocalModel: function () {
+                const oComponent =
+                    (this.base && this.base.getAppComponent && this.base.getAppComponent()) ||
+                    sap.ui.core.Component.getOwnerComponentFor(this.getView());
+
+                if (!oComponent) {
+                    return null;
+                }
+
+                let oLocal = oComponent.getModel("local");
+
+                if (!oLocal) {
+                    oLocal = new sap.ui.model.json.JSONModel({
+                        isAdmin: false
+                    });
+                    oComponent.setModel(oLocal, "local");
+                }
+
+                return oLocal;
+            },
+
+            _loadUserContext: function () {
+                const oModel = this._getODataModel();
+                const oLocal = this._getLocalModel();
+
+                if (!oModel || !oLocal) {
+                    return;
+                }
+
+                oModel.callFunction("/GetUserContext", {
+                    method: "GET",
+                    success: (oData) => {
+                        const bIsAdmin = oData?.GetUserContext.IsAdmin === true;
+                        const sUserOn = oData.GetUserContext.UserName;
+                        oLocal.setProperty("/isAdmin", bIsAdmin);
+                        oLocal.setProperty("/UserName", sUserOn);
+                        this._applyAdminButtonsVisibility();
+                    },
+                    error: () => {
+                        oLocal.setProperty("/isAdmin", false);
+                        this._applyAdminButtonsVisibility();
+                    }
+                });
+            },
+
+            _applyAdminButtonsVisibility: function () {
+                const oLocal = this._getLocalModel();
+                const bIsAdmin = !!oLocal?.getProperty("/isAdmin");
+
+                const oView = this.getView();
+
+                const aButtons = oView.findAggregatedObjects(true, (oCtrl) =>
+                    oCtrl.isA("sap.m.Button") &&
+                    (
+                        oCtrl.getId().includes("lockStateBtn")
+                    )
+                );
+
+                aButtons.forEach((oBtn) => {
+                    oBtn.setVisible(bIsAdmin);
+                });
+
+            },
+
             _attachEditPress: function () {
                 if (this.__editPressAttached) return;
 
@@ -160,25 +233,198 @@ sap.ui.define(
                 });
             },
 
+            _attachCancelPress: function () {
+                if (this.__cancelPressAttached) return;
+
+                const oView = this.getView();
+
+                const aCandidates = oView.findAggregatedObjects(true, (oCtrl) =>
+                    oCtrl.isA("sap.m.Button") &&
+                    (
+                        oCtrl.getId().endsWith("--cancel") ||
+                        oCtrl.getId().includes("--cancel")
+                    )
+                );
+
+                console.log("Cancel buttons:", aCandidates.map(oBtn => oBtn.getId()));
+
+                const oCancelBtn = aCandidates[0];
+                if (!oCancelBtn) {
+                    console.log("Cancel button not found");
+                    return;
+                }
+                this.__cancelPressAttached = true;
+
+                oCancelBtn.attachPress(() => {
+                    console.log("[FE] Cancel pressed");
+                    this._onCancelPressed();
+                });
+            },
+
+            _onCancelPressed: function () {
+                this._onDonePressed();
+
+            },
+
+
             _onEditPressed: function () {
-                // FE bascule en edit un poil après le press
-                setTimeout(() => {
+                const oView = this.getView();
+                const oContext = oView.getBindingContext();
 
-                    const oUtil = this.getInterface().getModel("utilities");
-                    if (!oUtil) return;
+                if (!oContext) {
+                    sap.m.MessageBox.error("Contexte de l'objet introuvable.");
+                    return;
+                }
 
-                    // flag pour recetteExt.js (si tu l’utilises)
-                    oUtil.setProperty("/Editable", true);
+                const sBusinessNo = oContext.getProperty("BusinessNo");
+                if (!sBusinessNo) {
+                    sap.m.MessageBox.error("BusinessNo introuvable.");
+                    return;
+                }
 
-                    // Rebuild -> doit rappeler buildTreeData()
-                    if (this._budgetPxRecetteExt && this._budgetPxRecetteExt.preparePxRecetteExtTreeData) {
-                        this._budgetPxRecetteExt.preparePxRecetteExtTreeData();
+                const oLockStateBtn = oView.byId(
+                    "com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--action::lockStateBtn"
+                );
+
+                oLockStateBtn.setVisible(false);
+
+
+
+                this._setFgaLock(
+                    sBusinessNo,
+                    true,
+
+                    () => {
+
+                        setTimeout(() => {
+
+                            const oUtil = this.getInterface().getModel("utilities");
+                            if (!oUtil) {
+                                return;
+                            }
+
+                            oUtil.setProperty("/Editable", true);
+
+                            if (this._budgetPxRecetteExt && this._budgetPxRecetteExt.preparePxRecetteExtTreeData) {
+                                this._budgetPxRecetteExt.preparePxRecetteExtTreeData();
+                            }
+
+                            oUtil.refresh(true);
+
+                        }, 0);
+
+                    },
+
+                    (sError) => {
+                        sap.m.MessageBox.error(
+                            (oData && oData.Message) || oData.OnModifFGA.Message,
+                            {
+                                onClose: () => {
+                                    setTimeout(() => {
+                                        location.reload();
+                                    }, 0);
+                                }
+                            }
+                        );
                     }
+                );
 
-                    // force refresh bindings
-                    oUtil.refresh(true);
 
-                }, 0);
+            },
+
+            _onDonePressed: function () {
+                const oView = this.getView();
+                const oContext = oView.getBindingContext();
+                const sBusinessNo = oContext.getProperty("BusinessNo");
+
+                if (!sBusinessNo) {
+                    return;
+                }
+
+                this._setFgaLock(
+                    sBusinessNo,
+                    false,
+
+                    () => {
+
+                        const oUtil = this.getInterface().getModel("utilities");
+
+                        if (oUtil) {
+                            oUtil.setProperty("/Editable", false);
+                            oUtil.refresh(true);
+                        }
+
+                    },
+
+                    (sError) => {
+                        sap.m.MessageBox.error(sError || "Erreur lors du déverrouillage.");
+                    }
+                );
+                const oLockStateBtn = oView.byId(
+                    "com.avv.ingerop.ingeropfga::sap.suite.ui.generic.template.ObjectPage.view.Details::ZC_FGASet--action::lockStateBtn"
+                );
+                this._loadUserContext();
+            },
+
+            _setFgaLock: function (sBusinessNo, bLock) {
+                const oView = this.getView();
+                const oModel = oView.getModel();
+                const oLocal = this._getLocalModel();
+                const sUserOn = oLocal.getProperty("/UserName");
+
+                oModel.callFunction("/OnModifFGA", {
+                    method: "POST",
+                    urlParameters: {
+                        BusinessNo: sBusinessNo,
+                        IsLocked: bLock,
+                        UserOn: sUserOn 
+                    },
+                    success: (oData) => {
+                        if (oData && oData.OnModifFGA.Success === true) {
+
+                            // FE bascule en edit un poil après le press
+                            setTimeout(() => {
+                                const oUtil = this.getInterface().getModel("utilities");
+                                if (!oUtil) {
+                                    return;
+                                }
+
+                                oUtil.setProperty("/Editable", true);
+
+                                if (this._budgetPxRecetteExt && this._budgetPxRecetteExt.preparePxRecetteExtTreeData) {
+                                    this._budgetPxRecetteExt.preparePxRecetteExtTreeData();
+                                }
+
+                                oUtil.refresh(true);
+                            }, 0);
+
+                        } else {
+                            sap.m.MessageBox.error(
+                                (oData && oData.Message) || oData.OnModifFGA.Message,
+                                {
+                                    onClose: () => {
+                                        setTimeout(() => {
+                                            location.reload();
+                                        }, 0);
+                                    }
+                                }
+                            );
+                        }
+                    },
+                    error: (oError) => {
+
+                        let sMsg = "Erreur lors du verrouillage de l'objet.";
+
+                        try {
+                            const oErr = JSON.parse(oError.responseText);
+                            sMsg = oErr?.error?.message?.value || sMsg;
+                        } catch (e) { }
+
+                        sap.m.MessageBox.error(sMsg);
+                    }
+                });
+
+
             },
 
             _hideRecetteExtBottomLines: function () {
@@ -268,6 +514,7 @@ sap.ui.define(
 
                     this._wireCustomButtons();
                     this._attachEditPress();
+                    this._attachCancelPress();
 
                     const oTreeTable = this.getView().byId("PrevisionnelTreeTable");
                     if (oTreeTable) {
@@ -552,9 +799,11 @@ sap.ui.define(
                                             if (sAction === sap.m.MessageBox.Action.OK) {
                                                 // User confirmed - proceed with save
                                                 self._executeSave(utilitiesModel, oView, oContext, resolve, reject);
+                                                this._onDonePressed();
                                             } else {
                                                 // User cancelled
                                                 this._setBusy(false);
+                                                this._onDonePressed();
                                                 reject("Save cancelled by user");
                                             }
                                         }
@@ -676,6 +925,7 @@ sap.ui.define(
 
                         } else {
                             finalReject("Aucune modification n’a été effectuée sur cette vue");
+                            this._onDonePressed();
                             return;
                         }
 
@@ -701,7 +951,7 @@ sap.ui.define(
                                     dependentOn: this.getView()
                                 });
                             }, 100);
-
+                            this._onDonePressed();
                             return updatedFGA;
 
                         } else if (updatedFGA) {
@@ -713,13 +963,14 @@ sap.ui.define(
                             finalReject("No data returned");
                         }
 
+
                     } catch (error) {
                         this._setBusy(false);
                         Helper.errorMessage("FGA updated fail");
                         console.log(error);
                         finalReject(error);
                     }
-
+                    this._onDonePressed();
                     return Promise.reject();
                 });
             },
@@ -1675,7 +1926,7 @@ sap.ui.define(
 
 
             onRecapUpdated: function (stableName) {
-                if(!this.oView) { return };
+                if (!this.oView) { return };
                 const oTable = this.oView.byId(stableName);
                 if (!oTable) {
                     console.warn("Recap table not found:", stableName);
@@ -1800,7 +2051,7 @@ sap.ui.define(
 
             // remet la ligne "propre" (annule toute fusion précédente)
             _resetRecapMerge: function () {
-                if(!this.oView) { return };
+                if (!this.oView) { return };
                 const oTable = this.oView.byId("idRecapTable");
                 const dom = oTable && oTable.getDomRef();
                 if (!dom) return;
@@ -1830,7 +2081,7 @@ sap.ui.define(
 
             _styleMergedRecapRow: function () {
                 if (PROJET_TYPE === "Z0" || PROJET_TYPE === "Z1") {
-                    if(!this.oView) { return };
+                    if (!this.oView) { return };
                     const oTable = this.oView.byId("idRecapTable");
                     const oBinding = oTable && oTable.getBinding("rows");
                     if (!oBinding) return;
@@ -3135,11 +3386,8 @@ sap.ui.define(
 
                                 } else {
 
-                                    MessageBox.error(
-                                        oData && oData.Message
-                                            ? oData.Message
-                                            : "Erreur lors de la mise à jour du verrouillage"
-                                    );
+                                    MessageBox.error((oData && oData.Message) || oData.LockFGA.Message);
+                                    location.reload();
                                 }
                             },
                             error: function (oError) {

@@ -20,6 +20,67 @@ sap.ui.define(
 
             },
 
+            _loadUserContext: function () {
+                const oView = this.getView();
+                const oModel = this.getOwnerComponent().getModel();
+
+                if (!oModel) {
+                    return;
+                }
+
+                oModel.callFunction("/GetUserContext", {
+                    method: "GET",
+                    success: (oData) => {
+                        const bIsAdmin = oData?.GetUserContext.IsAdmin === true;
+                        console.log("GetUserContextoData", oData);
+                        let oLocal = oView.getModel("local");
+                        if (!oLocal) {
+                            oLocal = new sap.ui.model.json.JSONModel({
+                                isAdmin: false
+                            });
+                            oView.setModel(oLocal, "local");
+                        }
+
+                        oLocal.setProperty("/isAdmin", bIsAdmin);
+
+                        this._applyAdminButtonsVisibility();
+                    },
+                    error: () => {
+                        let oLocal = oView.getModel("local");
+                        if (!oLocal) {
+                            oLocal = new sap.ui.model.json.JSONModel({
+                                isAdmin: false
+                            });
+                            oView.setModel(oLocal, "local");
+                        }
+
+                        oLocal.setProperty("/isAdmin", false);
+
+                        this._applyAdminButtonsVisibility();
+                    }
+                });
+            },
+
+            _applyAdminButtonsVisibility: function () {
+                const oLocal = this.getView().getModel("local");
+                const bIsAdmin = !!oLocal?.getProperty("/isAdmin");
+
+                const oView = this.getView();
+
+                const aButtons = oView.findAggregatedObjects(true, (oCtrl) =>
+                    oCtrl.isA("sap.m.Button") &&
+                    (
+                        oCtrl.getId().includes("lockMassBtn") ||
+                        oCtrl.getId().includes("unLockMassBtn")
+                    )
+                );
+
+                aButtons.forEach((oBtn) => {
+                    oBtn.setVisible(bIsAdmin);
+                });
+
+           },
+
             onBeforeRebindTableExtension: function (oEvent) {
                 const oSmartTable = oEvent.getSource();
                 const oTable = oSmartTable.getTable();
@@ -42,6 +103,16 @@ sap.ui.define(
             },
 
             onInit: function () {
+                let oLocal = this.getView().getModel("local");
+                if (!oLocal) {
+                    oLocal = new sap.ui.model.json.JSONModel({
+                        isAdmin: false
+                    });
+                    this.getView().setModel(oLocal, "local");
+                }
+                this._loadUserContext();
+
+
                 const oSmartTable = this.byId("listReport");
                 if (!oSmartTable) return;
 
@@ -164,6 +235,7 @@ sap.ui.define(
                             const r = oData && (oData.LockFGA || oData.d?.LockFGA || oData.d || oData);
                             const ok = !!(r && r.Success);
                             resolve({ ok, businessNo: sBusinessNo, message: (r && r.Message) || (ok ? "OK" : "KO") });
+                            console.log("Retour lock:", oData);
                         },
                         error: function (oErr) {
                             resolve({ ok: false, businessNo: sBusinessNo, message: (oErr && (oErr.message || oErr.statusText)) || "Erreur OData" });
